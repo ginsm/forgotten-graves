@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "forgottengraves",
+  "version": "${version}",
+
+  "name": "Forgotten Graves",
+  "description": "Stores items and XP in an aging grave upon death",
+  "authors": [
+    "Ginsm"
+  ],
+  "contact": {
+    "sources": "https://github.com/SilverGleam/forgottengraves"
+  },
+
+  "license": "MIT",
+  "icon": "assets/forgottengraves/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.mgin.graves.Graves"
+    ],
+    "client": [
+      {
+        "value": "me.mgin.graves.client.GravesClient"
+      }
+    ]
+  },
+  "mixins": [
+    "graves.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "*"
+  }
+}

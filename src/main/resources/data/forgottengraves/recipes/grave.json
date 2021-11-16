@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AAA",
+    "BBB"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:cobblestone"
+    },
+    "B": {
+      "item": "minecraft:dirt"
+    }
+  },
+  "result": {
+    "item": "forgottengraves:grave",
+    "count": 1
+  }
+}
+

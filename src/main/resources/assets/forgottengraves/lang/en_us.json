@@ -1,0 +1,7 @@
+{
+  "block.forgottengraves.grave": "Grave",
+  "block.forgottengraves.grave_old": "Old Grave",
+  "block.forgottengraves.grave_weathered": "Weathered Grave",
+  "block.forgottengraves.grave_forgotten": "Forgotten Grave",
+  "text.forgottengraves.mark_coords": "Your grave has spawned at [x: %d, y: %d, z: %d]"
+}

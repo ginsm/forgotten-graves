@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "forgottengraves:block/grave_forgotten", "y":  180},
+    "facing=east":  { "model": "forgottengraves:block/grave_forgotten", "y":  270},
+    "facing=south": { "model": "forgottengraves:block/grave_forgotten", "y": 0 },
+    "facing=west":  { "model": "forgottengraves:block/grave_forgotten", "y": 90 }
+  }
+}

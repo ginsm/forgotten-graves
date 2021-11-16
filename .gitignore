@@ -1,0 +1,14 @@
+# VS Code
+**/.vscode
+
+# OSX
+**/.DS_Store
+
+# Project Specific
+**/.gradle
+**/bin
+**/build
+**/run
+**/.settings
+**/.project
+**/.classpath

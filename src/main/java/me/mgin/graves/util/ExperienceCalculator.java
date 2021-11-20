@@ -13,9 +13,11 @@ public class ExperienceCalculator {
     return Math.min(7 * level, 100);
   }
 
-  // TODO - Create a `calculatePartialExperience` function
-  // This function should mimic the above one but allow the user to input a maximum level value, i.e. 30
-  // It should leverage `calculateLevelExperience` to find the maximum amount of experience points it can store.
+  // This function mimics the above one but allows for a custom maximum level, i.e. 30.
+  public static int calculateCustomExperience(int level, int maxLevel) {
+    int maximumExperiencePoints = calculateLevelExperience(maxLevel);
+    return Math.min(7 * level, maximumExperiencePoints);
+  }
 
   // This leverages the "total experience" equations found here:
   // https://minecraft.fandom.com/wiki/Experience#Leveling_up

@@ -9,17 +9,16 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import me.mgin.graves.Graves;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity{
 
-    @Shadow @Final public PlayerInventory inventory;
+    @Shadow
+    @Final
+    public PlayerInventory inventory;
 
     protected PlayerEntityMixin(EntityType<? extends LivingEntity> type, World world) {
         super(type, world);

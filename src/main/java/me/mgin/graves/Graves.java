@@ -65,15 +65,18 @@ public class Graves implements ModInitializer {
 		apiMods.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, GravesApi.class));
 		
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
-			if(entity instanceof GraveBlockEntity) {
-				GraveBlockEntity graveBlockEntity = (GraveBlockEntity) entity;
+			if (entity instanceof GraveBlockEntity graveBlockEntity) {
+				// This will eventually be moved to a configuration option
+				if (player.hasPermissionLevel(4) && graveBlockEntity.getGraveOwner() != null && !graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId())) {
+					System.out.println("[Graves] Operator overrided grave protection at: " + pos);
+					return true;
+				}
 
-				if(graveBlockEntity.getGraveOwner() != null && !graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId())) return true;
-
-				if(graveBlockEntity.getGraveOwner() != null)
-					if(!graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId()))
+				if (graveBlockEntity.getGraveOwner() != null)
+					if (!graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId()))
 						return false;
 			}
+
 			return true;
 		});
 	}
@@ -87,7 +90,7 @@ public class Graves implements ModInitializer {
 
 		combinedInventory.addAll(player.getInventory().main);
 		combinedInventory.addAll(player.getInventory().armor);
-		/*if(){//Compat Inventories. when I don't need to sleep lol
+		/*if (){//Compat Inventories. when I don't need to sleep lol
 		 * combinedInventory.addAll(player.getInventory().armor);
 		 * }*/
 		combinedInventory.addAll(player.getInventory().offHand);
@@ -96,7 +99,7 @@ public class Graves implements ModInitializer {
 			combinedInventory.addAll(GravesApi.getInventory(player));
 		}
 
-		if(blockPos.getY() < 0) {
+		if (blockPos.getY() < 0) {
 			blockPos = new BlockPos(blockPos.getX(), 10, blockPos.getZ());
 		}
 		
@@ -104,7 +107,7 @@ public class Graves implements ModInitializer {
 			BlockState blockState = world.getBlockState(gravePos);
 			Block block = blockState.getBlock();
 
-			if(canPlaceGrave(world, block, gravePos)) {
+			if (canPlaceGrave(world, block, gravePos)) {
 				world.setBlockState(gravePos, Graves.GRAVE.getDefaultState().with(Properties.HORIZONTAL_FACING, player.getHorizontalFacing()));
 				
 				GraveBlockEntity graveBlockEntity = new GraveBlockEntity(gravePos, world.getBlockState(gravePos));
@@ -120,7 +123,7 @@ public class Graves implements ModInitializer {
 				player.experienceLevel = 0;
 				world.addBlockEntity(graveBlockEntity);
 
-				if(world.isClient()) graveBlockEntity.sync();
+				if (world.isClient()) graveBlockEntity.sync();
 				block.onBreak(world, blockPos, blockState, player);
 
 				player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(), gravePos.getY(), gravePos.getZ()), false);
@@ -133,7 +136,7 @@ public class Graves implements ModInitializer {
 	private static boolean canPlaceGrave(World world, Block block, BlockPos blockPos) {
 		BlockEntity blockEntity = world.getBlockEntity(blockPos);
 
-		if(blockEntity != null) return false;
+		if (blockEntity != null) return false;
 		//Check if it's in a blacklisted/non-whitelisted dimension
 		//Check if it's in a blacklisted/non-whitelisted biome
 
@@ -141,7 +144,7 @@ public class Graves implements ModInitializer {
 			add(Blocks.BEDROCK);
 		}};
 
-		if(blackListedBlocks.contains(block)) return false;
+		if (blackListedBlocks.contains(block)) return false;
 
 		return !(blockPos.getY() < 0 || blockPos.getY() > 255);
 	}

@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class ExplosionMixin {
   @Shadow
   @Final
-  World world;
+  private World world;
   private BlockPos lastPos;
   private Set<Block> graveBlocks = new HashSet<Block>() {
     {
@@ -45,9 +45,7 @@ public class ExplosionMixin {
     if (graveBlocks.contains(old.getBlock())) {
       BlockEntity blockEntity = world.getBlockEntity(lastPos);
 
-      if (blockEntity instanceof GraveBlockEntity) {
-        GraveBlockEntity graveBlockEntity = (GraveBlockEntity) blockEntity;
-
+      if (blockEntity instanceof GraveBlockEntity graveBlockEntity) {
         if (graveBlockEntity.getGraveOwner() != null)
           return Blocks.AIR.getDefaultState();
       }

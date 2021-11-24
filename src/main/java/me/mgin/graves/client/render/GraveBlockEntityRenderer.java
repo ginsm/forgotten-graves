@@ -70,24 +70,24 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
         matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(50));
         //matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(10));
         
-        if(blockEntity.getGraveOwner() != null) {
+        if (blockEntity.getGraveOwner() != null) {
         	this.skull = getSkull(state);
         	//Make the yaw a configurable value
         	float yaw = Float.max(10f,blockAge * 12f);
-        	if(blockAge>=2)SkullBlockEntityRenderer.renderSkull(null, yaw, 0f, matrices, vertexConsumers, light, skull, SkullBlockEntityRenderer.getRenderLayer(SkullBlock.Type.SKELETON,null)); else SkullBlockEntityRenderer.renderSkull(null, yaw, 0f, matrices, vertexConsumers, light, skull, SkullBlockEntityRenderer.getRenderLayer(SkullBlock.Type.PLAYER,blockEntity.getGraveOwner()));
+        	if (blockAge>=2)SkullBlockEntityRenderer.renderSkull(null, yaw, 0f, matrices, vertexConsumers, light, skull, SkullBlockEntityRenderer.getRenderLayer(SkullBlock.Type.SKELETON,null)); else SkullBlockEntityRenderer.renderSkull(null, yaw, 0f, matrices, vertexConsumers, light, skull, SkullBlockEntityRenderer.getRenderLayer(SkullBlock.Type.PLAYER,blockEntity.getGraveOwner()));
         }
         
         
         
         matrices.pop();
         //Outline
-        if(blockEntity.getGraveOwner() != null) {
+        if (blockEntity.getGraveOwner() != null) {
         	String text= "";
-            if(blockEntity.getGraveOwner() != null) {
+            if (blockEntity.getGraveOwner() != null) {
                 text = blockEntity.getGraveOwner().getName();
             }
-            else if(blockEntity.getCustomNametag() != null) {
-                if( !blockEntity.getCustomNametag().isEmpty()) {
+            else if (blockEntity.getCustomNametag() != null) {
+                if (!blockEntity.getCustomNametag().isEmpty()) {
                     text = blockEntity.getCustomNametag().substring(9);
                     text = text.substring(0, text.length() - 2);
                 }

@@ -87,10 +87,10 @@ public class GraveBlockEntity extends BlockEntity implements BlockEntityClientSe
 
         this.xp = tag.getInt("XP");
 
-        if(tag.contains("GraveOwner"))
+        if (tag.contains("GraveOwner"))
             this.graveOwner = NbtHelper.toGameProfile(tag.getCompound("GraveOwner"));
 
-        if(tag.contains("CustomName"))
+        if (tag.contains("CustomName"))
             this.customName = tag.getString("CustomName");
     }
     
@@ -104,9 +104,9 @@ public class GraveBlockEntity extends BlockEntity implements BlockEntityClientSe
 
         tag.putInt("XP", xp);
 
-        if(graveOwner != null)
+        if (graveOwner != null)
             tag.put("GraveOwner", NbtHelper.writeGameProfile(new NbtCompound(), graveOwner));
-        if(customName != null && !customName.isEmpty())
+        if (customName != null && !customName.isEmpty())
             tag.putString("CustomName", customName);
 
         return tag;
@@ -114,17 +114,17 @@ public class GraveBlockEntity extends BlockEntity implements BlockEntityClientSe
     
     @Override
     public void fromClientTag(NbtCompound compoundTag) {
-        if(compoundTag.contains("GraveOwner"))
+        if (compoundTag.contains("GraveOwner"))
             this.graveOwner = NbtHelper.toGameProfile(compoundTag.getCompound("GraveOwner"));
-        if(compoundTag.contains("CustomName"))
+        if (compoundTag.contains("CustomName"))
             this.customName = compoundTag.getString("CustomName");
     }
     
     @Override
     public NbtCompound toClientTag(NbtCompound compoundTag) {
-        if(graveOwner != null)
+        if (graveOwner != null)
             compoundTag.put("GraveOwner", NbtHelper.writeGameProfile(new NbtCompound(), this.graveOwner));
-        if(customName != null && !customName.isEmpty())
+        if (customName != null && !customName.isEmpty())
             compoundTag.putString("CustomName", customName);
 
         return compoundTag;

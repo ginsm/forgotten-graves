@@ -216,7 +216,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
         
         GraveBlockEntity graveBlockEntity = (GraveBlockEntity) blockEntity;
 
-        graveBlockEntity.setCustomNametag(itemStack.getOrCreateSubTag("display").getString("Name"));
+        graveBlockEntity.setCustomNametag(itemStack.getOrCreateSubNbt("display").getString("Name"));
     }
     
     public BlockState getPlacementState(ItemPlacementContext ctx) {

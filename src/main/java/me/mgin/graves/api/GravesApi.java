@@ -1,14 +1,13 @@
 package me.mgin.graves.api;
 
+import java.util.List;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-import java.util.List;
-
 public interface GravesApi {
-    List<ItemStack> getInventory(PlayerEntity entity);
+	List<ItemStack> getInventory(PlayerEntity entity);
 
-    void setInventory(List<ItemStack> inventory, PlayerEntity entity);
+	void setInventory(List<ItemStack> inventory, PlayerEntity entity);
 
-    int getInventorySize(PlayerEntity entity);
+	int getInventorySize(PlayerEntity entity);
 }

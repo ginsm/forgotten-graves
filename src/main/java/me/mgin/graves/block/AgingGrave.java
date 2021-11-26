@@ -17,19 +17,19 @@ public interface AgingGrave extends Ageable<AgingGrave.BlockAge> {
 				.build();
 	});
 
-	Supplier<BiMap<GraveBase, GraveBase>> BLOCK_AGE_DECREASES = Suppliers.memoize(() -> {
-		return ((BiMap) BLOCK_AGE_INCREASES.get()).inverse();
+	Supplier<BiMap<Object, Object>> BLOCK_AGE_DECREASES = Suppliers.memoize(() -> {
+		return ((BiMap<Object, Object>) BLOCK_AGE_INCREASES.get()).inverse();
 	});
 
 	static Optional<Block> getDecreasedOxidationBlock(Block block) {
-		return Optional.ofNullable((Block) ((BiMap) BLOCK_AGE_DECREASES.get()).get(block));
+		return Optional.ofNullable((Block) ((BiMap<Object, Object>) BLOCK_AGE_DECREASES.get()).get(block));
 	}
 
 	static Block getUnaffectedOxidationBlock(Block block) {
 		Block block2 = block;
 
-		for (Block block3 = (Block) ((BiMap) BLOCK_AGE_DECREASES.get())
-				.get(block); block3 != null; block3 = (Block) ((BiMap) BLOCK_AGE_DECREASES.get()).get(block3)) {
+		for (Block block3 = (Block) ((BiMap<Object, Object>) BLOCK_AGE_DECREASES.get())
+				.get(block); block3 != null; block3 = (Block) ((BiMap<Object, Object>) BLOCK_AGE_DECREASES.get()).get(block3)) {
 			block2 = block3;
 		}
 
@@ -43,7 +43,7 @@ public interface AgingGrave extends Ageable<AgingGrave.BlockAge> {
 	}
 
 	static Optional<Block> getIncreasedOxidationBlock(Block block) {
-		return Optional.ofNullable((Block) ((BiMap) BLOCK_AGE_INCREASES.get()).get(block));
+		return Optional.ofNullable((Block) ((BiMap<Object, Object>) BLOCK_AGE_INCREASES.get()).get(block));
 	}
 
 	static BlockState getUnaffectedOxidationState(BlockState state) {

@@ -23,7 +23,7 @@ public interface Ageable<T extends Enum<T>> {
 
 	default void tickDegradation(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		float f = 0.05688889F;
-		if (random.nextFloat() < 0.05688889F) {
+		if (random.nextFloat() < f) {
 			this.tryDegrade(state, world, pos, random);
 		}
 	}
@@ -34,7 +34,7 @@ public interface Ageable<T extends Enum<T>> {
 		int i = this.getDegradationLevel().ordinal();
 		int j = 0;
 		int k = 0;
-		Iterator var8 = BlockPos.iterateOutwards(pos, 4, 4, 4).iterator();
+		Iterator<BlockPos> var8 = BlockPos.iterateOutwards(pos, 4, 4, 4).iterator();
 
 		while (var8.hasNext()) {
 			BlockPos blockPos = (BlockPos) var8.next();
@@ -47,7 +47,7 @@ public interface Ageable<T extends Enum<T>> {
 				BlockState blockState = world.getBlockState(blockPos);
 				Block block = blockState.getBlock();
 				if (block instanceof Degradable) {
-					Enum<?> enum_ = ((Degradable) block).getDegradationLevel();
+					Enum<?> enum_ = ((Degradable<?>) block).getDegradationLevel();
 					if (this.getDegradationLevel().getClass() == enum_.getClass()) {
 						int m = enum_.ordinal();
 						if (m < i) {

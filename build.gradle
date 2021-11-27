@@ -88,24 +88,28 @@ publishing {
 }
 
 spotless {
-   java {
-      target fileTree('.') {
-            include '**/*.java'
-            exclude '**/build/**', '**/build-*/**'
-      }
-      toggleOffOn()
-      eclipse()
-      removeUnusedImports()
-      trimTrailingWhitespace()
-      endWithNewline()
+  // Only formats files that have changed since origin/develop.
+  ratchetFrom 'origin/develop'
+
+  java {
+    target fileTree('.') {
+      include '**/*.java'
+      exclude '**/build/**', '**/build-*/**'
+    }
+    toggleOffOn()
+    eclipse()
+    removeUnusedImports()
+    trimTrailingWhitespace()
+    endWithNewline()
    }
+   
    format 'misc', {
-      target fileTree('.') {
-            include '*.gradle', '**/*.md', '**/.gitignore'
-            exclude '**/build/**', '**/build-*/**'
-      }
-      trimTrailingWhitespace()
-      indentWithSpaces(2)
-      endWithNewline()
+    target fileTree('.') {
+      include '*.gradle', '**/*.md', '**/.gitignore'
+      exclude '**/build/**', '**/build-*/**'
+    }
+    trimTrailingWhitespace()
+    indentWithSpaces(2)
+    endWithNewline()
    }
 }

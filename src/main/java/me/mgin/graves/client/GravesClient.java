@@ -1,16 +1,14 @@
 package me.mgin.graves.client;
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import me.mgin.graves.Graves;
 import me.mgin.graves.client.render.GraveBlockEntityRenderer;
-import net.minecraft.client.render.RenderLayer;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 
 public class GravesClient implements ClientModInitializer {
-    @Override
-    public void onInitializeClient() {
-        BlockEntityRendererRegistry.INSTANCE.register(Graves.GRAVE_BLOCK_ENTITY, GraveBlockEntityRenderer::new);
-        //Config?
-    }
+	@Override
+	public void onInitializeClient() {
+		BlockEntityRendererRegistry.register(Graves.GRAVE_BLOCK_ENTITY, GraveBlockEntityRenderer::new);
+		// Config?
+	}
 }

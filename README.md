@@ -10,3 +10,10 @@ With that being said, if you have any issues with the mod or a feature request, 
 ## Credits
 
 This mod is heavily based on both [Graves Not Forgotten](https://www.curseforge.com/minecraft/mc-mods/not-forgotten) by `SilverGleam` and [Gravestones](https://www.curseforge.com/minecraft/mc-mods/gravestones) by `geometrically_`.
+
+ 
+## Contributing
+
+I still need to write up a contribution guide for this project; however, if you want to tackle one of the issues in the [issue tracker](https://github.com/ginsm/forgotten-graves/issues) then please feel free to and send a pull request!
+
+In addition, I'm looking for someone who's good at creating block models and textures (as I'm not very good at it) for the biome specific model/texture feature; if that sounds like something you would like to do then please leave a comment on [the issue](https://github.com/ginsm/forgotten-graves/issues/7). Thank you!

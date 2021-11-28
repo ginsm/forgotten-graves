@@ -8,6 +8,9 @@ import me.mgin.graves.block.AgingGrave.BlockAge;
 import me.mgin.graves.block.GraveBase;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.util.ExperienceCalculator;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import me.mgin.graves.config.GravesConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -69,6 +72,8 @@ public class Graves implements ModInitializer {
 				new BlockItem(GRAVE_WEATHERED, new Item.Settings().group(ItemGroup.DECORATIONS)));
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, BRAND_BLOCK + "_forgotten"),
 				new BlockItem(GRAVE_FORGOTTEN, new Item.Settings().group(ItemGroup.DECORATIONS)));
+
+		AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);
 
 		apiMods.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, GravesApi.class));
 

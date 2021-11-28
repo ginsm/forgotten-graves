@@ -6,12 +6,12 @@ Forgotten Graves is a configurable fabric mod that stores items and XP inside a 
 
 ![Forgotten Graves Settings Window](docs/screenshots/ConfigScreen.png)
 
+If you have any issues with the mod or a feature request, please use the [issue tracker](https://github.com/ginsm/forgotten-graves/issues). Thank you! :)
+
  
 ## Disclaimer
 
-I'm mostly working on this mod for my own server's personal use, and I'm new to modding, so I cannot promise that all requested functionality will be added (i.e. compatibility with ___ mod).. but I'll still see what I can do with time.
-
-With that being said, if you have any issues with the mod or a feature request, please use the [issue tracker](https://github.com/ginsm/forgotten-graves/issues). Thank you! :)
+I'm mostly working on this mod for my own server's personal use, and I'm new to modding, so I cannot promise that all requested functionality will be added (i.e. compatibility with ___ mod).
 
  
 ## Credits
@@ -26,7 +26,6 @@ I still need to write up a contribution guide for this project; however, if you 
 In addition, I'm looking for someone who's good at creating block models and textures (as I'm not very good at it) for the biome specific model/texture feature; if that sounds like something you would like to do then please leave a comment on [this issue](https://github.com/ginsm/forgotten-graves/issues/7). Thank you!
 
  
-### Support
 
 Want to show your support?
 

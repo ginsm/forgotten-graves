@@ -11,7 +11,7 @@ If you have any issues with the mod or a feature request, please use the [issue 
  
 ## Disclaimer
 
-I'm mostly working on this mod for my own server's personal use, and I'm new to modding, so I cannot promise that all requested functionality will be added (i.e. compatibility with ___ mod).
+I'm mostly working on this mod for my own server's personal use, and I'm new to modding, so I cannot promise that all requested functionality will be added (i.e. compatibility with ___ mod). I'll still try though!
 
  
 ## Credits

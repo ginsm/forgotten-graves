@@ -37,7 +37,7 @@ public class GravesConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
-    public GraveExpStoreType xpAmountStored = GraveExpStoreType.STORE_ALL_XP;
+    public GraveExpStoreType expStorageType = GraveExpStoreType.STORE_ALL_XP;
 
     @ConfigEntry.Gui.Tooltip
     public int customXPStoredLevel = 30;

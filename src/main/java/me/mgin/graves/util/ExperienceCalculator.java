@@ -1,7 +1,27 @@
 package me.mgin.graves.util;
 
+import me.mgin.graves.config.GraveExpStoreType;
+import me.mgin.graves.config.GravesConfig;
+
 public class ExperienceCalculator {
+	public static int calculateExperienceStorage(int level, float progress) {
+		GraveExpStoreType expStorageType = GravesConfig.getConfig().mainSettings.expStorageType;
+
+		switch (expStorageType) {
+			case STORE_ALL_XP:
+				return calculateTotalExperience(level, progress);
+			case STORE_DEFAULT_XP:
+				return calculateDefaultExperience(level);
+			case STORE_CUSTOM_XP:
+				int maxLevel = GravesConfig.getConfig().mainSettings.customXPStoredLevel;
+				return calculateCustomExperience(level, maxLevel);
+			default:
+				return calculateDefaultExperience(level);
+		}
+	}
+
 	public static int calculateTotalExperience(int level, float progress) {
+		System.out.println("Calculating total experience");
 		int levelExperience = calculateLevelExperience(level);
 		int progressExperience = calculateProgressExperience(level, progress);
 		return levelExperience + progressExperience;
@@ -10,12 +30,14 @@ public class ExperienceCalculator {
 	// This leverages the default death experience equation found here:
 	// https://minecraft.fandom.com/wiki/Experience#Sources
 	public static int calculateDefaultExperience(int level) {
+		System.out.println("Calculating default experience");
 		return Math.min(7 * level, 100);
 	}
 
 	// This function mimics the above one but allows for a custom maximum level,
 	// i.e. 30.
 	public static int calculateCustomExperience(int level, int maxLevel) {
+		System.out.println("Calculating custom experience");
 		int maximumExperiencePoints = calculateLevelExperience(maxLevel);
 		return Math.min(7 * level, maximumExperiencePoints);
 	}

@@ -7,7 +7,7 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 @Config(name = "graves")
 public class GravesConfig implements ConfigData {
-  @ConfigEntry.Gui.CollapsibleObject
+  @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
   public MainSettings mainSettings = new MainSettings();
 
   public static GravesConfig getConfig() {

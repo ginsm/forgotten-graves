@@ -26,10 +26,10 @@
   "text.autoconfig.graves.option.mainSettings.dropType": "Grave Drop Type",
   "text.autoconfig.graves.option.mainSettings.dropType.@Tooltip": "What happens to the items when they're retrieved?",
 
-  "text.autoconfig.graves.option.mainSettings.xpAmountStored": "XP Storage Type",
-  "text.autoconfig.graves.option.mainSettings.xpAmountStored.@Tooltip": "How should the graves store XP?",
+  "text.autoconfig.graves.option.mainSettings.expStorageType": "XP Storage Type",
+  "text.autoconfig.graves.option.mainSettings.expStorageType.@Tooltip": "How should the graves store XP?",
 
   "text.autoconfig.graves.option.mainSettings.customXPStoredLevel": "Max Custom XP Level",
-  "text.autoconfig.graves.option.mainSettings.customXPStoredLevel.@Tooltip": "(STORE_CUSTOM_XP) Max amount of levels that can be stored?"
+  "text.autoconfig.graves.option.mainSettings.customXPStoredLevel.@Tooltip": "(Custom Option) What's the max amount of levels that you want stored?"
 
 }

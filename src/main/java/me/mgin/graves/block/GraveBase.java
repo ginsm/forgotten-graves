@@ -6,6 +6,8 @@ import java.util.Random;
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.GravesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.config.GraveRetrievalType;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
@@ -82,15 +84,22 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
 			BlockHitResult hit) {
-		if (player.getStackInHand(hand).isEmpty())
+		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
+
+		if (player.getStackInHand(hand).isEmpty() && (retrievalType == GraveRetrievalType.ON_BOTH || retrievalType == GraveRetrievalType.ON_USE))
 			useGrave(player, world, pos);
+
 		return super.onUse(state, world, pos, player, hand, hit);
 	}
 
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		if (useGrave(player, world, pos))
-			return;
+		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
+		
+		if (retrievalType == GraveRetrievalType.ON_BOTH || retrievalType == GraveRetrievalType.ON_BREAK)
+			if (useGrave(player, world, pos))
+				return;
+
 		super.onBreak(world, pos, state, player);
 	}
 

@@ -1,6 +1,8 @@
 package me.mgin.graves.mixin;
 
 import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.config.GraveRetrievalType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -32,8 +34,12 @@ public class ClientPlayerInteractionManagerMixin {
 	private void breakBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir, World world, BlockState blockState,
 			Block block) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
+		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
 
 		if (blockEntity instanceof GraveBlockEntity graveBlockEntity && graveBlockEntity.getGraveOwner() != null) {
+			if (retrievalType != GraveRetrievalType.ON_BREAK && retrievalType != GraveRetrievalType.ON_BOTH)
+				cir.setReturnValue(false);
+
 			if (!graveBlockEntity.getGraveOwner().getId().equals(this.networkHandler.getProfile().getId()))
 				cir.setReturnValue(false);
 		}

@@ -10,6 +10,7 @@ import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.util.ExperienceCalculator;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import me.mgin.graves.config.GraveRetrievalType;
 import me.mgin.graves.config.GravesConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
@@ -78,17 +79,19 @@ public class Graves implements ModInitializer {
 		apiMods.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, GravesApi.class));
 
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
-			if (entity instanceof GraveBlockEntity graveBlockEntity) {
+			if (entity instanceof GraveBlockEntity graveBlockEntity && graveBlockEntity.getGraveOwner() != null) {
+				GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
 				// This will eventually be moved to a configuration option
-				if (player.hasPermissionLevel(4) && graveBlockEntity.getGraveOwner() != null
-						&& !graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId())) {
+				if (player.hasPermissionLevel(4) && !graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId())) {
 					System.out.println("[Graves] Operator overrided grave protection at: " + pos);
 					return true;
 				}
 
-				if (graveBlockEntity.getGraveOwner() != null)
-					if (!graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId()))
-						return false;
+				if (retrievalType != GraveRetrievalType.ON_BREAK && retrievalType != GraveRetrievalType.ON_BOTH)
+					return false;
+
+				if (!graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId()))
+					return false;
 			}
 
 			return true;

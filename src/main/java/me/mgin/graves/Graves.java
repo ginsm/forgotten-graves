@@ -153,10 +153,13 @@ public class Graves implements ModInitializer {
 					graveBlockEntity.sync();
 				block.onBreak(world, blockPos, blockState, player);
 
-				player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(),
-						gravePos.getY(), gravePos.getZ()), false);
+				if (GravesConfig.getConfig().mainSettings.sendGraveCoordinates) {
+					player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(), gravePos.getY(), gravePos.getZ()), false);
+				}
+
 				System.out.println("[Graves] Grave spawned at: " + gravePos.getX() + ", " + gravePos.getY() + ", "
-						+ gravePos.getZ());
+						+ gravePos.getZ() + " for player " + player.getName().asString() + ".");
+
 				break;
 			}
 		}

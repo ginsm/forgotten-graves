@@ -131,8 +131,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 
 		if (!(blockEntity instanceof GraveBlockEntity))
 			return false;
-		GraveBlockEntity graveBlockEntity = (GraveBlockEntity) blockEntity;
 
+		GraveBlockEntity graveBlockEntity = (GraveBlockEntity) blockEntity;
 		graveBlockEntity.sync();
 
 		if (graveBlockEntity.getItems() == null)
@@ -140,8 +140,14 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		if (graveBlockEntity.getGraveOwner() == null)
 			return false;
 
-		if (!playerEntity.getGameProfile().getId().equals(graveBlockEntity.getGraveOwner().getId()))
-			return false;
+		// Config Options
+		boolean graveRobbingEnabled = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
+		int operatorOverrideLevel = Math.max(Math.min(GravesConfig.getConfig().mainSettings.operatorOverrideLevel, 4), 0);
+		
+		if (!graveRobbingEnabled && !playerEntity.hasPermissionLevel(operatorOverrideLevel)) {
+			if (!playerEntity.getGameProfile().getId().equals(graveBlockEntity.getGraveOwner().getId()))
+				return false;
+		}
 
 		DefaultedList<ItemStack> items = graveBlockEntity.getItems();
 

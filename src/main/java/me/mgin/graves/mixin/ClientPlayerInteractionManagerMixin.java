@@ -34,13 +34,15 @@ public class ClientPlayerInteractionManagerMixin {
 	private void breakBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir, World world, BlockState blockState,
 			Block block) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
+		
 		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
+		boolean graveRobbingEnabled = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
 
 		if (blockEntity instanceof GraveBlockEntity graveBlockEntity && graveBlockEntity.getGraveOwner() != null) {
 			if (retrievalType != GraveRetrievalType.ON_BREAK && retrievalType != GraveRetrievalType.ON_BOTH)
 				cir.setReturnValue(false);
 
-			if (!graveBlockEntity.getGraveOwner().getId().equals(this.networkHandler.getProfile().getId()))
+			if (!graveBlockEntity.getGraveOwner().getId().equals(this.networkHandler.getProfile().getId()) && !graveRobbingEnabled)
 				cir.setReturnValue(false);
 		}
 	}

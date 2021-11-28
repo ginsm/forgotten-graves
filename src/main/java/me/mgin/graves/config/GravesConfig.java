@@ -25,7 +25,7 @@ public class GravesConfig implements ConfigData {
     public boolean sendGraveCoordinates = true;
 
     @ConfigEntry.Gui.Tooltip
-    public int minimumOpLevelToLoot = 4;
+    public int operatorOverrideLevel = 4;
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)

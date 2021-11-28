@@ -17,8 +17,8 @@
   "text.autoconfig.graves.option.mainSettings.sendGraveCoordinates.@Tooltip": "Should players be sent the coordinates of their graves?",
   "text.forgottengraves.mark_coords": "Your grave has spawned at [x: %d, y: %d, z: %d]",
   
-  "text.autoconfig.graves.option.mainSettings.minimumOpLevelToLoot": "Minimum OP Level Override",
-  "text.autoconfig.graves.option.mainSettings.minimumOpLevelToLoot.@Tooltip": "Min. operator level needed to override protection?",
+  "text.autoconfig.graves.option.mainSettings.operatorOverrideLevel": "Minimum OP Level Override",
+  "text.autoconfig.graves.option.mainSettings.operatorOverrideLevel.@Tooltip": "Min. operator level needed to override protection?",
   
   "text.autoconfig.graves.option.mainSettings.retrievalType": "Grave Retrieval Type",
   "text.autoconfig.graves.option.mainSettings.retrievalType.@Tooltip": "How are the items retrieved?",

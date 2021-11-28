@@ -1,6 +1,6 @@
 # Forgotten Graves
 
-Forgotten Graves is a fabric mod that stores items and XP inside an aging grave upon death.
+Forgotten Graves is a fabric mod that stores items and XP inside a grave upon death. The grave ages with time, similar to copper oxidization.
 
 I'm mostly working on this mod for my own server's personal use, and I'm new to modding, so I cannot promise that all requested functionality will be added (i.e. compatibility with ___ mod).. but I'll still see what I can do with time.
 

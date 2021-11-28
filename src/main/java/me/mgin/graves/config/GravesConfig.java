@@ -24,22 +24,23 @@ public class GravesConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     public boolean sendGraveCoordinates = true;
 
-    @ConfigEntry.Gui.Tooltip
-    public int operatorOverrideLevel = 4;
-
+    
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
     public GraveRetrievalType retrievalType = GraveRetrievalType.ON_BOTH;
-
+    
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
     public GraveDropType dropType = GraveDropType.PUT_IN_INVENTORY;
-
+    
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
     public GraveExpStoreType expStorageType = GraveExpStoreType.STORE_ALL_XP;
-
+    
     @ConfigEntry.Gui.Tooltip
     public int customXPStoredLevel = 30;
+    
+    @ConfigEntry.Gui.Tooltip
+    public int operatorOverrideLevel = 4;
   }
 }

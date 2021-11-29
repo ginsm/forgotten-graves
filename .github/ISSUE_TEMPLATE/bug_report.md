@@ -2,7 +2,7 @@
 name: Bug report
 about: Create a report to help us improve
 title: "[BUG]"
-labels: ''
+labels: 'bug'
 assignees: ''
 
 ---
@@ -10,11 +10,8 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
-**Minecraft Version**
-*The version of Minecraft that you are running.
-
 **Forgotten Graves Version**
-The version of Forgotten Graves that you are running.
+The version of Forgotten Graves that you are running (including mc\*.\*.\*).
 
 **To Reproduce**
 A list of steps to reproduce your issue, i.e.:

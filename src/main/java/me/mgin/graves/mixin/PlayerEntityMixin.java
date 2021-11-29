@@ -1,6 +1,7 @@
 package me.mgin.graves.mixin;
 
 import me.mgin.graves.Graves;
+import me.mgin.graves.config.GravesConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,6 +26,13 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 	@Redirect(method = "dropInventory", at = @At(value = "INVOKE", target = "net.minecraft.entity.player.PlayerInventory.dropAll()V"))
 	private void dropAll(PlayerInventory inventory) {
+		boolean forgottenGravesEnabled = GravesConfig.getConfig().mainSettings.enableGraves;
+
+		if (!forgottenGravesEnabled) {
+			this.inventory.dropAll();
+			return;
+		}
+
 		Graves.placeGrave(this.world, this.getPos(), this.inventory.player);
 	}
 }

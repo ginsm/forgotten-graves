@@ -9,7 +9,7 @@
     "Ginsm"
   ],
   "contact": {
-    "sources": "https://github.com/SilverGleam/forgottengraves"
+    "sources": "https://github.com/ginsm/forgotten-graves"
   },
 
   "license": "MIT",
@@ -20,6 +20,7 @@
     "main": [
       "me.mgin.graves.Graves"
     ],
+    "modmenu": [ "me.mgin.graves.GravesModMenuIntegration" ],
     "client": [
       {
         "value": "me.mgin.graves.client.GravesClient"

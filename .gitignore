@@ -1,6 +1,7 @@
 # VS Code
 **/.vscode
 
+
 # OSX
 **/.DS_Store
 
@@ -13,4 +14,6 @@
 **/.project
 **/.classpath
 
+# Ginsm ignores
 description.curseforge
+**/*.insyncdl

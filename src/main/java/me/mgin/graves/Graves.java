@@ -8,6 +8,10 @@ import me.mgin.graves.block.AgingGrave.BlockAge;
 import me.mgin.graves.block.GraveBase;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.util.ExperienceCalculator;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import me.mgin.graves.config.GraveRetrievalType;
+import me.mgin.graves.config.GravesConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -70,20 +74,29 @@ public class Graves implements ModInitializer {
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, BRAND_BLOCK + "_forgotten"),
 				new BlockItem(GRAVE_FORGOTTEN, new Item.Settings().group(ItemGroup.DECORATIONS)));
 
+		AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);
+
 		apiMods.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, GravesApi.class));
 
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
-			if (entity instanceof GraveBlockEntity graveBlockEntity) {
-				// This will eventually be moved to a configuration option
-				if (player.hasPermissionLevel(4) && graveBlockEntity.getGraveOwner() != null
-						&& !graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId())) {
-					System.out.println("[Graves] Operator overrided grave protection at: " + pos);
-					return true;
+			if (entity instanceof GraveBlockEntity graveBlockEntity && graveBlockEntity.getGraveOwner() != null) {
+				GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
+				// Thresholds = Max: 4, Min: -1
+				int operatorOverrideLevel = Math.max(Math.min(GravesConfig.getConfig().mainSettings.operatorOverrideLevel, 4), -1);
+				boolean graveRobbingEnabled = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
+				
+				if (operatorOverrideLevel != -1) {
+					if (player.hasPermissionLevel(operatorOverrideLevel) && !graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId())) {
+						System.out.println("[Graves] Operator overrided grave protection at: " + pos);
+						return true;
+					}
 				}
 
-				if (graveBlockEntity.getGraveOwner() != null)
-					if (!graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId()))
-						return false;
+				if (retrievalType != GraveRetrievalType.ON_BREAK && retrievalType != GraveRetrievalType.ON_BOTH)
+					return false;
+
+				if (!graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId()) && !graveRobbingEnabled)
+					return false;
 			}
 
 			return true;
@@ -126,9 +139,11 @@ public class Graves implements ModInitializer {
 
 				graveBlockEntity.setItems(combinedInventory);
 				graveBlockEntity.setGraveOwner(player.getGameProfile());
-				int currentExperience = ExperienceCalculator.calculateTotalExperience(player.experienceLevel,
+
+				int experience = ExperienceCalculator.calculateExperienceStorage(player.experienceLevel,
 						player.experienceProgress);
-				graveBlockEntity.setXp(currentExperience);
+
+				graveBlockEntity.setXp(experience);
 				player.totalExperience = 0;
 				player.experienceProgress = 0;
 				player.experienceLevel = 0;
@@ -138,10 +153,13 @@ public class Graves implements ModInitializer {
 					graveBlockEntity.sync();
 				block.onBreak(world, blockPos, blockState, player);
 
-				player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(),
-						gravePos.getY(), gravePos.getZ()), false);
+				if (GravesConfig.getConfig().mainSettings.sendGraveCoordinates) {
+					player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(), gravePos.getY(), gravePos.getZ()), false);
+				}
+
 				System.out.println("[Graves] Grave spawned at: " + gravePos.getX() + ", " + gravePos.getY() + ", "
-						+ gravePos.getZ());
+						+ gravePos.getZ() + " for player " + player.getName().asString() + ".");
+
 				break;
 			}
 		}

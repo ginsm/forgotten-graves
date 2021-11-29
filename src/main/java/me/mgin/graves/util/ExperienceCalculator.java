@@ -1,6 +1,26 @@
 package me.mgin.graves.util;
 
+import me.mgin.graves.config.GraveExpStoreType;
+import me.mgin.graves.config.GravesConfig;
+
 public class ExperienceCalculator {
+	public static int calculateExperienceStorage(int level, float progress) {
+		GraveExpStoreType expStorageType = GravesConfig.getConfig().mainSettings.expStorageType;
+
+		switch (expStorageType) {
+			case STORE_ALL_XP:
+				return calculateTotalExperience(level, progress);
+			case STORE_DEFAULT_XP:
+				return calculateDefaultExperience(level);
+			case STORE_CUSTOM_XP:
+				// Enforce a minimum threshold (0).
+				int maxLevel = Math.max(GravesConfig.getConfig().mainSettings.customXPStoredLevel, 0);
+				return calculateCustomExperience(level, maxLevel);
+			default:
+				return calculateDefaultExperience(level);
+		}
+	}
+
 	public static int calculateTotalExperience(int level, float progress) {
 		int levelExperience = calculateLevelExperience(level);
 		int progressExperience = calculateProgressExperience(level, progress);
@@ -16,7 +36,7 @@ public class ExperienceCalculator {
 	// This function mimics the above one but allows for a custom maximum level,
 	// i.e. 30.
 	public static int calculateCustomExperience(int level, int maxLevel) {
-		int maximumExperiencePoints = calculateLevelExperience(maxLevel);
+		int maximumExperiencePoints = maxLevel > 0 ? calculateLevelExperience(maxLevel) : 0;
 		return Math.min(7 * level, maximumExperiencePoints);
 	}
 

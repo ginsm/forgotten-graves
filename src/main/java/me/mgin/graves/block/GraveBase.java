@@ -147,7 +147,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 			return false;
 
 		GraveBlockEntity graveBlockEntity = (GraveBlockEntity) blockEntity;
-		graveBlockEntity.sync();
+		graveBlockEntity.sync(world, pos);
 
 		if (graveBlockEntity.getItems() == null)
 			return false;

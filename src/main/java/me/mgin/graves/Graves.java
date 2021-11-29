@@ -150,7 +150,7 @@ public class Graves implements ModInitializer {
 				world.addBlockEntity(graveBlockEntity);
 
 				if (world.isClient())
-					graveBlockEntity.sync();
+					graveBlockEntity.sync(world, gravePos);
 				block.onBreak(world, blockPos, blockState, player);
 
 				if (GravesConfig.getConfig().mainSettings.sendGraveCoordinates) {

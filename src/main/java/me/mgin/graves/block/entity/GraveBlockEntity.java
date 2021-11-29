@@ -2,7 +2,6 @@ package me.mgin.graves.block.entity;
 
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.Inventories;
@@ -11,8 +10,10 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.World;
 
-public class GraveBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
+public class GraveBlockEntity extends BlockEntity {
 	private DefaultedList<ItemStack> items;
 	private int xp;
 	private GameProfile graveOwner;
@@ -65,6 +66,10 @@ public class GraveBlockEntity extends BlockEntity implements BlockEntityClientSe
 
 	public String getCustomNametag() {
 		return customName;
+	}
+
+	public void sync(World world, BlockPos pos) {
+		((ServerWorld) world).getChunkManager().markForUpdate(pos);
 	}
 
 	public int getXp() {

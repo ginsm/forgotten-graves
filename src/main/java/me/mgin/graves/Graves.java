@@ -82,11 +82,13 @@ public class Graves implements ModInitializer {
 			if (entity instanceof GraveBlockEntity graveBlockEntity && graveBlockEntity.getGraveOwner() != null) {
 				GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
 				// Thresholds = Max: 4, Min: -1
-				int operatorOverrideLevel = Math.max(Math.min(GravesConfig.getConfig().mainSettings.operatorOverrideLevel, 4), -1);
+				int operatorOverrideLevel = Math
+						.max(Math.min(GravesConfig.getConfig().mainSettings.operatorOverrideLevel, 4), -1);
 				boolean graveRobbingEnabled = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
-				
+
 				if (operatorOverrideLevel != -1) {
-					if (player.hasPermissionLevel(operatorOverrideLevel) && !graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId())) {
+					if (player.hasPermissionLevel(operatorOverrideLevel)
+							&& !graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId())) {
 						System.out.println("[Graves] Operator overrided grave protection at: " + pos);
 						return true;
 					}
@@ -95,7 +97,8 @@ public class Graves implements ModInitializer {
 				if (retrievalType != GraveRetrievalType.ON_BREAK && retrievalType != GraveRetrievalType.ON_BOTH)
 					return false;
 
-				if (!graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId()) && !graveRobbingEnabled)
+				if (!graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId())
+						&& !graveRobbingEnabled)
 					return false;
 			}
 
@@ -150,11 +153,12 @@ public class Graves implements ModInitializer {
 				world.addBlockEntity(graveBlockEntity);
 
 				if (world.isClient())
-					graveBlockEntity.sync();
+					graveBlockEntity.sync(world, gravePos);
 				block.onBreak(world, blockPos, blockState, player);
 
 				if (GravesConfig.getConfig().mainSettings.sendGraveCoordinates) {
-					player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(), gravePos.getY(), gravePos.getZ()), false);
+					player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(),
+							gravePos.getY(), gravePos.getZ()), false);
 				}
 
 				System.out.println("[Graves] Grave spawned at: " + gravePos.getX() + ", " + gravePos.getY() + ", "

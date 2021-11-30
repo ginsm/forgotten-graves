@@ -128,7 +128,7 @@ public class GraveBlockEntity extends BlockEntity {
 	@Nullable
 	@Override
 	public Packet<ClientPlayPacketListener> toUpdatePacket() {
-			return BlockEntityUpdateS2CPacket.create(this, (BlockEntity b) -> this.toNbt());
+		return BlockEntityUpdateS2CPacket.create(this, (BlockEntity b) -> this.toNbt());
 	}
 
 	@Override

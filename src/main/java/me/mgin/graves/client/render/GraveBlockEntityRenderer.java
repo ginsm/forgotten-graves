@@ -134,8 +134,8 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 			matrices.scale(scale, scale, scale);
 			matrices.translate(-width / 2.0, -4.5, 0);
 
-			this.textRenderer.draw(text, 0, 0, 0xFFFFFF, false, matrices.peek().getPositionMatrix(), vertexConsumers, false, 0,
-					light);
+			this.textRenderer.draw(text, 0, 0, 0xFFFFFF, false, matrices.peek().getPositionMatrix(), vertexConsumers,
+					false, 0, light);
 			matrices.pop();
 		}
 	}

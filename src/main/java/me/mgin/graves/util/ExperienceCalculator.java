@@ -8,15 +8,15 @@ public class ExperienceCalculator {
 		GraveExpStoreType expStorageType = GravesConfig.getConfig().mainSettings.expStorageType;
 
 		switch (expStorageType) {
-			case STORE_ALL_XP:
+			case STORE_ALL_XP :
 				return calculateTotalExperience(level, progress);
-			case STORE_DEFAULT_XP:
+			case STORE_DEFAULT_XP :
 				return calculateDefaultExperience(level);
-			case STORE_CUSTOM_XP:
+			case STORE_CUSTOM_XP :
 				// Enforce a minimum threshold (0).
 				int maxLevel = Math.max(GravesConfig.getConfig().mainSettings.customXPStoredLevel, 0);
 				return calculateCustomExperience(level, maxLevel);
-			default:
+			default :
 				return calculateDefaultExperience(level);
 		}
 	}
@@ -53,8 +53,7 @@ public class ExperienceCalculator {
 		if (level > 31)
 			levelExperience = (int) (4.5 * levelSquared - 162.5 * level + 2220);
 
-		return levelExperience + 1; // without the extra point, lv 17 becomes 16.999999999 etc; this pushes it over
-									// to 17
+		return levelExperience;
 	}
 
 	// This leverages the "experience required" equation found here:
@@ -69,6 +68,12 @@ public class ExperienceCalculator {
 		if (level > 30)
 			progressExperience = (int) ((9 * level - 158) * progress);
 
-		return (int) Math.round(progressExperience);
+		/*
+		 * The below conditional is in place to prevent an issue where Minecraft doesn't
+		 * quite reach the level it should.. i.e. 17 might become 16.999 and so forth. I
+		 * rather give 1 xp than have someone almost the level they were.
+		 */
+		int result = (int) Math.round(progressExperience);
+		return (result > 0) ? result : (level > 0) ? 1 : 0;
 	}
 }

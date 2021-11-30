@@ -81,11 +81,13 @@ public class Graves implements ModInitializer {
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
 			if (entity instanceof GraveBlockEntity graveBlockEntity && graveBlockEntity.getGraveOwner() != null) {
 				GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
-				// Thresholds = Max: 4, Min: -1
 				int operatorOverrideLevel = Math
-						.max(Math.min(GravesConfig.getConfig().mainSettings.operatorOverrideLevel, 4), -1);
+						.max(Math.min(GravesConfig.getConfig().mainSettings.operatorOverrideLevel, 4), -1); // Max: 4, Min: -1
 				boolean graveRobbingEnabled = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
 
+				if (retrievalType != GraveRetrievalType.ON_BREAK && retrievalType != GraveRetrievalType.ON_BOTH)
+					return false;
+					
 				if (operatorOverrideLevel != -1) {
 					if (player.hasPermissionLevel(operatorOverrideLevel)
 							&& !graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId())) {
@@ -93,13 +95,11 @@ public class Graves implements ModInitializer {
 						return true;
 					}
 				}
-
-				if (retrievalType != GraveRetrievalType.ON_BREAK && retrievalType != GraveRetrievalType.ON_BOTH)
-					return false;
-
+				
 				if (!graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId())
 						&& !graveRobbingEnabled)
 					return false;
+
 			}
 
 			return true;

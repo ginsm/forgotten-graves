@@ -5,6 +5,7 @@ Forgotten Graves is a configurable fabric mod that stores items and XP inside a 
 If you have any issues with the mod or a feature request, please use the [issue tracker](https://github.com/ginsm/forgotten-graves/issues). Any feedback is welcomed. Thank you!
 
  
+
 **Configuration Screen:**
 
 ![Forgotten Graves Settings Window](docs/screenshots/ConfigScreen.png)

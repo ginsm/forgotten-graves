@@ -124,6 +124,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		return new GraveBlockEntity(pos, state);
 	}
 
+
+
 	private boolean useGrave(PlayerEntity playerEntity, World world, BlockPos pos) {
 		if (world.isClient)
 			return false;
@@ -271,5 +273,15 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	@Override
 	public BlockAge getDegradationLevel() {
 		return this.blockAge;
+	}
+
+	@Override
+	public void tickDegradation(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		if (world.getBlockEntity(pos) instanceof GraveBlockEntity graveBlockEntity) {
+			if (graveBlockEntity.toNbt().getInt("noAge") == 1)
+				return;
+		}
+
+		AgingGrave.super.tickDegradation(state, world, pos, random);
 	}
 }

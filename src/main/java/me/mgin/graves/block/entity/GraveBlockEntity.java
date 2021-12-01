@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 public class GraveBlockEntity extends BlockEntity {
 	private DefaultedList<ItemStack> items;
 	private int xp;
+	private int noAge;
 	private GameProfile graveOwner;
 	private String customName;
 	private BlockState state;
@@ -29,6 +30,7 @@ public class GraveBlockEntity extends BlockEntity {
 		this.customName = "";
 		this.graveOwner = null;
 		this.xp = 0;
+		this.noAge = 0;
 		this.items = DefaultedList.ofSize(41, ItemStack.EMPTY);
 		setState(blockState);
 	}
@@ -92,6 +94,7 @@ public class GraveBlockEntity extends BlockEntity {
 		this.items = DefaultedList.ofSize(nbt.getInt("ItemCount"), ItemStack.EMPTY);
 		Inventories.readNbt(nbt.getCompound("Items"), this.items);
 		this.xp = nbt.getInt("XP");
+		this.noAge = nbt.getInt("noAge");
 
 		if (nbt.contains("GraveOwner"))
 			this.graveOwner = NbtHelper.toGameProfile(nbt.getCompound("GraveOwner"));
@@ -111,6 +114,7 @@ public class GraveBlockEntity extends BlockEntity {
 		nbt.putInt("ItemCount", this.items.size());
 		nbt.put("Items", Inventories.writeNbt(new NbtCompound(), this.items, true));
 		nbt.putInt("XP", xp);
+		nbt.putInt("noAge", noAge);
 
 		if (graveOwner != null)
 			nbt.put("GraveOwner", NbtHelper.writeGameProfile(new NbtCompound(), graveOwner));

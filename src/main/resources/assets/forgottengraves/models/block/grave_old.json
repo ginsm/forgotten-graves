@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "minecraft:block/cobblestone",
-		"2": "minecraft:block/coarse_dirt",
-		"particle": "minecraft:block/coarse_dirt"
+		"1": "forgottengraves:block/less_mossy_cobblestone",
+		"2": "minecraft:block/rooted_dirt",
+		"particle": "minecraft:block/rooted_dirt"
 	},
 	"elements": [
 		{

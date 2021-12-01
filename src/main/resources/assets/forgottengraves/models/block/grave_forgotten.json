@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "minecraft:block/mossy_cobblestone",
-		"2": "minecraft:block/mycelium_top",
-		"particle": "minecraft:block/mycelium_top"
+		"1": "forgottengraves:block/dead_less_mossy_cobblestone",
+		"2": "minecraft:block/dirt_path_top",
+		"particle": "minecraft:block/dirt_path_top"
 	},
 	"elements": [
 		{

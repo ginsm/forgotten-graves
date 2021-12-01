@@ -1,13 +1,13 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "minecraft:block/stone",
-		"2": "minecraft:block/dirt",
-		"particle": "minecraft:block/dirt"
+		"1": "minecraft:block/cobblestone",
+		"2": "minecraft:block/coarse_dirt",
+		"particle": "minecraft:block/coarse_dirt"
 	},
 	"elements": [
 		{
-			"name": "dirt",
+			"name": "coarse_dirt",
 			"from": [1, 0, 4],
 			"to": [15, 1, 15],
 			"faces": {
@@ -20,7 +20,7 @@
 			}
 		},
 		{
-			"name": "dirt-ext1",
+			"name": "coarse_dirt-ext1",
 			"from": [2, 0, 3],
 			"to": [14, 1, 4],
 			"faces": {
@@ -33,7 +33,7 @@
 			}
 		},
 		{
-			"name": "dirt-ext2",
+			"name": "coarse_dirt-ext2",
 			"from": [3, 0, 2],
 			"to": [13, 1, 3],
 			"faces": {
@@ -46,7 +46,7 @@
 			}
 		},
 		{
-			"name": "dirt-ext3",
+			"name": "coarse_dirt-ext3",
 			"from": [5, 0, 1],
 			"to": [11, 1, 2],
 			"faces": {

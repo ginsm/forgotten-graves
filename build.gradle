@@ -1,11 +1,11 @@
 plugins {
-  id 'fabric-loom' version '0.8-SNAPSHOT'
+  id 'fabric-loom' version '0.10-SNAPSHOT'
   id 'maven-publish'
   id "com.diffplug.spotless" version "6.0.0"
 }
 
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -36,7 +36,7 @@ dependencies {
   // Cloth/Auto Config
   modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
     exclude(group: "net.fabricmc.fabric-api")
-  } 
+  }
 
   include "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}"
 }
@@ -56,8 +56,8 @@ tasks.withType(JavaCompile).configureEach {
   // If Javadoc is generated, this must be specified in that task too.
   it.options.encoding = "UTF-8"
 
-  // Minecraft 1.17 (21w19a) upwards uses Java 16.
-  it.options.release = 16
+  // Minecraft 1.18 upwards uses Java 17.
+  it.options.release = 17
 }
 
 java {
@@ -111,7 +111,7 @@ spotless {
     trimTrailingWhitespace()
     endWithNewline()
    }
-   
+
    format 'misc', {
     target fileTree('.') {
       include '*.gradle', '**/*.md', '**/.gitignore'

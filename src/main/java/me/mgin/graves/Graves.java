@@ -10,8 +10,8 @@ import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.util.ExperienceCalculator;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
-import me.mgin.graves.config.GraveRetrievalType;
 import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.events.PlayerBlockBreak;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -78,29 +78,9 @@ public class Graves implements ModInitializer {
 
 		apiMods.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, GravesApi.class));
 
-		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
-			if (entity instanceof GraveBlockEntity graveBlockEntity && graveBlockEntity.getGraveOwner() != null) {
-				GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
-				// Thresholds = Max: 4, Min: -1
-				int operatorOverrideLevel = Math.max(Math.min(GravesConfig.getConfig().mainSettings.operatorOverrideLevel, 4), -1);
-				boolean graveRobbingEnabled = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
-				
-				if (operatorOverrideLevel != -1) {
-					if (player.hasPermissionLevel(operatorOverrideLevel) && !graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId())) {
-						System.out.println("[Graves] Operator overrided grave protection at: " + pos);
-						return true;
-					}
-				}
-
-				if (retrievalType != GraveRetrievalType.ON_BREAK && retrievalType != GraveRetrievalType.ON_BOTH)
-					return false;
-
-				if (!graveBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId()) && !graveRobbingEnabled)
-					return false;
-			}
-
-			return true;
-		});
+		PlayerBlockBreakEvents.BEFORE.register((World world, PlayerEntity player, BlockPos pos, BlockState state,	BlockEntity entity) ->
+			PlayerBlockBreak.handleEvent(player, pos, entity)
+		);
 	}
 
 	public static void placeGrave(World world, Vec3d pos, PlayerEntity player) {
@@ -150,11 +130,12 @@ public class Graves implements ModInitializer {
 				world.addBlockEntity(graveBlockEntity);
 
 				if (world.isClient())
-					graveBlockEntity.sync();
+					graveBlockEntity.sync(world, gravePos);
 				block.onBreak(world, blockPos, blockState, player);
 
 				if (GravesConfig.getConfig().mainSettings.sendGraveCoordinates) {
-					player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(), gravePos.getY(), gravePos.getZ()), false);
+					player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(),
+							gravePos.getY(), gravePos.getZ()), false);
 				}
 
 				System.out.println("[Graves] Grave spawned at: " + gravePos.getX() + ", " + gravePos.getY() + ", "

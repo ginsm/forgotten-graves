@@ -2,7 +2,6 @@ package me.mgin.graves.block.entity;
 
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.Inventories;
@@ -11,8 +10,14 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.World;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import org.jetbrains.annotations.Nullable;
 
-public class GraveBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
+public class GraveBlockEntity extends BlockEntity {
 	private DefaultedList<ItemStack> items;
 	private int xp;
 	private GameProfile graveOwner;
@@ -67,6 +72,10 @@ public class GraveBlockEntity extends BlockEntity implements BlockEntityClientSe
 		return customName;
 	}
 
+	public void sync(World world, BlockPos pos) {
+		((ServerWorld) world).getChunkManager().markForUpdate(pos);
+	}
+
 	public int getXp() {
 		return xp;
 	}
@@ -77,56 +86,54 @@ public class GraveBlockEntity extends BlockEntity implements BlockEntityClientSe
 	}
 
 	@Override
-	public void readNbt(NbtCompound tag) {
-		super.writeNbt(tag);
+	public void readNbt(NbtCompound nbt) {
+		super.readNbt(nbt);
 
-		this.items = DefaultedList.ofSize(tag.getInt("ItemCount"), ItemStack.EMPTY);
+		this.items = DefaultedList.ofSize(nbt.getInt("ItemCount"), ItemStack.EMPTY);
+		Inventories.readNbt(nbt.getCompound("Items"), this.items);
+		this.xp = nbt.getInt("XP");
 
-		Inventories.readNbt(tag.getCompound("Items"), this.items);
+		if (nbt.contains("GraveOwner"))
+			this.graveOwner = NbtHelper.toGameProfile(nbt.getCompound("GraveOwner"));
 
-		this.xp = tag.getInt("XP");
+		if (nbt.contains("CustomName")) {
+			this.customName = nbt.getString("CustomName");
+			System.out.println(this.customName);
+		}
 
-		if (tag.contains("GraveOwner"))
-			this.graveOwner = NbtHelper.toGameProfile(tag.getCompound("GraveOwner"));
-
-		if (tag.contains("CustomName"))
-			this.customName = tag.getString("CustomName");
+		super.markDirty();
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		super.writeNbt(tag);
+	protected void writeNbt(NbtCompound nbt) {
+		super.writeNbt(nbt);
 
-		tag.putInt("ItemCount", this.items.size());
-
-		tag.put("Items", Inventories.writeNbt(new NbtCompound(), this.items, true));
-
-		tag.putInt("XP", xp);
+		nbt.putInt("ItemCount", this.items.size());
+		nbt.put("Items", Inventories.writeNbt(new NbtCompound(), this.items, true));
+		nbt.putInt("XP", xp);
 
 		if (graveOwner != null)
-			tag.put("GraveOwner", NbtHelper.writeGameProfile(new NbtCompound(), graveOwner));
-		if (customName != null && !customName.isEmpty())
-			tag.putString("CustomName", customName);
+			nbt.put("GraveOwner", NbtHelper.writeGameProfile(new NbtCompound(), graveOwner));
 
+		if (customName != null && !customName.isEmpty())
+			nbt.putString("CustomName", customName);
+	}
+
+	public NbtCompound toNbt() {
+		NbtCompound tag = new NbtCompound();
+		this.writeNbt(tag);
 		return tag;
 	}
 
+	@Nullable
 	@Override
-	public void fromClientTag(NbtCompound compoundTag) {
-		if (compoundTag.contains("GraveOwner"))
-			this.graveOwner = NbtHelper.toGameProfile(compoundTag.getCompound("GraveOwner"));
-		if (compoundTag.contains("CustomName"))
-			this.customName = compoundTag.getString("CustomName");
+	public Packet<ClientPlayPacketListener> toUpdatePacket() {
+		return BlockEntityUpdateS2CPacket.create(this, (BlockEntity b) -> this.toNbt());
 	}
 
 	@Override
-	public NbtCompound toClientTag(NbtCompound compoundTag) {
-		if (graveOwner != null)
-			compoundTag.put("GraveOwner", NbtHelper.writeGameProfile(new NbtCompound(), this.graveOwner));
-		if (customName != null && !customName.isEmpty())
-			compoundTag.putString("CustomName", customName);
-
-		return compoundTag;
+	public NbtCompound toInitialChunkDataNbt() {
+		return this.toNbt();
 	}
 
 	public BlockState getState() {

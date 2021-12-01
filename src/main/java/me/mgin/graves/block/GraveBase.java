@@ -35,9 +35,7 @@ import net.minecraft.world.World;
 
 public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvider, AgingGrave {
 
-
 	private final BlockAge blockAge;
-
 
 	public GraveBase(BlockAge blockAge, Settings settings) {
 		super(settings);
@@ -45,9 +43,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		this.blockAge = blockAge;
 	}
 
-
 	FlowerBlock f;
-
 
 	public int getWeathered() {
 		int stage;
@@ -68,7 +64,6 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		return stage;
 	}
 
-
 	public GraveBase getAgedBlock() {
 		switch (blockAge) {
 			default :
@@ -82,29 +77,27 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		}
 	}
 
-
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {
 		stateManager.add(Properties.HORIZONTAL_FACING);
 	}
-
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
 			BlockHitResult hit) {
 		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
 
-		if (player.getStackInHand(hand).isEmpty() && (retrievalType == GraveRetrievalType.ON_BOTH || retrievalType == GraveRetrievalType.ON_USE))
+		if (player.getStackInHand(hand).isEmpty()
+				&& (retrievalType == GraveRetrievalType.ON_BOTH || retrievalType == GraveRetrievalType.ON_USE))
 			useGrave(player, world, pos);
 
 		return super.onUse(state, world, pos, player, hand, hit);
 	}
 
-
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
-		
+
 		if (retrievalType == GraveRetrievalType.ON_BOTH || retrievalType == GraveRetrievalType.ON_BREAK)
 			if (useGrave(player, world, pos))
 				return;
@@ -112,30 +105,25 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		super.onBreak(world, pos, state, player);
 	}
 
-
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ct) {
 		return VoxelShapes.cuboid(0.062f, 0f, 0.062f, 0.938f, 0.07f, 0.938f);
-    // return VoxelShapes.cuboid(0.062f, 0f, 0.0f, 0.938f, 0.07f, 1.0f);
+		// return VoxelShapes.cuboid(0.062f, 0f, 0.0f, 0.938f, 0.07f, 1.0f);
 	}
-
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		return VoxelShapes.cuboid(0.062f, 0f, 0.062f, 0.938f, 0.02f, 0.938f);
 	}
 
-
 	public PistonBehavior getPistonBehavior(BlockState state) {
 		return PistonBehavior.IGNORE;
 	}
-
 
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new GraveBlockEntity(pos, state);
 	}
-
 
 	private boolean useGrave(PlayerEntity playerEntity, World world, BlockPos pos) {
 		if (world.isClient)
@@ -147,7 +135,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 			return false;
 
 		GraveBlockEntity graveBlockEntity = (GraveBlockEntity) blockEntity;
-		graveBlockEntity.sync();
+		graveBlockEntity.sync(world, pos);
 
 		if (graveBlockEntity.getItems() == null)
 			return false;
@@ -156,10 +144,12 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 
 		// Config Options
 		boolean graveRobbingEnabled = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
-		int operatorOverrideLevel = Math.max(Math.min(GravesConfig.getConfig().mainSettings.operatorOverrideLevel, 4), -1);
-		
+		int operatorOverrideLevel = Math.max(Math.min(GravesConfig.getConfig().mainSettings.operatorOverrideLevel, 4),
+				-1);
+
 		if (!playerEntity.getGameProfile().getId().equals(graveBlockEntity.getGraveOwner().getId()))
-			if ((operatorOverrideLevel == -1 || !playerEntity.hasPermissionLevel(operatorOverrideLevel)) && !graveRobbingEnabled)
+			if ((operatorOverrideLevel == -1 || !playerEntity.hasPermissionLevel(operatorOverrideLevel))
+					&& !graveRobbingEnabled)
 				return false;
 
 		DefaultedList<ItemStack> items = graveBlockEntity.getItems();
@@ -170,9 +160,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		inventory.addAll(playerEntity.getInventory().armor);
 		inventory.addAll(playerEntity.getInventory().offHand);
 
-		
 		GraveDropType dropType = GravesConfig.getConfig().mainSettings.dropType;
-		
+
 		if (dropType == GraveDropType.PUT_IN_INVENTORY) {
 			playerEntity.getInventory().clear();
 
@@ -243,7 +232,6 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		return true;
 	}
 
-
 	private List<Integer> getInventoryOpenSlots(DefaultedList<ItemStack> inventory) {
 		List<Integer> openSlots = new ArrayList<>();
 		for (int i = 0; i < inventory.size(); i++) {
@@ -252,7 +240,6 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		}
 		return openSlots;
 	}
-
 
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
@@ -268,23 +255,19 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		graveBlockEntity.setCustomNametag(itemStack.getOrCreateSubNbt("display").getString("Name"));
 	}
 
-
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		return this.getDefaultState().with(FACING, ctx.getPlayerFacing());
 	}
-
 
 	@Override
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		this.tickDegradation(state, world, pos, random);
 	}
 
-
 	@Override
 	public boolean hasRandomTicks(BlockState state) {
 		return AgingGrave.getIncreasedOxidationBlock(state.getBlock()).isPresent();
 	}
-
 
 	@Override
 	public BlockAge getDegradationLevel() {

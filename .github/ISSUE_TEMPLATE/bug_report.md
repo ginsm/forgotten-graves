@@ -11,7 +11,7 @@ assignees: ''
 A clear and concise description of what the bug is.
 
 **Forgotten Graves Version**
-The version of Forgotten Graves that you are running (including mc\*.\*.\*).
+The version of Forgotten Graves that you are running.
 
 **To Reproduce**
 A list of steps to reproduce your issue, i.e.:

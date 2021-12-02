@@ -10,9 +10,9 @@ import net.minecraft.world.World;
 
 public class DegradationStateManager {
 
-  static public boolean decreaseDegradationState(World world, BlockPos pos) throws Exception {
+  static public boolean decreaseDegradationState(World world, BlockPos pos) {
     if (world.isClient)
-      throw new Exception("Degradation adjustment is server side");
+      return false;
 
     Optional<BlockState> potentialNewState = AgingGrave.getDecreasedOxidationState(world.getBlockState(pos));
     return setDegradationState(world, pos, potentialNewState);
@@ -20,7 +20,7 @@ public class DegradationStateManager {
 
   static public boolean increaseDegradationState(World world, BlockPos pos) throws Exception {
     if (world.isClient)
-      throw new Exception("Degradation adjustment is server side");
+      return false;
 
     Optional<BlockState> potentialNewState = AgingGrave.getIncreasedOxidationState(world.getBlockState(pos));
     return setDegradationState(world, pos, potentialNewState);

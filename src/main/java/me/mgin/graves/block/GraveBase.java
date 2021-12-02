@@ -87,9 +87,10 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 			BlockHitResult hit) {
 		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
 
-		if (player.getStackInHand(hand).isEmpty()
-				&& (retrievalType == GraveRetrievalType.ON_BOTH || retrievalType == GraveRetrievalType.ON_USE))
-			useGrave(player, world, pos);
+		if (hand != Hand.OFF_HAND)
+			if (player.getStackInHand(hand).isEmpty()
+					&& (retrievalType == GraveRetrievalType.ON_BOTH || retrievalType == GraveRetrievalType.ON_USE))
+				useGrave(player, world, pos);
 
 		return super.onUse(state, world, pos, player, hand, hit);
 	}
@@ -123,8 +124,6 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new GraveBlockEntity(pos, state);
 	}
-
-
 
 	private boolean useGrave(PlayerEntity playerEntity, World world, BlockPos pos) {
 		if (world.isClient)
@@ -277,8 +276,10 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 
 	@Override
 	public void tickDegradation(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (world.getBlockEntity(pos) instanceof GraveBlockEntity graveBlockEntity) {
-			if (graveBlockEntity.toNbt().getInt("noAge") == 1)
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		
+		if (blockEntity instanceof GraveBlockEntity graveBlockEntity) {
+			if (graveBlockEntity.getNoAge() == 1)
 				return;
 		}
 

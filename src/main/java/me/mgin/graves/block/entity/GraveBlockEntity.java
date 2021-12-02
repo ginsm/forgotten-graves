@@ -58,7 +58,9 @@ public class GraveBlockEntity extends BlockEntity {
 	}
 
 	public boolean isGraveOwner(GameProfile profile) {
-		return graveOwner == profile;
+		if (getGraveOwner() == null)
+			return true;
+		return graveOwner.getId() == profile.getId();
 	}
 
 	public void setCustomNametag(String text) {

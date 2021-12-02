@@ -87,6 +87,15 @@ public class GraveBlockEntity extends BlockEntity {
 		this.markDirty();
 	}
 
+	public void setNoAge(int aging) {
+		this.noAge = aging;
+		this.markDirty();
+	}
+
+	public int getNoAge() {
+		return this.noAge;
+	}
+
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);

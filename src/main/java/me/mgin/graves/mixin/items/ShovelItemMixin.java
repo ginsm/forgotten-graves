@@ -29,8 +29,8 @@ public class ShovelItemMixin {
     BlockEntity blockEntity = world.getBlockEntity(blockPos);
     Hand hand = context.getHand();
 
-    if (blockEntity instanceof GraveBlockEntity graveBlockEntity)
-      if (hand == Hand.MAIN_HAND && (DegradationStateManager.decreaseDegradationState(world, blockPos) || graveBlockEntity.getNoAge() == 1)) {
+    if (blockEntity instanceof GraveBlockEntity graveBlockEntity && graveBlockEntity.isGraveOwner(player))
+      if (hand == Hand.MAIN_HAND && (graveBlockEntity.getNoAge() == 1 || DegradationStateManager.decreaseDegradationState(world, blockPos))) {
         graveBlockEntity.setNoAge(0);
         player.getStackInHand(hand).damage(1, player, (p) -> p.sendToolBreakStatus(hand));
         Particles.spawnAtBlock(ParticleTypes.WAX_OFF, 8, 3, world, blockPos);

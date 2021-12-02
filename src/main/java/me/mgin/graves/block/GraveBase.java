@@ -107,8 +107,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ct) {
-		return VoxelShapes.cuboid(0.062f, 0f, 0.062f, 0.938f, 0.07f, 0.938f);
-		// return VoxelShapes.cuboid(0.062f, 0f, 0.0f, 0.938f, 0.07f, 1.0f);
+		return VoxelShapes.cuboid(0.062f, 0f, 0f, 0.938f, 0.1875f, 0.938f);
 	}
 
 	@Override
@@ -124,6 +123,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new GraveBlockEntity(pos, state);
 	}
+
+
 
 	private boolean useGrave(PlayerEntity playerEntity, World world, BlockPos pos) {
 		if (world.isClient)
@@ -272,5 +273,15 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	@Override
 	public BlockAge getDegradationLevel() {
 		return this.blockAge;
+	}
+
+	@Override
+	public void tickDegradation(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		if (world.getBlockEntity(pos) instanceof GraveBlockEntity graveBlockEntity) {
+			if (graveBlockEntity.toNbt().getInt("noAge") == 1)
+				return;
+		}
+
+		AgingGrave.super.tickDegradation(state, world, pos, random);
 	}
 }

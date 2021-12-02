@@ -106,7 +106,7 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 
 			int width = this.textRenderer.getWidth(text);
 
-			float scale = 0.7F / width;
+			float scale = (text.length() > 5 ? 0.7F : 0.44F) / width;
 
 			switch (direction) {
 				case NORTH :

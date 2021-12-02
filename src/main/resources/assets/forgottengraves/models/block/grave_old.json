@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "forgottengraves:block/less_mossy_cobblestone",
+		"1": "forgottengraves:block/dead_less_mossy_cobblestone",
 		"2": "minecraft:block/rooted_dirt",
 		"particle": "minecraft:block/rooted_dirt"
 	},

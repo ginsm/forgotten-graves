@@ -2,8 +2,10 @@ package me.mgin.graves.block.entity;
 
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
+import me.mgin.graves.config.GravesConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -57,10 +59,14 @@ public class GraveBlockEntity extends BlockEntity {
 		return graveOwner;
 	}
 
-	public boolean isGraveOwner(GameProfile profile) {
-		if (getGraveOwner() == null)
+	public boolean isGraveOwner(PlayerEntity player) {
+		boolean graveRobbing = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
+		int operatorOverrideLevel = GravesConfig.getConfig().mainSettings.operatorOverrideLevel;
+
+		if (getGraveOwner() == null || graveRobbing || player.hasPermissionLevel(Math.max(Math.min(operatorOverrideLevel, 4), -1)))
 			return true;
-		return graveOwner.getId() == profile.getId();
+
+		return player.getGameProfile().getId() == graveOwner.getId();
 	}
 
 	public void setCustomNametag(String text) {

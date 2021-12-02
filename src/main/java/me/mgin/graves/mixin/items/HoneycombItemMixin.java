@@ -28,7 +28,7 @@ public class HoneycombItemMixin {
     BlockEntity blockEntity = world.getBlockEntity(blockPos);
     Hand hand = context.getHand();
 
-    if (blockEntity instanceof GraveBlockEntity graveBlockEntity)
+    if (blockEntity instanceof GraveBlockEntity graveBlockEntity && graveBlockEntity.isGraveOwner(player))
       if (hand == Hand.MAIN_HAND && graveBlockEntity.getNoAge() == 0) {
         player.getStackInHand(context.getHand()).decrement(1);
         graveBlockEntity.setNoAge(1);

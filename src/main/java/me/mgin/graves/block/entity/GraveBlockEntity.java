@@ -2,6 +2,7 @@ package me.mgin.graves.block.entity;
 
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
+import me.mgin.graves.config.GraveRetrievalType;
 import me.mgin.graves.config.GravesConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -60,13 +61,40 @@ public class GraveBlockEntity extends BlockEntity {
 	}
 
 	public boolean isGraveOwner(PlayerEntity player) {
-		boolean graveRobbing = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
-		int operatorOverrideLevel = GravesConfig.getConfig().mainSettings.operatorOverrideLevel;
+		return player.getGameProfile().getId() == graveOwner.getId();
+	}
 
-		if (getGraveOwner() == null || graveRobbing || player.hasPermissionLevel(Math.max(Math.min(operatorOverrideLevel, 4), -1)))
+	public boolean playerCanRetrieve(PlayerEntity player) {
+		boolean graveRobbing = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
+		int operatorOverrideLevel = GravesConfig.getConfig().mainSettings.minOperatorOverrideLevel;;
+
+		if (getGraveOwner() == null || isGraveOwner(player) || graveRobbing)
 			return true;
 
-		return player.getGameProfile().getId() == graveOwner.getId();
+		if (operatorOverrideLevel != -1 && player.hasPermissionLevel(operatorOverrideLevel)) {
+			System.out.println("[Graves] Operator overrided grave protection at: " + pos);
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean playerCanBreak(PlayerEntity player) {
+		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
+
+		if (!playerCanRetrieve(player) || (retrievalType != GraveRetrievalType.ON_BREAK && retrievalType != GraveRetrievalType.ON_BOTH))
+			return false;
+
+		return true;
+	}
+
+	public boolean playerCanUse(PlayerEntity player) {
+		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
+
+		if (!playerCanRetrieve(player) || (retrievalType != GraveRetrievalType.ON_USE && retrievalType != GraveRetrievalType.ON_BOTH))
+			return false;
+
+		return true;
 	}
 
 	public void setCustomNametag(String text) {

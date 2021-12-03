@@ -89,8 +89,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		if (hand != Hand.OFF_HAND)
 			if (player.getStackInHand(hand).isEmpty() && graveBlockEntity.playerCanUseGrave(player))
 				useGrave(player, world, pos);
-
-		return super.onUse(state, world, pos, player, hand, hit);
+				
+		return ActionResult.PASS;
 	}
 
 	@Override

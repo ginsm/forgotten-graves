@@ -29,7 +29,8 @@ public interface AgingGrave extends Ageable<AgingGrave.BlockAge> {
 		Block block2 = block;
 
 		for (Block block3 = (Block) ((BiMap<Object, Object>) BLOCK_AGE_DECREASES.get())
-				.get(block); block3 != null; block3 = (Block) ((BiMap<Object, Object>) BLOCK_AGE_DECREASES.get()).get(block3)) {
+				.get(block); block3 != null; block3 = (Block) ((BiMap<Object, Object>) BLOCK_AGE_DECREASES.get())
+						.get(block3)) {
 			block2 = block3;
 		}
 
@@ -51,7 +52,6 @@ public interface AgingGrave extends Ageable<AgingGrave.BlockAge> {
 			return block.getStateWithProperties(state);
 		});
 	}
-
 
 	static BlockState getUnaffectedOxidationState(BlockState state) {
 		return getUnaffectedOxidationBlock(state.getBlock()).getStateWithProperties(state);

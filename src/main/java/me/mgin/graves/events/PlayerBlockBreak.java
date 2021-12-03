@@ -6,13 +6,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class PlayerBlockBreak {
-  public static boolean handleEvent(PlayerEntity player, BlockPos pos, BlockEntity entity) {
-    if (entity instanceof GraveBlockEntity graveBlockEntity) {
-      if (!graveBlockEntity.playerCanBreak(player))
-        return false;
-    }
-
-    return true;
-  }
+	public static boolean handleEvent(PlayerEntity player, BlockPos pos, BlockEntity entity) {
+		if (entity instanceof GraveBlockEntity graveBlockEntity) {
+			if (!graveBlockEntity.playerCanBreakGrave(player))
+				return false;
+		}
+		return true;
+	}
 }
-

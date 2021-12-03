@@ -8,7 +8,6 @@ import me.mgin.graves.api.GravesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.config.GraveDropType;
-import me.mgin.graves.config.GraveRetrievalType;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
@@ -276,7 +275,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	@Override
 	public void tickDegradation(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
-		
+
 		if (blockEntity instanceof GraveBlockEntity graveBlockEntity) {
 			if (graveBlockEntity.getNoAge() == 1)
 				return;

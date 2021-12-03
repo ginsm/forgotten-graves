@@ -4,32 +4,32 @@
   "block.forgottengraves.grave_weathered": "Weathered Grave",
   "block.forgottengraves.grave_forgotten": "Forgotten Grave",
 
-  "text.autoconfig.graves.title": "Forgotten Graves Settings",
-  "text.autoconfig.graves.option.mainSettings": "Main Settings",
+  "text.autoconfig.forgottengraves.title": "Forgotten Graves Settings",
+  "text.autoconfig.forgottengraves.option.mainSettings": "Main Settings",
 
-  "text.autoconfig.graves.option.mainSettings.enableGraves": "Enable Forgotten Graves",
-  "text.autoconfig.graves.option.mainSettings.enableGraves.@Tooltip": "Enable the Forgotten Graves mod?",
+  "text.autoconfig.forgottengraves.option.mainSettings.enableGraves": "Enable Forgotten Graves",
+  "text.autoconfig.forgottengraves.option.mainSettings.enableGraves.@Tooltip": "Enable the Forgotten Graves mod?",
   
-  "text.autoconfig.graves.option.mainSettings.enableGraveRobbing": "Enable Grave Robbing",
-  "text.autoconfig.graves.option.mainSettings.enableGraveRobbing.@Tooltip": "Can players retrieve other players' graves?",
+  "text.autoconfig.forgottengraves.option.mainSettings.enableGraveRobbing": "Enable Grave Robbing",
+  "text.autoconfig.forgottengraves.option.mainSettings.enableGraveRobbing.@Tooltip": "Can players retrieve other players' graves?",
   
-  "text.autoconfig.graves.option.mainSettings.sendGraveCoordinates": "Send Grave Coordinates",
-  "text.autoconfig.graves.option.mainSettings.sendGraveCoordinates.@Tooltip": "Should players be sent the coordinates of their graves?",
+  "text.autoconfig.forgottengraves.option.mainSettings.sendGraveCoordinates": "Send Grave Coordinates",
+  "text.autoconfig.forgottengraves.option.mainSettings.sendGraveCoordinates.@Tooltip": "Should players be sent the coordinates of their graves?",
   "text.forgottengraves.mark_coords": "Your grave has spawned at [x: %d, y: %d, z: %d]",
   
-  "text.autoconfig.graves.option.mainSettings.operatorOverrideLevel": "Minimum OP Level Override",
-  "text.autoconfig.graves.option.mainSettings.operatorOverrideLevel.@Tooltip": "Min. operator level needed to override protection?",
+  "text.autoconfig.forgottengraves.option.mainSettings.minOperatorOverrideLevel": "Minimum OP Level Override",
+  "text.autoconfig.forgottengraves.option.mainSettings.minOperatorOverrideLevel.@Tooltip": "Min. operator level needed to override protection?",
   
-  "text.autoconfig.graves.option.mainSettings.retrievalType": "Grave Retrieval Type",
-  "text.autoconfig.graves.option.mainSettings.retrievalType.@Tooltip": "How are the items retrieved?",
+  "text.autoconfig.forgottengraves.option.mainSettings.retrievalType": "Grave Retrieval Type",
+  "text.autoconfig.forgottengraves.option.mainSettings.retrievalType.@Tooltip": "How are the items retrieved?",
 
-  "text.autoconfig.graves.option.mainSettings.dropType": "Grave Drop Type",
-  "text.autoconfig.graves.option.mainSettings.dropType.@Tooltip": "What happens to the items when they're retrieved?",
+  "text.autoconfig.forgottengraves.option.mainSettings.dropType": "Grave Drop Type",
+  "text.autoconfig.forgottengraves.option.mainSettings.dropType.@Tooltip": "What happens to the items when they're retrieved?",
 
-  "text.autoconfig.graves.option.mainSettings.expStorageType": "XP Storage Type",
-  "text.autoconfig.graves.option.mainSettings.expStorageType.@Tooltip": "How should the graves store XP?",
+  "text.autoconfig.forgottengraves.option.mainSettings.expStorageType": "XP Storage Type",
+  "text.autoconfig.forgottengraves.option.mainSettings.expStorageType.@Tooltip": "How should the graves store XP?",
 
-  "text.autoconfig.graves.option.mainSettings.customXPStoredLevel": "Max Custom XP Level",
-  "text.autoconfig.graves.option.mainSettings.customXPStoredLevel.@Tooltip": "(Custom Option) What's the max amount of levels that you want stored?"
+  "text.autoconfig.forgottengraves.option.mainSettings.customXPStoredLevel": "Max Custom XP Level",
+  "text.autoconfig.forgottengraves.option.mainSettings.customXPStoredLevel.@Tooltip": "(Custom Option) What's the max amount of levels that you want stored?"
 
 }

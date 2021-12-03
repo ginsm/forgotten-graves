@@ -67,9 +67,7 @@ public interface Ageable<T extends Enum<T>> {
 		float f = (float) (k + 1) / (float) (k + j + 1);
 		float g = f * f * this.getDegradationChanceMultiplier();
 		if (random.nextFloat() < g) {
-			this.getDegradationResultState(state).ifPresent((statex) ->
-				setDegradationState(world, pos, statex)
-			);
+			this.getDegradationResultState(state).ifPresent((statex) -> setDegradationState(world, pos, statex));
 		}
 	}
 

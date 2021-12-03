@@ -60,41 +60,94 @@ public class GraveBlockEntity extends BlockEntity {
 		return graveOwner;
 	}
 
+	/**
+	 * Determines whether the player's gameprofile ID matches the grave owner's
+	 * gameprofile ID.
+	 *
+	 * @param player
+	 * @return boolean
+	 */
 	public boolean isGraveOwner(PlayerEntity player) {
 		return player.getGameProfile().getId() == graveOwner.getId();
 	}
 
-	public boolean playerCanRetrieve(PlayerEntity player) {
+	/**
+	 * Determines whether any of the following is true:
+	 *
+	 * <p>
+	 * The grave has no owner, the player is the owner, grave robbing is enabled, or
+	 * the player's operator permission level meets the requirements.
+	 * </p>
+	 *
+	 * @param player
+	 * @return boolean
+	 */
+	public boolean playerCanAttemptRetrieve(PlayerEntity player) {
 		boolean graveRobbing = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
-		int operatorOverrideLevel = GravesConfig.getConfig().mainSettings.minOperatorOverrideLevel;;
 
-		if (getGraveOwner() == null || isGraveOwner(player) || graveRobbing)
-			return true;
-
-		if (operatorOverrideLevel != -1 && player.hasPermissionLevel(operatorOverrideLevel)) {
-			System.out.println("[Graves] Operator overrided grave protection at: " + pos);
+		if (getGraveOwner() == null || isGraveOwner(player) || graveRobbing || playerCanOverride(player)) {
 			return true;
 		}
 
 		return false;
 	}
 
-	public boolean playerCanBreak(PlayerEntity player) {
-		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
-
-		if (!playerCanRetrieve(player) || (retrievalType != GraveRetrievalType.ON_BREAK && retrievalType != GraveRetrievalType.ON_BOTH))
-			return false;
-
-		return true;
+	/**
+	 * Determines whether operator override is enabled, and if the player meets the
+	 * necessary override level requirements.
+	 *
+	 * @param player
+	 * @return boolean
+	 */
+	public boolean playerCanOverride(PlayerEntity player) {
+		int operatorOverrideLevel = GravesConfig.getConfig().mainSettings.minOperatorOverrideLevel;
+		return (operatorOverrideLevel != -1 && player.hasPermissionLevel(operatorOverrideLevel));
 	}
 
-	public boolean playerCanUse(PlayerEntity player) {
+	/**
+	 * Determines whether the player can break the block with left click
+	 * (RetrievalType.ON_BREAK || RetrievalType.ON_BOTH).
+	 *
+	 * <p>
+	 * In addition, it checks whether the player is the owner, if grave robbing is
+	 * enabled, or if the player can override the protection with the proper
+	 * operator level.
+	 * <p>
+	 *
+	 * @param player
+	 * @return boolean
+	 */
+	public boolean playerCanBreakGrave(PlayerEntity player) {
 		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
 
-		if (!playerCanRetrieve(player) || (retrievalType != GraveRetrievalType.ON_USE && retrievalType != GraveRetrievalType.ON_BOTH))
-			return false;
+		if (playerCanAttemptRetrieve(player))
+			if (retrievalType == GraveRetrievalType.ON_BREAK || retrievalType == GraveRetrievalType.ON_BOTH)
+				return true;
 
-		return true;
+		return false;
+	}
+
+	/**
+	 * Determines whether the player can use the block with right click
+	 * (RetrievalType.ON_USE || RetrievalType.ON_BOTH).
+	 *
+	 * <p>
+	 * In addition, it checks whether the player is the owner, if grave robbing is
+	 * enabled, or if the player can override the protection with the proper
+	 * operator level.
+	 * </p>
+	 *
+	 * @param player
+	 * @return
+	 */
+	public boolean playerCanUseGrave(PlayerEntity player) {
+		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
+
+		if (playerCanAttemptRetrieve(player))
+			if (retrievalType == GraveRetrievalType.ON_USE || retrievalType == GraveRetrievalType.ON_BOTH)
+				return true;
+
+		return false;
 	}
 
 	public void setCustomNametag(String text) {

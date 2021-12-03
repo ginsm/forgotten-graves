@@ -90,15 +90,15 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 
 		matrices.pop();
 		// Outline
-		if (blockEntity.getGraveOwner() != null) {
+		if (blockEntity.getGraveOwner() != null
+				|| (blockEntity.getCustomNametag() != null && !blockEntity.getCustomNametag().isEmpty())) {
 			String text = "";
+
 			if (blockEntity.getGraveOwner() != null) {
 				text = blockEntity.getGraveOwner().getName();
-			} else if (blockEntity.getCustomNametag() != null) {
-				if (!blockEntity.getCustomNametag().isEmpty()) {
-					text = blockEntity.getCustomNametag().substring(9);
-					text = text.substring(0, text.length() - 2);
-				}
+			} else {
+				text = blockEntity.getCustomNametag().substring(9);
+				text = text.substring(0, text.length() - 2);
 			}
 
 			// Main Text

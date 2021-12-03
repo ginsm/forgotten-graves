@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public interface Ageable<T extends Enum<T>> {
 	int field_31056 = 4;
@@ -66,20 +67,27 @@ public interface Ageable<T extends Enum<T>> {
 		float f = (float) (k + 1) / (float) (k + j + 1);
 		float g = f * f * this.getDegradationChanceMultiplier();
 		if (random.nextFloat() < g) {
-			this.getDegradationResultState(state).ifPresent((statex) -> {
-				GraveBlockEntity entity = (GraveBlockEntity) world.getBlockEntity(pos);
-				GameProfile owner = entity.getGraveOwner();
-				String name = entity.getCustomNametag();
-				DefaultedList<ItemStack> items = entity.getItems();
-				int xp = entity.getXp();
-				world.setBlockState(pos, statex);
-				GraveBlockEntity newEntity = new GraveBlockEntity(pos, statex);
-				newEntity.setGraveOwner(owner);
-				newEntity.setItems(items);
-				newEntity.setCustomNametag(name);
-				newEntity.setXp(xp);
-				world.addBlockEntity(newEntity);
-			});
+			this.getDegradationResultState(state).ifPresent((statex) -> setDegradationState(world, pos, statex));
 		}
+	}
+
+	static void setDegradationState(World world, BlockPos pos, BlockState state) {
+		GraveBlockEntity entity = (GraveBlockEntity) world.getBlockEntity(pos);
+		GameProfile owner = entity.getGraveOwner();
+		String name = entity.getCustomNametag();
+		DefaultedList<ItemStack> items = entity.getItems();
+		int xp = entity.getXp();
+		int noAge = entity.getNoAge();
+
+		world.setBlockState(pos, state);
+
+		GraveBlockEntity newGraveBlockEntity = new GraveBlockEntity(pos, state);
+		newGraveBlockEntity.setGraveOwner(owner);
+		newGraveBlockEntity.setItems(items);
+		newGraveBlockEntity.setCustomNametag(name);
+		newGraveBlockEntity.setXp(xp);
+		newGraveBlockEntity.setNoAge(noAge);
+
+		world.addBlockEntity(newGraveBlockEntity);
 	}
 }

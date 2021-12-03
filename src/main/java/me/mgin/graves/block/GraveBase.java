@@ -8,7 +8,6 @@ import me.mgin.graves.api.GravesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.config.GraveDropType;
-import me.mgin.graves.config.GraveRetrievalType;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
@@ -85,20 +84,20 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
 			BlockHitResult hit) {
-		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
+		GraveBlockEntity graveBlockEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
-		if (player.getStackInHand(hand).isEmpty()
-				&& (retrievalType == GraveRetrievalType.ON_BOTH || retrievalType == GraveRetrievalType.ON_USE))
-			useGrave(player, world, pos);
+		if (hand != Hand.OFF_HAND)
+			if (player.getStackInHand(hand).isEmpty() && graveBlockEntity.playerCanUseGrave(player))
+				useGrave(player, world, pos);
 
-		return super.onUse(state, world, pos, player, hand, hit);
+		return ActionResult.PASS;
 	}
 
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
+		GraveBlockEntity graveBlockEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
-		if (retrievalType == GraveRetrievalType.ON_BOTH || retrievalType == GraveRetrievalType.ON_BREAK)
+		if (graveBlockEntity.playerCanBreakGrave(player))
 			if (useGrave(player, world, pos))
 				return;
 
@@ -124,8 +123,6 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		return new GraveBlockEntity(pos, state);
 	}
 
-
-
 	private boolean useGrave(PlayerEntity playerEntity, World world, BlockPos pos) {
 		if (world.isClient)
 			return false;
@@ -143,14 +140,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		if (graveBlockEntity.getGraveOwner() == null)
 			return false;
 
-		// Config Options
-		boolean graveRobbingEnabled = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
-		int operatorOverrideLevel = Math.max(Math.min(GravesConfig.getConfig().mainSettings.operatorOverrideLevel, 4),
-				-1);
-
-		if (!playerEntity.getGameProfile().getId().equals(graveBlockEntity.getGraveOwner().getId()))
-			if ((operatorOverrideLevel == -1 || !playerEntity.hasPermissionLevel(operatorOverrideLevel))
-					&& !graveRobbingEnabled)
+		if (!graveBlockEntity.playerCanAttemptRetrieve(playerEntity))
+			if (!graveBlockEntity.playerCanOverride(playerEntity))
 				return false;
 
 		DefaultedList<ItemStack> items = graveBlockEntity.getItems();
@@ -277,8 +268,10 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 
 	@Override
 	public void tickDegradation(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (world.getBlockEntity(pos) instanceof GraveBlockEntity graveBlockEntity) {
-			if (graveBlockEntity.toNbt().getInt("noAge") == 1)
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+
+		if (blockEntity instanceof GraveBlockEntity graveBlockEntity) {
+			if (graveBlockEntity.getNoAge() == 1)
 				return;
 		}
 

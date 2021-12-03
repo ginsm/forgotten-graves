@@ -19,7 +19,6 @@ public class Particles {
 			double velocityX = rng.nextDouble() * (maxVelocity - 1);
 			double velocityY = rng.nextDouble() * (maxVelocity - 1);
 			double velocityZ = rng.nextDouble() * (maxVelocity - 1);
-			System.out.println("Spawning particles at: " + blockX + " " + blockY + " " + blockZ);
 
 			world.addParticle(type, blockX, blockY, blockZ, velocityX, velocityY, velocityZ);
 		}

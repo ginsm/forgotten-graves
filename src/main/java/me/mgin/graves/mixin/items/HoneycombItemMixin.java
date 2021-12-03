@@ -19,22 +19,23 @@ import net.minecraft.world.World;
 
 @Mixin(HoneycombItem.class)
 public class HoneycombItemMixin {
-  
-  @Inject(method = "useOnBlock", at = @At("HEAD"))
-  private void onUseBlock(ItemUsageContext context, CallbackInfoReturnable<?> cir) {
-    World world = context.getWorld();
-    BlockPos blockPos = context.getBlockPos();
-    PlayerEntity player = context.getPlayer();
-    BlockEntity blockEntity = world.getBlockEntity(blockPos);
-    Hand hand = context.getHand();
 
-    if (blockEntity instanceof GraveBlockEntity graveBlockEntity && graveBlockEntity.isGraveOwner(player))
-      if (hand == Hand.MAIN_HAND && graveBlockEntity.getNoAge() == 0) {
-        player.getStackInHand(context.getHand()).decrement(1);
-        graveBlockEntity.setNoAge(1);
-        Particles.spawnAtBlock(ParticleTypes.WAX_ON, 8, 3, world, blockPos);
-        world.playSound(null, blockPos, SoundEvents.ITEM_HONEYCOMB_WAX_ON, SoundCategory.BLOCKS, 1f, 1f);
-      }
-  }
-  
+	@Inject(method = "useOnBlock", at = @At("HEAD"))
+	private void onUseBlock(ItemUsageContext context, CallbackInfoReturnable<?> cir) {
+		World world = context.getWorld();
+		BlockPos blockPos = context.getBlockPos();
+		PlayerEntity player = context.getPlayer();
+		BlockEntity blockEntity = world.getBlockEntity(blockPos);
+		Hand hand = context.getHand();
+
+		if (blockEntity instanceof GraveBlockEntity graveBlockEntity
+				&& graveBlockEntity.playerCanAttemptRetrieve(player))
+			if (hand == Hand.MAIN_HAND && graveBlockEntity.getNoAge() == 0) {
+				player.getStackInHand(context.getHand()).decrement(1);
+				graveBlockEntity.setNoAge(1);
+				Particles.spawnAtBlock(ParticleTypes.WAX_ON, 8, 3, world, blockPos);
+				world.playSound(null, blockPos, SoundEvents.ITEM_HONEYCOMB_WAX_ON, SoundCategory.BLOCKS, 1f, 1f);
+			}
+	}
+
 }

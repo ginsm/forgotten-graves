@@ -20,22 +20,24 @@ import net.minecraft.world.World;
 
 @Mixin(ShovelItem.class)
 public class ShovelItemMixin {
-  
-  @Inject(method = "useOnBlock", at = @At("HEAD"))
-  private void onUseBlock(ItemUsageContext context, CallbackInfoReturnable<?> cir) {
-    World world = context.getWorld();
-    BlockPos blockPos = context.getBlockPos();
-    PlayerEntity player = context.getPlayer();
-    BlockEntity blockEntity = world.getBlockEntity(blockPos);
-    Hand hand = context.getHand();
 
-    if (blockEntity instanceof GraveBlockEntity graveBlockEntity && graveBlockEntity.isGraveOwner(player))
-      if (hand == Hand.MAIN_HAND && (graveBlockEntity.getNoAge() == 1 || DegradationStateManager.decreaseDegradationState(world, blockPos))) {
-        graveBlockEntity.setNoAge(0);
-        player.getStackInHand(hand).damage(1, player, (p) -> p.sendToolBreakStatus(hand));
-        Particles.spawnAtBlock(ParticleTypes.WAX_OFF, 8, 3, world, blockPos);
-        world.playSound(null, blockPos, SoundEvents.BLOCK_ROOTED_DIRT_BREAK, SoundCategory.BLOCKS, 1f, 1f);
-      }
-  }
-  
+	@Inject(method = "useOnBlock", at = @At("HEAD"))
+	private void onUseBlock(ItemUsageContext context, CallbackInfoReturnable<?> cir) {
+		World world = context.getWorld();
+		BlockPos blockPos = context.getBlockPos();
+		PlayerEntity player = context.getPlayer();
+		BlockEntity blockEntity = world.getBlockEntity(blockPos);
+		Hand hand = context.getHand();
+
+		if (blockEntity instanceof GraveBlockEntity graveBlockEntity
+				&& graveBlockEntity.playerCanAttemptRetrieve(player))
+			if (hand == Hand.MAIN_HAND && (graveBlockEntity.getNoAge() == 1
+					|| DegradationStateManager.decreaseDegradationState(world, blockPos))) {
+				graveBlockEntity.setNoAge(0);
+				player.getStackInHand(hand).damage(1, player, (p) -> p.sendToolBreakStatus(hand));
+				Particles.spawnAtBlock(ParticleTypes.WAX_OFF, 8, 3, world, blockPos);
+				world.playSound(null, blockPos, SoundEvents.BLOCK_ROOTED_DIRT_BREAK, SoundCategory.BLOCKS, 1f, 1f);
+			}
+	}
+
 }

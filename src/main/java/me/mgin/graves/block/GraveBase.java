@@ -84,11 +84,10 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
 			BlockHitResult hit) {
-		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
+		GraveBlockEntity graveBlockEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
 		if (hand != Hand.OFF_HAND)
-			if (player.getStackInHand(hand).isEmpty()
-					&& (retrievalType == GraveRetrievalType.ON_BOTH || retrievalType == GraveRetrievalType.ON_USE))
+			if (player.getStackInHand(hand).isEmpty() && graveBlockEntity.playerCanUseGrave(player))
 				useGrave(player, world, pos);
 
 		return super.onUse(state, world, pos, player, hand, hit);
@@ -96,9 +95,9 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
+		GraveBlockEntity graveBlockEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
-		if (retrievalType == GraveRetrievalType.ON_BOTH || retrievalType == GraveRetrievalType.ON_BREAK)
+		if (graveBlockEntity.playerCanBreakGrave(player))
 			if (useGrave(player, world, pos))
 				return;
 
@@ -141,13 +140,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		if (graveBlockEntity.getGraveOwner() == null)
 			return false;
 
-		// Config Options
-		boolean graveRobbingEnabled = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
-		int operatorOverrideLevel = GravesConfig.getConfig().mainSettings.minOperatorOverrideLevel;
-
-		if (!playerEntity.getGameProfile().getId().equals(graveBlockEntity.getGraveOwner().getId()))
-			if ((operatorOverrideLevel == -1 || !playerEntity.hasPermissionLevel(operatorOverrideLevel))
-					&& !graveRobbingEnabled)
+		if (!graveBlockEntity.playerCanAttemptRetrieve(playerEntity))
+			if (!graveBlockEntity.playerCanOverride(playerEntity))
 				return false;
 
 		DefaultedList<ItemStack> items = graveBlockEntity.getItems();

@@ -11,9 +11,8 @@ import me.mgin.graves.util.ExperienceCalculator;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import me.mgin.graves.config.GravesConfig;
-import me.mgin.graves.events.PlayerBlockBreak;
+import me.mgin.graves.events.EventRegistry;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.loader.api.FabricLoader;
@@ -78,9 +77,7 @@ public class Graves implements ModInitializer {
 
 		apiMods.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, GravesApi.class));
 
-		PlayerBlockBreakEvents.BEFORE.register((World world, PlayerEntity player, BlockPos pos, BlockState state,	BlockEntity entity) ->
-			PlayerBlockBreak.handleEvent(player, pos, entity)
-		);
+		EventRegistry.register();
 	}
 
 	public static void placeGrave(World world, Vec3d pos, PlayerEntity player) {

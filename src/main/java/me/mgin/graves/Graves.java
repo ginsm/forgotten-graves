@@ -73,7 +73,7 @@ public class Graves implements ModInitializer {
 			Block block = blockState.getBlock();
 
 			if (canPlaceGrave(world, block, gravePos)) {
-				world.setBlockState(gravePos, Graves.GRAVE.getDefaultState().with(Properties.HORIZONTAL_FACING,
+				world.setBlockState(gravePos, GraveBlocks.GRAVE.getDefaultState().with(Properties.HORIZONTAL_FACING,
 						player.getHorizontalFacing()));
 
 				GraveBlockEntity graveBlockEntity = new GraveBlockEntity(gravePos, world.getBlockState(gravePos));

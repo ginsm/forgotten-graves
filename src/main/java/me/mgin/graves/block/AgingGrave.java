@@ -5,15 +5,15 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import java.util.Optional;
 import java.util.function.Supplier;
-import me.mgin.graves.Graves;
+import me.mgin.graves.registry.GraveBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 
 public interface AgingGrave extends Ageable<AgingGrave.BlockAge> {
 
 	Supplier<ImmutableBiMap<Object, Object>> BLOCK_AGE_INCREASES = Suppliers.memoize(() -> {
-		return ImmutableBiMap.builder().put(Graves.GRAVE, Graves.GRAVE_OLD)
-				.put(Graves.GRAVE_OLD, Graves.GRAVE_WEATHERED).put(Graves.GRAVE_WEATHERED, Graves.GRAVE_FORGOTTEN)
+		return ImmutableBiMap.builder().put(GraveBlocks.GRAVE, GraveBlocks.GRAVE_OLD)
+				.put(GraveBlocks.GRAVE_OLD, GraveBlocks.GRAVE_WEATHERED).put(GraveBlocks.GRAVE_WEATHERED, GraveBlocks.GRAVE_FORGOTTEN)
 				.build();
 	});
 

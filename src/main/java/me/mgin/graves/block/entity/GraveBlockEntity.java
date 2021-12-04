@@ -1,9 +1,9 @@
 package me.mgin.graves.block.entity;
 
 import com.mojang.authlib.GameProfile;
-import me.mgin.graves.Graves;
 import me.mgin.graves.config.GraveRetrievalType;
 import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.registry.GraveBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,7 +29,7 @@ public class GraveBlockEntity extends BlockEntity {
 	private BlockState state;
 
 	public GraveBlockEntity(BlockPos pos, BlockState blockState) {
-		super(Graves.GRAVE_BLOCK_ENTITY, pos, blockState);
+		super(GraveBlocks.GRAVE_BLOCK_ENTITY, pos, blockState);
 		this.customName = "";
 		this.graveOwner = null;
 		this.xp = 0;

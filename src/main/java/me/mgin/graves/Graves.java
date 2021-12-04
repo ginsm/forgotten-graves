@@ -4,80 +4,44 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import me.mgin.graves.api.GravesApi;
-import me.mgin.graves.block.AgingGrave.BlockAge;
-import me.mgin.graves.block.GraveBase;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.util.ExperienceCalculator;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import me.mgin.graves.config.GravesConfig;
-import me.mgin.graves.events.EventRegistry;
+import me.mgin.graves.registry.GraveBlocks;
+import me.mgin.graves.registry.registerBlocks;
+import me.mgin.graves.registry.registerEvents;
+import me.mgin.graves.registry.registerItems;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public class Graves implements ModInitializer {
 
-	public static final GraveBase GRAVE_FORGOTTEN = new GraveBase(BlockAge.FORGOTTEN,
-			FabricBlockSettings.of(Material.ORGANIC_PRODUCT).strength(0.8f, -1f));
-	public static final GraveBase GRAVE_WEATHERED = new GraveBase(BlockAge.WEATHERED,
-			FabricBlockSettings.of(Material.ORGANIC_PRODUCT).strength(0.8f, -1f));
-	public static final GraveBase GRAVE_OLD = new GraveBase(BlockAge.OLD,
-			FabricBlockSettings.of(Material.ORGANIC_PRODUCT).strength(0.8f, -1f));
-	public static final GraveBase GRAVE = new GraveBase(BlockAge.FRESH,
-			FabricBlockSettings.of(Material.ORGANIC_PRODUCT).strength(0.8f, -1f));
-
-	public static BlockEntityType<GraveBlockEntity> GRAVE_BLOCK_ENTITY;
-
 	public static final ArrayList<GravesApi> apiMods = new ArrayList<>();
-
 	public static String MOD_ID = "forgottengraves";
 	public static String BRAND_BLOCK = "grave";
 
 	@Override
 	public void onInitialize() {
-		Registry.register(Registry.BLOCK, new Identifier(MOD_ID, BRAND_BLOCK), GRAVE);
-		Registry.register(Registry.BLOCK, new Identifier(MOD_ID, BRAND_BLOCK + "_old"), GRAVE_OLD);
-		Registry.register(Registry.BLOCK, new Identifier(MOD_ID, BRAND_BLOCK + "_weathered"), GRAVE_WEATHERED);
-		Registry.register(Registry.BLOCK, new Identifier(MOD_ID, BRAND_BLOCK + "_forgotten"), GRAVE_FORGOTTEN);
-		GRAVE_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, MOD_ID + ":" + BRAND_BLOCK,
-				FabricBlockEntityTypeBuilder
-						.create(GraveBlockEntity::new, GRAVE, GRAVE_OLD, GRAVE_WEATHERED, GRAVE_FORGOTTEN).build(null));
-		Registry.register(Registry.ITEM, new Identifier(MOD_ID, BRAND_BLOCK),
-				new BlockItem(GRAVE, new Item.Settings().group(ItemGroup.DECORATIONS)));
-		Registry.register(Registry.ITEM, new Identifier(MOD_ID, BRAND_BLOCK + "_old"),
-				new BlockItem(GRAVE_OLD, new Item.Settings().group(ItemGroup.DECORATIONS)));
-		Registry.register(Registry.ITEM, new Identifier(MOD_ID, BRAND_BLOCK + "_weathered"),
-				new BlockItem(GRAVE_WEATHERED, new Item.Settings().group(ItemGroup.DECORATIONS)));
-		Registry.register(Registry.ITEM, new Identifier(MOD_ID, BRAND_BLOCK + "_forgotten"),
-				new BlockItem(GRAVE_FORGOTTEN, new Item.Settings().group(ItemGroup.DECORATIONS)));
-
+		registerBlocks.register(MOD_ID, BRAND_BLOCK);
+		registerItems.register(MOD_ID, BRAND_BLOCK);
+		registerEvents.register();
 		AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);
-
 		apiMods.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, GravesApi.class));
-
-		EventRegistry.register();
 	}
 
 	public static void placeGrave(World world, Vec3d pos, PlayerEntity player) {
@@ -109,7 +73,7 @@ public class Graves implements ModInitializer {
 			Block block = blockState.getBlock();
 
 			if (canPlaceGrave(world, block, gravePos)) {
-				world.setBlockState(gravePos, Graves.GRAVE.getDefaultState().with(Properties.HORIZONTAL_FACING,
+				world.setBlockState(gravePos, GraveBlocks.GRAVE.getDefaultState().with(Properties.HORIZONTAL_FACING,
 						player.getHorizontalFacing()));
 
 				GraveBlockEntity graveBlockEntity = new GraveBlockEntity(gravePos, world.getBlockState(gravePos));

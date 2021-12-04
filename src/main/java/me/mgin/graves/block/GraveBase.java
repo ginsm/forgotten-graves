@@ -7,6 +7,7 @@ import me.mgin.graves.Graves;
 import me.mgin.graves.api.GravesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.registry.GraveBlocks;
 import me.mgin.graves.config.GraveDropType;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -66,13 +67,13 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	public GraveBase getAgedBlock() {
 		switch (blockAge) {
 			default :
-				return Graves.GRAVE;
+				return GraveBlocks.GRAVE;
 			case OLD :
-				return Graves.GRAVE_OLD;
+				return GraveBlocks.GRAVE_OLD;
 			case WEATHERED :
-				return Graves.GRAVE_WEATHERED;
+				return GraveBlocks.GRAVE_WEATHERED;
 			case FORGOTTEN :
-				return Graves.GRAVE_FORGOTTEN;
+				return GraveBlocks.GRAVE_FORGOTTEN;
 		}
 	}
 

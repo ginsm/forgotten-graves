@@ -1,5 +1,7 @@
-package me.mgin.graves.events;
+package me.mgin.graves.registry;
 
+import me.mgin.graves.events.PlayerBlockBreakHandler;
+import me.mgin.graves.events.UseBlockHandler;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.BlockState;
@@ -10,7 +12,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class EventRegistry {
+public class registerEvents {
   public static void register() {
     PlayerBlockBreakEvents.BEFORE.register((World world, PlayerEntity player, BlockPos pos, BlockState state,	BlockEntity entity) ->
       PlayerBlockBreakHandler.handleEvent(player, pos, entity)

@@ -18,7 +18,6 @@ public interface Ageable<T extends Enum<T>> {
 	int field_31056 = 4;
 
 	Optional<BlockState> getDegradationResultState(BlockState state);
-	// Optional<BlockEntity> getDegradationResultEntity(BlockEntity blockEntity);
 
 	float getDegradationChanceMultiplier();
 

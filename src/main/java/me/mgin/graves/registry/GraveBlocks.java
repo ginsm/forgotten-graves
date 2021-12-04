@@ -12,16 +12,13 @@ import net.minecraft.block.entity.BlockEntityType;
 
 public class GraveBlocks {
 
-	// BLOCK ENTITIES
 	public static BlockEntityType<GraveBlockEntity> GRAVE_BLOCK_ENTITY;
 
-	// BLOCKS
 	public static final GraveBase GRAVE = createGrave(BlockAge.FRESH);
 	public static final GraveBase GRAVE_OLD = createGrave(BlockAge.OLD);
 	public static final GraveBase GRAVE_WEATHERED = createGrave(BlockAge.WEATHERED);
 	public static final GraveBase GRAVE_FORGOTTEN = createGrave(BlockAge.FORGOTTEN);
 
-	// Grave Map
 	public static final Map<GraveBase, String> GRAVE_MAP = new HashMap<GraveBase, String>(){
 		{
 			put(GraveBlocks.GRAVE, "");

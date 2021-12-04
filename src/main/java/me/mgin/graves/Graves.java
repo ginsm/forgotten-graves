@@ -54,10 +54,6 @@ public class Graves implements ModInitializer {
 
 		combinedInventory.addAll(player.getInventory().main);
 		combinedInventory.addAll(player.getInventory().armor);
-		/*
-		 * if (){//Compat Inventories. when I don't need to sleep lol
-		 * combinedInventory.addAll(player.getInventory().armor); }
-		 */
 		combinedInventory.addAll(player.getInventory().offHand);
 
 		for (GravesApi GravesApi : Graves.apiMods) {
@@ -112,8 +108,6 @@ public class Graves implements ModInitializer {
 
 		if (blockEntity != null)
 			return false;
-		// Check if it's in a blacklisted/non-whitelisted dimension
-		// Check if it's in a blacklisted/non-whitelisted biome
 
 		Set<Block> blackListedBlocks = new HashSet<Block>() {
 			{

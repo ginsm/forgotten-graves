@@ -74,11 +74,9 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 		}
 
 		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(50));
-		// matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(10));
 
 		if (blockEntity.getGraveOwner() != null) {
 			this.skull = getSkull(state);
-			// Make the yaw a configurable value
 			float yaw = Float.max(10f, blockAge * 12f);
 			if (blockAge >= 2)
 				SkullBlockEntityRenderer.renderSkull(null, yaw, 0f, matrices, vertexConsumers, light, skull,

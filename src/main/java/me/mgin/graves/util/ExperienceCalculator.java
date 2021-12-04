@@ -73,7 +73,7 @@ public class ExperienceCalculator {
      * quite reach the level it should.. i.e. 17 might become 16.999 and so forth. I
      * rather give 1 xp than have someone almost the level they were.
      */
-    int result = (int) Math.ceil(progressExperience); // a fraction of an xp is an xp
+    int result = (int) Math.ceil(progressExperience);
     return (result > 0) ? result : (level > 0) ? 1 : 0;
   }
 }

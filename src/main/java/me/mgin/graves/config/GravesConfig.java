@@ -45,7 +45,8 @@ public class GravesConfig implements ConfigData {
 		@ConfigEntry.Gui.Tooltip
 		public int customXPStoredLevel = 30;
 
-		@ConfigEntry.Gui.Excluded
+		@ConfigEntry.Gui.Tooltip
+		@ConfigEntry.BoundedDiscrete(max = 4, min = -1)
 		public int minOperatorOverrideLevel = 4;
 	}
 }

@@ -24,7 +24,7 @@ public class UseBlockHandler {
         Map<Item, Item> restrictedItems = new HashMap<Item, Item>(){
           {
             put(Items.LAVA_BUCKET, Items.LAVA_BUCKET.asItem());
-            // put(Items.WATER_BUCKET, Items.WATER_BUCKET.asItem());
+            put(Items.WATER_BUCKET, Items.WATER_BUCKET.asItem());
           }
         };
 

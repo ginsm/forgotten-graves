@@ -197,10 +197,8 @@ public class GraveBlockEntity extends BlockEntity {
 		if (nbt.contains("GraveOwner"))
 			this.graveOwner = NbtHelper.toGameProfile(nbt.getCompound("GraveOwner"));
 
-		if (nbt.contains("CustomName")) {
+		if (nbt.contains("CustomName"))
 			this.customName = nbt.getString("CustomName");
-			System.out.println(this.customName);
-		}
 
 		super.markDirty();
 	}

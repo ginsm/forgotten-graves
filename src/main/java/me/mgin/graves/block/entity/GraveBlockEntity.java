@@ -297,6 +297,9 @@ public class GraveBlockEntity extends BlockEntity {
 
 		if (customName != null && !customName.isEmpty())
 			nbt.putString("CustomName", customName);
+
+		if (skinURL != null)
+			nbt.putString("SkinURL", skinURL);
 	}
 
 	@Override
@@ -313,6 +316,9 @@ public class GraveBlockEntity extends BlockEntity {
 
 		if (nbt.contains("CustomName"))
 			this.customName = nbt.getString("CustomName");
+
+		if (nbt.contains("SkinURL"))
+			this.skinURL = nbt.getString("SkinURL");
 
 		super.markDirty();
 	}

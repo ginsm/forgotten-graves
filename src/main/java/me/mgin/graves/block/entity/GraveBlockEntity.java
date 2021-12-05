@@ -27,15 +27,18 @@ public class GraveBlockEntity extends BlockEntity {
 	private int noAge;
 	private GameProfile graveOwner;
 	private String customName;
+	@Nullable
+	private String skinURL;
 	private BlockState state;
 
 	public GraveBlockEntity(BlockPos pos, BlockState blockState) {
 		super(GraveBlocks.GRAVE_BLOCK_ENTITY, pos, blockState);
-		this.customName = "";
 		this.graveOwner = null;
+		this.items = DefaultedList.ofSize(41, ItemStack.EMPTY);
+		this.customName = "";
+		this.skinURL = null;
 		this.xp = 0;
 		this.noAge = 0;
-		this.items = DefaultedList.ofSize(41, ItemStack.EMPTY);
 		setState(blockState);
 	}
 
@@ -168,6 +171,37 @@ public class GraveBlockEntity extends BlockEntity {
 	 */
 	public int getNoAge() {
 		return this.noAge;
+	}
+
+	/**
+	 * Set the GraveBlockEntity's SkinURL.
+	 * <p>
+	 * <strong>Note:</strong> A SkinURL is the base64 encoded string typically attached to custom 
+	 * player heads.
+	 * @param skinURL
+	 */
+	public void setSkinURL(String skinURL) {
+		this.skinURL = skinURL;
+		this.markDirty();
+	}
+
+	/**
+	 * Retrieve the GraveBlockEntity's SkinURL.
+	 * <p>
+	 * <strong>Note:</strong> A SkinURL is the base64 encoded string typically attached to custom 
+	 * player heads.
+	 * @return String (SkinURL)
+	 */
+	public String getSkinURL() {
+		return this.skinURL;
+	}
+
+	/**
+	 * Determine whether the GraveBlockEntity has a SkinURL.
+	 * @return boolean
+	 */
+	public boolean hasSkinURL() {
+		return this.skinURL != null;
 	}
 
 	/**

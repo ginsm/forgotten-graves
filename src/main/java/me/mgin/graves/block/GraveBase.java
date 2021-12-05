@@ -12,7 +12,9 @@ import me.mgin.graves.config.GraveDropType;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -32,6 +35,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 
 public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvider, AgingGrave {
 
@@ -64,7 +68,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		return stage;
 	}
 
-	public GraveBase getAgedBlock() {
+	public static GraveBase getAgedBlock(BlockAge blockAge) {
 		switch (blockAge) {
 			default :
 				return GraveBlocks.GRAVE;
@@ -94,6 +98,22 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		return ActionResult.PASS;
 	}
 
+	public void onBreakRetainName(World world, BlockPos pos, PlayerEntity player, GraveBlockEntity blockEntity) {
+		Text itemText = Text.Serializer.fromJson(blockEntity.getCustomNametag());
+
+		ItemStack itemStack = this.getItemStack();
+		itemStack.setCustomName(itemText);
+
+		ItemEntity itemEntity = new ItemEntity(world, (double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, itemStack);
+		itemEntity.setToDefaultPickupDelay();
+
+		spawnBreakParticles(world, player, pos, getDefaultState());
+		world.spawnEntity(itemEntity);
+		world.removeBlock(pos, false);
+
+		world.emitGameEvent((Entity) player, GameEvent.BLOCK_DESTROY, pos);
+	}
+
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		GraveBlockEntity graveBlockEntity = (GraveBlockEntity) world.getBlockEntity(pos);
@@ -101,6 +121,12 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		if (graveBlockEntity.playerCanBreakGrave(player))
 			if (useGrave(player, world, pos))
 				return;
+
+		if (graveBlockEntity.getGraveOwner() == null)
+			if (!world.isClient && graveBlockEntity.hasCustomNametag() && !player.isCreative()) {
+				onBreakRetainName(world, pos, player, graveBlockEntity);
+				return;
+			}
 
 		super.onBreak(world, pos, state, player);
 	}
@@ -232,6 +258,11 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 				openSlots.add(i);
 		}
 		return openSlots;
+	}
+
+	public ItemStack getItemStack() {
+		GraveBase agedBlock = getAgedBlock(this.blockAge);
+		return new ItemStack(agedBlock);
 	}
 
 	@Override

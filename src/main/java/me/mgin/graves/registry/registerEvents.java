@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 public class registerEvents {
   public static void register() {
     PlayerBlockBreakEvents.BEFORE.register((World world, PlayerEntity player, BlockPos pos, BlockState state,	BlockEntity entity) ->
-      PlayerBlockBreakHandler.handleEvent(player, pos, entity)
+      PlayerBlockBreakHandler.handleBeforeEvent(player, pos, entity)
     );
 
     UseBlockCallback.EVENT.register((PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) -> 

@@ -73,7 +73,7 @@ public interface Ageable<T extends Enum<T>> {
 	static void setDegradationState(World world, BlockPos pos, BlockState state) {
 		GraveBlockEntity entity = (GraveBlockEntity) world.getBlockEntity(pos);
 		GameProfile owner = entity.getGraveOwner();
-		String name = entity.getCustomNametag();
+		String name = entity.getCustomName();
 		DefaultedList<ItemStack> items = entity.getItems();
 		int xp = entity.getXp();
 		int noAge = entity.getNoAge();
@@ -83,7 +83,7 @@ public interface Ageable<T extends Enum<T>> {
 		GraveBlockEntity newGraveBlockEntity = new GraveBlockEntity(pos, state);
 		newGraveBlockEntity.setGraveOwner(owner);
 		newGraveBlockEntity.setItems(items);
-		newGraveBlockEntity.setCustomNametag(name);
+		newGraveBlockEntity.setCustomName(name);
 		newGraveBlockEntity.setXp(xp);
 		newGraveBlockEntity.setNoAge(noAge);
 

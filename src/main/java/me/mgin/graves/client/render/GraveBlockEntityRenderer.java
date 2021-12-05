@@ -1,10 +1,16 @@
 package me.mgin.graves.client.render;
 
+import java.util.UUID;
+
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+
 import me.mgin.graves.block.GraveBase;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SkullBlock;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory.Context;
@@ -31,12 +37,35 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 		this.textRenderer = ctx.getTextRenderer();
 	}
 
-	public SkullBlockEntityModel getSkull(BlockState state) {
-		SkullBlockEntityModel skull = new SkullEntityModel(blockAge >= 2
+	/**
+	 * Generates a new SkullBlockEntityModel based on whether it's going to be a
+	 * custom head and the GraveBlockEntity's blockAge.
+	 * <p>
+	 * <strong>Conditional:</strong>
+	 * <p>
+	 * !customHead && blockAge >= 2 ? SKELETON_SKULL : PLAYER_HEAD
+	 * @param state - GraveBlockEntity's BlockState
+	 * @param customHead - Is this a custom head?
+	 * @return SkullBlockEntityModel
+	 */
+	public SkullBlockEntityModel getSkull(BlockState state, boolean customHead) {
+		SkullBlockEntityModel skull = new SkullEntityModel(!customHead && blockAge >= 2
 				? renderLayer.getModelPart(EntityModelLayers.SKELETON_SKULL)
 				: renderLayer.getModelPart(EntityModelLayers.PLAYER_HEAD));
 		skull.setHeadRotation(1f, 2f, 2f);
 		return skull;
+	}
+
+	/**
+	 * Generates a random UUID GameProfile, attaches a texture property to it utilizing the
+	 * given SkinURL, and generates a RenderLayer using that GameProfile.
+	 * @param SkinURL - Base64 Skin URL
+	 * @return RenderLayer
+	 */
+	public RenderLayer getCustomSkullLayer(String SkinURL) {
+		GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+		profile.getProperties().put("textures", new Property("textures", SkinURL));
+		return SkullBlockEntityRenderer.getRenderLayer(SkullBlock.Type.PLAYER, profile);
 	}
 
 	@Override
@@ -76,7 +105,7 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(50));
 
 		if (blockEntity.getGraveOwner() != null) {
-			this.skull = getSkull(state);
+			this.skull = getSkull(state, false);
 			float yaw = Float.max(10f, blockAge * 12f);
 			if (blockAge >= 2)
 				SkullBlockEntityRenderer.renderSkull(null, yaw, 0f, matrices, vertexConsumers, light, skull,

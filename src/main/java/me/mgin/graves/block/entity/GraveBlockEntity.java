@@ -1,6 +1,7 @@
 package me.mgin.graves.block.entity;
 
 import com.mojang.authlib.GameProfile;
+
 import me.mgin.graves.config.GraveRetrievalType;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.registry.GraveBlocks;
@@ -156,7 +157,7 @@ public class GraveBlockEntity extends BlockEntity {
 	}
 
 	public boolean hasCustomNametag() {
-		return customName == "";
+		return customName != "";
 	}
 
 	public String getCustomNametag() {

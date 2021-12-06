@@ -65,6 +65,8 @@ public class Graves implements ModInitializer {
 			pos = new BlockPos(pos.getX(), -60, pos.getZ());
 		}
 
+		System.out.println(pos);
+
 		for (BlockPos gravePos : BlockPos.iterateOutwards(pos.add(new Vec3i(0, 1, 0)), 5, 5, 5)) {
 			BlockState state = world.getBlockState(gravePos);
 			Block block = state.getBlock();
@@ -119,6 +121,6 @@ public class Graves implements ModInitializer {
 		if (blackListedBlocks.contains(block))
 			return false;
 
-		return !(pos.getY() < 0 || pos.getY() > 255);
+		return !(pos.getY() < -64 || pos.getY() > 319);
 	}
 }

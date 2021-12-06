@@ -71,22 +71,25 @@ public interface Ageable<T extends Enum<T>> {
 	}
 
 	static void setDegradationState(World world, BlockPos pos, BlockState state) {
-		GraveBlockEntity entity = (GraveBlockEntity) world.getBlockEntity(pos);
-		GameProfile owner = entity.getGraveOwner();
-		String name = entity.getCustomNametag();
-		DefaultedList<ItemStack> items = entity.getItems();
-		int xp = entity.getXp();
-		int noAge = entity.getNoAge();
+		if (world.getBlockEntity(pos)instanceof GraveBlockEntity entity) {
+			GameProfile owner = entity.getGraveOwner();
+			String name = entity.getCustomName();
+			DefaultedList<ItemStack> items = entity.getItems();
+			int xp = entity.getXp();
+			int noAge = entity.getNoAge();
+			String skinURL = entity.getSkinURL();
 
-		world.setBlockState(pos, state);
+			world.setBlockState(pos, state);
 
-		GraveBlockEntity newGraveBlockEntity = new GraveBlockEntity(pos, state);
-		newGraveBlockEntity.setGraveOwner(owner);
-		newGraveBlockEntity.setItems(items);
-		newGraveBlockEntity.setCustomNametag(name);
-		newGraveBlockEntity.setXp(xp);
-		newGraveBlockEntity.setNoAge(noAge);
+			GraveBlockEntity newGraveBlockEntity = new GraveBlockEntity(pos, state);
+			newGraveBlockEntity.setGraveOwner(owner);
+			newGraveBlockEntity.setItems(items);
+			newGraveBlockEntity.setCustomName(name);
+			newGraveBlockEntity.setXp(xp);
+			newGraveBlockEntity.setNoAge(noAge);
+			newGraveBlockEntity.setSkinURL(skinURL);
 
-		world.addBlockEntity(newGraveBlockEntity);
+			world.addBlockEntity(newGraveBlockEntity);
+		}
 	}
 }

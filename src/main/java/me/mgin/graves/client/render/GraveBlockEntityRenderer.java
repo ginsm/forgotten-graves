@@ -1,24 +1,14 @@
 package me.mgin.graves.client.render;
 
-import java.util.UUID;
-
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-
+import me.mgin.graves.api.SkullApi;
 import me.mgin.graves.block.GraveBase;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SkullBlock;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory.Context;
-import net.minecraft.client.render.block.entity.SkullBlockEntityModel;
-import net.minecraft.client.render.block.entity.SkullBlockEntityRenderer;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.EntityModelLoader;
-import net.minecraft.client.render.entity.model.SkullEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
@@ -27,45 +17,13 @@ import net.minecraft.util.math.Vec3f;
 public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockEntity> {
 
 	private final TextRenderer textRenderer;
-	private SkullBlockEntityModel skull;
+	private EntityModelLoader modelLoader;
 	private int blockAge = 0;
-	private EntityModelLoader renderLayer;
 
 	public GraveBlockEntityRenderer(Context ctx) {
 		super();
-		this.renderLayer = ctx.getLayerRenderDispatcher();
+		this.modelLoader = ctx.getLayerRenderDispatcher();
 		this.textRenderer = ctx.getTextRenderer();
-	}
-
-	/**
-	 * Generates a new SkullBlockEntityModel based on whether it's going to be a
-	 * custom head and the GraveBlockEntity's blockAge.
-	 * <p>
-	 * <strong>Conditional:</strong>
-	 * <p>
-	 * !customHead && blockAge >= 2 ? SKELETON_SKULL : PLAYER_HEAD
-	 * @param state - GraveBlockEntity's BlockState
-	 * @param customHead - Is this a custom head?
-	 * @return SkullBlockEntityModel
-	 */
-	public SkullBlockEntityModel getSkull(BlockState state, boolean customHead) {
-		SkullBlockEntityModel skull = new SkullEntityModel(!customHead && blockAge >= 2
-				? renderLayer.getModelPart(EntityModelLayers.SKELETON_SKULL)
-				: renderLayer.getModelPart(EntityModelLayers.PLAYER_HEAD));
-		skull.setHeadRotation(1f, 2f, 2f);
-		return skull;
-	}
-
-	/**
-	 * Generates a random UUID GameProfile, attaches a texture property to it utilizing the
-	 * given SkinURL, and generates a RenderLayer using that GameProfile.
-	 * @param SkinURL - Base64 Skin URL
-	 * @return RenderLayer
-	 */
-	public RenderLayer getCustomSkullLayer(String SkinURL) {
-		GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-		profile.getProperties().put("textures", new Property("textures", SkinURL));
-		return SkullBlockEntityRenderer.getRenderLayer(SkullBlock.Type.PLAYER, profile);
 	}
 
 	@Override
@@ -77,7 +35,6 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 		Direction direction = state.get(Properties.HORIZONTAL_FACING);
 
 		matrices.push();
-
 		matrices.scale(0.75f, 0.75f, 0.75f);
 		matrices.translate(0, 0.08f, 0);
 
@@ -104,27 +61,19 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 
 		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(50));
 
-		if (blockEntity.getGraveOwner() != null) {
-			this.skull = getSkull(state, false);
-			float yaw = Float.max(10f, blockAge * 12f);
-			if (blockAge >= 2)
-				SkullBlockEntityRenderer.renderSkull(null, yaw, 0f, matrices, vertexConsumers, light, skull,
-						SkullBlockEntityRenderer.getRenderLayer(SkullBlock.Type.SKELETON, null));
-			else
-				SkullBlockEntityRenderer.renderSkull(null, yaw, 0f, matrices, vertexConsumers, light, skull,
-						SkullBlockEntityRenderer.getRenderLayer(SkullBlock.Type.PLAYER, blockEntity.getGraveOwner()));
-		}
+		SkullApi.renderSkull(blockEntity, modelLoader, blockAge, state, matrices, light, vertexConsumers);
 
 		matrices.pop();
+
 		// Outline
 		if (blockEntity.getGraveOwner() != null
-				|| (blockEntity.getCustomNametag() != null && !blockEntity.getCustomNametag().isEmpty())) {
+				|| (blockEntity.getCustomName() != null && !blockEntity.getCustomName().isEmpty())) {
 			String text = "";
 
 			if (blockEntity.getGraveOwner() != null) {
 				text = blockEntity.getGraveOwner().getName();
 			} else {
-				text = blockEntity.getCustomNametag().substring(9);
+				text = blockEntity.getCustomName().substring(9);
 				text = text.substring(0, text.length() - 2);
 			}
 

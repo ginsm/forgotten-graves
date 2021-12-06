@@ -99,12 +99,13 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	}
 
 	public void onBreakRetainName(World world, BlockPos pos, PlayerEntity player, GraveBlockEntity blockEntity) {
-		Text itemText = Text.Serializer.fromJson(blockEntity.getCustomNametag());
+		Text itemText = Text.Serializer.fromJson(blockEntity.getCustomName());
 
 		ItemStack itemStack = this.getItemStack();
 		itemStack.setCustomName(itemText);
 
-		ItemEntity itemEntity = new ItemEntity(world, (double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, itemStack);
+		ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5,
+				(double) pos.getZ() + 0.5, itemStack);
 		itemEntity.setToDefaultPickupDelay();
 
 		spawnBreakParticles(world, player, pos, getDefaultState());
@@ -123,7 +124,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 				return;
 
 		if (graveBlockEntity.getGraveOwner() == null)
-			if (!world.isClient && graveBlockEntity.hasCustomNametag() && !player.isCreative()) {
+			if (!world.isClient && graveBlockEntity.hasCustomName() && !player.isCreative()) {
 				onBreakRetainName(world, pos, player, graveBlockEntity);
 				return;
 			}
@@ -276,7 +277,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 
 		GraveBlockEntity graveBlockEntity = (GraveBlockEntity) blockEntity;
 
-		graveBlockEntity.setCustomNametag(itemStack.getOrCreateSubNbt("display").getString("Name"));
+		graveBlockEntity.setCustomName(itemStack.getOrCreateSubNbt("display").getString("Name"));
 	}
 
 	public BlockState getPlacementState(ItemPlacementContext ctx) {

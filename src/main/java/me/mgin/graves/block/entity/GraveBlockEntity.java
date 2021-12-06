@@ -27,36 +27,63 @@ public class GraveBlockEntity extends BlockEntity {
 	private int noAge;
 	private GameProfile graveOwner;
 	private String customName;
+	private String skinURL;
 	private BlockState state;
 
 	public GraveBlockEntity(BlockPos pos, BlockState blockState) {
 		super(GraveBlocks.GRAVE_BLOCK_ENTITY, pos, blockState);
-		this.customName = "";
 		this.graveOwner = null;
+		this.items = DefaultedList.ofSize(41, ItemStack.EMPTY);
+		this.customName = "";
+		this.skinURL = "";
 		this.xp = 0;
 		this.noAge = 0;
-		this.items = DefaultedList.ofSize(41, ItemStack.EMPTY);
 		setState(blockState);
 	}
 
+	/**
+	 * Set the GraveBlockEntity's items.
+	 *
+	 * @param items
+	 */
 	public void setItems(DefaultedList<ItemStack> items) {
 		this.items = items;
 		this.markDirty();
 	}
 
+	/**
+	 * Retrieve the GraveBlockEntity's items.
+	 *
+	 * @return
+	 */
 	public DefaultedList<ItemStack> getItems() {
 		return items;
 	}
 
+	/**
+	 * Determines whether the GraveBlockEntity has items in it.
+	 *
+	 * @return boolean
+	 */
 	public boolean hasItems() {
-		return items.isEmpty();
+		return !items.isEmpty();
 	}
 
+	/**
+	 * Store the grave owner's GameProfile.
+	 *
+	 * @param gameProfile
+	 */
 	public void setGraveOwner(GameProfile gameProfile) {
 		this.graveOwner = gameProfile;
 		this.markDirty();
 	}
 
+	/**
+	 * Retrieve the grave owner's GameProfile.
+	 *
+	 * @return GameProfile
+	 */
 	public GameProfile getGraveOwner() {
 		return graveOwner;
 	}
@@ -70,6 +97,126 @@ public class GraveBlockEntity extends BlockEntity {
 	 */
 	public boolean isGraveOwner(PlayerEntity player) {
 		return player.getGameProfile().getId() == graveOwner.getId();
+	}
+
+	/**
+	 * Set the GraveBlockEntity's custom name.
+	 *
+	 * @param name
+	 */
+	public void setCustomName(String name) {
+		this.customName = name;
+		this.markDirty();
+	}
+
+	/**
+	 * Get the GraveBlockEntity's custom name.
+	 *
+	 * @return
+	 */
+	public String getCustomName() {
+		return customName;
+	}
+
+	/**
+	 * Determines whether the GraveBlockEntity has a custom name.
+	 *
+	 * @return
+	 */
+	public boolean hasCustomName() {
+		return customName != "";
+	}
+
+	/**
+	 * Set GraveBlockEntity's current state.
+	 *
+	 * @param state
+	 */
+	public void setState(BlockState state) {
+		this.state = state;
+	}
+
+	/**
+	 * Get GraveBlockEntity's current state.
+	 *
+	 * @return
+	 */
+	public BlockState getState() {
+		return state;
+	}
+
+	/**
+	 * Set the stored XP amount.
+	 *
+	 * @param xp
+	 */
+	public void setXp(int xp) {
+		this.xp = xp;
+		this.markDirty();
+	}
+
+	/**
+	 * Get the stored XP amount.
+	 *
+	 * @return
+	 */
+	public int getXp() {
+		return xp;
+	}
+
+	/**
+	 * Set whether the grave should age or not.
+	 * <p>
+	 * <strong>Note:</strong> The grave stops aging if the value is set to 1 (one).
+	 *
+	 * @param aging
+	 */
+	public void setNoAge(int aging) {
+		this.noAge = aging;
+		this.markDirty();
+	}
+
+	/**
+	 * Get the current noAge value.
+	 *
+	 * @return int
+	 */
+	public int getNoAge() {
+		return this.noAge;
+	}
+
+	/**
+	 * Set the GraveBlockEntity's SkinURL OR SkullType string.
+	 * <p>
+	 * <strong>Note:</strong> A SkinURL is the base64 encoded string typically
+	 * attached to custom player heads.
+	 *
+	 * @param skinURL
+	 */
+	public void setSkinURL(String skinURL) {
+		this.skinURL = skinURL;
+		this.markDirty();
+	}
+
+	/**
+	 * Retrieve the GraveBlockEntity's SkinURL OR SkullType string.
+	 * <p>
+	 * <strong>Note:</strong> A SkinURL is the base64 encoded string typically
+	 * attached to custom player heads.
+	 *
+	 * @return String (SkinURL)
+	 */
+	public String getSkinURL() {
+		return this.skinURL;
+	}
+
+	/**
+	 * Determine whether the GraveBlockEntity has a SkinURL entry.
+	 *
+	 * @return boolean
+	 */
+	public boolean hasSkinURL() {
+		return this.skinURL != "";
 	}
 
 	/**
@@ -151,39 +298,23 @@ public class GraveBlockEntity extends BlockEntity {
 		return false;
 	}
 
-	public void setCustomNametag(String text) {
-		this.customName = text;
-		this.markDirty();
-	}
+	@Override
+	protected void writeNbt(NbtCompound nbt) {
+		super.writeNbt(nbt);
 
-	public boolean hasCustomNametag() {
-		return customName != "";
-	}
+		nbt.putInt("ItemCount", this.items.size());
+		nbt.put("Items", Inventories.writeNbt(new NbtCompound(), this.items, true));
+		nbt.putInt("XP", xp);
+		nbt.putInt("noAge", noAge);
 
-	public String getCustomNametag() {
-		return customName;
-	}
+		if (graveOwner != null)
+			nbt.put("GraveOwner", NbtHelper.writeGameProfile(new NbtCompound(), graveOwner));
 
-	public void sync(World world, BlockPos pos) {
-		((ServerWorld) world).getChunkManager().markForUpdate(pos);
-	}
+		if (customName != null && !customName.isEmpty())
+			nbt.putString("CustomName", customName);
 
-	public int getXp() {
-		return xp;
-	}
-
-	public void setXp(int xp) {
-		this.xp = xp;
-		this.markDirty();
-	}
-
-	public void setNoAge(int aging) {
-		this.noAge = aging;
-		this.markDirty();
-	}
-
-	public int getNoAge() {
-		return this.noAge;
+		if (skinURL != null)
+			nbt.putString("SkinURL", skinURL);
 	}
 
 	@Override
@@ -201,29 +332,31 @@ public class GraveBlockEntity extends BlockEntity {
 		if (nbt.contains("CustomName"))
 			this.customName = nbt.getString("CustomName");
 
+		if (nbt.contains("SkinURL"))
+			this.skinURL = nbt.getString("SkinURL");
+
 		super.markDirty();
 	}
 
-	@Override
-	protected void writeNbt(NbtCompound nbt) {
-		super.writeNbt(nbt);
-
-		nbt.putInt("ItemCount", this.items.size());
-		nbt.put("Items", Inventories.writeNbt(new NbtCompound(), this.items, true));
-		nbt.putInt("XP", xp);
-		nbt.putInt("noAge", noAge);
-
-		if (graveOwner != null)
-			nbt.put("GraveOwner", NbtHelper.writeGameProfile(new NbtCompound(), graveOwner));
-
-		if (customName != null && !customName.isEmpty())
-			nbt.putString("CustomName", customName);
-	}
-
+	/**
+	 * Retrieves the NBT data for the given GraveBlockEntity instance.
+	 *
+	 * @return NbtCompound
+	 */
 	public NbtCompound toNbt() {
 		NbtCompound tag = new NbtCompound();
 		this.writeNbt(tag);
 		return tag;
+	}
+
+	/**
+	 * When called on the server, schedules a BlockEntity sync to client.
+	 *
+	 * @param world
+	 * @param pos
+	 */
+	public void sync(World world, BlockPos pos) {
+		((ServerWorld) world).getChunkManager().markForUpdate(pos);
 	}
 
 	@Nullable
@@ -235,13 +368,5 @@ public class GraveBlockEntity extends BlockEntity {
 	@Override
 	public NbtCompound toInitialChunkDataNbt() {
 		return this.toNbt();
-	}
-
-	public BlockState getState() {
-		return state;
-	}
-
-	public void setState(BlockState state) {
-		this.state = state;
 	}
 }

@@ -4,8 +4,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import me.mgin.graves.api.ParticlesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
-import me.mgin.graves.util.Particles;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.HoneycombItem;
@@ -33,7 +34,7 @@ public class HoneycombItemMixin {
 			if (hand == Hand.MAIN_HAND && graveBlockEntity.getNoAge() == 0) {
 				player.getStackInHand(context.getHand()).decrement(1);
 				graveBlockEntity.setNoAge(1);
-				Particles.spawnAtBlock(ParticleTypes.WAX_ON, 8, 3, world, blockPos);
+				ParticlesApi.spawnAtBlock(world, blockPos, ParticleTypes.WAX_ON, 8, 3);
 				world.playSound(null, blockPos, SoundEvents.ITEM_HONEYCOMB_WAX_ON, SoundCategory.BLOCKS, 1f, 1f);
 			}
 	}

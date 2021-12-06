@@ -1,4 +1,4 @@
-package me.mgin.graves.util;
+package me.mgin.graves.api;
 
 import java.util.Random;
 
@@ -6,7 +6,7 @@ import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class Particles {
+public class ParticlesApi {
 	private static Random rng = new Random();
 
 	static public void spawnAtBlock(World world, BlockPos blockPos, DefaultParticleType type, int amount,

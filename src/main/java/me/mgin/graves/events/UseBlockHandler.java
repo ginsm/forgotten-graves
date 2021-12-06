@@ -3,9 +3,9 @@ package me.mgin.graves.events;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.mgin.graves.api.ParticlesApi;
 import me.mgin.graves.api.SkullApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
-import me.mgin.graves.util.Particles;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -89,7 +89,7 @@ public class UseBlockHandler {
 		}
 
 		world.playSound(null, pos, SoundEvents.BLOCK_ROOTED_DIRT_HIT, SoundCategory.BLOCKS, 1f, 1f);
-		Particles.spawnAtBlockBottom(world, pos, ParticleTypes.SOUL, 6, 0.025, 0.125);
+		ParticlesApi.spawnAtBlockBottom(world, pos, ParticleTypes.SOUL, 6, 0.025, 0.125);
 
 		return ActionResult.SUCCESS;
 	}

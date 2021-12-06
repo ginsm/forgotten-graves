@@ -104,7 +104,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		ItemStack itemStack = this.getItemStack();
 		itemStack.setCustomName(itemText);
 
-		ItemEntity itemEntity = new ItemEntity(world, (double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, itemStack);
+		ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5,
+				(double) pos.getZ() + 0.5, itemStack);
 		itemEntity.setToDefaultPickupDelay();
 
 		spawnBreakParticles(world, player, pos, getDefaultState());

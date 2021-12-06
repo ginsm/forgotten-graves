@@ -82,13 +82,12 @@ public class SkullApi {
 	 * Generates a GameProfile with a random UUID and attaches a texture property to
 	 * it utilizing the given SkinURL.
 	 *
-	 * @param SkinURL
-	 *            - Base64 Skin URL
+	 * @param skinURL - Base64 Skin URL
 	 * @return Custom GameProfile
 	 */
-	public static GameProfile getCustomSkullProfile(String SkinURL) {
+	public static GameProfile getCustomSkullProfile(String skinURL) {
 		GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-		profile.getProperties().put("textures", new Property("textures", SkinURL));
+		profile.getProperties().put("textures", new Property("textures", skinURL));
 		return profile;
 	}
 
@@ -100,30 +99,30 @@ public class SkullApi {
 	 * You can see how the custom player head or in game player head data is stored
 	 * in me.mgin.graves.events.UseBlockHandler.
 	 *
-	 * @param blockEntity
+	 * @param graveEntity
 	 * @param state
 	 * @param matrices
 	 * @param light
 	 * @param vertexConsumers
 	 */
-	public static void renderSkull(GraveBlockEntity blockEntity, EntityModelLoader modelLoader, int blockAge,
+	public static void renderSkull(GraveBlockEntity graveEntity, EntityModelLoader modelLoader, int blockAge,
 			BlockState state, MatrixStack matrices, int light, VertexConsumerProvider vertexConsumers) {
 		GameProfile profile = null;
 		SkullWrapper skullData = null;
 		float yaw = Float.max(10f, blockAge * 12f);
 
-		if (blockEntity.getGraveOwner() != null) {
-			profile = blockEntity.getGraveOwner();
+		if (graveEntity.getGraveOwner() != null) {
+			profile = graveEntity.getGraveOwner();
 			skullData = SkullApi.skulls.get(blockAge >= 2 ? "skeleton_skull" : "player_head");
 		}
 
-		else if (blockEntity.hasSkinURL()) {
-			String skinURL = blockEntity.getSkinURL();
+		else if (graveEntity.hasGraveSkull()) {
+			String graveSkull = graveEntity.getGraveSkull();
 
-			if (SkullApi.skulls.containsKey(skinURL)) {
-				skullData = SkullApi.skulls.get(skinURL);
+			if (SkullApi.skulls.containsKey(graveSkull)) {
+				skullData = SkullApi.skulls.get(graveSkull);
 			} else {
-				profile = getCustomSkullProfile(skinURL);
+				profile = getCustomSkullProfile(graveSkull);
 				skullData = SkullApi.skulls.get("player_head");
 			}
 		}

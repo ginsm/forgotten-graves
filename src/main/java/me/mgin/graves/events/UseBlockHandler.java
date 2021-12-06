@@ -26,15 +26,15 @@ public class UseBlockHandler {
 	public static ActionResult handleEvent(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
 		BlockEntity blockEntity = world.getBlockEntity(hitResult.getBlockPos());
 
-		if (blockEntity instanceof GraveBlockEntity graveBlockEntity) {
+		if (blockEntity instanceof GraveBlockEntity graveEntity) {
 			ItemStack itemStack = player.getStackInHand(hand);
 			Item itemInHand = itemStack.getItem();
 
 			if (!player.isSneaking()) {
 				String itemName = itemInHand.asItem().toString();
 
-				if (graveBlockEntity.getGraveOwner() == null && SkullApi.skulls.containsKey(itemName))
-					return handlePlayerHeads(graveBlockEntity, world, itemStack, itemInHand, itemName);
+				if (graveEntity.getGraveOwner() == null && SkullApi.skulls.containsKey(itemName))
+					return handlePlayerHeads(graveEntity, world, itemStack, itemInHand, itemName);
 
 				// Prevent block placement and unintentional item usage
 				if (Item.BLOCK_ITEMS.containsValue(itemInHand) || restrictedItems.containsValue(itemInHand))
@@ -61,31 +61,31 @@ public class UseBlockHandler {
 	 * assigns it to the clicked on GraveBlockEntity so that it can be displayed.
 	 * <p>
 	 * 
-	 * @param graveBlockEntity
+	 * @param graveEntity
 	 * @param world
 	 * @param itemStack
 	 * @param itemInHand
 	 * @param itemName
 	 * @return
 	 */
-	private static ActionResult handlePlayerHeads(GraveBlockEntity graveBlockEntity, World world, ItemStack itemStack,
+	private static ActionResult handlePlayerHeads(GraveBlockEntity graveEntity, World world, ItemStack itemStack,
 			Item itemInHand, String itemName) {
 		NbtCompound baseNbt = itemStack.getNbt();
-		BlockPos pos = graveBlockEntity.getPos();
-		String skinURL;
+		BlockPos pos = graveEntity.getPos();
+		String graveSkull;
 
 		if (baseNbt != null) {
 			NbtCompound startCompound = baseNbt.contains("tag") ? baseNbt.getCompound("tag") : baseNbt;
 
-			skinURL = startCompound.getCompound("SkullOwner").getCompound("Properties").getList("textures", 10)
+			graveSkull = startCompound.getCompound("SkullOwner").getCompound("Properties").getList("textures", 10)
 					.getCompound(0).getString("Value");
 
-			if (skinURL != "" && skinURL != graveBlockEntity.getSkinURL())
-				graveBlockEntity.setSkinURL(skinURL);
+			if (graveSkull != "" && graveSkull != graveEntity.getGraveSkull())
+				graveEntity.setGraveSkull(graveSkull);
 			else
 				return ActionResult.FAIL;
 		} else {
-			graveBlockEntity.setSkinURL(itemName);
+			graveEntity.setGraveSkull(itemName);
 		}
 
 		world.playSound(null, pos, SoundEvents.BLOCK_ROOTED_DIRT_HIT, SoundCategory.BLOCKS, 1f, 1f);

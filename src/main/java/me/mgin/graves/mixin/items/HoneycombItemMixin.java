@@ -24,18 +24,18 @@ public class HoneycombItemMixin {
 	@Inject(method = "useOnBlock", at = @At("HEAD"))
 	private void onUseBlock(ItemUsageContext context, CallbackInfoReturnable<?> cir) {
 		World world = context.getWorld();
-		BlockPos blockPos = context.getBlockPos();
+		BlockPos pos = context.getBlockPos();
 		PlayerEntity player = context.getPlayer();
-		BlockEntity blockEntity = world.getBlockEntity(blockPos);
+		BlockEntity blockEntity = world.getBlockEntity(pos);
 		Hand hand = context.getHand();
 
-		if (blockEntity instanceof GraveBlockEntity graveBlockEntity
-				&& graveBlockEntity.playerCanAttemptRetrieve(player))
-			if (hand == Hand.MAIN_HAND && graveBlockEntity.getNoAge() == 0) {
+		if (blockEntity instanceof GraveBlockEntity graveEntity
+				&& graveEntity.playerCanAttemptRetrieve(player))
+			if (hand == Hand.MAIN_HAND && graveEntity.getNoAge() == 0) {
 				player.getStackInHand(context.getHand()).decrement(1);
-				graveBlockEntity.setNoAge(1);
-				ParticlesApi.spawnAtBlock(world, blockPos, ParticleTypes.WAX_ON, 8, 3);
-				world.playSound(null, blockPos, SoundEvents.ITEM_HONEYCOMB_WAX_ON, SoundCategory.BLOCKS, 1f, 1f);
+				graveEntity.setNoAge(1);
+				ParticlesApi.spawnAtBlock(world, pos, ParticleTypes.WAX_ON, 8, 3);
+				world.playSound(null, pos, SoundEvents.ITEM_HONEYCOMB_WAX_ON, SoundCategory.BLOCKS, 1f, 1f);
 			}
 	}
 

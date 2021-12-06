@@ -27,18 +27,18 @@ public class GraveBlockEntity extends BlockEntity {
 	private int noAge;
 	private GameProfile graveOwner;
 	private String customName;
-	private String skinURL;
+	private String graveSkull;
 	private BlockState state;
 
-	public GraveBlockEntity(BlockPos pos, BlockState blockState) {
-		super(GraveBlocks.GRAVE_BLOCK_ENTITY, pos, blockState);
+	public GraveBlockEntity(BlockPos pos, BlockState state) {
+		super(GraveBlocks.GRAVE_BLOCK_ENTITY, pos, state);
 		this.graveOwner = null;
 		this.items = DefaultedList.ofSize(41, ItemStack.EMPTY);
 		this.customName = "";
-		this.skinURL = "";
+		this.graveSkull = "";
 		this.xp = 0;
 		this.noAge = 0;
-		setState(blockState);
+		setState(state);
 	}
 
 	/**
@@ -72,10 +72,10 @@ public class GraveBlockEntity extends BlockEntity {
 	/**
 	 * Store the grave owner's GameProfile.
 	 *
-	 * @param gameProfile
+	 * @param profile
 	 */
-	public void setGraveOwner(GameProfile gameProfile) {
-		this.graveOwner = gameProfile;
+	public void setGraveOwner(GameProfile profile) {
+		this.graveOwner = profile;
 		this.markDirty();
 	}
 
@@ -191,10 +191,10 @@ public class GraveBlockEntity extends BlockEntity {
 	 * <strong>Note:</strong> A SkinURL is the base64 encoded string typically
 	 * attached to custom player heads.
 	 *
-	 * @param skinURL
+	 * @param graveSkull
 	 */
-	public void setSkinURL(String skinURL) {
-		this.skinURL = skinURL;
+	public void setGraveSkull(String graveSkull) {
+		this.graveSkull = graveSkull;
 		this.markDirty();
 	}
 
@@ -204,19 +204,19 @@ public class GraveBlockEntity extends BlockEntity {
 	 * <strong>Note:</strong> A SkinURL is the base64 encoded string typically
 	 * attached to custom player heads.
 	 *
-	 * @return String (SkinURL)
+	 * @return String (SkinURL | SkullType)
 	 */
-	public String getSkinURL() {
-		return this.skinURL;
+	public String getGraveSkull() {
+		return this.graveSkull;
 	}
 
 	/**
-	 * Determine whether the GraveBlockEntity has a SkinURL entry.
+	 * Determine whether the GraveBlockEntity has a GraveSkull entry.
 	 *
 	 * @return boolean
 	 */
-	public boolean hasSkinURL() {
-		return this.skinURL != "";
+	public boolean hasGraveSkull() {
+		return this.graveSkull != "";
 	}
 
 	/**
@@ -313,8 +313,8 @@ public class GraveBlockEntity extends BlockEntity {
 		if (customName != null && !customName.isEmpty())
 			nbt.putString("CustomName", customName);
 
-		if (skinURL != null)
-			nbt.putString("SkinURL", skinURL);
+		if (graveSkull != null)
+			nbt.putString("GraveSkull", graveSkull);
 	}
 
 	@Override
@@ -332,8 +332,8 @@ public class GraveBlockEntity extends BlockEntity {
 		if (nbt.contains("CustomName"))
 			this.customName = nbt.getString("CustomName");
 
-		if (nbt.contains("SkinURL"))
-			this.skinURL = nbt.getString("SkinURL");
+		if (nbt.contains("GraveSkull"))
+			this.graveSkull = nbt.getString("GraveSkull");
 
 		super.markDirty();
 	}

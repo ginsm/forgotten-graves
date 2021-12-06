@@ -25,20 +25,20 @@ public class ShovelItemMixin {
 	@Inject(method = "useOnBlock", at = @At("HEAD"))
 	private void onUseBlock(ItemUsageContext context, CallbackInfoReturnable<?> cir) {
 		World world = context.getWorld();
-		BlockPos blockPos = context.getBlockPos();
+		BlockPos pos = context.getBlockPos();
 		PlayerEntity player = context.getPlayer();
-		BlockEntity blockEntity = world.getBlockEntity(blockPos);
+		BlockEntity blockEntity = world.getBlockEntity(pos);
 		Hand hand = context.getHand();
 
-		if (blockEntity instanceof GraveBlockEntity graveBlockEntity
-				&& graveBlockEntity.playerCanAttemptRetrieve(player))
-			if (hand == Hand.MAIN_HAND && (graveBlockEntity.getNoAge() == 1
-					|| DegradationStateManager.decreaseDegradationState(world, blockPos))) {
-				graveBlockEntity.setNoAge(0);
+		if (blockEntity instanceof GraveBlockEntity graveEntity
+				&& graveEntity.playerCanAttemptRetrieve(player))
+			if (hand == Hand.MAIN_HAND && (graveEntity.getNoAge() == 1
+					|| DegradationStateManager.decreaseDegradationState(world, pos))) {
+				graveEntity.setNoAge(0);
 				if (!player.isCreative())
 					player.getStackInHand(hand).damage(1, player, (p) -> p.sendToolBreakStatus(hand));
-				ParticlesApi.spawnAtBlock(world, blockPos, ParticleTypes.WAX_OFF, 8, 3);
-				world.playSound(null, blockPos, SoundEvents.BLOCK_ROOTED_DIRT_BREAK, SoundCategory.BLOCKS, 1f, 1f);
+				ParticlesApi.spawnAtBlock(world, pos, ParticleTypes.WAX_OFF, 8, 3);
+				world.playSound(null, pos, SoundEvents.BLOCK_ROOTED_DIRT_BREAK, SoundCategory.BLOCKS, 1f, 1f);
 			}
 	}
 

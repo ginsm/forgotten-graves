@@ -7,8 +7,8 @@ import net.minecraft.util.math.BlockPos;
 
 public class PlayerBlockBreakHandler {
 	public static boolean handleBeforeEvent(PlayerEntity player, BlockPos pos, BlockEntity entity) {
-		if (entity instanceof GraveBlockEntity graveBlockEntity) {
-			if (!graveBlockEntity.playerCanBreakGrave(player))
+		if (entity instanceof GraveBlockEntity graveEntity) {
+			if (!graveEntity.playerCanBreakGrave(player))
 				return false;
 		}
 		return true;

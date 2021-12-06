@@ -8,6 +8,7 @@ import me.mgin.graves.block.entity.GraveBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Degradable;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
@@ -37,15 +38,15 @@ public interface Ageable<T extends Enum<T>> {
 		Iterator<BlockPos> var8 = BlockPos.iterateOutwards(pos, 4, 4, 4).iterator();
 
 		while (var8.hasNext()) {
-			BlockPos blockPos = (BlockPos) var8.next();
-			int l = blockPos.getManhattanDistance(pos);
+			BlockPos nextPos = (BlockPos) var8.next();
+			int l = nextPos.getManhattanDistance(pos);
 			if (l > 4) {
 				break;
 			}
 
-			if (!blockPos.equals(pos)) {
-				BlockState blockState = world.getBlockState(blockPos);
-				Block block = blockState.getBlock();
+			if (!nextPos.equals(pos)) {
+				BlockState newState = world.getBlockState(pos);
+				Block block = newState.getBlock();
 				if (block instanceof Degradable) {
 					Enum<?> enum_ = ((Degradable<?>) block).getDegradationLevel();
 					if (this.getDegradationLevel().getClass() == enum_.getClass()) {
@@ -71,13 +72,14 @@ public interface Ageable<T extends Enum<T>> {
 	}
 
 	static void setDegradationState(World world, BlockPos pos, BlockState state) {
-		if (world.getBlockEntity(pos)instanceof GraveBlockEntity entity) {
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		if (blockEntity instanceof GraveBlockEntity entity) {
 			GameProfile owner = entity.getGraveOwner();
 			String name = entity.getCustomName();
 			DefaultedList<ItemStack> items = entity.getItems();
 			int xp = entity.getXp();
 			int noAge = entity.getNoAge();
-			String skinURL = entity.getSkinURL();
+			String graveSkull = entity.getGraveSkull();
 
 			world.setBlockState(pos, state);
 
@@ -87,7 +89,7 @@ public interface Ageable<T extends Enum<T>> {
 			newGraveBlockEntity.setCustomName(name);
 			newGraveBlockEntity.setXp(xp);
 			newGraveBlockEntity.setNoAge(noAge);
-			newGraveBlockEntity.setSkinURL(skinURL);
+			newGraveBlockEntity.setGraveSkull(graveSkull);
 
 			world.addBlockEntity(newGraveBlockEntity);
 		}

@@ -44,11 +44,11 @@ public class Graves implements ModInitializer {
 		apiMods.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, GravesApi.class));
 	}
 
-	public static void placeGrave(World world, Vec3d pos, PlayerEntity player) {
+	public static void placeGrave(World world, Vec3d vecPos, PlayerEntity player) {
 		if (world.isClient)
 			return;
 
-		BlockPos blockPos = new BlockPos(pos.x, pos.y - 1, pos.z);
+		BlockPos pos = new BlockPos(vecPos.x, vecPos.y - 1, vecPos.z);
 
 		DefaultedList<ItemStack> combinedInventory = DefaultedList.of();
 
@@ -60,35 +60,35 @@ public class Graves implements ModInitializer {
 			combinedInventory.addAll(GravesApi.getInventory(player));
 		}
 
-		if (blockPos.getY() < 0) {
-			blockPos = new BlockPos(blockPos.getX(), 10, blockPos.getZ());
+		if (pos.getY() < 0) {
+			pos = new BlockPos(pos.getX(), 10, pos.getZ());
 		}
 
-		for (BlockPos gravePos : BlockPos.iterateOutwards(blockPos.add(new Vec3i(0, 1, 0)), 5, 5, 5)) {
-			BlockState blockState = world.getBlockState(gravePos);
-			Block block = blockState.getBlock();
+		for (BlockPos gravePos : BlockPos.iterateOutwards(pos.add(new Vec3i(0, 1, 0)), 5, 5, 5)) {
+			BlockState state = world.getBlockState(gravePos);
+			Block block = state.getBlock();
 
 			if (canPlaceGrave(world, block, gravePos)) {
 				world.setBlockState(gravePos, GraveBlocks.GRAVE.getDefaultState().with(Properties.HORIZONTAL_FACING,
 						player.getHorizontalFacing()));
 
-				GraveBlockEntity graveBlockEntity = new GraveBlockEntity(gravePos, world.getBlockState(gravePos));
+				GraveBlockEntity graveEntity = new GraveBlockEntity(gravePos, world.getBlockState(gravePos));
 
-				graveBlockEntity.setItems(combinedInventory);
-				graveBlockEntity.setGraveOwner(player.getGameProfile());
+				graveEntity.setItems(combinedInventory);
+				graveEntity.setGraveOwner(player.getGameProfile());
 
 				int experience = ExperienceCalculator.calculateExperienceStorage(player.experienceLevel,
 						player.experienceProgress);
 
-				graveBlockEntity.setXp(experience);
+				graveEntity.setXp(experience);
 				player.totalExperience = 0;
 				player.experienceProgress = 0;
 				player.experienceLevel = 0;
-				world.addBlockEntity(graveBlockEntity);
+				world.addBlockEntity(graveEntity);
 
 				if (world.isClient())
-					graveBlockEntity.sync(world, gravePos);
-				block.onBreak(world, blockPos, blockState, player);
+					graveEntity.sync(world, gravePos);
+				block.onBreak(world, pos, state, player);
 
 				if (GravesConfig.getConfig().mainSettings.sendGraveCoordinates) {
 					player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(),
@@ -103,8 +103,8 @@ public class Graves implements ModInitializer {
 		}
 	}
 
-	private static boolean canPlaceGrave(World world, Block block, BlockPos blockPos) {
-		BlockEntity blockEntity = world.getBlockEntity(blockPos);
+	private static boolean canPlaceGrave(World world, Block block, BlockPos pos) {
+		BlockEntity blockEntity = world.getBlockEntity(pos);
 
 		if (blockEntity != null)
 			return false;
@@ -118,6 +118,6 @@ public class Graves implements ModInitializer {
 		if (blackListedBlocks.contains(block))
 			return false;
 
-		return !(blockPos.getY() < 0 || blockPos.getY() > 255);
+		return !(pos.getY() < 0 || pos.getY() > 255);
 	}
 }

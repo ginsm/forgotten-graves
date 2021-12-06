@@ -32,8 +32,8 @@ public class ExplosionMixin {
 		if (GraveBlocks.GRAVE_MAP.containsKey(old.getBlock()))  {
 			BlockEntity blockEntity = world.getBlockEntity(lastPos);
 
-			if (blockEntity instanceof GraveBlockEntity graveBlockEntity) {
-				if (graveBlockEntity.getGraveOwner() != null)
+			if (blockEntity instanceof GraveBlockEntity graveEntity) {
+				if (graveEntity.getGraveOwner() != null)
 					return Blocks.AIR.getDefaultState();
 			}
 		}

@@ -20,17 +20,17 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 	private EntityModelLoader modelLoader;
 	private int blockAge = 0;
 
-	public GraveBlockEntityRenderer(Context ctx) {
+	public GraveBlockEntityRenderer(Context context) {
 		super();
-		this.modelLoader = ctx.getLayerRenderDispatcher();
-		this.textRenderer = ctx.getTextRenderer();
+		this.modelLoader = context.getLayerRenderDispatcher();
+		this.textRenderer = context.getTextRenderer();
 	}
 
 	@Override
-	public void render(GraveBlockEntity blockEntity, float tickDelta, MatrixStack matrices,
+	public void render(GraveBlockEntity graveEntity, float tickDelta, MatrixStack matrices,
 			VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
-		BlockState state = blockEntity.getCachedState();
+		BlockState state = graveEntity.getCachedState();
 		blockAge = ((GraveBase) state.getBlock()).getWeathered();
 		Direction direction = state.get(Properties.HORIZONTAL_FACING);
 
@@ -61,19 +61,19 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 
 		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(50));
 
-		SkullApi.renderSkull(blockEntity, modelLoader, blockAge, state, matrices, light, vertexConsumers);
+		SkullApi.renderSkull(graveEntity, modelLoader, blockAge, state, matrices, light, vertexConsumers);
 
 		matrices.pop();
 
 		// Outline
-		if (blockEntity.getGraveOwner() != null
-				|| (blockEntity.getCustomName() != null && !blockEntity.getCustomName().isEmpty())) {
+		if (graveEntity.getGraveOwner() != null
+				|| (graveEntity.getCustomName() != null && !graveEntity.getCustomName().isEmpty())) {
 			String text = "";
 
-			if (blockEntity.getGraveOwner() != null) {
-				text = blockEntity.getGraveOwner().getName();
+			if (graveEntity.getGraveOwner() != null) {
+				text = graveEntity.getGraveOwner().getName();
 			} else {
-				text = blockEntity.getCustomName().substring(9);
+				text = graveEntity.getCustomName().substring(9);
 				text = text.substring(0, text.length() - 2);
 			}
 

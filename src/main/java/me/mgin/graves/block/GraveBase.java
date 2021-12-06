@@ -89,17 +89,17 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
 			BlockHitResult hit) {
-		GraveBlockEntity graveBlockEntity = (GraveBlockEntity) world.getBlockEntity(pos);
+		GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
 		if (hand != Hand.OFF_HAND)
-			if (player.getStackInHand(hand).isEmpty() && graveBlockEntity.playerCanUseGrave(player))
+			if (player.getStackInHand(hand).isEmpty() && graveEntity.playerCanUseGrave(player))
 				useGrave(player, world, pos);
 
 		return ActionResult.PASS;
 	}
 
-	public void onBreakRetainName(World world, BlockPos pos, PlayerEntity player, GraveBlockEntity blockEntity) {
-		Text itemText = Text.Serializer.fromJson(blockEntity.getCustomName());
+	public void onBreakRetainName(World world, BlockPos pos, PlayerEntity player, GraveBlockEntity graveEntity) {
+		Text itemText = Text.Serializer.fromJson(graveEntity.getCustomName());
 
 		ItemStack itemStack = this.getItemStack();
 		itemStack.setCustomName(itemText);
@@ -117,15 +117,15 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		GraveBlockEntity graveBlockEntity = (GraveBlockEntity) world.getBlockEntity(pos);
+		GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
-		if (graveBlockEntity.playerCanBreakGrave(player))
+		if (graveEntity.playerCanBreakGrave(player))
 			if (useGrave(player, world, pos))
 				return;
 
-		if (graveBlockEntity.getGraveOwner() == null)
-			if (!world.isClient && graveBlockEntity.hasCustomName() && !player.isCreative()) {
-				onBreakRetainName(world, pos, player, graveBlockEntity);
+		if (graveEntity.getGraveOwner() == null)
+			if (!world.isClient && graveEntity.hasCustomName() && !player.isCreative()) {
+				onBreakRetainName(world, pos, player, graveEntity);
 				return;
 			}
 
@@ -151,7 +151,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		return new GraveBlockEntity(pos, state);
 	}
 
-	private boolean useGrave(PlayerEntity playerEntity, World world, BlockPos pos) {
+	private boolean useGrave(PlayerEntity player, World world, BlockPos pos) {
 		if (world.isClient)
 			return false;
 
@@ -160,70 +160,70 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		if (!(blockEntity instanceof GraveBlockEntity))
 			return false;
 
-		GraveBlockEntity graveBlockEntity = (GraveBlockEntity) blockEntity;
-		graveBlockEntity.sync(world, pos);
+		GraveBlockEntity graveEntity = (GraveBlockEntity) blockEntity;
+		graveEntity.sync(world, pos);
 
-		if (graveBlockEntity.getItems() == null)
+		if (graveEntity.getItems() == null)
 			return false;
-		if (graveBlockEntity.getGraveOwner() == null)
+		if (graveEntity.getGraveOwner() == null)
 			return false;
 
-		if (!graveBlockEntity.playerCanAttemptRetrieve(playerEntity))
-			if (!graveBlockEntity.playerCanOverride(playerEntity))
+		if (!graveEntity.playerCanAttemptRetrieve(player))
+			if (!graveEntity.playerCanOverride(player))
 				return false;
 
-		DefaultedList<ItemStack> items = graveBlockEntity.getItems();
+		DefaultedList<ItemStack> items = graveEntity.getItems();
 
 		DefaultedList<ItemStack> inventory = DefaultedList.of();
 
-		inventory.addAll(playerEntity.getInventory().main);
-		inventory.addAll(playerEntity.getInventory().armor);
-		inventory.addAll(playerEntity.getInventory().offHand);
+		inventory.addAll(player.getInventory().main);
+		inventory.addAll(player.getInventory().armor);
+		inventory.addAll(player.getInventory().offHand);
 
 		GraveDropType dropType = GravesConfig.getConfig().mainSettings.dropType;
 
 		if (dropType == GraveDropType.PUT_IN_INVENTORY) {
-			playerEntity.getInventory().clear();
+			player.getInventory().clear();
 
 			List<ItemStack> armor = items.subList(36, 40);
 
 			for (int i = 0; i < armor.size(); i++) {
 				EquipmentSlot equipmentSlot = MobEntity.getPreferredEquipmentSlot(armor.get(i));
-				playerEntity.equipStack(equipmentSlot, armor.get(i));
+				player.equipStack(equipmentSlot, armor.get(i));
 			}
 
-			playerEntity.equipStack(EquipmentSlot.OFFHAND, items.get(40));
+			player.equipStack(EquipmentSlot.OFFHAND, items.get(40));
 
 			List<ItemStack> mainInventory = items.subList(0, 36);
 
 			for (int i = 0; i < mainInventory.size(); i++) {
-				playerEntity.getInventory().setStack(i, mainInventory.get(i));
+				player.getInventory().setStack(i, mainInventory.get(i));
 			}
 
 			DefaultedList<ItemStack> extraItems = DefaultedList.of();
 
-			List<Integer> openArmorSlots = getInventoryOpenSlots(playerEntity.getInventory().armor);
+			List<Integer> openArmorSlots = getInventoryOpenSlots(player.getInventory().armor);
 
 			for (int i = 0; i < 4; i++) {
 				if (openArmorSlots.contains(i)) {
-					playerEntity.equipStack(EquipmentSlot.fromTypeIndex(EquipmentSlot.Type.ARMOR, i),
+					player.equipStack(EquipmentSlot.fromTypeIndex(EquipmentSlot.Type.ARMOR, i),
 							inventory.subList(36, 40).get(i));
 				} else
 					extraItems.add(inventory.subList(36, 40).get(i));
 			}
 
-			if (playerEntity.getInventory().offHand.get(0) == ItemStack.EMPTY) {
-				playerEntity.equipStack(EquipmentSlot.OFFHAND, inventory.get(40));
+			if (player.getInventory().offHand.get(0) == ItemStack.EMPTY) {
+				player.equipStack(EquipmentSlot.OFFHAND, inventory.get(40));
 			} else {
 				extraItems.add(inventory.get(40));
 			}
 
 			extraItems.addAll(inventory.subList(0, 36));
 
-			List<Integer> openSlots = getInventoryOpenSlots(playerEntity.getInventory().main);
+			List<Integer> openSlots = getInventoryOpenSlots(player.getInventory().main);
 
 			for (int i = 0; i < openSlots.size(); i++) {
-				playerEntity.getInventory().setStack(openSlots.get(i), extraItems.get(i));
+				player.getInventory().setStack(openSlots.get(i), extraItems.get(i));
 			}
 
 			DefaultedList<ItemStack> dropItems = DefaultedList.of();
@@ -234,19 +234,19 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 
 			for (GravesApi GravesApi : Graves.apiMods) {
 				GravesApi.setInventory(
-						items.subList(inventoryOffset, inventoryOffset + GravesApi.getInventorySize(playerEntity)),
-						playerEntity);
-				inventoryOffset += GravesApi.getInventorySize(playerEntity);
+						items.subList(inventoryOffset, inventoryOffset + GravesApi.getInventorySize(player)),
+						player);
+				inventoryOffset += GravesApi.getInventorySize(player);
 			}
 
 			ItemScatterer.spawn(world, pos, dropItems);
 		} else if (dropType == GraveDropType.DROP_ITEMS) {
-			ItemScatterer.spawn(world, pos, graveBlockEntity.getItems());
+			ItemScatterer.spawn(world, pos, graveEntity.getItems());
 		}
 
-		playerEntity.addExperience((int) (1 * graveBlockEntity.getXp()));
+		player.addExperience((int) (1 * graveEntity.getXp()));
 
-		spawnBreakParticles(world, playerEntity, pos, getDefaultState());
+		spawnBreakParticles(world, player, pos, getDefaultState());
 
 		world.removeBlock(pos, false);
 		return true;
@@ -275,13 +275,13 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 			return;
 		}
 
-		GraveBlockEntity graveBlockEntity = (GraveBlockEntity) blockEntity;
+		GraveBlockEntity graveEntity = (GraveBlockEntity) blockEntity;
 
-		graveBlockEntity.setCustomName(itemStack.getOrCreateSubNbt("display").getString("Name"));
+		graveEntity.setCustomName(itemStack.getOrCreateSubNbt("display").getString("Name"));
 	}
 
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return this.getDefaultState().with(FACING, ctx.getPlayerFacing());
+	public BlockState getPlacementState(ItemPlacementContext context) {
+		return this.getDefaultState().with(FACING, context.getPlayerFacing());
 	}
 
 	@Override
@@ -303,8 +303,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	public void tickDegradation(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 
-		if (blockEntity instanceof GraveBlockEntity graveBlockEntity) {
-			if (graveBlockEntity.getNoAge() == 1)
+		if (blockEntity instanceof GraveBlockEntity graveEntity) {
+			if (graveEntity.getNoAge() == 1)
 				return;
 		}
 

@@ -27,7 +27,6 @@ public class GraveBlockEntity extends BlockEntity {
 	private int noAge;
 	private GameProfile graveOwner;
 	private String customName;
-	@Nullable
 	private String skinURL;
 	private BlockState state;
 
@@ -36,7 +35,7 @@ public class GraveBlockEntity extends BlockEntity {
 		this.graveOwner = null;
 		this.items = DefaultedList.ofSize(41, ItemStack.EMPTY);
 		this.customName = "";
-		this.skinURL = null;
+		this.skinURL = "";
 		this.xp = 0;
 		this.noAge = 0;
 		setState(blockState);
@@ -44,6 +43,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Set the GraveBlockEntity's items.
+	 *
 	 * @param items
 	 */
 	public void setItems(DefaultedList<ItemStack> items) {
@@ -53,6 +53,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Retrieve the GraveBlockEntity's items.
+	 *
 	 * @return
 	 */
 	public DefaultedList<ItemStack> getItems() {
@@ -61,6 +62,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Determines whether the GraveBlockEntity has items in it.
+	 *
 	 * @return boolean
 	 */
 	public boolean hasItems() {
@@ -69,6 +71,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Store the grave owner's GameProfile.
+	 *
 	 * @param gameProfile
 	 */
 	public void setGraveOwner(GameProfile gameProfile) {
@@ -78,6 +81,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Retrieve the grave owner's GameProfile.
+	 *
 	 * @return GameProfile
 	 */
 	public GameProfile getGraveOwner() {
@@ -97,6 +101,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Set the GraveBlockEntity's custom name.
+	 *
 	 * @param name
 	 */
 	public void setCustomName(String name) {
@@ -106,6 +111,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Get the GraveBlockEntity's custom name.
+	 *
 	 * @return
 	 */
 	public String getCustomName() {
@@ -114,6 +120,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Determines whether the GraveBlockEntity has a custom name.
+	 *
 	 * @return
 	 */
 	public boolean hasCustomName() {
@@ -122,6 +129,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Set GraveBlockEntity's current state.
+	 *
 	 * @param state
 	 */
 	public void setState(BlockState state) {
@@ -130,6 +138,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Get GraveBlockEntity's current state.
+	 *
 	 * @return
 	 */
 	public BlockState getState() {
@@ -138,6 +147,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Set the stored XP amount.
+	 *
 	 * @param xp
 	 */
 	public void setXp(int xp) {
@@ -147,6 +157,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Get the stored XP amount.
+	 *
 	 * @return
 	 */
 	public int getXp() {
@@ -156,8 +167,8 @@ public class GraveBlockEntity extends BlockEntity {
 	/**
 	 * Set whether the grave should age or not.
 	 * <p>
-	 * <strong>Note:</strong>
-	 * The grave stops aging if the value is set to 1 (one).
+	 * <strong>Note:</strong> The grave stops aging if the value is set to 1 (one).
+	 *
 	 * @param aging
 	 */
 	public void setNoAge(int aging) {
@@ -167,6 +178,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Get the current noAge value.
+	 *
 	 * @return int
 	 */
 	public int getNoAge() {
@@ -174,10 +186,11 @@ public class GraveBlockEntity extends BlockEntity {
 	}
 
 	/**
-	 * Set the GraveBlockEntity's SkinURL.
+	 * Set the GraveBlockEntity's SkinURL OR SkullType string.
 	 * <p>
-	 * <strong>Note:</strong> A SkinURL is the base64 encoded string typically attached to custom 
-	 * player heads.
+	 * <strong>Note:</strong> A SkinURL is the base64 encoded string typically
+	 * attached to custom player heads.
+	 *
 	 * @param skinURL
 	 */
 	public void setSkinURL(String skinURL) {
@@ -186,10 +199,11 @@ public class GraveBlockEntity extends BlockEntity {
 	}
 
 	/**
-	 * Retrieve the GraveBlockEntity's SkinURL.
+	 * Retrieve the GraveBlockEntity's SkinURL OR SkullType string.
 	 * <p>
-	 * <strong>Note:</strong> A SkinURL is the base64 encoded string typically attached to custom 
-	 * player heads.
+	 * <strong>Note:</strong> A SkinURL is the base64 encoded string typically
+	 * attached to custom player heads.
+	 *
 	 * @return String (SkinURL)
 	 */
 	public String getSkinURL() {
@@ -197,11 +211,12 @@ public class GraveBlockEntity extends BlockEntity {
 	}
 
 	/**
-	 * Determine whether the GraveBlockEntity has a SkinURL.
+	 * Determine whether the GraveBlockEntity has a SkinURL entry.
+	 *
 	 * @return boolean
 	 */
 	public boolean hasSkinURL() {
-		return this.skinURL != null;
+		return this.skinURL != "";
 	}
 
 	/**
@@ -325,6 +340,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Retrieves the NBT data for the given GraveBlockEntity instance.
+	 *
 	 * @return NbtCompound
 	 */
 	public NbtCompound toNbt() {
@@ -335,6 +351,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * When called on the server, schedules a BlockEntity sync to client.
+	 *
 	 * @param world
 	 * @param pos
 	 */

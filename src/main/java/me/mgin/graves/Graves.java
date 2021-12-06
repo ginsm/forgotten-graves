@@ -60,8 +60,9 @@ public class Graves implements ModInitializer {
 			combinedInventory.addAll(GravesApi.getInventory(player));
 		}
 
-		if (pos.getY() < 0) {
-			pos = new BlockPos(pos.getX(), 10, pos.getZ());
+		// Lowest Y Height
+		if (pos.getY() < -64) {
+			pos = new BlockPos(pos.getX(), -60, pos.getZ());
 		}
 
 		for (BlockPos gravePos : BlockPos.iterateOutwards(pos.add(new Vec3i(0, 1, 0)), 5, 5, 5)) {

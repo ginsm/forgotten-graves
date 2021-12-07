@@ -6,7 +6,7 @@
 
   
   "text.forgottengraves.command.graves": "[Graves] That command hasn't been implemented yet.",
-  "text.forgottengraves.command.graves.reload": "[Graves] Config has been reloaded.",
+  "text.forgottengraves.command.reload": "[Graves] Config has been reloaded.",
 
 
   "text.autoconfig.forgottengraves.title": "Forgotten Graves Settings",

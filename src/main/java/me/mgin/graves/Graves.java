@@ -10,9 +10,9 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.registry.GraveBlocks;
-import me.mgin.graves.registry.registerBlocks;
-import me.mgin.graves.registry.registerEvents;
-import me.mgin.graves.registry.registerItems;
+import me.mgin.graves.registry.RegisterBlocks;
+import me.mgin.graves.registry.RegisterEvents;
+import me.mgin.graves.registry.RegisterItems;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
@@ -37,9 +37,9 @@ public class Graves implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		registerBlocks.register(MOD_ID, BRAND_BLOCK);
-		registerItems.register(MOD_ID, BRAND_BLOCK);
-		registerEvents.register();
+		RegisterBlocks.register(MOD_ID, BRAND_BLOCK);
+		RegisterItems.register(MOD_ID, BRAND_BLOCK);
+		RegisterEvents.register();
 		AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);
 		apiMods.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, GravesApi.class));
 	}

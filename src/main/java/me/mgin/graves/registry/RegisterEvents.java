@@ -12,7 +12,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class registerEvents {
+public class RegisterEvents {
   public static void register() {
     PlayerBlockBreakEvents.BEFORE.register((World world, PlayerEntity player, BlockPos pos, BlockState state,	BlockEntity entity) ->
       PlayerBlockBreakHandler.handleBeforeEvent(player, pos, entity)

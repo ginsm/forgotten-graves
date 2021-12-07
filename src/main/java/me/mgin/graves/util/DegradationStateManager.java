@@ -2,8 +2,8 @@ package me.mgin.graves.util;
 
 import java.util.Optional;
 
-import me.mgin.graves.block.Ageable;
-import me.mgin.graves.block.AgingGrave;
+import me.mgin.graves.block.degradation.Ageable;
+import me.mgin.graves.block.degradation.AgingGrave;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

@@ -1,4 +1,4 @@
-package me.mgin.graves.block;
+package me.mgin.graves.block.degradation;
 
 import com.google.common.base.Suppliers;
 import com.google.common.collect.BiMap;

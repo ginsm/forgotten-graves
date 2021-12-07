@@ -1,4 +1,4 @@
-package me.mgin.graves.registry;
+package me.mgin.graves;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -231,7 +231,7 @@ public class GraveBlockEntity extends BlockEntity {
 	 * @return boolean
 	 */
 	public boolean playerCanAttemptRetrieve(PlayerEntity player) {
-		boolean graveRobbing = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
+		boolean graveRobbing = GravesConfig.getConfig().serverSettings.enableGraveRobbing;
 
 		if (getGraveOwner() == null || isGraveOwner(player) || graveRobbing || playerCanOverride(player)) {
 			return true;
@@ -248,7 +248,7 @@ public class GraveBlockEntity extends BlockEntity {
 	 * @return boolean
 	 */
 	public boolean playerCanOverride(PlayerEntity player) {
-		int operatorOverrideLevel = GravesConfig.getConfig().mainSettings.minOperatorOverrideLevel;
+		int operatorOverrideLevel = GravesConfig.getConfig().serverSettings.minOperatorOverrideLevel;
 		return (operatorOverrideLevel != -1 && player.hasPermissionLevel(operatorOverrideLevel));
 	}
 

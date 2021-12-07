@@ -7,8 +7,11 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 @Config(name = "forgottengraves")
 public class GravesConfig implements ConfigData {
+
 	@ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
 	public MainSettings mainSettings = new MainSettings();
+	@ConfigEntry.Gui.Excluded
+	public ServerSettings serverSettings = new ServerSettings();
 
 	public static GravesConfig getConfig() {
 		return AutoConfig.getConfigHolder(GravesConfig.class).getConfig();
@@ -17,15 +20,12 @@ public class GravesConfig implements ConfigData {
 	@Override
 	public void validatePostLoad() {
 		mainSettings.customXPStoredLevel = Math.max(mainSettings.customXPStoredLevel, 0);
-		mainSettings.minOperatorOverrideLevel = Math.max(Math.min(mainSettings.minOperatorOverrideLevel, 4), -1);
+		serverSettings.minOperatorOverrideLevel = Math.max(Math.min(serverSettings.minOperatorOverrideLevel, 4), -1);
 	}
 
 	public static class MainSettings {
 		@ConfigEntry.Gui.Tooltip
 		public boolean enableGraves = true;
-
-		@ConfigEntry.Gui.Tooltip
-		public boolean enableGraveRobbing = false;
 
 		@ConfigEntry.Gui.Tooltip
 		public boolean sendGraveCoordinates = true;
@@ -44,9 +44,11 @@ public class GravesConfig implements ConfigData {
 
 		@ConfigEntry.Gui.Tooltip
 		public int customXPStoredLevel = 30;
-
-		@ConfigEntry.Gui.Tooltip
-		@ConfigEntry.BoundedDiscrete(max = 4, min = -1)
+	}
+	
+	public static class ServerSettings {
+		public boolean enableGraveRobbing = false;
 		public int minOperatorOverrideLevel = 4;
 	}
+
 }

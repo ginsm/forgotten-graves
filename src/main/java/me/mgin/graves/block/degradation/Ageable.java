@@ -1,4 +1,4 @@
-package me.mgin.graves.block;
+package me.mgin.graves.block.degradation;
 
 import com.mojang.authlib.GameProfile;
 import java.util.Iterator;

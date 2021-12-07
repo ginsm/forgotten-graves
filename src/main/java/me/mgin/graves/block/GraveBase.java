@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.GravesApi;
+import me.mgin.graves.block.degradation.AgingGrave;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.registry.GraveBlocks;

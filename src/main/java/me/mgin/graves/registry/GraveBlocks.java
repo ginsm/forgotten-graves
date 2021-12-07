@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import me.mgin.graves.block.GraveBase;
-import me.mgin.graves.block.AgingGrave.BlockAge;
+import me.mgin.graves.block.degradation.AgingGrave.BlockAge;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Material;

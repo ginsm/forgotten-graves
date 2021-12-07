@@ -4,6 +4,11 @@
   "block.forgottengraves.grave_weathered": "Weathered Grave",
   "block.forgottengraves.grave_forgotten": "Forgotten Grave",
 
+  
+  "text.forgottengraves.command.graves": "[Graves] That command hasn't been implemented yet.",
+  "text.forgottengraves.command.graves.reload": "[Graves] Config has been reloaded.",
+
+
   "text.autoconfig.forgottengraves.title": "Forgotten Graves Settings",
   "text.autoconfig.forgottengraves.option.mainSettings": "Main Settings",
 
@@ -31,5 +36,4 @@
 
   "text.autoconfig.forgottengraves.option.mainSettings.customXPStoredLevel": "Max Custom XP Level",
   "text.autoconfig.forgottengraves.option.mainSettings.customXPStoredLevel.@Tooltip": "(Custom Option) What's the max amount of levels that you want stored?"
-
 }

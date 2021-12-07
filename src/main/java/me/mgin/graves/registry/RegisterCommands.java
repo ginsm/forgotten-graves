@@ -5,10 +5,11 @@ import com.mojang.brigadier.CommandDispatcher;
 
 import me.mgin.graves.config.GravesConfig;
 import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.ConfigHolder;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 
 public class RegisterCommands {
 
@@ -32,14 +33,26 @@ public class RegisterCommands {
   private static void registerGravesCmd(CommandDispatcher<ServerCommandSource> dispatcher) {
     dispatcher.register(
       CommandManager.literal("graves")
-        .requires(source -> source.hasPermissionLevel(4))
+        .executes(context -> {
+
+          context.getSource().sendError(
+            new TranslatableText("text.forgottengraves.command.graves")
+          );
+
+          return Command.SINGLE_SUCCESS;
+        })
         .then(CommandManager.literal("reload")
-          .executes(context -> {
-            AutoConfig.getConfigHolder(GravesConfig.class).load();
-            return Command.SINGLE_SUCCESS;
-          })
+            .requires(source -> source.hasPermissionLevel(4))
+            .executes(context -> {
+              AutoConfig.getConfigHolder(GravesConfig.class).load();
+              
+              context.getSource().sendFeedback(
+                new TranslatableText("text.forgottengraves.command.graves.reload").formatted(Formatting.GRAY), true
+              );
+
+              return Command.SINGLE_SUCCESS;
+            })
         )
     );
   }
-  
 }

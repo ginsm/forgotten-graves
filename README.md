@@ -11,11 +11,14 @@ If you have any issues with the mod or a feature request, please use the [issue 
 ![Grave Models](docs/screenshots/GraveModels.gif)
 
  
+
 **Configuration:**
 
 ![Forgotten Graves Config](docs/screenshots/ConfigScreen.png)
 
+
  
+
 **File Configuration:**
 
 ```
@@ -36,7 +39,8 @@ If you have any issues with the mod or a feature request, please use the [issue 
 ```
 
  
-*Note: Server-side configuration overrides any user set configuration currently. I plan to [change that](https://github.com/ginsm/forgotten-graves/issues/13) soon, so that some of the settings are client-side only.*
+
+*Note: Server-side configuration overrides any user set configuration currently.*
 
  
 ## Want to help out?

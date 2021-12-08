@@ -31,18 +31,18 @@ public class ClientPlayerInteractionManagerMixin {
 	private MinecraftClient client;
 
 	@Inject(method = "breakBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;onBreak(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/player/PlayerEntity;)V"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
-	private void breakBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir, World world, BlockState blockState,
+	private void breakBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir, World world, BlockState state,
 			Block block) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		
 		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
-		boolean graveRobbingEnabled = GravesConfig.getConfig().mainSettings.enableGraveRobbing;
+		boolean graveRobbingEnabled = GravesConfig.getConfig().serverSettings.enableGraveRobbing;
 
-		if (blockEntity instanceof GraveBlockEntity graveBlockEntity && graveBlockEntity.getGraveOwner() != null) {
+		if (blockEntity instanceof GraveBlockEntity graveEntity && graveEntity.getGraveOwner() != null) {
 			if (retrievalType != GraveRetrievalType.ON_BREAK && retrievalType != GraveRetrievalType.ON_BOTH)
 				cir.setReturnValue(false);
 
-			if (!graveBlockEntity.getGraveOwner().getId().equals(this.networkHandler.getProfile().getId()) && !graveRobbingEnabled)
+			if (!graveEntity.getGraveOwner().getId().equals(this.networkHandler.getProfile().getId()) && !graveRobbingEnabled)
 				cir.setReturnValue(false);
 		}
 	}

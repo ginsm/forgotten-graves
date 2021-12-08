@@ -1,10 +1,7 @@
 package me.mgin.graves.mixin;
 
-import java.util.HashSet;
-import java.util.Set;
-import me.mgin.graves.Graves;
 import me.mgin.graves.block.entity.GraveBlockEntity;
-import net.minecraft.block.Block;
+import me.mgin.graves.registry.GraveBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -23,14 +20,6 @@ public class ExplosionMixin {
 	@Final
 	private World world;
 	private BlockPos lastPos;
-	private Set<Block> graveBlocks = new HashSet<Block>() {
-		{
-			add(Graves.GRAVE);
-			add(Graves.GRAVE_OLD);
-			add(Graves.GRAVE_WEATHERED);
-			add(Graves.GRAVE_FORGOTTEN);
-		}
-	};
 
 	@ModifyVariable(method = "affectWorld", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
 	private BlockPos modifyAffectedBlocks(BlockPos old) {
@@ -40,11 +29,11 @@ public class ExplosionMixin {
 
 	@ModifyVariable(method = "affectWorld", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
 	private BlockState modifyAffectedBlocks(BlockState old) {
-		if (graveBlocks.contains(old.getBlock())) {
+		if (GraveBlocks.GRAVE_MAP.containsKey(old.getBlock()))  {
 			BlockEntity blockEntity = world.getBlockEntity(lastPos);
 
-			if (blockEntity instanceof GraveBlockEntity graveBlockEntity) {
-				if (graveBlockEntity.getGraveOwner() != null)
+			if (blockEntity instanceof GraveBlockEntity graveEntity) {
+				if (graveEntity.getGraveOwner() != null)
 					return Blocks.AIR.getDefaultState();
 			}
 		}

@@ -1,37 +1,115 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "minecraft:block/coarse_dirt",
-		"1": "minecraft:block/cobblestone",
-		"particle": "minecraft:block/cobblestone"
+		"1": "forgottengraves:block/dead_less_mossy_cobblestone",
+		"2": "minecraft:block/rooted_dirt",
+		"particle": "minecraft:block/rooted_dirt"
 	},
 	"elements": [
 		{
 			"name": "dirt",
-			"from": [1, 0, 0],
+			"from": [1, 0, 4],
 			"to": [15, 1, 15],
-			"color": 5,
 			"faces": {
-				"north": {"uv": [0, 0, 14, 1], "texture": "#0"},
-				"east": {"uv": [0, 0, 15, 1], "texture": "#0"},
-				"west": {"uv": [0, 0, 15, 1], "texture": "#0"},
-				"up": {"uv": [0, 0, 14, 15], "texture": "#0"},
-				"down": {"uv": [0, 0, 14, 15], "texture": "#0"}
+				"north": {"uv": [1, 1, 15, 2], "texture": "#2"},
+				"east": {"uv": [1, 1, 12, 2], "texture": "#2"},
+				"south": {"uv": [1, 1, 15, 2], "texture": "#2"},
+				"west": {"uv": [1, 1, 12, 2], "texture": "#2"},
+				"up": {"uv": [1, 1, 15, 12], "texture": "#2"},
+				"down": {"uv": [1, 1, 15, 12], "texture": "#2"}
+			}
+		},
+		{
+			"name": "dirt-ext1",
+			"from": [2, 0, 3],
+			"to": [14, 1, 4],
+			"faces": {
+				"north": {"uv": [2, 12, 14, 13], "texture": "#2"},
+				"east": {"uv": [2, 12, 3, 13], "texture": "#2"},
+				"south": {"uv": [2, 12, 14, 13], "texture": "#2"},
+				"west": {"uv": [2, 12, 3, 13], "texture": "#2"},
+				"up": {"uv": [2, 12, 14, 13], "texture": "#2"},
+				"down": {"uv": [2, 12, 14, 13], "texture": "#2"}
+			}
+		},
+		{
+			"name": "dirt-ext2",
+			"from": [3, 0, 2],
+			"to": [13, 1, 3],
+			"faces": {
+				"north": {"uv": [3, 13, 13, 14], "texture": "#2"},
+				"east": {"uv": [3, 13, 4, 14], "texture": "#2"},
+				"south": {"uv": [3, 13, 13, 14], "texture": "#2"},
+				"west": {"uv": [3, 13, 4, 14], "texture": "#2"},
+				"up": {"uv": [3, 13, 13, 14], "texture": "#2"},
+				"down": {"uv": [3, 13, 13, 14], "texture": "#2"}
+			}
+		},
+		{
+			"name": "dirt-ext3",
+			"from": [5, 0, 1],
+			"to": [11, 1, 2],
+			"faces": {
+				"north": {"uv": [5, 14, 11, 15], "texture": "#2"},
+				"east": {"uv": [5, 14, 6, 15], "texture": "#2"},
+				"south": {"uv": [5, 14, 11, 15], "texture": "#2"},
+				"west": {"uv": [5, 14, 6, 15], "texture": "#2"},
+				"up": {"uv": [5, 14, 11, 15], "texture": "#2"},
+				"down": {"uv": [5, 14, 11, 15], "texture": "#2"}
 			}
 		},
 		{
 			"name": "stone",
 			"from": [1, 0, 15],
-			"to": [15, 15, 16],
-			"color": 5,
+			"to": [15, 13, 16],
 			"faces": {
-				"north": {"uv": [0, 0, 14, 15], "rotation": 180, "texture": "#1"},
-				"east": {"uv": [0, 0, 15, 1], "rotation": 270, "texture": "#1"},
-				"south": {"uv": [0, 0, 14, 15], "texture": "#1"},
-				"west": {"uv": [0, 0, 15, 1], "rotation": 90, "texture": "#1"},
-				"up": {"uv": [0, 0, 14, 1], "rotation": 180, "texture": "#1"},
-				"down": {"uv": [0, 0, 14, 1], "texture": "#1"}
+				"north": {"uv": [1, 0, 15, 13], "rotation": 180, "texture": "#1"},
+				"east": {"uv": [1, 0, 2, 13], "rotation": 180, "texture": "#1"},
+				"south": {"uv": [1, 0, 15, 13], "rotation": 180, "texture": "#1"},
+				"west": {"uv": [1, 0, 2, 13], "rotation": 180, "texture": "#1"},
+				"up": {"uv": [1, 0, 15, 1], "rotation": 180, "texture": "#1"},
+				"down": {"uv": [1, 0, 15, 1], "rotation": 180, "texture": "#1"}
 			}
+		},
+		{
+			"name": "stone-ext1",
+			"from": [2, 13, 15],
+			"to": [14, 15, 16],
+			"faces": {
+				"north": {"uv": [2, 13, 14, 15], "texture": "#1"},
+				"east": {"uv": [2, 13, 3, 15], "texture": "#1"},
+				"south": {"uv": [2, 13, 14, 15], "texture": "#1"},
+				"west": {"uv": [2, 13, 3, 15], "texture": "#1"},
+				"up": {"uv": [2, 13, 14, 14], "texture": "#1"},
+				"down": {"uv": [2, 13, 14, 14], "texture": "#1"}
+			}
+		},
+		{
+			"name": "stone-ext2",
+			"from": [3, 15, 15],
+			"to": [13, 16, 16],
+			"faces": {
+				"north": {"uv": [3, 15, 13, 16], "texture": "#1"},
+				"east": {"uv": [3, 15, 4, 16], "texture": "#1"},
+				"south": {"uv": [3, 15, 13, 16], "texture": "#1"},
+				"west": {"uv": [3, 15, 4, 16], "texture": "#1"},
+				"up": {"uv": [3, 15, 13, 16], "texture": "#1"},
+				"down": {"uv": [3, 15, 13, 16], "texture": "#1"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "Dirt",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"children": [0, 1, 2, 3]
+		},
+		{
+			"name": "Headstone",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"children": [4, 5, 6]
 		}
 	]
 }

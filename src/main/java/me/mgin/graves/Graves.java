@@ -4,134 +4,97 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import me.mgin.graves.api.GravesApi;
-import me.mgin.graves.block.AgingGrave.BlockAge;
-import me.mgin.graves.block.GraveBase;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.util.ExperienceCalculator;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import me.mgin.graves.config.GravesConfig;
-import me.mgin.graves.events.PlayerBlockBreak;
+import me.mgin.graves.registry.GraveBlocks;
+import me.mgin.graves.registry.RegisterBlocks;
+import me.mgin.graves.registry.RegisterCommands;
+import me.mgin.graves.registry.RegisterEvents;
+import me.mgin.graves.registry.RegisterItems;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public class Graves implements ModInitializer {
 
-	public static final GraveBase GRAVE_FORGOTTEN = new GraveBase(BlockAge.FORGOTTEN,
-			FabricBlockSettings.of(Material.ORGANIC_PRODUCT).strength(0.8f, -1f));
-	public static final GraveBase GRAVE_WEATHERED = new GraveBase(BlockAge.WEATHERED,
-			FabricBlockSettings.of(Material.ORGANIC_PRODUCT).strength(0.8f, -1f));
-	public static final GraveBase GRAVE_OLD = new GraveBase(BlockAge.OLD,
-			FabricBlockSettings.of(Material.ORGANIC_PRODUCT).strength(0.8f, -1f));
-	public static final GraveBase GRAVE = new GraveBase(BlockAge.FRESH,
-			FabricBlockSettings.of(Material.ORGANIC_PRODUCT).strength(0.8f, -1f));
-
-	public static BlockEntityType<GraveBlockEntity> GRAVE_BLOCK_ENTITY;
-
 	public static final ArrayList<GravesApi> apiMods = new ArrayList<>();
-
 	public static String MOD_ID = "forgottengraves";
 	public static String BRAND_BLOCK = "grave";
 
 	@Override
 	public void onInitialize() {
-		Registry.register(Registry.BLOCK, new Identifier(MOD_ID, BRAND_BLOCK), GRAVE);
-		Registry.register(Registry.BLOCK, new Identifier(MOD_ID, BRAND_BLOCK + "_old"), GRAVE_OLD);
-		Registry.register(Registry.BLOCK, new Identifier(MOD_ID, BRAND_BLOCK + "_weathered"), GRAVE_WEATHERED);
-		Registry.register(Registry.BLOCK, new Identifier(MOD_ID, BRAND_BLOCK + "_forgotten"), GRAVE_FORGOTTEN);
-		GRAVE_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, MOD_ID + ":" + BRAND_BLOCK,
-				FabricBlockEntityTypeBuilder
-						.create(GraveBlockEntity::new, GRAVE, GRAVE_OLD, GRAVE_WEATHERED, GRAVE_FORGOTTEN).build(null));
-		Registry.register(Registry.ITEM, new Identifier(MOD_ID, BRAND_BLOCK),
-				new BlockItem(GRAVE, new Item.Settings().group(ItemGroup.DECORATIONS)));
-		Registry.register(Registry.ITEM, new Identifier(MOD_ID, BRAND_BLOCK + "_old"),
-				new BlockItem(GRAVE_OLD, new Item.Settings().group(ItemGroup.DECORATIONS)));
-		Registry.register(Registry.ITEM, new Identifier(MOD_ID, BRAND_BLOCK + "_weathered"),
-				new BlockItem(GRAVE_WEATHERED, new Item.Settings().group(ItemGroup.DECORATIONS)));
-		Registry.register(Registry.ITEM, new Identifier(MOD_ID, BRAND_BLOCK + "_forgotten"),
-				new BlockItem(GRAVE_FORGOTTEN, new Item.Settings().group(ItemGroup.DECORATIONS)));
-
-		AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);
-
+		// Graves Registry
+		RegisterBlocks.register(MOD_ID, BRAND_BLOCK);
+		RegisterItems.register(MOD_ID, BRAND_BLOCK);
+		RegisterEvents.register();
+		RegisterCommands.register();
 		apiMods.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, GravesApi.class));
 
-		PlayerBlockBreakEvents.BEFORE.register((World world, PlayerEntity player, BlockPos pos, BlockState state,	BlockEntity entity) ->
-			PlayerBlockBreak.handleEvent(player, pos, entity)
-		);
+		// Dependency Registry
+		AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);
 	}
 
-	public static void placeGrave(World world, Vec3d pos, PlayerEntity player) {
+	public static void placeGrave(World world, Vec3d vecPos, PlayerEntity player) {
 		if (world.isClient)
 			return;
 
-		BlockPos blockPos = new BlockPos(pos.x, pos.y - 1, pos.z);
+		BlockPos pos = new BlockPos(vecPos.x, vecPos.y - 1, vecPos.z);
 
 		DefaultedList<ItemStack> combinedInventory = DefaultedList.of();
 
 		combinedInventory.addAll(player.getInventory().main);
 		combinedInventory.addAll(player.getInventory().armor);
-		/*
-		 * if (){//Compat Inventories. when I don't need to sleep lol
-		 * combinedInventory.addAll(player.getInventory().armor); }
-		 */
 		combinedInventory.addAll(player.getInventory().offHand);
 
 		for (GravesApi GravesApi : Graves.apiMods) {
 			combinedInventory.addAll(GravesApi.getInventory(player));
 		}
 
-		if (blockPos.getY() < 0) {
-			blockPos = new BlockPos(blockPos.getX(), 10, blockPos.getZ());
+		// Lowest Y Height
+		if (pos.getY() < -64) {
+			pos = new BlockPos(pos.getX(), -60, pos.getZ());
 		}
 
-		for (BlockPos gravePos : BlockPos.iterateOutwards(blockPos.add(new Vec3i(0, 1, 0)), 5, 5, 5)) {
-			BlockState blockState = world.getBlockState(gravePos);
-			Block block = blockState.getBlock();
+		for (BlockPos gravePos : BlockPos.iterateOutwards(pos.add(new Vec3i(0, 1, 0)), 5, 5, 5)) {
+			BlockState state = world.getBlockState(gravePos);
+			Block block = state.getBlock();
 
 			if (canPlaceGrave(world, block, gravePos)) {
-				world.setBlockState(gravePos, Graves.GRAVE.getDefaultState().with(Properties.HORIZONTAL_FACING,
+				world.setBlockState(gravePos, GraveBlocks.GRAVE.getDefaultState().with(Properties.HORIZONTAL_FACING,
 						player.getHorizontalFacing()));
 
-				GraveBlockEntity graveBlockEntity = new GraveBlockEntity(gravePos, world.getBlockState(gravePos));
+				GraveBlockEntity graveEntity = new GraveBlockEntity(gravePos, world.getBlockState(gravePos));
 
-				graveBlockEntity.setItems(combinedInventory);
-				graveBlockEntity.setGraveOwner(player.getGameProfile());
+				graveEntity.setItems(combinedInventory);
+				graveEntity.setGraveOwner(player.getGameProfile());
 
 				int experience = ExperienceCalculator.calculateExperienceStorage(player.experienceLevel,
 						player.experienceProgress);
 
-				graveBlockEntity.setXp(experience);
+				graveEntity.setXp(experience);
 				player.totalExperience = 0;
 				player.experienceProgress = 0;
 				player.experienceLevel = 0;
-				world.addBlockEntity(graveBlockEntity);
+				world.addBlockEntity(graveEntity);
 
 				if (world.isClient())
-					graveBlockEntity.sync(world, gravePos);
-				block.onBreak(world, blockPos, blockState, player);
+					graveEntity.sync(world, gravePos);
+				block.onBreak(world, pos, state, player);
 
 				if (GravesConfig.getConfig().mainSettings.sendGraveCoordinates) {
 					player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(),
@@ -146,13 +109,11 @@ public class Graves implements ModInitializer {
 		}
 	}
 
-	private static boolean canPlaceGrave(World world, Block block, BlockPos blockPos) {
-		BlockEntity blockEntity = world.getBlockEntity(blockPos);
+	private static boolean canPlaceGrave(World world, Block block, BlockPos pos) {
+		BlockEntity blockEntity = world.getBlockEntity(pos);
 
 		if (blockEntity != null)
 			return false;
-		// Check if it's in a blacklisted/non-whitelisted dimension
-		// Check if it's in a blacklisted/non-whitelisted biome
 
 		Set<Block> blackListedBlocks = new HashSet<Block>() {
 			{
@@ -163,6 +124,6 @@ public class Graves implements ModInitializer {
 		if (blackListedBlocks.contains(block))
 			return false;
 
-		return !(blockPos.getY() < 0 || blockPos.getY() > 255);
+		return !(pos.getY() < -64 || pos.getY() > 319);
 	}
 }

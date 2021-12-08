@@ -1,18 +1,14 @@
 package me.mgin.graves.client.render;
 
+import me.mgin.graves.api.SkullApi;
 import me.mgin.graves.block.GraveBase;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SkullBlock;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory.Context;
-import net.minecraft.client.render.block.entity.SkullBlockEntityModel;
-import net.minecraft.client.render.block.entity.SkullBlockEntityRenderer;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.EntityModelLoader;
-import net.minecraft.client.render.entity.model.SkullEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
@@ -21,34 +17,24 @@ import net.minecraft.util.math.Vec3f;
 public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockEntity> {
 
 	private final TextRenderer textRenderer;
-	private SkullBlockEntityModel skull;
+	private EntityModelLoader modelLoader;
 	private int blockAge = 0;
-	private EntityModelLoader renderLayer;
 
-	public GraveBlockEntityRenderer(Context ctx) {
+	public GraveBlockEntityRenderer(Context context) {
 		super();
-		this.renderLayer = ctx.getLayerRenderDispatcher();
-		this.textRenderer = ctx.getTextRenderer();
-	}
-
-	public SkullBlockEntityModel getSkull(BlockState state) {
-		SkullBlockEntityModel skull = new SkullEntityModel(blockAge >= 2
-				? renderLayer.getModelPart(EntityModelLayers.SKELETON_SKULL)
-				: renderLayer.getModelPart(EntityModelLayers.PLAYER_HEAD));
-		skull.setHeadRotation(1f, 2f, 2f);
-		return skull;
+		this.modelLoader = context.getLayerRenderDispatcher();
+		this.textRenderer = context.getTextRenderer();
 	}
 
 	@Override
-	public void render(GraveBlockEntity blockEntity, float tickDelta, MatrixStack matrices,
+	public void render(GraveBlockEntity graveEntity, float tickDelta, MatrixStack matrices,
 			VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
-		BlockState state = blockEntity.getCachedState();
+		BlockState state = graveEntity.getCachedState();
 		blockAge = ((GraveBase) state.getBlock()).getWeathered();
 		Direction direction = state.get(Properties.HORIZONTAL_FACING);
 
 		matrices.push();
-
 		matrices.scale(0.75f, 0.75f, 0.75f);
 		matrices.translate(0, 0.08f, 0);
 
@@ -74,31 +60,21 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 		}
 
 		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(50));
-		// matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(10));
 
-		if (blockEntity.getGraveOwner() != null) {
-			this.skull = getSkull(state);
-			// Make the yaw a configurable value
-			float yaw = Float.max(10f, blockAge * 12f);
-			if (blockAge >= 2)
-				SkullBlockEntityRenderer.renderSkull(null, yaw, 0f, matrices, vertexConsumers, light, skull,
-						SkullBlockEntityRenderer.getRenderLayer(SkullBlock.Type.SKELETON, null));
-			else
-				SkullBlockEntityRenderer.renderSkull(null, yaw, 0f, matrices, vertexConsumers, light, skull,
-						SkullBlockEntityRenderer.getRenderLayer(SkullBlock.Type.PLAYER, blockEntity.getGraveOwner()));
-		}
+		SkullApi.renderSkull(graveEntity, modelLoader, blockAge, state, matrices, light, vertexConsumers);
 
 		matrices.pop();
+
 		// Outline
-		if (blockEntity.getGraveOwner() != null) {
+		if (graveEntity.getGraveOwner() != null
+				|| (graveEntity.getCustomName() != null && !graveEntity.getCustomName().isEmpty())) {
 			String text = "";
-			if (blockEntity.getGraveOwner() != null) {
-				text = blockEntity.getGraveOwner().getName();
-			} else if (blockEntity.getCustomNametag() != null) {
-				if (!blockEntity.getCustomNametag().isEmpty()) {
-					text = blockEntity.getCustomNametag().substring(9);
-					text = text.substring(0, text.length() - 2);
-				}
+
+			if (graveEntity.getGraveOwner() != null) {
+				text = graveEntity.getGraveOwner().getName();
+			} else {
+				text = graveEntity.getCustomName().substring(9);
+				text = text.substring(0, text.length() - 2);
 			}
 
 			// Main Text
@@ -106,7 +82,7 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 
 			int width = this.textRenderer.getWidth(text);
 
-			float scale = 0.7F / width;
+			float scale = (text.length() > 5 ? 0.7F : 0.44F) / width;
 
 			switch (direction) {
 				case NORTH :

@@ -1,16 +1,49 @@
 # Forgotten Graves
 
-Forgotten Graves is a configurable fabric mod that stores items and XP inside a grave upon death; the grave will then begin to age between 4 different stages.
+Forgotten Graves is a highly configurable fabric mod that adds a grave that stores items and XP upon death; the grave will then begin to age at random between 4 different stages.
 
-If you have any issues with the mod or a feature request, please use the [issue tracker](https://github.com/ginsm/forgotten-graves/issues). Any feedback is welcomed. Thank you!
+The graves are craftable, support custom names & heads, and can be locked at any age stage (via honeycomb). You can easily go back a stage or remove the stage lock by using a shovel!
+
+If you have any issues with the mod or a feature request, please use the [issue tracker](https://github.com/ginsm/forgotten-graves/issues). Any feedback is welcomed, thank you!
+
 
  
 
-**Configuration Screen:**
+**Configuration (Defaults):**
 
-![Forgotten Graves Settings Window](docs/screenshots/ConfigScreen.png)
+```
+{
+  "mainSettings": {
+    "enableGraves": true,
+    "sendGraveCoordinates": true,
+    "retrievalType": "ON_BOTH",
+    "dropType": "PUT_IN_INVENTORY",
+    "expStorageType": "STORE_ALL_XP",
+    "customXPStoredLevel": 30
+  },
+  "serverSettings": {
+    "enableGraveRobbing": false,
+    "minOperatorOverrideLevel": 4
+  }
+}
+```
 
-*Note: Server-side configuration overrides any user set configuration currently. I plan to [change that](https://github.com/ginsm/forgotten-graves/issues/13) soon, so that some of the settings are client-side only.*
+ 
+
+**Grave Models:**
+
+![Grave Models](docs/screenshots/GraveModels.gif)
+
+ 
+
+**GUI Configuration:**
+
+![Forgotten Graves Config](docs/screenshots/ConfigScreen.png)
+
+ 
+
+
+*Note: Server-side configuration overrides any user set configuration currently.*
 
  
 ## Want to help out?

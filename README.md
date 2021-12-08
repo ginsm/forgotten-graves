@@ -6,10 +6,36 @@ If you have any issues with the mod or a feature request, please use the [issue 
 
  
 
-**Configuration Screen:**
+**Grave Models:**
 
-![Forgotten Graves Settings Window](docs/screenshots/ConfigScreen.png)
+![Grave Models](docs/screenshots/GraveModels.gif)
 
+ 
+**Configuration:**
+
+![Forgotten Graves Config](docs/screenshots/ConfigScreen.png)
+
+ 
+**File Configuration:**
+
+```
+{
+  "mainSettings": {
+    "enableGraves": true,
+    "sendGraveCoordinates": true,
+    "retrievalType": "ON_BOTH",
+    "dropType": "PUT_IN_INVENTORY",
+    "expStorageType": "STORE_ALL_XP",
+    "customXPStoredLevel": 30
+  },
+  "serverSettings": {
+    "enableGraveRobbing": false,
+    "minOperatorOverrideLevel": 4
+  }
+}
+```
+
+ 
 *Note: Server-side configuration overrides any user set configuration currently. I plan to [change that](https://github.com/ginsm/forgotten-graves/issues/13) soon, so that some of the settings are client-side only.*
 
  

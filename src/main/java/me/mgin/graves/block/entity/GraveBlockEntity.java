@@ -96,7 +96,7 @@ public class GraveBlockEntity extends BlockEntity {
 	 * @return boolean
 	 */
 	public boolean isGraveOwner(PlayerEntity player) {
-		return player.getGameProfile().getId() == graveOwner.getId();
+		return graveOwner.getId().equals(player.getGameProfile().getId());
 	}
 
 	/**

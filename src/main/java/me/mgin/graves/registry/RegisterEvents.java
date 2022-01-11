@@ -1,12 +1,18 @@
 package me.mgin.graves.registry;
 
+import dev.emi.trinkets.api.SlotReference;
+import dev.emi.trinkets.api.TrinketEnums.DropRule;
+import dev.emi.trinkets.api.event.TrinketDropCallback;
 import me.mgin.graves.events.PlayerBlockBreakHandler;
+import me.mgin.graves.events.TrinketDropHandler;
 import me.mgin.graves.events.UseBlockHandler;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -20,6 +26,10 @@ public class RegisterEvents {
 
     UseBlockCallback.EVENT.register((PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) -> 
       UseBlockHandler.handleEvent(player, world, hand, hitResult)
+    );
+
+    TrinketDropCallback.EVENT.register((DropRule rule, ItemStack stack, SlotReference ref, LivingEntity entity) -> 
+      TrinketDropHandler.handleTrinketDrop(rule, stack, ref, entity)
     );
   }
 }

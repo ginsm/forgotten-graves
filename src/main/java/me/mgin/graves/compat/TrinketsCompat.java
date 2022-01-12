@@ -13,6 +13,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 public class TrinketsCompat implements GravesApi {
+	/**
+	 * Retrieve a list containing items occupying the trinket slots.
+	 * @param player
+	 * @return List<ItemStack>
+	 */
 	@Override
 	public List<ItemStack> getInventory(PlayerEntity player) {
 		Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
@@ -28,6 +33,11 @@ public class TrinketsCompat implements GravesApi {
 		return itemStacks;
 	}
 
+	/**
+	 * Equips all items within a list of ItemStacks into the trinket slots.
+	 * @param inventory - List<ItemStack>
+	 * @param player
+	 */
 	@Override
 	public void setInventory(List<ItemStack> inventory, PlayerEntity player) {
 		for (ItemStack itemStack : inventory) {
@@ -35,6 +45,11 @@ public class TrinketsCompat implements GravesApi {
 		}
 	}
 
+	/**
+	 * Retrieve the amount of trinket slots available.
+	 * @param player
+	 * @return int
+	 */
 	@Override
 	public int getInventorySize(PlayerEntity player) {
 		Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
@@ -50,6 +65,10 @@ public class TrinketsCompat implements GravesApi {
 		return slotWrapper.slots;
 	}
 
+	/**
+	 * Remove all items from the trinket slots.
+	 * @param player
+	 */
 	public static void clearInventory(PlayerEntity player) {
 		Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
 

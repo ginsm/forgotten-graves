@@ -12,51 +12,52 @@ import me.mgin.graves.api.GravesApi;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-
 public class TrinketsCompat implements GravesApi {
-  @Override
-  public List<ItemStack> getInventory(PlayerEntity player) {
-    Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
-    List<ItemStack> itemStacks = new ArrayList<>();
- 
-    if (component.isPresent()) {
-      component.get().getAllEquipped().forEach((pair) -> {
-        ItemStack itemStack = pair.getRight();
-        itemStacks.add(itemStack);
-      });
-    }
+	@Override
+	public List<ItemStack> getInventory(PlayerEntity player) {
+		Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
+		List<ItemStack> itemStacks = new ArrayList<>();
 
-    return itemStacks;
-  }
+		if (component.isPresent()) {
+			component.get().getAllEquipped().forEach((pair) -> {
+				ItemStack itemStack = pair.getRight();
+				itemStacks.add(itemStack);
+			});
+		}
 
-  @Override
-  public void setInventory(List<ItemStack> inventory, PlayerEntity player) {
-    for (ItemStack itemStack : inventory) {
-      TrinketItem.equipItem(player, itemStack);
-    }
-  }
+		return itemStacks;
+	}
 
-  @Override
-  public int getInventorySize(PlayerEntity player) {
-    Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
-    var slotWrapper = new Object(){ int slots = 0; };
+	@Override
+	public void setInventory(List<ItemStack> inventory, PlayerEntity player) {
+		for (ItemStack itemStack : inventory) {
+			TrinketItem.equipItem(player, itemStack);
+		}
+	}
 
-    if (component.isPresent())
-      component.get().forEach((ref, itemStack) -> {
-        slotWrapper.slots++;
-      });
+	@Override
+	public int getInventorySize(PlayerEntity player) {
+		Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
+		var slotWrapper = new Object() {
+			int slots = 0;
+		};
 
-    return slotWrapper.slots;
-  }
+		if (component.isPresent())
+			component.get().forEach((ref, itemStack) -> {
+				slotWrapper.slots++;
+			});
 
-  public static void clearInventory(PlayerEntity player) {
-    Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
-    
-    if (component.isPresent()) {
-      component.get().forEach((ref, stack) -> {
-        TrinketInventory inventory = ref.inventory();
-        inventory.setStack(ref.index(), ItemStack.EMPTY);
-      });
-    }
-  }
+		return slotWrapper.slots;
+	}
+
+	public static void clearInventory(PlayerEntity player) {
+		Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
+
+		if (component.isPresent()) {
+			component.get().forEach((ref, stack) -> {
+				TrinketInventory inventory = ref.inventory();
+				inventory.setStack(ref.index(), ItemStack.EMPTY);
+			});
+		}
+	}
 }

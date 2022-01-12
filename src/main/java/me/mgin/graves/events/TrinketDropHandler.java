@@ -7,12 +7,12 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 
 public class TrinketDropHandler {
-  public static DropRule handleTrinketDrop(DropRule rule, ItemStack stack, SlotReference ref, LivingEntity entity) {
-    // Prevent Trinkets from handling dropInventory
-    if (GravesConfig.getConfig().mainSettings.enableGraves) {
-      return DropRule.KEEP;
-    }
+	public static DropRule handleTrinketDrop(DropRule rule, ItemStack stack, SlotReference ref, LivingEntity entity) {
+		// Prevent Trinkets from handling dropInventory
+		if (GravesConfig.getConfig().mainSettings.enableGraves) {
+			return DropRule.KEEP;
+		}
 
-    return rule;
-  }
+		return rule;
+	}
 }

@@ -19,17 +19,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class RegisterEvents {
-  public static void register() {
-    PlayerBlockBreakEvents.BEFORE.register((World world, PlayerEntity player, BlockPos pos, BlockState state,	BlockEntity entity) ->
-      PlayerBlockBreakHandler.handleBeforeEvent(player, pos, entity)
-    );
+	public static void register() {
+		PlayerBlockBreakEvents.BEFORE.register((World world, PlayerEntity player, BlockPos pos, BlockState state,
+				BlockEntity entity) -> PlayerBlockBreakHandler.handleBeforeEvent(player, pos, entity));
 
-    UseBlockCallback.EVENT.register((PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) -> 
-      UseBlockHandler.handleEvent(player, world, hand, hitResult)
-    );
+		UseBlockCallback.EVENT.register((PlayerEntity player, World world, Hand hand,
+				BlockHitResult hitResult) -> UseBlockHandler.handleEvent(player, world, hand, hitResult));
 
-    TrinketDropCallback.EVENT.register((DropRule rule, ItemStack stack, SlotReference ref, LivingEntity entity) -> 
-      TrinketDropHandler.handleTrinketDrop(rule, stack, ref, entity)
-    );
-  }
+		TrinketDropCallback.EVENT.register((DropRule rule, ItemStack stack, SlotReference ref,
+				LivingEntity entity) -> TrinketDropHandler.handleTrinketDrop(rule, stack, ref, entity));
+	}
 }

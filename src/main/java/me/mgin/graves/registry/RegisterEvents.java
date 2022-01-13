@@ -8,6 +8,7 @@ import me.mgin.graves.events.TrinketDropHandler;
 import me.mgin.graves.events.UseBlockHandler;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
@@ -26,7 +27,9 @@ public class RegisterEvents {
 		UseBlockCallback.EVENT.register((PlayerEntity player, World world, Hand hand,
 				BlockHitResult hitResult) -> UseBlockHandler.handleEvent(player, world, hand, hitResult));
 
-		TrinketDropCallback.EVENT.register((DropRule rule, ItemStack stack, SlotReference ref,
-				LivingEntity entity) -> TrinketDropHandler.handleTrinketDrop(rule, stack, ref, entity));
+		if (FabricLoader.getInstance().isModLoaded("trinkets"))
+			TrinketDropCallback.EVENT.register((DropRule rule, ItemStack stack, SlotReference ref,
+					LivingEntity entity) -> TrinketDropHandler.handleTrinketDrop(rule, stack, ref, entity));
+
 	}
 }

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import me.mgin.graves.api.GravesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.compat.TrinketsCompat;
 import me.mgin.graves.util.ExperienceCalculator;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
@@ -43,6 +44,11 @@ public class Graves implements ModInitializer {
 		RegisterItems.register(MOD_ID, BRAND_BLOCK);
 		RegisterEvents.register();
 		RegisterCommands.register();
+
+		// Register compat classes
+		if (FabricLoader.getInstance().isModLoaded("trinkets"))
+			apiMods.add(new TrinketsCompat());
+
 		apiMods.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, GravesApi.class));
 
 		// Dependency Registry

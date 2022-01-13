@@ -181,6 +181,10 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		inventory.addAll(player.getInventory().armor);
 		inventory.addAll(player.getInventory().offHand);
 
+		for (GravesApi gravesApi : Graves.apiMods) {
+			inventory.addAll(gravesApi.getInventory(player));
+		}
+
 		GraveDropType dropType = GravesConfig.getConfig().mainSettings.dropType;
 
 		if (dropType == GraveDropType.PUT_IN_INVENTORY) {
@@ -221,6 +225,9 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 
 			extraItems.addAll(inventory.subList(0, 36));
 
+			if (inventory.size() > 41)
+				extraItems.addAll(inventory.subList(41, inventory.size()));
+
 			List<Integer> openSlots = getInventoryOpenSlots(player.getInventory().main);
 
 			for (int i = 0; i < openSlots.size(); i++) {
@@ -234,10 +241,11 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 			int inventoryOffset = 41;
 
 			for (GravesApi GravesApi : Graves.apiMods) {
-				GravesApi.setInventory(
-						items.subList(inventoryOffset, inventoryOffset + GravesApi.getInventorySize(player)),
-						player);
-				inventoryOffset += GravesApi.getInventorySize(player);
+				if (items.size() > inventoryOffset) {
+					int newOffset = inventoryOffset + GravesApi.getInventorySize(player);
+					GravesApi.setInventory(items.subList(inventoryOffset, newOffset), player);
+					inventoryOffset = newOffset;
+				}
 			}
 
 			ItemScatterer.spawn(world, pos, dropItems);

@@ -8,8 +8,9 @@ import net.minecraft.item.ItemStack;
 
 public class TrinketDropHandler {
 	/**
-	 * TrinketDropCallback handler; this method prevents Trinkets from handling item drops
-	 * unless enableGraves is set to false.
+	 * TrinketDropCallback handler; this method prevents Trinkets from handling item
+	 * drops unless enableGraves is set to false.
+	 *
 	 * @param rule
 	 * @param stack
 	 * @param ref

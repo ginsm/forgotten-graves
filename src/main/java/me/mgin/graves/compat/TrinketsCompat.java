@@ -8,7 +8,6 @@ import dev.emi.trinkets.TrinketSlot;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketInventory;
-import dev.emi.trinkets.api.TrinketItem;
 import dev.emi.trinkets.api.TrinketsApi;
 import me.mgin.graves.api.GravesApi;
 import net.minecraft.entity.player.PlayerEntity;
@@ -91,7 +90,7 @@ public class TrinketsCompat implements GravesApi {
 	/**
 	 * Equips an item based on a given index; this is meant to be used with
 	 * setInventory. The index is based on each TrinketSlot -- not group.
-	 * 
+	 *
 	 * @param item
 	 * @param player
 	 * @param index
@@ -111,8 +110,8 @@ public class TrinketsCompat implements GravesApi {
 								inventory.setStack(i, newStack);
 								SoundEvent soundEvent = item.getEquipSound();
 								if (!item.isEmpty() && soundEvent != null) {
-									 player.emitGameEvent(GameEvent.EQUIP);
-									 player.playSound(soundEvent, 1.0F, 1.0F);
+									player.emitGameEvent(GameEvent.EQUIP);
+									player.playSound(soundEvent, 1.0F, 1.0F);
 								}
 								item.setCount(0);
 							}

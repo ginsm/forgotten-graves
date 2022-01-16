@@ -30,6 +30,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 
 public class Graves implements ModInitializer {
 
@@ -71,9 +72,16 @@ public class Graves implements ModInitializer {
 			combinedInventory.addAll(GravesApi.getInventory(player));
 		}
 
-		// Lowest Y Height
-		if (pos.getY() < -64) {
-			pos = new BlockPos(pos.getX(), -60, pos.getZ());
+		// Handle dying below the dimension's minimum Y height
+		int minY = world.getDimension().getMinimumY();
+		if (minY > pos.getY()) {
+			pos = new BlockPos(pos.getX(), minY + 5, pos.getZ());
+		} 
+		
+		// Handle dying at or above the dimension's maximum Y height
+		int maxY = world.getTopY() - 1;
+		if (pos.getY() >= maxY) {
+			pos = new BlockPos(pos.getX(), maxY - 1, pos.getZ());
 		}
 
 		for (BlockPos gravePos : BlockPos.iterateOutwards(pos.add(new Vec3i(0, 1, 0)), 5, 5, 5)) {
@@ -130,6 +138,7 @@ public class Graves implements ModInitializer {
 		if (blackListedBlocks.contains(block))
 			return false;
 
-		return !(pos.getY() < -64 || pos.getY() > 319);
+		DimensionType dimension = world.getDimension();
+		return !(pos.getY() < dimension.getMinimumY() || pos.getY() > world.getTopY());
 	}
 }

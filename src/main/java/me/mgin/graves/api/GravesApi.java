@@ -10,7 +10,7 @@ public interface GravesApi {
 
 	/**
 	 * Set the inventory for a given mod.
-	 * 
+	 *
 	 * @param inventory
 	 * @param entity
 	 * @return Items that could not be equipped.

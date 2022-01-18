@@ -242,9 +242,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 				if (items.size() > inventoryOffset) {
 					int newOffset = inventoryOffset + GravesApi.getInventorySize(player);
 					// Add any unequipped items to extraItems
-					extraItems.addAll(
-						GravesApi.setInventory(items.subList(inventoryOffset, newOffset), player)
-					);
+					extraItems.addAll(GravesApi.setInventory(items.subList(inventoryOffset, newOffset), player));
 					inventoryOffset = newOffset;
 				}
 			}
@@ -256,7 +254,6 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 			DefaultedList<ItemStack> dropItems = DefaultedList.of();
 
 			dropItems.addAll(extraItems.subList(openSlots.size(), extraItems.size()));
-
 
 			ItemScatterer.spawn(world, pos, dropItems);
 		} else if (dropType == GraveDropType.DROP_ITEMS) {

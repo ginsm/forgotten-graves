@@ -13,6 +13,7 @@ import me.mgin.graves.config.GraveDropType;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
@@ -191,8 +192,14 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 			player.getInventory().clear();
 
 			List<ItemStack> armor = items.subList(36, 40);
+			DefaultedList<ItemStack> extraItems = DefaultedList.of();
 
+			// Equip items that do not have curse of binding
 			for (int i = 0; i < armor.size(); i++) {
+				if (EnchantmentHelper.hasBindingCurse(armor.get(i))) {
+					extraItems.add(armor.get(i));
+					continue;
+				}
 				EquipmentSlot equipmentSlot = MobEntity.getPreferredEquipmentSlot(armor.get(i));
 				player.equipStack(equipmentSlot, armor.get(i));
 			}
@@ -204,8 +211,6 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 			for (int i = 0; i < mainInventory.size(); i++) {
 				player.getInventory().setStack(i, mainInventory.get(i));
 			}
-
-			DefaultedList<ItemStack> extraItems = DefaultedList.of();
 
 			List<Integer> openArmorSlots = getInventoryOpenSlots(player.getInventory().armor);
 
@@ -230,6 +235,20 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 
 			List<Integer> openSlots = getInventoryOpenSlots(player.getInventory().main);
 
+			int inventoryOffset = 41;
+
+			// Equip third party inventories
+			for (GravesApi GravesApi : Graves.apiMods) {
+				if (items.size() > inventoryOffset) {
+					int newOffset = inventoryOffset + GravesApi.getInventorySize(player);
+					// Add any unequipped items to extraItems
+					extraItems.addAll(
+						GravesApi.setInventory(items.subList(inventoryOffset, newOffset), player)
+					);
+					inventoryOffset = newOffset;
+				}
+			}
+
 			for (int i = 0; i < openSlots.size(); i++) {
 				player.getInventory().setStack(openSlots.get(i), extraItems.get(i));
 			}
@@ -238,15 +257,6 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 
 			dropItems.addAll(extraItems.subList(openSlots.size(), extraItems.size()));
 
-			int inventoryOffset = 41;
-
-			for (GravesApi GravesApi : Graves.apiMods) {
-				if (items.size() > inventoryOffset) {
-					int newOffset = inventoryOffset + GravesApi.getInventorySize(player);
-					GravesApi.setInventory(items.subList(inventoryOffset, newOffset), player);
-					inventoryOffset = newOffset;
-				}
-			}
 
 			ItemScatterer.spawn(world, pos, dropItems);
 		} else if (dropType == GraveDropType.DROP_ITEMS) {

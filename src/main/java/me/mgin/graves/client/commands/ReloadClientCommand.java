@@ -1,4 +1,4 @@
-package me.mgin.graves.commands;
+package me.mgin.graves.client.commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
@@ -9,7 +9,7 @@ import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
-public class ReloadCommand {
+public class ReloadClientCommand {
   static public int execute(CommandContext<FabricClientCommandSource> context) {
     AutoConfig.getConfigHolder(GravesConfig.class).load();
     context.getSource().sendFeedback(

@@ -9,7 +9,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public class RegisterItems {
+public class ServerItems {
   
   public static void register(String MOD_ID, String BRAND_BLOCK) {
     for (Map.Entry<GraveBase, String> grave : GraveBlocks.GRAVE_MAP.entrySet()) {

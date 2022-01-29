@@ -11,10 +11,10 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.registry.GraveBlocks;
-import me.mgin.graves.registry.RegisterBlocks;
-import me.mgin.graves.registry.RegisterCommands;
-import me.mgin.graves.registry.RegisterEvents;
-import me.mgin.graves.registry.RegisterItems;
+import me.mgin.graves.registry.ServerBlocks;
+import me.mgin.graves.registry.ServerCommands;
+import me.mgin.graves.registry.ServerEvents;
+import me.mgin.graves.registry.ServerItems;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
@@ -41,10 +41,10 @@ public class Graves implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		// Graves Registry
-		RegisterBlocks.register(MOD_ID, BRAND_BLOCK);
-		RegisterItems.register(MOD_ID, BRAND_BLOCK);
-		RegisterEvents.register();
-		RegisterCommands.register();
+		ServerBlocks.register(MOD_ID, BRAND_BLOCK);
+		ServerItems.register(MOD_ID, BRAND_BLOCK);
+		ServerEvents.register();
+		ServerCommands.register();
 
 		// Register compat classes
 		if (FabricLoader.getInstance().isModLoaded("trinkets"))

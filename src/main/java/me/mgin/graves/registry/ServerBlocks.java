@@ -10,7 +10,7 @@ import java.util.Map;
 import me.mgin.graves.block.GraveBase;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 
-public class RegisterBlocks {
+public class ServerBlocks {
 
   public static void register(String MOD_ID, String BRAND_BLOCK) {
 

@@ -2,7 +2,7 @@ package me.mgin.graves.config;
 
 import com.google.gson.Gson;
 
-import me.mgin.graves.util.Identifiers;
+import me.mgin.graves.util.Constants;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
@@ -21,7 +21,7 @@ public class ConfigNetworking {
     if (!(client.getServer() instanceof IntegratedServer)) {
       PacketByteBuf buf = PacketByteBufs.create();
       buf.writeString(this.serialize());
-      ClientPlayNetworking.send(Identifiers.CLIENT_SEND_CONFIG, buf);
+      ClientPlayNetworking.send(Constants.CLIENT_SEND_CONFIG, buf);
     }
   }
 

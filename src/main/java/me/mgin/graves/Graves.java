@@ -1,8 +1,13 @@
 package me.mgin.graves;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
+import com.mojang.authlib.GameProfile;
+
 import me.mgin.graves.api.GravesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.compat.TrinketsCompat;
@@ -15,6 +20,7 @@ import me.mgin.graves.registry.ServerBlocks;
 import me.mgin.graves.registry.ServerCommands;
 import me.mgin.graves.registry.ServerEvents;
 import me.mgin.graves.registry.ServerItems;
+import me.mgin.graves.registry.ServerReceivers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
@@ -37,6 +43,7 @@ public class Graves implements ModInitializer {
 	public static final ArrayList<GravesApi> apiMods = new ArrayList<>();
 	public static String MOD_ID = "forgottengraves";
 	public static String BRAND_BLOCK = "grave";
+	public static Map<GameProfile, GravesConfig> clientConfigs = new HashMap<>();
 
 	@Override
 	public void onInitialize() {
@@ -45,6 +52,7 @@ public class Graves implements ModInitializer {
 		ServerItems.register(MOD_ID, BRAND_BLOCK);
 		ServerEvents.register();
 		ServerCommands.register();
+		ServerReceivers.register();
 
 		// Register compat classes
 		if (FabricLoader.getInstance().isModLoaded("trinkets"))

@@ -10,7 +10,7 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 
 	@ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
 	public ClientSettings client = new ClientSettings();
-	@ConfigEntry.Gui.Excluded
+	@ConfigEntry.Gui.CollapsibleObject(startExpanded = false)
 	public ServerSettings server = new ServerSettings();
 
 	public static GravesConfig getConfig() {
@@ -47,7 +47,11 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 	}
 	
 	public static class ServerSettings {
+		@ConfigEntry.Gui.Tooltip
 		public boolean enableGraveRobbing = false;
+		
+		@ConfigEntry.Gui.Tooltip
+		@ConfigEntry.BoundedDiscrete(min=-1, max=4)
 		public int minOperatorOverrideLevel = 4;
 	}
 }

@@ -11,7 +11,8 @@
 
 
   "text.autoconfig.forgottengraves.title": "Forgotten Graves Settings",
-  "text.autoconfig.forgottengraves.option.client": "Main Settings",
+  "text.autoconfig.forgottengraves.option.client": "Client Settings",
+  "text.autoconfig.forgottengraves.option.server": "Server Settings",
 
   "text.autoconfig.forgottengraves.option.client.enableGraves": "Enable Forgotten Graves",
   "text.autoconfig.forgottengraves.option.client.enableGraves.@Tooltip": "Enable the Forgotten Graves mod?",
@@ -20,7 +21,7 @@
   "text.autoconfig.forgottengraves.option.client.enableGraveRobbing.@Tooltip": "Can players retrieve other players' graves?",
   
   "text.autoconfig.forgottengraves.option.client.sendGraveCoordinates": "Send Grave Coordinates",
-  "text.autoconfig.forgottengraves.option.client.sendGraveCoordinates.@Tooltip": "Should players be sent the coordinates of their graves?",
+  "text.autoconfig.forgottengraves.option.client.sendGraveCoordinates.@Tooltip": "Should the coords of the grave be sent in chat?",
   "text.forgottengraves.mark_coords": "Your grave has spawned at [x: %d, y: %d, z: %d]",
   
   "text.autoconfig.forgottengraves.option.client.minOperatorOverrideLevel": "Minimum OP Level Override",
@@ -36,5 +37,12 @@
   "text.autoconfig.forgottengraves.option.client.expStorageType.@Tooltip": "How should the graves store XP?",
 
   "text.autoconfig.forgottengraves.option.client.customXPStoredLevel": "Max Custom XP Level",
-  "text.autoconfig.forgottengraves.option.client.customXPStoredLevel.@Tooltip": "(Custom Option) What's the max amount of levels that you want stored?"
+  "text.autoconfig.forgottengraves.option.client.customXPStoredLevel.@Tooltip": "(Custom) What's the max amount of levels that you want stored?",
+
+  "text.autoconfig.forgottengraves.option.server.enableGraveRobbing": "Enable Grave Robbing",
+  "text.autoconfig.forgottengraves.option.server.enableGraveRobbing.@Tooltip": "Should players be able to rob graves?",
+
+  "text.autoconfig.forgottengraves.option.server.minOperatorOverrideLevel": "Minimum OP Override Lvl",
+  "text.autoconfig.forgottengraves.option.server.minOperatorOverrideLevel.@Tooltip": "Minimum OP level to override grave protection?"
+
 }

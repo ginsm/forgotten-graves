@@ -28,7 +28,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 	@Redirect(method = "dropInventory", at = @At(value = "INVOKE", target = "net.minecraft.entity.player.PlayerInventory.dropAll()V"))
 	private void dropAll(PlayerInventory inventory) {
-		boolean forgottenGravesEnabled = GravesConfig.getConfig().mainSettings.enableGraves;
+		boolean forgottenGravesEnabled = GravesConfig.getConfig().client.enableGraves;
 
 		if (!forgottenGravesEnabled) {
 			this.inventory.dropAll();

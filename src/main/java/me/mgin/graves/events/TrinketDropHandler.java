@@ -19,7 +19,7 @@ public class TrinketDropHandler {
 	 */
 	public static DropRule handleTrinketDrop(DropRule rule, ItemStack stack, SlotReference ref, LivingEntity entity) {
 		// Prevent Trinkets from handling dropInventory
-		if (GravesConfig.getConfig().mainSettings.enableGraves) {
+		if (GravesConfig.getConfig().client.enableGraves) {
 			return DropRule.KEEP;
 		}
 

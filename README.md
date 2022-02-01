@@ -27,7 +27,7 @@ If you have any issues with the mod or a feature request, please use the [issue 
 
 ```
 {
-  "mainSettings": {
+  "client": {
     "enableGraves": true,
     "sendGraveCoordinates": true,
     "retrievalType": "ON_BOTH",
@@ -35,7 +35,7 @@ If you have any issues with the mod or a feature request, please use the [issue 
     "expStorageType": "STORE_ALL_XP",
     "customXPStoredLevel": 30
   },
-  "serverSettings": {
+  "server": {
     "enableGraveRobbing": false,
     "minOperatorOverrideLevel": 4
   }

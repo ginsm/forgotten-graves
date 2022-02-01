@@ -1,6 +1,7 @@
 package me.mgin.graves.config;
 
 import com.google.gson.Gson;
+import com.mojang.authlib.GameProfile;
 
 import me.mgin.graves.util.Constants;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -43,4 +44,10 @@ public class ConfigNetworking {
     Gson gson = new Gson();
     return gson.fromJson(config, GravesConfig.class);
   }
+
+  /*
+    TODO
+    Create a method that determines whether the program should use
+    the server or the client's config for a given setting.
+  */
 }

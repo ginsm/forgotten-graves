@@ -6,7 +6,7 @@ import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 @Config(name = "forgottengraves")
-public class GravesConfig implements ConfigData {
+public class GravesConfig extends ConfigNetworking implements ConfigData {
 
 	@ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
 	public MainSettings mainSettings = new MainSettings();
@@ -50,5 +50,4 @@ public class GravesConfig implements ConfigData {
 		public boolean enableGraveRobbing = false;
 		public int minOperatorOverrideLevel = 4;
 	}
-
 }

@@ -1,6 +1,5 @@
 package me.mgin.graves.client.registry;
 
-import me.mgin.graves.client.GravesClient;
 import me.mgin.graves.config.GravesConfig;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -13,19 +12,19 @@ public class ClientEvents {
   static public void register() {
     // Join Dedicated Server
     ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-      GravesConfig configData = GravesConfig.getConfig();
-      GravesClient.sendServerClientConfig(configData);
+      GravesConfig config = GravesConfig.getConfig();
+      config.sendToServer();
     });
 
     // Save Config
-    AutoConfig.getConfigHolder(GravesConfig.class).registerLoadListener((manager, newConfigData) -> {
-      GravesClient.sendServerClientConfig(newConfigData);
+    AutoConfig.getConfigHolder(GravesConfig.class).registerLoadListener((manager, config) -> {
+      config.sendToServer();
       return ActionResult.SUCCESS;
     });
 
     // Load Config
-    AutoConfig.getConfigHolder(GravesConfig.class).registerSaveListener((manager, configData) -> {
-      GravesClient.sendServerClientConfig(configData);
+    AutoConfig.getConfigHolder(GravesConfig.class).registerSaveListener((manager, config) -> {
+      config.sendToServer();
       return ActionResult.SUCCESS;
     });
   }

@@ -45,14 +45,14 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 		@ConfigEntry.Gui.Tooltip
 		public int maxCustomXPLevel = 30;
 	}
-	
+
 	public static class ServerSettings {
 		@ConfigEntry.Gui.PrefixText
 		@ConfigEntry.Gui.Tooltip
 		public boolean enableGraveRobbing = false;
-		
+
 		@ConfigEntry.Gui.Tooltip
-		@ConfigEntry.BoundedDiscrete(min=-1, max=4)
+		@ConfigEntry.BoundedDiscrete(min = -1, max = 4)
 		public int minOperatorOverrideLevel = 4;
 
 		@ConfigEntry.Gui.Tooltip

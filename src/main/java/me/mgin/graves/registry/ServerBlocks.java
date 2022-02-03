@@ -12,17 +12,18 @@ import me.mgin.graves.block.entity.GraveBlockEntity;
 
 public class ServerBlocks {
 
-  public static void register(String MOD_ID, String BRAND_BLOCK) {
+	public static void register(String MOD_ID, String BRAND_BLOCK) {
 
-    for (Map.Entry<GraveBase, String> grave : GraveBlocks.GRAVE_MAP.entrySet()) {
-      Registry.register(Registry.BLOCK, new Identifier(MOD_ID, BRAND_BLOCK + grave.getValue()), grave.getKey());
-    }
+		for (Map.Entry<GraveBase, String> grave : GraveBlocks.GRAVE_MAP.entrySet()) {
+			Registry.register(Registry.BLOCK, new Identifier(MOD_ID, BRAND_BLOCK + grave.getValue()), grave.getKey());
+		}
 
-    BlockEntityType<GraveBlockEntity> blockEntityType = FabricBlockEntityTypeBuilder.create(
-      GraveBlockEntity::new, GraveBlocks.GRAVE, GraveBlocks.GRAVE_OLD, GraveBlocks.GRAVE_WEATHERED, GraveBlocks.GRAVE_FORGOTTEN
-    ).build(null);
+		BlockEntityType<GraveBlockEntity> blockEntityType = FabricBlockEntityTypeBuilder.create(GraveBlockEntity::new,
+				GraveBlocks.GRAVE, GraveBlocks.GRAVE_OLD, GraveBlocks.GRAVE_WEATHERED, GraveBlocks.GRAVE_FORGOTTEN)
+				.build(null);
 
-    GraveBlocks.GRAVE_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, MOD_ID + ":" + BRAND_BLOCK, blockEntityType);
+		GraveBlocks.GRAVE_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, MOD_ID + ":" + BRAND_BLOCK,
+				blockEntityType);
 
-  }
+	}
 }

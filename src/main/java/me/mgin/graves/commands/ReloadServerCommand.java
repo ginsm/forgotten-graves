@@ -10,14 +10,11 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 public class ReloadServerCommand {
-  static public int execute(CommandContext<ServerCommandSource> context) {
-    AutoConfig.getConfigHolder(GravesConfig.class).load();
-    context.getSource().sendFeedback(
-      new TranslatableText("text.forgottengraves.command.reloadserver")
-        .formatted(Formatting.GRAY),
-      true
-    );
-    return Command.SINGLE_SUCCESS;
-  }
+	static public int execute(CommandContext<ServerCommandSource> context) {
+		AutoConfig.getConfigHolder(GravesConfig.class).load();
+		context.getSource().sendFeedback(
+				new TranslatableText("text.forgottengraves.command.reloadserver").formatted(Formatting.GRAY), true);
+		return Command.SINGLE_SUCCESS;
+	}
 
 }

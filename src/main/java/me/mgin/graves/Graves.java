@@ -84,8 +84,8 @@ public class Graves implements ModInitializer {
 		int minY = world.getDimension().getMinimumY();
 		if (minY > pos.getY()) {
 			pos = new BlockPos(pos.getX(), minY + 5, pos.getZ());
-		} 
-		
+		}
+
 		// Handle dying at or above the dimension's maximum Y height
 		int maxY = world.getTopY() - 1;
 		if (pos.getY() >= maxY) {

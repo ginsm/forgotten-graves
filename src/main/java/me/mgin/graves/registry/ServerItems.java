@@ -10,14 +10,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class ServerItems {
-  
-  public static void register(String MOD_ID, String BRAND_BLOCK) {
-    for (Map.Entry<GraveBase, String> grave : GraveBlocks.GRAVE_MAP.entrySet()) {
-      Registry.register(Registry.ITEM, 
-        new Identifier(MOD_ID, BRAND_BLOCK + grave.getValue()),
-        new BlockItem(grave.getKey(), new Item.Settings().group(ItemGroup.DECORATIONS))
-      );
-    }
-  }
+
+	public static void register(String MOD_ID, String BRAND_BLOCK) {
+		for (Map.Entry<GraveBase, String> grave : GraveBlocks.GRAVE_MAP.entrySet()) {
+			Registry.register(Registry.ITEM, new Identifier(MOD_ID, BRAND_BLOCK + grave.getValue()),
+					new BlockItem(grave.getKey(), new Item.Settings().group(ItemGroup.DECORATIONS)));
+		}
+	}
 
 }

@@ -36,7 +36,7 @@ public class ClientPlayerInteractionManagerMixin {
 			Block block) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		PlayerEntity player = client.player;
-		
+
 		GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType", player).client.retrievalType;
 		boolean graveRobbingEnabled = GravesConfig.getConfig().server.enableGraveRobbing;
 
@@ -44,7 +44,8 @@ public class ClientPlayerInteractionManagerMixin {
 			if (retrievalType != GraveRetrievalType.ON_BREAK && retrievalType != GraveRetrievalType.ON_BOTH)
 				cir.setReturnValue(false);
 
-			if (!graveEntity.getGraveOwner().getId().equals(this.networkHandler.getProfile().getId()) && !graveRobbingEnabled)
+			if (!graveEntity.getGraveOwner().getId().equals(this.networkHandler.getProfile().getId())
+					&& !graveRobbingEnabled)
 				cir.setReturnValue(false);
 		}
 	}

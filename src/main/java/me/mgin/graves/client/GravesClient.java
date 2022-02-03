@@ -15,9 +15,7 @@ public class GravesClient implements ClientModInitializer {
 		BlockEntityRendererRegistry.register(GraveBlocks.GRAVE_BLOCK_ENTITY, GraveBlockEntityRenderer::new);
 
 		ClientCommandManager.DISPATCHER.register(
-			ClientCommandManager.literal("reloadgraves")
-					.executes(context -> ReloadClientCommand.execute(context))
-		);
+				ClientCommandManager.literal("reloadgraves").executes(context -> ReloadClientCommand.execute(context)));
 
 		ClientEvents.register();
 	}

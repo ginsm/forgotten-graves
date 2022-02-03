@@ -105,8 +105,7 @@ public class Graves implements ModInitializer {
 				graveEntity.setItems(combinedInventory);
 				graveEntity.setGraveOwner(player.getGameProfile());
 
-				int experience = ExperienceCalculator.calculateExperienceStorage(player.experienceLevel,
-						player.experienceProgress);
+				int experience = ExperienceCalculator.calculatePlayerExperience(player);
 
 				graveEntity.setXp(experience);
 				player.totalExperience = 0;

@@ -1,10 +1,10 @@
 package me.mgin.graves.events;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import me.mgin.graves.api.ParticlesApi;
-import me.mgin.graves.api.SkullApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,7 +33,7 @@ public class UseBlockHandler {
 			if (!player.isSneaking()) {
 				String itemName = itemInHand.asItem().toString();
 
-				if (graveEntity.getGraveOwner() == null && SkullApi.skulls.containsKey(itemName))
+				if (graveEntity.getGraveOwner() == null && validSkulls.contains(itemName))
 					return handlePlayerHeads(graveEntity, world, itemStack, itemInHand, itemName);
 
 				// Prevent block placement and unintentional item usage
@@ -93,5 +93,15 @@ public class UseBlockHandler {
 
 		return ActionResult.SUCCESS;
 	}
+
+	public static HashSet<String> validSkulls = new HashSet<>() {
+		{
+			add("wither_skeleton_skull");
+			add("skeleton_skull");
+			add("player_head");
+			add("zombie_head");
+			add("creeper_head");
+		}
+	};
 
 }

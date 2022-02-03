@@ -31,7 +31,11 @@ public class TrinketsCompat implements GravesApi {
 
 		if (component.isPresent()) {
 			component.get().forEach((ref, itemStack) -> {
-				itemStacks.add(itemStack);
+				if (EnchantmentHelper.hasVanishingCurse(itemStack)) {
+					itemStacks.add(ItemStack.EMPTY);
+				} else {
+					itemStacks.add(itemStack);
+				}
 			});
 		}
 

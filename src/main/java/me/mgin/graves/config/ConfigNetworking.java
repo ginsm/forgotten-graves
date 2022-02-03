@@ -1,14 +1,14 @@
 package me.mgin.graves.config;
 
 import com.google.gson.Gson;
-import com.mojang.authlib.GameProfile;
 
+import me.mgin.graves.Graves;
 import me.mgin.graves.util.Constants;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.integrated.IntegratedServer;
 
 public class ConfigNetworking {
   /**
@@ -19,11 +19,13 @@ public class ConfigNetworking {
   public void sendToServer() {
     MinecraftClient client = MinecraftClient.getInstance();
 
-    if (!(client.getServer() instanceof IntegratedServer)) {
-      PacketByteBuf buf = PacketByteBufs.create();
-      buf.writeString(this.serialize());
-      ClientPlayNetworking.send(Constants.CLIENT_SEND_CONFIG, buf);
-    }
+    // Do not send a packet whilst in the menus
+    if (client.world == null)
+      return;
+
+    PacketByteBuf buf = PacketByteBufs.create();
+    buf.writeString(this.serialize());
+    ClientPlayNetworking.send(Constants.CLIENT_SEND_CONFIG, buf);
   }
 
   /**
@@ -45,9 +47,23 @@ public class ConfigNetworking {
     return gson.fromJson(config, GravesConfig.class);
   }
 
-  /*
-    TODO
-    Create a method that determines whether the program should use
-    the server or the client's config for a given setting.
-  */
+  /**
+   * Resolves whether the option is being handled by the client or server
+   * and returns the appropriate GravesConfig instance.
+   * @param option
+   * @param profile
+   * @return GravesConfig
+   */
+  public static GravesConfig resolveConfig(String option, PlayerEntity player) {
+    GravesConfig config = GravesConfig.getConfig();
+
+    if (config.server.clientSideOptions.contains(option)) {
+      GravesConfig clientConfig = Graves.clientConfigs.get(player.getGameProfile());
+
+      if (clientConfig != null)
+        return clientConfig;
+    }
+
+    return config;
+  }
 }

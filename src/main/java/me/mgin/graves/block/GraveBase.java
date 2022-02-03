@@ -192,7 +192,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 			inventory.addAll(gravesApi.getInventory(player));
 		}
 
-		GraveDropType dropType = GravesConfig.getConfig().client.dropType;
+		// Retrieve the appropriate config
+		GraveDropType dropType = GravesConfig.resolveConfig("dropType", player).client.dropType;
 
 		if (dropType == GraveDropType.PUT_IN_INVENTORY) {
 			player.getInventory().clear();

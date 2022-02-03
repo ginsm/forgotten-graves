@@ -9,6 +9,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
@@ -34,8 +35,9 @@ public class ClientPlayerInteractionManagerMixin {
 	private void breakBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir, World world, BlockState state,
 			Block block) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
+		PlayerEntity player = client.player;
 		
-		GraveRetrievalType retrievalType = GravesConfig.getConfig().client.retrievalType;
+		GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType", player).client.retrievalType;
 		boolean graveRobbingEnabled = GravesConfig.getConfig().server.enableGraveRobbing;
 
 		if (blockEntity instanceof GraveBlockEntity graveEntity && graveEntity.getGraveOwner() != null) {

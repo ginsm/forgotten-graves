@@ -4,7 +4,7 @@
   "block.forgottengraves.grave_weathered": "Weathered Grave",
   "block.forgottengraves.grave_forgotten": "Forgotten Grave",
 
-  
+
   "text.forgottengraves.command.graves": "[Graves] That command hasn't been implemented yet.",
   "text.forgottengraves.command.reloadserver": "[Graves] The server config has been reloaded.",
   "text.forgottengraves.command.reload": "[Graves] Your config has been reloaded.",
@@ -36,13 +36,18 @@
   "text.autoconfig.forgottengraves.option.client.expStorageType": "XP Storage Type",
   "text.autoconfig.forgottengraves.option.client.expStorageType.@Tooltip": "How should the graves store XP?",
 
-  "text.autoconfig.forgottengraves.option.client.customXPStoredLevel": "Max Custom XP Level",
-  "text.autoconfig.forgottengraves.option.client.customXPStoredLevel.@Tooltip": "(Custom) What's the max amount of levels that you want stored?",
+  "text.autoconfig.forgottengraves.option.client.maxCustomXPLevel": "Max Custom XP Level",
+  "text.autoconfig.forgottengraves.option.client.maxCustomXPLevel.@Tooltip": "(Custom) What's the max amount of levels that you want stored?",
+  
 
+  "text.autoconfig.forgottengraves.option.server.enableGraveRobbing.@PrefixText": "Note: These settings cannot be handled by the client.",
+  
   "text.autoconfig.forgottengraves.option.server.enableGraveRobbing": "Enable Grave Robbing",
   "text.autoconfig.forgottengraves.option.server.enableGraveRobbing.@Tooltip": "Should players be able to rob graves?",
 
   "text.autoconfig.forgottengraves.option.server.minOperatorOverrideLevel": "Minimum OP Override Lvl",
-  "text.autoconfig.forgottengraves.option.server.minOperatorOverrideLevel.@Tooltip": "Minimum OP level to override grave protection?"
+  "text.autoconfig.forgottengraves.option.server.minOperatorOverrideLevel.@Tooltip": "Minimum OP level to override grave protection?",
 
+  "text.autoconfig.forgottengraves.option.server.clientSideOptions": "Client Side Options",
+  "text.autoconfig.forgottengraves.option.server.clientSideOptions.@Tooltip": "What options should be handled by the client? (comma separated)"
 }

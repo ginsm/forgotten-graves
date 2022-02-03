@@ -33,11 +33,12 @@ If you have any issues with the mod or a feature request, please use the [issue 
     "retrievalType": "ON_BOTH",
     "dropType": "PUT_IN_INVENTORY",
     "expStorageType": "STORE_ALL_XP",
-    "customXPStoredLevel": 30
+    "maxCustomXPLevel": 30
   },
   "server": {
     "enableGraveRobbing": false,
-    "minOperatorOverrideLevel": 4
+    "minOperatorOverrideLevel": 4,
+    "clientSideOptions": ""
   }
 }
 ```

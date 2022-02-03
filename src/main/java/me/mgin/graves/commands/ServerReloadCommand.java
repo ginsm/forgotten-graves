@@ -9,7 +9,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
-public class ReloadServerCommand {
+public class ServerReloadCommand {
 	static public int execute(CommandContext<ServerCommandSource> context) {
 		AutoConfig.getConfigHolder(GravesConfig.class).load();
 		context.getSource().sendFeedback(

@@ -57,10 +57,11 @@ public class UseBlockHandler {
 	};
 
 	/**
-	 * This method determines the type of head (normal head or custom player head) and
-	 * assigns it to the clicked on GraveBlockEntity so that it can be displayed.
+	 * This method determines the type of head (normal head or custom player head)
+	 * and assigns it to the clicked on GraveBlockEntity so that it can be
+	 * displayed.
 	 * <p>
-	 * 
+	 *
 	 * @param graveEntity
 	 * @param world
 	 * @param itemStack

@@ -29,10 +29,8 @@ public class ServerEvents {
 		PlayerBlockBreakEvents.BEFORE.register((World world, PlayerEntity player, BlockPos pos, BlockState state,
 				BlockEntity entity) -> PlayerBlockBreakHandler.handleBeforeEvent(player, pos, entity));
 
-
 		UseBlockCallback.EVENT.register((PlayerEntity player, World world, Hand hand,
 				BlockHitResult hitResult) -> UseBlockHandler.handleEvent(player, world, hand, hitResult));
-
 
 		// Remove client configs on disconnect
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {

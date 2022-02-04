@@ -15,22 +15,12 @@ public class ServerCommands {
 	 */
 	public static void register() {
 		// Register server-side commands
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) ->
-        dispatcher.register(literal("graves")
-          .executes(context -> GravesCommand.execute(context))
-          .then(literal("config")
-            .then(literal("reload")
-              .executes(context -> ClientConfigReload.execute(context)))
-            .then(literal("server")
-              .requires(source -> source.hasPermissionLevel(4))
-              .then(literal("reload")
-                .executes(context -> ServerReloadCommand.execute(context)))
-              .then(literal("set")
-                .executes(context -> ServerSaveCommand.execute(context)))
-            )
-          )
-        )
-    );
+		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> dispatcher.register(literal("graves")
+				.executes(context -> GravesCommand.execute(context))
+				.then(literal("config").then(literal("reload").executes(context -> ClientConfigReload.execute(context)))
+						.then(literal("server").requires(source -> source.hasPermissionLevel(4))
+								.then(literal("reload").executes(context -> ServerReloadCommand.execute(context)))
+								.then(literal("set").executes(context -> ServerSaveCommand.execute(context)))))));
 	}
 
 }

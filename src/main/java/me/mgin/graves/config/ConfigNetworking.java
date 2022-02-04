@@ -26,7 +26,7 @@ public class ConfigNetworking {
 
 		PacketByteBuf buf = PacketByteBufs.create();
 		buf.writeString(this.serialize());
-		ClientPlayNetworking.send(Constants.CLIENT_SEND_CONFIG, buf);
+		ClientPlayNetworking.send(Constants.SEND_CLIENT_CONFIG, buf);
 	}
 
 	/**

@@ -7,7 +7,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 public class ServerReceivers {
 	public static void register() {
-		ServerPlayNetworking.registerGlobalReceiver(Constants.CLIENT_SEND_CONFIG,
+		ServerPlayNetworking.registerGlobalReceiver(Constants.SEND_CLIENT_CONFIG,
 				(server, player, handler, buf, sender) -> {
 					GravesConfig config = GravesConfig.deserialize(buf.readString());
 					Graves.clientConfigs.put(player.getGameProfile(), config);

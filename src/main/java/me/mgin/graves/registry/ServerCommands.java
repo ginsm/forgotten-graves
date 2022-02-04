@@ -1,8 +1,10 @@
 package me.mgin.graves.registry;
 
 import static net.minecraft.server.command.CommandManager.literal;
+
 import me.mgin.graves.commands.GravesCommand;
-import me.mgin.graves.commands.ReloadServerCommand;
+import me.mgin.graves.commands.ServerReloadCommand;
+import me.mgin.graves.commands.ServerSaveCommand;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 
 public class ServerCommands {
@@ -12,10 +14,18 @@ public class ServerCommands {
 	 */
 	public static void register() {
 		// Register server-side commands
-		CommandRegistrationCallback.EVENT.register((dispatcher,
-				dedicated) -> dispatcher.register(literal("graves").executes(context -> GravesCommand.execute(context))
-						.then(literal("reload").requires(source -> source.hasPermissionLevel(4))
-								.executes(context -> ReloadServerCommand.execute(context)))));
+		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) ->
+        dispatcher.register(literal("graves")
+          .executes(context -> GravesCommand.execute(context))
+          .then(literal("server")
+            .requires(source -> source.hasPermissionLevel(4))
+            .then(literal("reload")
+              .executes(context -> ServerReloadCommand.execute(context)))
+            .then(literal("save")
+              .executes(context -> ServerSaveCommand.execute(context)))
+          )
+        )
+    );
 	}
 
 }

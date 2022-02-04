@@ -9,6 +9,10 @@
   "text.forgottengraves.command.reloadserver": "[Graves] The server config has been reloaded.",
   "text.forgottengraves.command.reload": "[Graves] Your config has been reloaded.",
 
+  "text.forgottengraves.command.serversave": "[Graves] The server config has been updated.",
+  "error.forgottengraves.command.serversave.fail": "[Graves] The server config could not be updated.",
+  "error.forgottengraves.command.serversave.notplayer": "[Graves] You must run this as a valid player.",
+
 
   "text.autoconfig.forgottengraves.title": "Forgotten Graves Settings",
   "text.autoconfig.forgottengraves.option.client": "Client Settings",

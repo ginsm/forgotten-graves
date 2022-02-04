@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import me.mgin.graves.Graves;
 import me.mgin.graves.util.Constants;
+import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
@@ -27,6 +28,13 @@ public class ConfigNetworking {
 		PacketByteBuf buf = PacketByteBufs.create();
 		buf.writeString(this.serialize());
 		ClientPlayNetworking.send(Constants.SEND_CLIENT_CONFIG, buf);
+	}
+
+	/**
+	 * Reload the config instance
+	 */
+	public void reload() {
+		AutoConfig.getConfigHolder(GravesConfig.class).load();
 	}
 
 	/**

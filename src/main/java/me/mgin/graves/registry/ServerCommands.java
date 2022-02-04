@@ -2,6 +2,7 @@ package me.mgin.graves.registry;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
+import me.mgin.graves.commands.ClientConfigReload;
 import me.mgin.graves.commands.GravesCommand;
 import me.mgin.graves.commands.ServerReloadCommand;
 import me.mgin.graves.commands.ServerSaveCommand;
@@ -17,12 +18,16 @@ public class ServerCommands {
 		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) ->
         dispatcher.register(literal("graves")
           .executes(context -> GravesCommand.execute(context))
-          .then(literal("server")
-            .requires(source -> source.hasPermissionLevel(4))
+          .then(literal("config")
             .then(literal("reload")
-              .executes(context -> ServerReloadCommand.execute(context)))
-            .then(literal("save")
-              .executes(context -> ServerSaveCommand.execute(context)))
+              .executes(context -> ClientConfigReload.execute(context)))
+            .then(literal("server")
+              .requires(source -> source.hasPermissionLevel(4))
+              .then(literal("reload")
+                .executes(context -> ServerReloadCommand.execute(context)))
+              .then(literal("set")
+                .executes(context -> ServerSaveCommand.execute(context)))
+            )
           )
         )
     );

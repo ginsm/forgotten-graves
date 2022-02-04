@@ -31,9 +31,8 @@ public class ServerSaveCommand {
       } else {
         source.sendError(new TranslatableText("error.forgottengraves.command.serversave.fail").formatted(Formatting.GRAY));
       }
-
     } else {
-      source.sendError(new TranslatableText("error.forgottengraves.command.serversave.notplayer"));
+      source.sendError(new TranslatableText("error.forgottengraves.command.notplayer"));
     }
 
     return Command.SINGLE_SUCCESS;

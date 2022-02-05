@@ -28,14 +28,15 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 	@Redirect(method = "dropInventory", at = @At(value = "INVOKE", target = "net.minecraft.entity.player.PlayerInventory.dropAll()V"))
 	private void dropAll(PlayerInventory inventory) {
-		boolean forgottenGravesEnabled = GravesConfig.getConfig().mainSettings.enableGraves;
+		PlayerEntity player = this.inventory.player;
+		boolean forgottenGravesEnabled = GravesConfig.resolveConfig("enableGraves", player).main.enableGraves;
 
 		if (!forgottenGravesEnabled) {
 			this.inventory.dropAll();
 			return;
 		}
 
-		Graves.placeGrave(this.world, this.getPos(), this.inventory.player);
+		Graves.placeGrave(this.world, this.getPos(), player);
 
 		if (FabricLoader.getInstance().isModLoaded("trinkets"))
 			TrinketsCompat.clearInventory((PlayerEntity) (Object) this);

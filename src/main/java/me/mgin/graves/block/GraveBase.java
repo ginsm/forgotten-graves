@@ -93,11 +93,34 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 			BlockHitResult hit) {
 		GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
+		if (world.isClient)
+			return ActionResult.PASS;
+
 		if (hand != Hand.OFF_HAND)
 			if (player.getStackInHand(hand).isEmpty() && graveEntity.playerCanUseGrave(player))
 				useGrave(player, world, pos);
 
 		return ActionResult.PASS;
+	}
+
+	@Override
+	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
+
+		if (world.isClient)
+			return;
+
+		if (graveEntity.playerCanBreakGrave(player))
+			if (useGrave(player, world, pos))
+				return;
+
+		if (graveEntity.getGraveOwner() == null)
+			if (!world.isClient && graveEntity.hasCustomName() && !player.isCreative()) {
+				onBreakRetainName(world, pos, player, graveEntity);
+				return;
+			}
+
+		super.onBreak(world, pos, state, player);
 	}
 
 	public void onBreakRetainName(World world, BlockPos pos, PlayerEntity player, GraveBlockEntity graveEntity) {
@@ -115,23 +138,6 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		world.removeBlock(pos, false);
 
 		world.emitGameEvent((Entity) player, GameEvent.BLOCK_DESTROY, pos);
-	}
-
-	@Override
-	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
-
-		if (graveEntity.playerCanBreakGrave(player))
-			if (useGrave(player, world, pos))
-				return;
-
-		if (graveEntity.getGraveOwner() == null)
-			if (!world.isClient && graveEntity.hasCustomName() && !player.isCreative()) {
-				onBreakRetainName(world, pos, player, graveEntity);
-				return;
-			}
-
-		super.onBreak(world, pos, state, player);
 	}
 
 	@Override
@@ -186,7 +192,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 			inventory.addAll(gravesApi.getInventory(player));
 		}
 
-		GraveDropType dropType = GravesConfig.getConfig().mainSettings.dropType;
+		// Retrieve the appropriate config
+		GraveDropType dropType = GravesConfig.resolveConfig("dropType", player).main.dropType;
 
 		if (dropType == GraveDropType.PUT_IN_INVENTORY) {
 			player.getInventory().clear();

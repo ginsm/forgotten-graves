@@ -1,8 +1,13 @@
 package me.mgin.graves;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
+import com.mojang.authlib.GameProfile;
+
 import me.mgin.graves.api.GravesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.compat.TrinketsCompat;
@@ -11,10 +16,11 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.registry.GraveBlocks;
-import me.mgin.graves.registry.RegisterBlocks;
-import me.mgin.graves.registry.RegisterCommands;
-import me.mgin.graves.registry.RegisterEvents;
-import me.mgin.graves.registry.RegisterItems;
+import me.mgin.graves.registry.ServerBlocks;
+import me.mgin.graves.registry.ServerCommands;
+import me.mgin.graves.registry.ServerEvents;
+import me.mgin.graves.registry.ServerItems;
+import me.mgin.graves.registry.ServerReceivers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
@@ -37,14 +43,16 @@ public class Graves implements ModInitializer {
 	public static final ArrayList<GravesApi> apiMods = new ArrayList<>();
 	public static String MOD_ID = "forgottengraves";
 	public static String BRAND_BLOCK = "grave";
+	public static Map<GameProfile, GravesConfig> clientConfigs = new HashMap<>();
 
 	@Override
 	public void onInitialize() {
 		// Graves Registry
-		RegisterBlocks.register(MOD_ID, BRAND_BLOCK);
-		RegisterItems.register(MOD_ID, BRAND_BLOCK);
-		RegisterEvents.register();
-		RegisterCommands.register();
+		ServerBlocks.register(MOD_ID, BRAND_BLOCK);
+		ServerItems.register(MOD_ID, BRAND_BLOCK);
+		ServerEvents.register();
+		ServerCommands.register();
+		ServerReceivers.register();
 
 		// Register compat classes
 		if (FabricLoader.getInstance().isModLoaded("trinkets"))
@@ -76,8 +84,8 @@ public class Graves implements ModInitializer {
 		int minY = world.getDimension().getMinimumY();
 		if (minY > pos.getY()) {
 			pos = new BlockPos(pos.getX(), minY + 5, pos.getZ());
-		} 
-		
+		}
+
 		// Handle dying at or above the dimension's maximum Y height
 		int maxY = world.getTopY() - 1;
 		if (pos.getY() >= maxY) {
@@ -97,8 +105,7 @@ public class Graves implements ModInitializer {
 				graveEntity.setItems(combinedInventory);
 				graveEntity.setGraveOwner(player.getGameProfile());
 
-				int experience = ExperienceCalculator.calculateExperienceStorage(player.experienceLevel,
-						player.experienceProgress);
+				int experience = ExperienceCalculator.calculatePlayerExperience(player);
 
 				graveEntity.setXp(experience);
 				player.totalExperience = 0;
@@ -110,7 +117,7 @@ public class Graves implements ModInitializer {
 					graveEntity.sync(world, gravePos);
 				block.onBreak(world, pos, state, player);
 
-				if (GravesConfig.getConfig().mainSettings.sendGraveCoordinates) {
+				if (GravesConfig.resolveConfig("sendGraveCoordinates", player).main.sendGraveCoordinates) {
 					player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(),
 							gravePos.getY(), gravePos.getZ()), false);
 				}

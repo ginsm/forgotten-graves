@@ -9,6 +9,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
@@ -34,15 +35,17 @@ public class ClientPlayerInteractionManagerMixin {
 	private void breakBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir, World world, BlockState state,
 			Block block) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
-		
-		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
-		boolean graveRobbingEnabled = GravesConfig.getConfig().serverSettings.enableGraveRobbing;
+		PlayerEntity player = client.player;
+
+		GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType", player).main.retrievalType;
+		boolean graveRobbingEnabled = GravesConfig.getConfig().server.enableGraveRobbing;
 
 		if (blockEntity instanceof GraveBlockEntity graveEntity && graveEntity.getGraveOwner() != null) {
 			if (retrievalType != GraveRetrievalType.ON_BREAK && retrievalType != GraveRetrievalType.ON_BOTH)
 				cir.setReturnValue(false);
 
-			if (!graveEntity.getGraveOwner().getId().equals(this.networkHandler.getProfile().getId()) && !graveRobbingEnabled)
+			if (!graveEntity.getGraveOwner().getId().equals(this.networkHandler.getProfile().getId())
+					&& !graveRobbingEnabled)
 				cir.setReturnValue(false);
 		}
 	}

@@ -37,7 +37,7 @@ public class ClientPlayerInteractionManagerMixin {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		PlayerEntity player = client.player;
 
-		GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType", player).client.retrievalType;
+		GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType", player).main.retrievalType;
 		boolean graveRobbingEnabled = GravesConfig.getConfig().server.enableGraveRobbing;
 
 		if (blockEntity instanceof GraveBlockEntity graveEntity && graveEntity.getGraveOwner() != null) {

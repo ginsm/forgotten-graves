@@ -9,7 +9,7 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 public class GravesConfig extends ConfigNetworking implements ConfigData {
 
 	@ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
-	public ClientSettings client = new ClientSettings();
+	public MainSettings main = new MainSettings();
 	@ConfigEntry.Gui.CollapsibleObject(startExpanded = false)
 	public ServerSettings server = new ServerSettings();
 
@@ -19,11 +19,11 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 
 	@Override
 	public void validatePostLoad() {
-		client.maxCustomXPLevel = Math.max(client.maxCustomXPLevel, 0);
+		main.maxCustomXPLevel = Math.max(main.maxCustomXPLevel, 0);
 		server.minOperatorOverrideLevel = Math.max(Math.min(server.minOperatorOverrideLevel, 4), -1);
 	}
 
-	public static class ClientSettings {
+	public static class MainSettings {
 		@ConfigEntry.Gui.Tooltip
 		public boolean enableGraves = true;
 

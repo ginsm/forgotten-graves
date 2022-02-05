@@ -9,8 +9,8 @@ public class ExperienceCalculator {
 		int level = player.experienceLevel;
 		float progress = player.experienceProgress;
 
-		GraveExpStoreType expStorageType = GravesConfig.resolveConfig("expStorageType", player).client.expStorageType;
-		int maxCustomXPLevel = GravesConfig.resolveConfig("maxCustomXPLevel", player).client.maxCustomXPLevel;
+		GraveExpStoreType expStorageType = GravesConfig.resolveConfig("expStorageType", player).main.expStorageType;
+		int maxCustomXPLevel = GravesConfig.resolveConfig("maxCustomXPLevel", player).main.maxCustomXPLevel;
 
 		switch (expStorageType) {
 			case STORE_ALL_XP :

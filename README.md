@@ -43,8 +43,7 @@ If you have any issues with the mod or a feature request, please use the [issue 
 }
 ```
 
-
-*Note: Server-side configuration overrides any user set configuration currently.*
+*Note: Settings that should be handled by the client whilst on dedicated servers can be set via [Client Side Options](https://github.com/ginsm/forgotten-graves/wiki/Settings#client-side-options)*.
 
  
 

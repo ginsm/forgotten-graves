@@ -6,12 +6,12 @@ import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 @Config(name = "forgottengraves")
-public class GravesConfig implements ConfigData {
+public class GravesConfig extends ConfigNetworking implements ConfigData {
 
 	@ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
-	public MainSettings mainSettings = new MainSettings();
-	@ConfigEntry.Gui.Excluded
-	public ServerSettings serverSettings = new ServerSettings();
+	public MainSettings main = new MainSettings();
+	@ConfigEntry.Gui.CollapsibleObject(startExpanded = false)
+	public ServerSettings server = new ServerSettings();
 
 	public static GravesConfig getConfig() {
 		return AutoConfig.getConfigHolder(GravesConfig.class).getConfig();
@@ -19,8 +19,8 @@ public class GravesConfig implements ConfigData {
 
 	@Override
 	public void validatePostLoad() {
-		mainSettings.customXPStoredLevel = Math.max(mainSettings.customXPStoredLevel, 0);
-		serverSettings.minOperatorOverrideLevel = Math.max(Math.min(serverSettings.minOperatorOverrideLevel, 4), -1);
+		main.maxCustomXPLevel = Math.max(main.maxCustomXPLevel, 0);
+		server.minOperatorOverrideLevel = Math.max(Math.min(server.minOperatorOverrideLevel, 4), -1);
 	}
 
 	public static class MainSettings {
@@ -43,12 +43,19 @@ public class GravesConfig implements ConfigData {
 		public GraveExpStoreType expStorageType = GraveExpStoreType.STORE_ALL_XP;
 
 		@ConfigEntry.Gui.Tooltip
-		public int customXPStoredLevel = 30;
-	}
-	
-	public static class ServerSettings {
-		public boolean enableGraveRobbing = false;
-		public int minOperatorOverrideLevel = 4;
+		public int maxCustomXPLevel = 30;
 	}
 
+	public static class ServerSettings {
+		@ConfigEntry.Gui.PrefixText
+		@ConfigEntry.Gui.Tooltip
+		public boolean enableGraveRobbing = false;
+
+		@ConfigEntry.Gui.Tooltip
+		@ConfigEntry.BoundedDiscrete(min = -1, max = 4)
+		public int minOperatorOverrideLevel = 4;
+
+		@ConfigEntry.Gui.Tooltip
+		public String clientSideOptions = "";
+	}
 }

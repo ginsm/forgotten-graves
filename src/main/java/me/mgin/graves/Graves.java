@@ -1,8 +1,13 @@
 package me.mgin.graves;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
+import com.mojang.authlib.GameProfile;
+
 import me.mgin.graves.api.GravesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.compat.TrinketsCompat;
@@ -11,10 +16,11 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.registry.GraveBlocks;
-import me.mgin.graves.registry.RegisterBlocks;
-import me.mgin.graves.registry.RegisterCommands;
-import me.mgin.graves.registry.RegisterEvents;
-import me.mgin.graves.registry.RegisterItems;
+import me.mgin.graves.registry.ServerBlocks;
+import me.mgin.graves.registry.ServerCommands;
+import me.mgin.graves.registry.ServerEvents;
+import me.mgin.graves.registry.ServerItems;
+import me.mgin.graves.registry.ServerReceivers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
@@ -30,20 +36,23 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 
 public class Graves implements ModInitializer {
 
 	public static final ArrayList<GravesApi> apiMods = new ArrayList<>();
 	public static String MOD_ID = "forgottengraves";
 	public static String BRAND_BLOCK = "grave";
+	public static Map<GameProfile, GravesConfig> clientConfigs = new HashMap<>();
 
 	@Override
 	public void onInitialize() {
 		// Graves Registry
-		RegisterBlocks.register(MOD_ID, BRAND_BLOCK);
-		RegisterItems.register(MOD_ID, BRAND_BLOCK);
-		RegisterEvents.register();
-		RegisterCommands.register();
+		ServerBlocks.register(MOD_ID, BRAND_BLOCK);
+		ServerItems.register(MOD_ID, BRAND_BLOCK);
+		ServerEvents.register();
+		ServerCommands.register();
+		ServerReceivers.register();
 
 		// Register compat classes
 		if (FabricLoader.getInstance().isModLoaded("trinkets"))
@@ -71,9 +80,16 @@ public class Graves implements ModInitializer {
 			combinedInventory.addAll(GravesApi.getInventory(player));
 		}
 
-		// Lowest Y Height
-		if (pos.getY() < -64) {
-			pos = new BlockPos(pos.getX(), -60, pos.getZ());
+		// Handle dying below the dimension's minimum Y height
+		int minY = world.getDimension().getMinimumY();
+		if (minY > pos.getY()) {
+			pos = new BlockPos(pos.getX(), minY + 5, pos.getZ());
+		}
+
+		// Handle dying at or above the dimension's maximum Y height
+		int maxY = world.getTopY() - 1;
+		if (pos.getY() >= maxY) {
+			pos = new BlockPos(pos.getX(), maxY - 1, pos.getZ());
 		}
 
 		for (BlockPos gravePos : BlockPos.iterateOutwards(pos.add(new Vec3i(0, 1, 0)), 5, 5, 5)) {
@@ -89,8 +105,7 @@ public class Graves implements ModInitializer {
 				graveEntity.setItems(combinedInventory);
 				graveEntity.setGraveOwner(player.getGameProfile());
 
-				int experience = ExperienceCalculator.calculateExperienceStorage(player.experienceLevel,
-						player.experienceProgress);
+				int experience = ExperienceCalculator.calculatePlayerExperience(player);
 
 				graveEntity.setXp(experience);
 				player.totalExperience = 0;
@@ -102,7 +117,7 @@ public class Graves implements ModInitializer {
 					graveEntity.sync(world, gravePos);
 				block.onBreak(world, pos, state, player);
 
-				if (GravesConfig.getConfig().mainSettings.sendGraveCoordinates) {
+				if (GravesConfig.resolveConfig("sendGraveCoordinates", player).main.sendGraveCoordinates) {
 					player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(),
 							gravePos.getY(), gravePos.getZ()), false);
 				}
@@ -130,6 +145,7 @@ public class Graves implements ModInitializer {
 		if (blackListedBlocks.contains(block))
 			return false;
 
-		return !(pos.getY() < -64 || pos.getY() > 319);
+		DimensionType dimension = world.getDimension();
+		return !(pos.getY() < dimension.getMinimumY() || pos.getY() > world.getTopY());
 	}
 }

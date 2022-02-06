@@ -10,9 +10,11 @@ import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketInventory;
 import dev.emi.trinkets.api.TrinketsApi;
 import me.mgin.graves.api.GravesApi;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.event.GameEvent;
 
 public class TrinketsCompat implements GravesApi {
@@ -29,7 +31,11 @@ public class TrinketsCompat implements GravesApi {
 
 		if (component.isPresent()) {
 			component.get().forEach((ref, itemStack) -> {
-				itemStacks.add(itemStack);
+				if (EnchantmentHelper.hasVanishingCurse(itemStack)) {
+					itemStacks.add(ItemStack.EMPTY);
+				} else {
+					itemStacks.add(itemStack);
+				}
 			});
 		}
 
@@ -40,14 +46,28 @@ public class TrinketsCompat implements GravesApi {
 	 * Equips all items within a list of ItemStacks into the trinket slots.
 	 *
 	 * @param inventory
-	 *            - List<ItemStack>
 	 * @param player
+	 * @return Items that could not be equipped
 	 */
 	@Override
-	public void setInventory(List<ItemStack> inventory, PlayerEntity player) {
+	public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity player) {
+		DefaultedList<ItemStack> unequipped = DefaultedList.of();
+
 		for (int i = 0; i < inventory.size(); i++) {
+			// Add item to be returned as unequipped
+			if (EnchantmentHelper.hasBindingCurse(inventory.get(i))) {
+				unequipped.add(inventory.get(i));
+				continue;
+			}
+
+			// Do nothing & let the item be deleted
+			if (EnchantmentHelper.hasVanishingCurse(inventory.get(i)))
+				continue;
+
 			equipItem(inventory.get(i), player, i);
 		}
+
+		return unequipped;
 	}
 
 	/**

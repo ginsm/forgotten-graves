@@ -231,7 +231,7 @@ public class GraveBlockEntity extends BlockEntity {
 	 * @return boolean
 	 */
 	public boolean playerCanAttemptRetrieve(PlayerEntity player) {
-		boolean graveRobbing = GravesConfig.getConfig().serverSettings.enableGraveRobbing;
+		boolean graveRobbing = GravesConfig.getConfig().server.enableGraveRobbing;
 
 		if (getGraveOwner() == null || isGraveOwner(player) || graveRobbing || playerCanOverride(player)) {
 			return true;
@@ -248,7 +248,7 @@ public class GraveBlockEntity extends BlockEntity {
 	 * @return boolean
 	 */
 	public boolean playerCanOverride(PlayerEntity player) {
-		int operatorOverrideLevel = GravesConfig.getConfig().serverSettings.minOperatorOverrideLevel;
+		int operatorOverrideLevel = GravesConfig.getConfig().server.minOperatorOverrideLevel;
 		return (operatorOverrideLevel != -1 && player.hasPermissionLevel(operatorOverrideLevel));
 	}
 
@@ -266,7 +266,7 @@ public class GraveBlockEntity extends BlockEntity {
 	 * @return boolean
 	 */
 	public boolean playerCanBreakGrave(PlayerEntity player) {
-		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
+		GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType", player).main.retrievalType;
 
 		if (playerCanAttemptRetrieve(player))
 			if (retrievalType == GraveRetrievalType.ON_BREAK || retrievalType == GraveRetrievalType.ON_BOTH)
@@ -289,7 +289,7 @@ public class GraveBlockEntity extends BlockEntity {
 	 * @return
 	 */
 	public boolean playerCanUseGrave(PlayerEntity player) {
-		GraveRetrievalType retrievalType = GravesConfig.getConfig().mainSettings.retrievalType;
+		GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType", player).main.retrievalType;
 
 		if (playerCanAttemptRetrieve(player))
 			if (retrievalType == GraveRetrievalType.ON_USE || retrievalType == GraveRetrievalType.ON_BOTH)

@@ -1,32 +1,13 @@
 # Forgotten Graves
 
-Forgotten Graves is a highly configurable fabric mod that adds a grave that stores items and XP upon death; the grave will then begin to age at random between 4 different stages.
+Forgotten Graves is a highly configurable fabric mod that adds a grave which stores items and XP upon death; the grave will then begin to age at random intervals between 4 different stages.
 
-The graves are craftable, support custom names & heads, and can be locked at any age stage (via honeycomb). You can easily go back a stage or remove the stage lock by using a shovel!
+The graves are craftable, support custom names & heads, and can be locked at any age stage (via honeycomb). You can easily go back a stage or remove the stage lock by right clicking the grave with a shovel.
+
+This mod has support for [Trinkets API](https://www.curseforge.com/minecraft/mc-mods/trinkets-fabric)!
 
 If you have any issues with the mod or a feature request, please use the [issue tracker](https://github.com/ginsm/forgotten-graves/issues). Any feedback is welcomed, thank you!
 
-
- 
-
-**Configuration (Defaults):**
-
-```
-{
-  "mainSettings": {
-    "enableGraves": true,
-    "sendGraveCoordinates": true,
-    "retrievalType": "ON_BOTH",
-    "dropType": "PUT_IN_INVENTORY",
-    "expStorageType": "STORE_ALL_XP",
-    "customXPStoredLevel": 30
-  },
-  "serverSettings": {
-    "enableGraveRobbing": false,
-    "minOperatorOverrideLevel": 4
-  }
-}
-```
 
  
 
@@ -42,10 +23,31 @@ If you have any issues with the mod or a feature request, please use the [issue 
 
  
 
+**Configuration (Defaults):**
+
+```
+{
+  "client": {
+    "enableGraves": true,
+    "sendGraveCoordinates": true,
+    "retrievalType": "ON_BOTH",
+    "dropType": "PUT_IN_INVENTORY",
+    "expStorageType": "STORE_ALL_XP",
+    "maxCustomXPLevel": 30
+  },
+  "server": {
+    "enableGraveRobbing": false,
+    "minOperatorOverrideLevel": 4,
+    "clientSideOptions": ""
+  }
+}
+```
+
 
 *Note: Server-side configuration overrides any user set configuration currently.*
 
  
+
 ## Want to help out?
 I'm looking for someone who's good at creating block models and textures (as I'm not very good at it) for the biome specific model/texture feature; if that sounds like something you would like to do then please leave a comment on [this issue](https://github.com/ginsm/forgotten-graves/issues/7). Thank you!
 

@@ -57,15 +57,6 @@ public interface AgingGrave extends Ageable<AgingGrave.BlockAge> {
 		return getUnaffectedOxidationBlock(state.getBlock()).getStateWithProperties(state);
 	}
 
-	/*
-	 * default Optional<BlockEntity> getDegradationResultEntity(BlockEntity
-	 * blockEntity) {
-	 *
-	 * return
-	 * getIncreasedOxidationBlock(blockEntity.getWorld().getBlockState(blockEntity.
-	 * getPos())).map((block) -> { return block; }); }
-	 */
-
 	default Optional<BlockState> getDegradationResultState(BlockState state) {
 		return getIncreasedOxidationBlock(state.getBlock()).map((block) -> {
 			return block.getStateWithProperties(state);

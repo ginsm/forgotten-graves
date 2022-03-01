@@ -20,6 +20,7 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 	@Override
 	public void validatePostLoad() {
 		main.maxCustomXPLevel = Math.max(main.maxCustomXPLevel, 0);
+		main.maxDecayPercent = Math.max(Math.min(main.maxDecayPercent, 100), 0);
 		server.minOperatorOverrideLevel = Math.max(Math.min(server.minOperatorOverrideLevel, 4), -1);
 	}
 
@@ -46,6 +47,7 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 		public int maxCustomXPLevel = 30;
 
 		@ConfigEntry.Gui.Tooltip
+		@ConfigEntry.BoundedDiscrete(min = 0, max = 100)
 		public int maxDecayPercent = 0;
 	}
 

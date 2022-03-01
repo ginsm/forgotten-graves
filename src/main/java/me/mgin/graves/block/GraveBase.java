@@ -50,7 +50,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 
 	public GraveBase(BlockAge blockAge, Settings settings) {
 		super(settings);
-		setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false).with(Properties.HORIZONTAL_FACING, Direction.NORTH));
+		setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false).with(Properties.HORIZONTAL_FACING,
+				Direction.NORTH));
 		this.blockAge = blockAge;
 	}
 
@@ -311,7 +312,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		BlockPos blockPos = context.getBlockPos();
 		FluidState fluidState = context.getWorld().getFluidState(blockPos);
-		return this.getDefaultState().with(FACING, context.getPlayerFacing()).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+		return this.getDefaultState().with(FACING, context.getPlayerFacing()).with(WATERLOGGED,
+				fluidState.getFluid() == Fluids.WATER);
 	}
 
 	// Waterlogging
@@ -321,7 +323,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	}
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState,
+			WorldAccess world, BlockPos pos, BlockPos neighborPos) {
 		if (state.get(WATERLOGGED)) {
 			world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}

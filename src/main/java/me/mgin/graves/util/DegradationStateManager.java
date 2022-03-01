@@ -26,7 +26,8 @@ public class DegradationStateManager {
 		return setDegradationState(world, pos, potentialNewState, true);
 	}
 
-	static public boolean setDegradationState(World world, BlockPos pos, Optional<BlockState> potentialNewState, boolean itemsDecay) {
+	static public boolean setDegradationState(World world, BlockPos pos, Optional<BlockState> potentialNewState,
+			boolean itemsDecay) {
 		if (potentialNewState.isPresent()) {
 			Ageable.setDegradationState(world, pos, potentialNewState.get(), itemsDecay);
 			return true;

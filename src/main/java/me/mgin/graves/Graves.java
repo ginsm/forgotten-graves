@@ -117,7 +117,8 @@ public class Graves implements ModInitializer {
 					graveEntity.sync(world, gravePos);
 				block.onBreak(world, pos, state, player);
 
-				if (GravesConfig.resolveConfig("sendGraveCoordinates", player.getGameProfile()).main.sendGraveCoordinates) {
+				if (GravesConfig.resolveConfig("sendGraveCoordinates",
+						player.getGameProfile()).main.sendGraveCoordinates) {
 					player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(),
 							gravePos.getY(), gravePos.getZ()), false);
 				}

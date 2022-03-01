@@ -77,7 +77,8 @@ public interface Ageable<T extends Enum<T>> {
 	static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items, GameProfile profile) {
 		float maxDecayPercent = GravesConfig.resolveConfig("maxDecayPercent", profile).main.maxDecayPercent / 100f;
 
-		if (maxDecayPercent == 0.0f) return items;
+		if (maxDecayPercent == 0.0f)
+			return items;
 
 		for (int i = 0; i < items.size(); i++) {
 			ItemStack item = items.get(i);
@@ -88,7 +89,7 @@ public interface Ageable<T extends Enum<T>> {
 			if (maxDamage > 0) {
 				Random random = new Random();
 				float unbreaking = (float) EnchantmentHelper.getLevel(Enchantments.UNBREAKING, item);
-				
+
 				float currentItemDecay = (float) damage / (float) maxDamage;
 
 				if (currentItemDecay == 0.0f) {
@@ -98,7 +99,7 @@ public interface Ageable<T extends Enum<T>> {
 				float decayPercent = maxDecayPercent * currentItemDecay;
 				float unbreakingModifier = (((100f / (unbreaking + 1f)) / 100f));
 				float decayChance = 0.35f * unbreakingModifier;
-				
+
 				if (decayChance >= random.nextFloat()) {
 					int remainingDamage = maxDamage - damage;
 					int decay = (int) Math.ceil((float) remainingDamage * decayPercent);

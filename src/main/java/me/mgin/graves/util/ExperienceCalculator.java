@@ -1,5 +1,7 @@
 package me.mgin.graves.util;
 
+import com.mojang.authlib.GameProfile;
+
 import me.mgin.graves.config.GraveExpStoreType;
 import me.mgin.graves.config.GravesConfig;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,9 +10,10 @@ public class ExperienceCalculator {
 	public static int calculatePlayerExperience(PlayerEntity player) {
 		int level = player.experienceLevel;
 		float progress = player.experienceProgress;
+		GameProfile profile = player.getGameProfile();
 
-		GraveExpStoreType expStorageType = GravesConfig.resolveConfig("expStorageType", player).main.expStorageType;
-		int maxCustomXPLevel = GravesConfig.resolveConfig("maxCustomXPLevel", player).main.maxCustomXPLevel;
+		GraveExpStoreType expStorageType = GravesConfig.resolveConfig("expStorageType", profile).main.expStorageType;
+		int maxCustomXPLevel = GravesConfig.resolveConfig("maxCustomXPLevel", profile).main.maxCustomXPLevel;
 
 		switch (expStorageType) {
 			case STORE_ALL_XP :

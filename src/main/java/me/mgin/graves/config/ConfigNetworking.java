@@ -1,6 +1,7 @@
 package me.mgin.graves.config;
 
 import com.google.gson.Gson;
+import com.mojang.authlib.GameProfile;
 
 import me.mgin.graves.Graves;
 import me.mgin.graves.util.Constants;
@@ -66,11 +67,11 @@ public class ConfigNetworking {
 	 * @param profile
 	 * @return GravesConfig
 	 */
-	public static GravesConfig resolveConfig(String option, PlayerEntity player) {
+	public static GravesConfig resolveConfig(String option, GameProfile profile) {
 		GravesConfig config = GravesConfig.getConfig();
 
 		if (config.server.clientSideOptions.contains(option)) {
-			GravesConfig clientConfig = Graves.clientConfigs.get(player.getGameProfile());
+			GravesConfig clientConfig = Graves.clientConfigs.get(profile);
 
 			if (clientConfig != null)
 				return clientConfig;

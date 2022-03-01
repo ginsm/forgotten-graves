@@ -266,7 +266,7 @@ public class GraveBlockEntity extends BlockEntity {
 	 * @return boolean
 	 */
 	public boolean playerCanBreakGrave(PlayerEntity player) {
-		GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType", player).main.retrievalType;
+		GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType", player.getGameProfile()).main.retrievalType;
 
 		if (playerCanAttemptRetrieve(player))
 			if (retrievalType == GraveRetrievalType.ON_BREAK || retrievalType == GraveRetrievalType.ON_BOTH)
@@ -289,7 +289,7 @@ public class GraveBlockEntity extends BlockEntity {
 	 * @return
 	 */
 	public boolean playerCanUseGrave(PlayerEntity player) {
-		GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType", player).main.retrievalType;
+		GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType", player.getGameProfile()).main.retrievalType;
 
 		if (playerCanAttemptRetrieve(player))
 			if (retrievalType == GraveRetrievalType.ON_USE || retrievalType == GraveRetrievalType.ON_BOTH)

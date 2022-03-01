@@ -44,6 +44,9 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 
 		@ConfigEntry.Gui.Tooltip
 		public int maxCustomXPLevel = 30;
+
+		@ConfigEntry.Gui.Tooltip
+		public int maxDecayPercent = 0;
 	}
 
 	public static class ServerSettings {

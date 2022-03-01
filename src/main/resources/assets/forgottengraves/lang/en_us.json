@@ -41,8 +41,11 @@
   "text.autoconfig.forgottengraves.option.main.expStorageType.@Tooltip": "How should the graves store XP?",
 
   "text.autoconfig.forgottengraves.option.main.maxCustomXPLevel": "Max Custom XP Level",
-  "text.autoconfig.forgottengraves.option.main.maxCustomXPLevel.@Tooltip": "(Custom) What's the max amount of levels that you want stored?",
-  
+  "text.autoconfig.forgottengraves.option.main.maxCustomXPLevel.@Tooltip": "(Custom XP) What's the max amount of levels that you want stored?",
+ 
+  "text.autoconfig.forgottengraves.option.main.maxDecayPercent": "Max Item Decay Percent",
+  "text.autoconfig.forgottengraves.option.main.maxDecayPercent.@Tooltip": "What is the maximum amount an item can decay at one time?",
+
 
   "text.autoconfig.forgottengraves.option.server.enableGraveRobbing.@PrefixText": "Note: These settings cannot be handled by the client.",
   

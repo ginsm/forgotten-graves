@@ -5,10 +5,13 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.Random;
 import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.config.GravesConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Degradable;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
@@ -67,16 +70,56 @@ public interface Ageable<T extends Enum<T>> {
 		float f = (float) (k + 1) / (float) (k + j + 1);
 		float g = f * f * this.getDegradationChanceMultiplier();
 		if (random.nextFloat() < g) {
-			this.getDegradationResultState(state).ifPresent((statex) -> setDegradationState(world, pos, statex));
+			this.getDegradationResultState(state).ifPresent((statex) -> setDegradationState(world, pos, statex, true));
 		}
 	}
 
-	static void setDegradationState(World world, BlockPos pos, BlockState state) {
+	static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items, GameProfile profile) {
+		float maxDecayPercent = GravesConfig.resolveConfig("maxDecayPercent", profile).main.maxDecayPercent / 100f;
+
+		if (maxDecayPercent == 0.0f) return items;
+
+		for (int i = 0; i < items.size(); i++) {
+			ItemStack item = items.get(i);
+			int maxDamage = item.getMaxDamage();
+			int damage = item.getDamage();
+
+			// item has durability
+			if (maxDamage > 0) {
+				Random random = new Random();
+				float unbreaking = (float) EnchantmentHelper.getLevel(Enchantments.UNBREAKING, item);
+				
+				float currentItemDecay = (float) damage / (float) maxDamage;
+
+				if (currentItemDecay == 0.0f) {
+					currentItemDecay = 1f / (float) maxDamage;
+				}
+
+				float decayPercent = maxDecayPercent * currentItemDecay;
+				float unbreakingModifier = (((100f / (unbreaking + 1f)) / 100f));
+				float decayChance = 0.35f * unbreakingModifier;
+				
+				if (decayChance >= random.nextFloat()) {
+					int remainingDamage = maxDamage - damage;
+					int decay = (int) Math.ceil((float) remainingDamage * decayPercent);
+
+					if (remainingDamage - decay > 0) {
+						item.setDamage((int) damage + decay);
+					} else {
+						item.setDamage(maxDamage - 1);
+					}
+				}
+			}
+		}
+		return items;
+	}
+
+	static void setDegradationState(World world, BlockPos pos, BlockState state, boolean itemsDecay) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		if (blockEntity instanceof GraveBlockEntity entity) {
 			GameProfile owner = entity.getGraveOwner();
 			String name = entity.getCustomName();
-			DefaultedList<ItemStack> items = entity.getItems();
+			DefaultedList<ItemStack> items = itemsDecay ? decayItems(entity.getItems(), owner) : entity.getItems();
 			int xp = entity.getXp();
 			int noAge = entity.getNoAge();
 			String graveSkull = entity.getGraveSkull();

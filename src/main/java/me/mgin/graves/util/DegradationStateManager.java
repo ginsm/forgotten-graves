@@ -15,7 +15,7 @@ public class DegradationStateManager {
 			return false;
 
 		Optional<BlockState> potentialNewState = AgingGrave.getDecreasedOxidationState(world.getBlockState(pos));
-		return setDegradationState(world, pos, potentialNewState);
+		return setDegradationState(world, pos, potentialNewState, false);
 	}
 
 	static public boolean increaseDegradationState(World world, BlockPos pos) throws Exception {
@@ -23,12 +23,12 @@ public class DegradationStateManager {
 			return false;
 
 		Optional<BlockState> potentialNewState = AgingGrave.getIncreasedOxidationState(world.getBlockState(pos));
-		return setDegradationState(world, pos, potentialNewState);
+		return setDegradationState(world, pos, potentialNewState, true);
 	}
 
-	static public boolean setDegradationState(World world, BlockPos pos, Optional<BlockState> potentialNewState) {
+	static public boolean setDegradationState(World world, BlockPos pos, Optional<BlockState> potentialNewState, boolean itemsDecay) {
 		if (potentialNewState.isPresent()) {
-			Ageable.setDegradationState(world, pos, potentialNewState.get());
+			Ageable.setDegradationState(world, pos, potentialNewState.get(), itemsDecay);
 			return true;
 		}
 		return false;

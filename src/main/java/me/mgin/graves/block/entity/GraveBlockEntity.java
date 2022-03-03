@@ -124,7 +124,7 @@ public class GraveBlockEntity extends BlockEntity {
 	 * @return
 	 */
 	public boolean hasCustomName() {
-		return customName != "";
+		return customName.length() > 0;
 	}
 
 	/**
@@ -312,7 +312,7 @@ public class GraveBlockEntity extends BlockEntity {
 		if (graveOwner != null)
 			nbt.put("GraveOwner", NbtHelper.writeGameProfile(new NbtCompound(), graveOwner));
 
-		if (customName != null && !customName.isEmpty())
+		if (customName != null && this.hasCustomName())
 			nbt.putString("CustomName", customName);
 
 		if (graveSkull != null)

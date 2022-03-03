@@ -75,7 +75,8 @@ public interface Ageable<T extends Enum<T>> {
 	}
 
 	static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items, GameProfile profile) {
-		float maxDecayPercent = GravesConfig.resolveConfig("maxDecayPercent", profile).main.maxDecayPercent / 100f;
+		float maxDecayPercent = GravesConfig.resolveConfig("maxDecayPercent", profile).itemDecay.maxDecayPercent / 100f;
+		boolean itemDecayBreaksItems = GravesConfig.resolveConfig("itemDecayBreaksItems", profile).itemDecay.itemDecayBreaksItems;
 
 		if (maxDecayPercent == 0.0f)
 			return items;
@@ -106,7 +107,9 @@ public interface Ageable<T extends Enum<T>> {
 
 					if (remainingDamage - decay > 0) {
 						item.setDamage((int) damage + decay);
-					} else {
+					} else if (itemDecayBreaksItems) {
+						items.set(i, ItemStack.EMPTY);
+					}else {
 						item.setDamage(maxDamage - 1);
 					}
 				}

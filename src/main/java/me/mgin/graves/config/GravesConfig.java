@@ -10,8 +10,13 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 
 	@ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
 	public MainSettings main = new MainSettings();
+
+	@ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+	public ItemDecaySettings itemDecay = new ItemDecaySettings();
+
 	@ConfigEntry.Gui.CollapsibleObject(startExpanded = false)
 	public ServerSettings server = new ServerSettings();
+
 
 	public static GravesConfig getConfig() {
 		return AutoConfig.getConfigHolder(GravesConfig.class).getConfig();
@@ -20,7 +25,7 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 	@Override
 	public void validatePostLoad() {
 		main.maxCustomXPLevel = Math.max(main.maxCustomXPLevel, 0);
-		main.maxDecayPercent = Math.max(Math.min(main.maxDecayPercent, 100), 0);
+		itemDecay.maxDecayPercent = Math.max(Math.min(itemDecay.maxDecayPercent, 100), 0);
 		server.minOperatorOverrideLevel = Math.max(Math.min(server.minOperatorOverrideLevel, 4), -1);
 	}
 
@@ -45,10 +50,15 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 
 		@ConfigEntry.Gui.Tooltip
 		public int maxCustomXPLevel = 30;
+	}
 
+	public static class ItemDecaySettings {
 		@ConfigEntry.Gui.Tooltip
 		@ConfigEntry.BoundedDiscrete(min = 0, max = 100)
 		public int maxDecayPercent = 0;
+
+		@ConfigEntry.Gui.Tooltip
+		public boolean itemDecayBreaksItems = false;
 	}
 
 	public static class ServerSettings {

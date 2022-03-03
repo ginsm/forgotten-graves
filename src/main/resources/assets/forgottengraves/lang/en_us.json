@@ -15,9 +15,9 @@
 
 
   "text.autoconfig.forgottengraves.title": "Forgotten Graves Settings",
+  
   "text.autoconfig.forgottengraves.option.main": "Main Settings",
-  "text.autoconfig.forgottengraves.option.server": "Server Settings",
-
+  
   "text.autoconfig.forgottengraves.option.main.enableGraves": "Enable Forgotten Graves",
   "text.autoconfig.forgottengraves.option.main.enableGraves.@Tooltip": "Enable the Forgotten Graves mod?",
   
@@ -36,17 +36,27 @@
 
   "text.autoconfig.forgottengraves.option.main.dropType": "Grave Drop Type",
   "text.autoconfig.forgottengraves.option.main.dropType.@Tooltip": "What happens to the items when they're retrieved?",
-
+  
   "text.autoconfig.forgottengraves.option.main.expStorageType": "XP Storage Type",
   "text.autoconfig.forgottengraves.option.main.expStorageType.@Tooltip": "How should the graves store XP?",
 
   "text.autoconfig.forgottengraves.option.main.maxCustomXPLevel": "Max Custom XP Level",
   "text.autoconfig.forgottengraves.option.main.maxCustomXPLevel.@Tooltip": "(Custom XP) What's the max amount of levels that you want stored?",
- 
-  "text.autoconfig.forgottengraves.option.main.maxDecayPercent": "Max Item Decay Percent",
-  "text.autoconfig.forgottengraves.option.main.maxDecayPercent.@Tooltip": "What is the max percentage an item can decay at one time?",
+  
 
 
+  "text.autoconfig.forgottengraves.option.itemDecay": "Item Decay Settings",
+  
+  "text.autoconfig.forgottengraves.option.itemDecay.maxDecayPercent": "Max Item Decay Percent",
+  "text.autoconfig.forgottengraves.option.itemDecay.maxDecayPercent.@Tooltip": "What is the max percentage an item can decay at one time?",
+  
+  "text.autoconfig.forgottengraves.option.itemDecay.itemDecayBreaksItems": "Item Decay Breaks Items",
+  "text.autoconfig.forgottengraves.option.itemDecay.itemDecayBreaksItems.@Tooltip": "Should item decay ever completely break an item?",
+  
+
+
+  "text.autoconfig.forgottengraves.option.server": "Server Settings",
+  
   "text.autoconfig.forgottengraves.option.server.enableGraveRobbing.@PrefixText": "Note: These settings cannot be handled by the client.",
   
   "text.autoconfig.forgottengraves.option.server.enableGraveRobbing": "Enable Grave Robbing",

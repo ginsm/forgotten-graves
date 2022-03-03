@@ -13,8 +13,8 @@ public interface AgingGrave extends Ageable<AgingGrave.BlockAge> {
 
 	Supplier<ImmutableBiMap<Object, Object>> BLOCK_AGE_INCREASES = Suppliers.memoize(() -> {
 		return ImmutableBiMap.builder().put(GraveBlocks.GRAVE, GraveBlocks.GRAVE_OLD)
-				.put(GraveBlocks.GRAVE_OLD, GraveBlocks.GRAVE_WEATHERED).put(GraveBlocks.GRAVE_WEATHERED, GraveBlocks.GRAVE_FORGOTTEN)
-				.build();
+				.put(GraveBlocks.GRAVE_OLD, GraveBlocks.GRAVE_WEATHERED)
+				.put(GraveBlocks.GRAVE_WEATHERED, GraveBlocks.GRAVE_FORGOTTEN).build();
 	});
 
 	Supplier<BiMap<Object, Object>> BLOCK_AGE_DECREASES = Suppliers.memoize(() -> {
@@ -56,15 +56,6 @@ public interface AgingGrave extends Ageable<AgingGrave.BlockAge> {
 	static BlockState getUnaffectedOxidationState(BlockState state) {
 		return getUnaffectedOxidationBlock(state.getBlock()).getStateWithProperties(state);
 	}
-
-	/*
-	 * default Optional<BlockEntity> getDegradationResultEntity(BlockEntity
-	 * blockEntity) {
-	 *
-	 * return
-	 * getIncreasedOxidationBlock(blockEntity.getWorld().getBlockState(blockEntity.
-	 * getPos())).map((block) -> { return block; }); }
-	 */
 
 	default Optional<BlockState> getDegradationResultState(BlockState state) {
 		return getIncreasedOxidationBlock(state.getBlock()).map((block) -> {

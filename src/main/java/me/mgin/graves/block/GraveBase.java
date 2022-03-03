@@ -20,10 +20,13 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -37,15 +40,18 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 
-public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvider, AgingGrave {
+public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvider, AgingGrave, Waterloggable {
 
 	private final BlockAge blockAge;
+	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
 	public GraveBase(BlockAge blockAge, Settings settings) {
 		super(settings);
-		setDefaultState(this.stateManager.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH));
+		setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false).with(Properties.HORIZONTAL_FACING,
+				Direction.NORTH));
 		this.blockAge = blockAge;
 	}
 
@@ -85,7 +91,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {
-		stateManager.add(Properties.HORIZONTAL_FACING);
+		stateManager.add(Properties.HORIZONTAL_FACING).add(Properties.WATERLOGGED);
 	}
 
 	@Override
@@ -193,7 +199,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		}
 
 		// Retrieve the appropriate config
-		GraveDropType dropType = GravesConfig.resolveConfig("dropType", player).main.dropType;
+		GraveDropType dropType = GravesConfig.resolveConfig("dropType", player.getGameProfile()).main.dropType;
 
 		if (dropType == GraveDropType.PUT_IN_INVENTORY) {
 			player.getInventory().clear();
@@ -304,9 +310,28 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	}
 
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(FACING, context.getPlayerFacing());
+		BlockPos blockPos = context.getBlockPos();
+		FluidState fluidState = context.getWorld().getFluidState(blockPos);
+		return this.getDefaultState().with(FACING, context.getPlayerFacing()).with(WATERLOGGED,
+				fluidState.getFluid() == Fluids.WATER);
 	}
 
+	// Waterlogging
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+	}
+
+	@Override
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState,
+			WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+		if (state.get(WATERLOGGED)) {
+			world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		}
+		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+	}
+
+	// Degradation
 	@Override
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		this.tickDegradation(state, world, pos, random);

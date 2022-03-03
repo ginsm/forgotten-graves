@@ -1,6 +1,7 @@
 package me.mgin.graves.config;
 
 import com.google.gson.Gson;
+import com.mojang.authlib.GameProfile;
 
 import me.mgin.graves.Graves;
 import me.mgin.graves.util.Constants;
@@ -8,7 +9,6 @@ import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 
 public class ConfigNetworking {
@@ -66,11 +66,11 @@ public class ConfigNetworking {
 	 * @param profile
 	 * @return GravesConfig
 	 */
-	public static GravesConfig resolveConfig(String option, PlayerEntity player) {
+	public static GravesConfig resolveConfig(String option, GameProfile profile) {
 		GravesConfig config = GravesConfig.getConfig();
 
 		if (config.server.clientSideOptions.contains(option)) {
-			GravesConfig clientConfig = Graves.clientConfigs.get(player.getGameProfile());
+			GravesConfig clientConfig = Graves.clientConfigs.get(profile);
 
 			if (clientConfig != null)
 				return clientConfig;

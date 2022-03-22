@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import me.mgin.graves.api.ParticlesApi;
+import me.mgin.graves.block.api.Permission;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,7 +31,7 @@ public class HoneycombItemMixin {
 		Hand hand = context.getHand();
 
 		if (blockEntity instanceof GraveBlockEntity graveEntity
-				&& graveEntity.playerCanAttemptRetrieve(player))
+				&& Permission.playerCanAttemptRetrieve(player, graveEntity))
 			if (hand == Hand.MAIN_HAND && graveEntity.getNoAge() == 0) {
 				player.getStackInHand(context.getHand()).decrement(1);
 				graveEntity.setNoAge(1);

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.GravesApi;
+import me.mgin.graves.block.api.Permission;
 import me.mgin.graves.block.degradation.AgingGrave;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
@@ -103,7 +104,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 			return ActionResult.PASS;
 
 		if (hand != Hand.OFF_HAND)
-			if (player.getStackInHand(hand).isEmpty() && graveEntity.playerCanUseGrave(player))
+			if (player.getStackInHand(hand).isEmpty() && Permission.playerCanUseGrave(player, graveEntity))
 				useGrave(player, world, pos);
 
 		return ActionResult.PASS;
@@ -116,7 +117,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		if (world.isClient)
 			return;
 
-		if (graveEntity.playerCanBreakGrave(player))
+		if (Permission.playerCanBreakGrave(player, graveEntity))
 			if (useGrave(player, world, pos))
 				return;
 
@@ -182,8 +183,8 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		if (graveEntity.getGraveOwner() == null)
 			return false;
 
-		if (!graveEntity.playerCanAttemptRetrieve(player))
-			if (!graveEntity.playerCanOverride(player))
+		if (!Permission.playerCanAttemptRetrieve(player, graveEntity))
+			if (!Permission.playerCanOverride(player))
 				return false;
 
 		DefaultedList<ItemStack> items = graveEntity.getItems();

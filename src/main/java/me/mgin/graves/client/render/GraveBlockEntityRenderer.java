@@ -1,7 +1,7 @@
 package me.mgin.graves.client.render;
 
-import me.mgin.graves.api.SkullApi;
 import me.mgin.graves.block.GraveBase;
+import me.mgin.graves.block.api.Skulls;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.font.TextRenderer;
@@ -61,7 +61,7 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 
 		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(50));
 
-		SkullApi.renderSkull(graveEntity, modelLoader, blockAge, state, matrices, light, vertexConsumers);
+		Skulls.renderSkull(graveEntity, modelLoader, blockAge, state, matrices, light, vertexConsumers);
 
 		matrices.pop();
 

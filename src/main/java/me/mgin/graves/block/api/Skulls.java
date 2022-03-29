@@ -1,4 +1,4 @@
-package me.mgin.graves.api;
+package me.mgin.graves.block.api;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.render.entity.model.SkullEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class SkullApi {
+public class Skulls {
 
 	/**
 	 * <strong>Keys:</strong> Skull item names (i.e. "player_head",
@@ -113,17 +113,17 @@ public class SkullApi {
 
 		if (graveEntity.getGraveOwner() != null) {
 			profile = graveEntity.getGraveOwner();
-			skullData = SkullApi.skulls.get(blockAge >= 2 ? "skeleton_skull" : "player_head");
+			skullData = Skulls.skulls.get(blockAge >= 2 ? "skeleton_skull" : "player_head");
 		}
 
 		else if (graveEntity.hasGraveSkull()) {
 			String graveSkull = graveEntity.getGraveSkull();
 
-			if (SkullApi.skulls.containsKey(graveSkull)) {
-				skullData = SkullApi.skulls.get(graveSkull);
+			if (Skulls.skulls.containsKey(graveSkull)) {
+				skullData = Skulls.skulls.get(graveSkull);
 			} else {
 				profile = getCustomSkullProfile(graveSkull);
-				skullData = SkullApi.skulls.get("player_head");
+				skullData = Skulls.skulls.get("player_head");
 			}
 		}
 

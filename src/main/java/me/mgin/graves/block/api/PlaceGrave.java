@@ -37,6 +37,8 @@ public class PlaceGrave {
     combinedInventory.addAll(player.getInventory().armor);
     combinedInventory.addAll(player.getInventory().offHand);
 
+    System.out.println(player.getInventory().main.size());
+
     for (GravesApi GravesApi : Graves.apiMods) {
       combinedInventory.addAll(GravesApi.getInventory(player));
     }

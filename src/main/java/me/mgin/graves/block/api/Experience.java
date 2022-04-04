@@ -1,4 +1,4 @@
-package me.mgin.graves.util;
+package me.mgin.graves.block.api;
 
 import com.mojang.authlib.GameProfile;
 
@@ -6,7 +6,7 @@ import me.mgin.graves.config.GraveExpStoreType;
 import me.mgin.graves.config.GravesConfig;
 import net.minecraft.entity.player.PlayerEntity;
 
-public class ExperienceCalculator {
+public class Experience {
 	public static int calculatePlayerExperience(PlayerEntity player) {
 		int level = player.experienceLevel;
 		float progress = player.experienceProgress;

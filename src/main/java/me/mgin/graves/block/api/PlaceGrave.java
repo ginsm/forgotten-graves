@@ -6,7 +6,6 @@ import java.util.Set;
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.GravesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
-import me.mgin.graves.util.ExperienceCalculator;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.registry.GraveBlocks;
 import net.minecraft.block.Block;
@@ -67,8 +66,8 @@ public class PlaceGrave {
         graveEntity.setItems(combinedInventory);
         graveEntity.setGraveOwner(player.getGameProfile());
 
-        int experience = ExperienceCalculator.calculatePlayerExperience(player);
-
+        int experience = Experience.calculatePlayerExperience(player);
+        
         graveEntity.setXp(experience);
         player.totalExperience = 0;
         player.experienceProgress = 0;

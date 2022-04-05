@@ -34,9 +34,9 @@ public class TrinketsCompat implements GravesApi {
 	 * @return List<ItemStack>
 	 */
 	@Override
-	public List<ItemStack> getInventory(PlayerEntity player) {
+	public DefaultedList<ItemStack> getInventory(PlayerEntity player) {
 		Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
-		List<ItemStack> itemStacks = new ArrayList<>();
+		DefaultedList<ItemStack> itemStacks = DefaultedList.of();
 
 		if (component.isPresent()) {
 			component.get().forEach((ref, itemStack) -> {

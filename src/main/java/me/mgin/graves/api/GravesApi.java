@@ -8,7 +8,7 @@ import net.minecraft.util.collection.DefaultedList;
 public interface GravesApi {
 	String modID = null;
 
-	List<ItemStack> getInventory(PlayerEntity entity);
+	DefaultedList<ItemStack> getInventory(PlayerEntity entity);
 
 	/**
 	 * Set the inventory for a given mod.

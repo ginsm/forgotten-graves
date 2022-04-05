@@ -13,10 +13,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
@@ -30,16 +28,6 @@ public class PlaceGrave {
       return;
 
     BlockPos pos = new BlockPos(vecPos.x, vecPos.y - 1, vecPos.z);
-
-    DefaultedList<ItemStack> combinedInventory = DefaultedList.of();
-
-    combinedInventory.addAll(player.getInventory().main);
-    combinedInventory.addAll(player.getInventory().armor);
-    combinedInventory.addAll(player.getInventory().offHand);
-
-    for (GravesApi GravesApi : Graves.apiMods) {
-      combinedInventory.addAll(GravesApi.getInventory(player));
-    }
 
     // Handle dying below the dimension's minimum Y height
     int minY = world.getDimension().getMinimumY();
@@ -63,29 +51,49 @@ public class PlaceGrave {
 
         GraveBlockEntity graveEntity = new GraveBlockEntity(gravePos, world.getBlockState(gravePos));
 
-        graveEntity.setInventory("items", combinedInventory);
+        // Set inventories
+        graveEntity.setInventory("Items", Inventory.getMainInventory(player));
+
+        for (GravesApi mod : Graves.apiMods) {
+          graveEntity.setInventory(mod.getModID(), mod.getInventory(player));
+        }
+
+        // Set owner
         graveEntity.setGraveOwner(player.getGameProfile());
 
+        // Set experience & reset player's XP
         int experience = Experience.calculatePlayerExperience(player);
-        
         graveEntity.setXp(experience);
         player.totalExperience = 0;
         player.experienceProgress = 0;
         player.experienceLevel = 0;
+
+        // Add the block entity
         world.addBlockEntity(graveEntity);
 
+        // Sync with the server
         if (world.isClient())
           graveEntity.sync(world, gravePos);
+
         block.onBreak(world, pos, state, player);
 
-        if (GravesConfig.resolveConfig("sendGraveCoordinates",
-            player.getGameProfile()).main.sendGraveCoordinates) {
-          player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(),
-              gravePos.getY(), gravePos.getZ()), false);
+        GravesConfig config = GravesConfig.resolveConfig("sendGraveCoordinates", player.getGameProfile());
+
+        if (config.main.sendGraveCoordinates) {
+          player.sendMessage(new TranslatableText(
+            "text.forgottengraves.mark_coords",
+            gravePos.getX(),
+            gravePos.getY(),
+            gravePos.getZ()
+          ), false);
         }
 
-        System.out.println("[Graves] Grave spawned at: " + gravePos.getX() + ", " + gravePos.getY() + ", "
-            + gravePos.getZ() + " for player " + player.getName().asString() + ".");
+        System.out.println("[Graves] Grave spawned at: "
+          + gravePos.getX() + ", "
+          + gravePos.getY() + ", "
+          + gravePos.getZ() + " for player "
+          + player.getName().asString() + "."
+        );
 
         break;
       }

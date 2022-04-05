@@ -43,7 +43,6 @@ public class GraveNbtHelper {
   }
 
   public static NbtCompound update(NbtCompound nbt) {
-
     // Retrieve the items like normal
     DefaultedList<ItemStack> oldItems = DefaultedList.ofSize(
       nbt.getInt("ItemCount"),
@@ -51,11 +50,7 @@ public class GraveNbtHelper {
     );
     Inventories.readNbt(nbt.getCompound("Items"), oldItems);
 
-    // Remove old nbt format
-    nbt.remove("ItemCount");
-    nbt.remove("Items");
-
-    // Separate the items
+    // Separate the item lists
     DefaultedList<ItemStack> items = DefaultedList.ofSize(0);
     items.addAll(oldItems.subList(0, 41));
 
@@ -64,7 +59,7 @@ public class GraveNbtHelper {
       trinkets.addAll(oldItems.subList(41, oldItems.size()));
     }
 
-    // Store new ItemCount NbtCompound
+    // Create/store new ItemCount format
     NbtCompound itemCount = new NbtCompound();
 
     itemCount.putInt("Items", items.size());

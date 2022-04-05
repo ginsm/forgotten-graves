@@ -18,6 +18,12 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.event.GameEvent;
 
 public class TrinketsCompat implements GravesApi {
+
+	/**
+	 * The mod ID string used for storing and retrieving the mod's inventory.
+	 */
+	public static String modID = "trinkets";
+
 	/**
 	 * Retrieve a list containing items occupying the trinket slots.
 	 *

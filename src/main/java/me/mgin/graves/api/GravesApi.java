@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
 public interface GravesApi {
+	String modID = null;
+
 	List<ItemStack> getInventory(PlayerEntity entity);
 
 	/**
@@ -18,4 +20,6 @@ public interface GravesApi {
 	DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity entity);
 
 	int getInventorySize(PlayerEntity entity);
+
+	String getModID();
 }

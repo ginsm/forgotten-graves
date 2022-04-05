@@ -2,6 +2,7 @@ package me.mgin.graves.block.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.GravesApi;
@@ -14,6 +15,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -21,108 +23,106 @@ import net.minecraft.world.World;
 
 public class RetrieveGrave {
   static public boolean retrieve(PlayerEntity player, World world, BlockPos pos) {
+    // Edge case checking & variable initialization
     if (world.isClient)
       return false;
 
     BlockEntity blockEntity = world.getBlockEntity(pos);
 
-    if (!(blockEntity instanceof GraveBlockEntity))
+    if (!(blockEntity instanceof GraveBlockEntity graveEntity))
       return false;
 
-    GraveBlockEntity graveEntity = (GraveBlockEntity) blockEntity;
     graveEntity.sync(world, pos);
-
-    DefaultedList<ItemStack> items = graveEntity.getInventory("items");
-
-    if (items == null) return false;
+    
+    if (graveEntity.getInventory("Items") == null) return false;
     if (graveEntity.getGraveOwner() == null) return false;
 
     if (!Permission.playerCanAttemptRetrieve(player, graveEntity))
       if (!Permission.playerCanOverride(player))
         return false;
 
-    DefaultedList<ItemStack> inventory = DefaultedList.of();
+    // Get inventories (grave & player)
+    DefaultedList<ItemStack> items = graveEntity.getInventory("Items");
+    DefaultedList<ItemStack> inventory = Inventory.getMainInventory(player);
 
-    inventory.addAll(player.getInventory().main);
-    inventory.addAll(player.getInventory().armor);
-    inventory.addAll(player.getInventory().offHand);
-
-    for (GravesApi gravesApi : Graves.apiMods) {
-      inventory.addAll(gravesApi.getInventory(player));
+    // Add any other inventories to inventory
+    for (GravesApi mod : Graves.apiMods) {
+      inventory.addAll(mod.getInventory(player));
     }
 
-    // Retrieve the appropriate config
+    // Resolve drop type
     GraveDropType dropType = GravesConfig.resolveConfig("dropType", player.getGameProfile()).main.dropType;
 
     if (dropType == GraveDropType.PUT_IN_INVENTORY) {
+      // Clear player's current inventory
       player.getInventory().clear();
 
-      List<ItemStack> armor = items.subList(36, 40);
       DefaultedList<ItemStack> extraItems = DefaultedList.of();
+      
+      // Equip armor slots that do not have curse of binding
+      List<ItemStack> armor = items.subList(36, 40);
 
-      // Equip items that do not have curse of binding
       for (int i = 0; i < armor.size(); i++) {
         if (EnchantmentHelper.hasBindingCurse(armor.get(i))) {
           extraItems.add(armor.get(i));
           continue;
         }
+
         EquipmentSlot equipmentSlot = MobEntity.getPreferredEquipmentSlot(armor.get(i));
         player.equipStack(equipmentSlot, armor.get(i));
       }
 
-      player.equipStack(EquipmentSlot.OFFHAND, items.get(40));
+      if (!EnchantmentHelper.hasBindingCurse(items.get(40)))
+        player.equipStack(EquipmentSlot.OFFHAND, items.get(40));
 
+      // Restore grave inventory
       List<ItemStack> mainInventory = items.subList(0, 36);
 
       for (int i = 0; i < mainInventory.size(); i++) {
         player.getInventory().setStack(i, mainInventory.get(i));
       }
+     
+      // Equip third party inventories
+      for (GravesApi mod : Graves.apiMods) {
+        DefaultedList<ItemStack> modInventory = graveEntity.getInventory(mod.getModID());
+        int size = mod.getInventorySize(player);
 
-      List<Integer> openArmorSlots = getInventoryOpenSlots(player.getInventory().armor);
-
-      for (int i = 0; i < 4; i++) {
-        if (openArmorSlots.contains(i)) {
-          player.equipStack(EquipmentSlot.fromTypeIndex(EquipmentSlot.Type.ARMOR, i),
-              inventory.subList(36, 40).get(i));
-        } else
-          extraItems.add(inventory.subList(36, 40).get(i));
+        if (size == modInventory.size()) {
+          DefaultedList<ItemStack> unequippedItems = mod.setInventory(modInventory, player);
+          extraItems.addAll(unequippedItems);
+        } else {
+          extraItems.addAll(modInventory);
+        }
       }
 
-      if (player.getInventory().offHand.get(0) == ItemStack.EMPTY) {
-        player.equipStack(EquipmentSlot.OFFHAND, inventory.get(40));
-      } else {
-        extraItems.add(inventory.get(40));
-      }
-
+      // Preserve previous inventory
       extraItems.addAll(inventory.subList(0, 36));
 
-      if (inventory.size() > 41)
+      if (inventory.size() > 41) {
         extraItems.addAll(inventory.subList(41, inventory.size()));
-
-      List<Integer> openSlots = getInventoryOpenSlots(player.getInventory().main);
-
-      int inventoryOffset = 41;
-
-      // Equip third party inventories
-      for (GravesApi GravesApi : Graves.apiMods) {
-          int newOffset = inventoryOffset + GravesApi.getInventorySize(player);
-          if (newOffset > items.size()) newOffset = items.size();
-
-          // Add any unequipped items to extraItems
-          extraItems.addAll(GravesApi.setInventory(items.subList(inventoryOffset, newOffset), player));
-          inventoryOffset = newOffset;
       }
+
+      // Remove any empty or air slots from extraItems
+      extraItems.removeIf(item -> 
+        item == ItemStack.EMPTY || item.getItem() == Items.AIR
+      );
+
+      // Move extra items to open slots
+      DefaultedList<Integer> openSlots = Inventory.getInventoryOpenSlots(player.getInventory().main);
 
       for (int i = 0; i < openSlots.size(); i++) {
-        player.getInventory().setStack(openSlots.get(i), extraItems.get(i));
+        if (extraItems.size() > 0) {
+          player.getInventory().setStack(openSlots.get(i), extraItems.get(0));
+          extraItems.remove(0);
+        }
       }
 
+      // Drop any excess items
       DefaultedList<ItemStack> dropItems = DefaultedList.of();
-
-      dropItems.addAll(extraItems.subList(openSlots.size(), extraItems.size()));
-
+      dropItems.addAll(extraItems);
       ItemScatterer.spawn(world, pos, dropItems);
     } else if (dropType == GraveDropType.DROP_ITEMS) {
+      // Drop all items
       ItemScatterer.spawn(world, pos, items);
     }
 
@@ -132,14 +132,5 @@ public class RetrieveGrave {
 
     world.removeBlock(pos, false);
     return true;
-  }
-
-  static private List<Integer> getInventoryOpenSlots(DefaultedList<ItemStack> inventory) {
-    List<Integer> openSlots = new ArrayList<>();
-    for (int i = 0; i < inventory.size(); i++) {
-      if (inventory.get(i) == ItemStack.EMPTY)
-        openSlots.add(i);
-    }
-    return openSlots;
   }
 }

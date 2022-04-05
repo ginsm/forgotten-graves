@@ -37,8 +37,6 @@ public class PlaceGrave {
     combinedInventory.addAll(player.getInventory().armor);
     combinedInventory.addAll(player.getInventory().offHand);
 
-    System.out.println(player.getInventory().main.size());
-
     for (GravesApi GravesApi : Graves.apiMods) {
       combinedInventory.addAll(GravesApi.getInventory(player));
     }
@@ -65,7 +63,7 @@ public class PlaceGrave {
 
         GraveBlockEntity graveEntity = new GraveBlockEntity(gravePos, world.getBlockState(gravePos));
 
-        graveEntity.setItems(combinedInventory);
+        graveEntity.setInventory("items", combinedInventory);
         graveEntity.setGraveOwner(player.getGameProfile());
 
         int experience = Experience.calculatePlayerExperience(player);

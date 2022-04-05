@@ -123,7 +123,7 @@ public interface Ageable<T extends Enum<T>> {
 		if (blockEntity instanceof GraveBlockEntity entity) {
 			GameProfile owner = entity.getGraveOwner();
 			String name = entity.getCustomName();
-			DefaultedList<ItemStack> items = itemsDecay ? decayItems(entity.getItems(), owner) : entity.getItems();
+			DefaultedList<ItemStack> items = itemsDecay ? decayItems(entity.getInventory("items"), owner) : entity.getInventory("items");
 			int xp = entity.getXp();
 			int noAge = entity.getNoAge();
 			String graveSkull = entity.getGraveSkull();
@@ -132,7 +132,7 @@ public interface Ageable<T extends Enum<T>> {
 
 			GraveBlockEntity newGraveBlockEntity = new GraveBlockEntity(pos, state);
 			newGraveBlockEntity.setGraveOwner(owner);
-			newGraveBlockEntity.setItems(items);
+			newGraveBlockEntity.setInventory("items", items);
 			newGraveBlockEntity.setCustomName(name);
 			newGraveBlockEntity.setXp(xp);
 			newGraveBlockEntity.setNoAge(noAge);

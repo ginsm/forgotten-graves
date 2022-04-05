@@ -32,16 +32,15 @@ public class RetrieveGrave {
     GraveBlockEntity graveEntity = (GraveBlockEntity) blockEntity;
     graveEntity.sync(world, pos);
 
-    if (graveEntity.getItems() == null)
-      return false;
-    if (graveEntity.getGraveOwner() == null)
-      return false;
+    DefaultedList<ItemStack> items = graveEntity.getInventory("items");
+
+    if (items == null) return false;
+    if (graveEntity.getGraveOwner() == null) return false;
 
     if (!Permission.playerCanAttemptRetrieve(player, graveEntity))
       if (!Permission.playerCanOverride(player))
         return false;
 
-    DefaultedList<ItemStack> items = graveEntity.getItems();
     DefaultedList<ItemStack> inventory = DefaultedList.of();
 
     inventory.addAll(player.getInventory().main);
@@ -124,7 +123,7 @@ public class RetrieveGrave {
 
       ItemScatterer.spawn(world, pos, dropItems);
     } else if (dropType == GraveDropType.DROP_ITEMS) {
-      ItemScatterer.spawn(world, pos, graveEntity.getItems());
+      ItemScatterer.spawn(world, pos, items);
     }
 
     player.addExperience((int) (1 * graveEntity.getXp()));

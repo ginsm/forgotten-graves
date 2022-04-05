@@ -4,11 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mojang.authlib.GameProfile;
+
+import me.mgin.graves.Graves;
+import me.mgin.graves.api.GravesApi;
+import me.mgin.graves.block.api.GraveNbtHelper;
 import me.mgin.graves.registry.GraveBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
@@ -24,7 +27,6 @@ import org.jetbrains.annotations.Nullable;
 public class GraveBlockEntity extends BlockEntity {
 	private GameProfile graveOwner;
 	private BlockState state;
-	private DefaultedList<ItemStack> items;
 	private int xp;
 	private int noAge;
 	private String customName;
@@ -32,29 +34,18 @@ public class GraveBlockEntity extends BlockEntity {
 	private Map<String, DefaultedList<ItemStack>> inventories =
 		new HashMap<String, DefaultedList<ItemStack>>() {
 			{
-				put("items", DefaultedList.ofSize(41, ItemStack.EMPTY));
+				put("Items", DefaultedList.ofSize(41, ItemStack.EMPTY));
 			}
 		};
 
 	public GraveBlockEntity(BlockPos pos, BlockState state) {
 		super(GraveBlocks.GRAVE_BLOCK_ENTITY, pos, state);
 		this.graveOwner = null;
-		this.items = DefaultedList.ofSize(41, ItemStack.EMPTY);
 		this.customName = "";
 		this.graveSkull = "";
 		this.xp = 0;
 		this.noAge = 0;
 		setState(state);
-	}
-
-	/**
-	 * Set the GraveBlockEntity's items.
-	 *
-	 * @param items
-	 */
-	public void setItems(DefaultedList<ItemStack> items) {
-		this.items = items;
-		this.markDirty();
 	}
 
 	/**
@@ -76,22 +67,8 @@ public class GraveBlockEntity extends BlockEntity {
 		return this.inventories.get(key);
 	}
 
-	/**
-	 * Retrieve the GraveBlockEntity's items.
-	 *
-	 * @return
-	 */
-	public DefaultedList<ItemStack> getItems() {
-		return items;
-	}
-
-	/**
-	 * Determines whether the GraveBlockEntity has items in it.
-	 *
-	 * @return boolean
-	 */
-	public boolean hasItems() {
-		return !items.isEmpty();
+	public int getInventorySize(String key) {
+		return this.inventories.get(key).size();
 	}
 
 	/**
@@ -248,8 +225,23 @@ public class GraveBlockEntity extends BlockEntity {
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
 
-		nbt.putInt("ItemCount", this.items.size());
-		nbt.put("Items", Inventories.writeNbt(new NbtCompound(), this.items, true));
+		nbt = GraveNbtHelper.writeInventory(
+			"Items",
+			this.getInventory("Items"),
+			nbt
+		);
+
+		for (GravesApi mod : Graves.apiMods) {
+			String modID = mod.getModID();
+			if (getInventory(modID) != null) {
+				nbt = GraveNbtHelper.writeInventory(
+					modID, 
+					this.getInventory(modID),
+					nbt
+				);
+			}
+		}
+		
 		nbt.putInt("XP", xp);
 		nbt.putInt("noAge", noAge);
 
@@ -265,22 +257,36 @@ public class GraveBlockEntity extends BlockEntity {
 
 	@Override
 	public void readNbt(NbtCompound nbt) {
+		// Needed for backwards compatibility
+		if (nbt.getType("ItemCount") == 3) nbt = GraveNbtHelper.update(nbt)
+		;
 		super.readNbt(nbt);
 
-		this.items = DefaultedList.ofSize(nbt.getInt("ItemCount"), ItemStack.EMPTY);
-		Inventories.readNbt(nbt.getCompound("Items"), this.items);
+		// Store default inventory
+		if (nbt.contains("Items")) {
+			this.setInventory("Items", GraveNbtHelper.readInventory("Items", nbt));
+		}
+
+		// Store any mod inventories
+		for (GravesApi mod : Graves.apiMods) {
+			String modID = mod.getModID();
+			if (nbt.contains(modID)) {
+				this.setInventory(modID, GraveNbtHelper.readInventory(modID, nbt));
+			}
+		}
+		
 		this.xp = nbt.getInt("XP");
 		this.noAge = nbt.getInt("noAge");
-
+		
 		if (nbt.contains("GraveOwner"))
 			this.graveOwner = NbtHelper.toGameProfile(nbt.getCompound("GraveOwner"));
-
+			
 		if (nbt.contains("CustomName"))
 			this.customName = nbt.getString("CustomName");
-
+			
 		if (nbt.contains("GraveSkull"))
 			this.graveSkull = nbt.getString("GraveSkull");
-
+			
 		super.markDirty();
 	}
 

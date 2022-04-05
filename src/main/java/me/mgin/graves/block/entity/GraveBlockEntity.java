@@ -1,5 +1,8 @@
 package me.mgin.graves.block.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.registry.GraveBlocks;
 import net.minecraft.block.BlockState;
@@ -19,13 +22,19 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import org.jetbrains.annotations.Nullable;
 
 public class GraveBlockEntity extends BlockEntity {
+	private GameProfile graveOwner;
+	private BlockState state;
 	private DefaultedList<ItemStack> items;
 	private int xp;
 	private int noAge;
-	private GameProfile graveOwner;
 	private String customName;
 	private String graveSkull;
-	private BlockState state;
+	private Map<String, DefaultedList<ItemStack>> inventories =
+		new HashMap<String, DefaultedList<ItemStack>>() {
+			{
+				put("items", DefaultedList.ofSize(41, ItemStack.EMPTY));
+			}
+		};
 
 	public GraveBlockEntity(BlockPos pos, BlockState state) {
 		super(GraveBlocks.GRAVE_BLOCK_ENTITY, pos, state);
@@ -46,6 +55,25 @@ public class GraveBlockEntity extends BlockEntity {
 	public void setItems(DefaultedList<ItemStack> items) {
 		this.items = items;
 		this.markDirty();
+	}
+
+	/**
+	 * Set an inventory inside inventories.
+	 * @param key
+	 * @param items
+	 */
+	public void setInventory(String key, DefaultedList<ItemStack> items) {
+		this.inventories.put(key, items);
+		this.markDirty();
+	}
+
+	/**
+	 * Retrieve an inventory from the inventories.
+	 * @param key
+	 * @return
+	 */
+	public DefaultedList<ItemStack> getInventory(String key) {
+		return this.inventories.get(key);
 	}
 
 	/**

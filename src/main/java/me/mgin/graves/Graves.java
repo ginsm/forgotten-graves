@@ -40,8 +40,8 @@ public class Graves implements ModInitializer {
 		// Register inventory classes
 		inventories.add(new Vanilla());
 
-		if (FabricLoader.getInstance().isModLoaded("backslot"))
-			inventories.add(new BackSlot());
+		// if (FabricLoader.getInstance().isModLoaded("backslot"))
+		// 	inventories.add(new BackSlot());
 
 		if (FabricLoader.getInstance().isModLoaded("trinkets"))
 			inventories.add(new Trinkets());

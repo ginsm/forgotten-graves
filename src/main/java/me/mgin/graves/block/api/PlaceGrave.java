@@ -13,8 +13,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
@@ -52,7 +54,11 @@ public class PlaceGrave {
 
 				// Set the grave inventories and clear player's inventories
 				for (InventoriesApi api : Graves.inventories) {
-					graveEntity.setInventory(api.getID(), api.getInventory(player));
+					DefaultedList<ItemStack> inventory = api.getInventory(player);
+
+					if (inventory == null) continue;
+
+					graveEntity.setInventory(api.getID(), inventory);
 					api.clearInventory(player);
 				}
 

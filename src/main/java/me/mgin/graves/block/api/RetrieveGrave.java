@@ -40,7 +40,11 @@ public class RetrieveGrave {
 		DefaultedList<ItemStack> oldInventory = DefaultedList.of();
 
 		for (InventoriesApi api : Graves.inventories) {
-			oldInventory.addAll(api.getInventory(player));
+			DefaultedList<ItemStack> inventory = api.getInventory(player);
+
+			if (inventory == null) continue;
+
+			oldInventory.addAll(inventory);
 		}
 
 		// Resolve drop type
@@ -52,6 +56,8 @@ public class RetrieveGrave {
 			// Equip inventories
 			for (InventoriesApi api : Graves.inventories) {
 				DefaultedList<ItemStack> inventory = graveEntity.getInventory(api.getID());
+
+				if (inventory == null) continue;
 
 				if (api.getInventorySize(player) == inventory.size()) {
 					DefaultedList<ItemStack> unequippedItems = api.setInventory(inventory, player);
@@ -84,7 +90,11 @@ public class RetrieveGrave {
 		} else if (dropType == GraveDropType.DROP_ITEMS) {
 			// Drop all inventories' items
 			for (InventoriesApi api : Graves.inventories) {
-				ItemScatterer.spawn(world, pos, api.getInventory(player));
+				DefaultedList<ItemStack> inventory = api.getInventory(player);
+
+				if (inventory == null) continue;
+
+				ItemScatterer.spawn(world, pos, inventory);
 			}
 		}
 

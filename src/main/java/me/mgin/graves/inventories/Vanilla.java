@@ -30,7 +30,7 @@ public class Vanilla implements InventoriesApi {
 
 	@Override
 	public int getInventorySize(PlayerEntity player) {
-		return player.getInventory().size();
+		return 41;
 	}
 
 	@Override

@@ -6,11 +6,12 @@ import java.util.Map;
 
 import com.mojang.authlib.GameProfile;
 
-import me.mgin.graves.api.GravesApi;
-import me.mgin.graves.compat.TrinketsCompat;
+import me.mgin.graves.api.InventoriesApi;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.inventories.Trinkets;
+import me.mgin.graves.inventories.Vanilla;
 import me.mgin.graves.registry.ServerBlocks;
 import me.mgin.graves.registry.ServerCommands;
 import me.mgin.graves.registry.ServerEvents;
@@ -21,7 +22,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class Graves implements ModInitializer {
 
-	public static final ArrayList<GravesApi> apiMods = new ArrayList<>();
+	public static final ArrayList<InventoriesApi> inventories = new ArrayList<>();
 	public static String MOD_ID = "forgottengraves";
 	public static String BRAND_BLOCK = "grave";
 	public static Map<GameProfile, GravesConfig> clientConfigs = new HashMap<>();
@@ -35,11 +36,13 @@ public class Graves implements ModInitializer {
 		ServerCommands.register();
 		ServerReceivers.register();
 
-		// Register compat classes
-		if (FabricLoader.getInstance().isModLoaded("trinkets"))
-			apiMods.add(new TrinketsCompat());
+		// Register inventory classes
+		inventories.add(new Vanilla());
 
-		apiMods.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, GravesApi.class));
+		if (FabricLoader.getInstance().isModLoaded("trinkets"))
+			inventories.add(new Trinkets());
+
+		inventories.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, InventoriesApi.class));
 
 		// Dependency Registry
 		AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);

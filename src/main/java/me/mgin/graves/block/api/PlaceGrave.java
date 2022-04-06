@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import me.mgin.graves.Graves;
-import me.mgin.graves.api.GravesApi;
+import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.registry.GraveBlocks;
@@ -46,27 +46,31 @@ public class PlaceGrave {
       Block block = state.getBlock();
 
       if (canPlaceGrave(world, block, gravePos)) {
-        world.setBlockState(gravePos, GraveBlocks.GRAVE.getDefaultState().with(Properties.HORIZONTAL_FACING,
-            player.getHorizontalFacing()));
+        world.setBlockState(
+          gravePos,
+          GraveBlocks.GRAVE
+            .getDefaultState()
+            .with(
+              Properties.HORIZONTAL_FACING,
+              player.getHorizontalFacing()
+            )
+        );
 
         GraveBlockEntity graveEntity = new GraveBlockEntity(gravePos, world.getBlockState(gravePos));
 
-        // Set inventories
-        graveEntity.setInventory("Items", Inventory.getMainInventory(player));
-
-        for (GravesApi mod : Graves.apiMods) {
-          graveEntity.setInventory(mod.getModID(), mod.getInventory(player));
+        // Set the grave inventories and clear player's inventories
+        for (InventoriesApi api : Graves.inventories) {
+          graveEntity.setInventory(api.getID(), api.getInventory(player));
+          api.clearInventory(player);
         }
 
-        // Set owner
+        // Set grave owner
         graveEntity.setGraveOwner(player.getGameProfile());
 
         // Set experience & reset player's XP
         int experience = Experience.calculatePlayerExperience(player);
         graveEntity.setXp(experience);
-        player.totalExperience = 0;
-        player.experienceProgress = 0;
-        player.experienceLevel = 0;
+        resetPlayerExperience(player);
 
         // Add the block entity
         world.addBlockEntity(graveEntity);
@@ -117,5 +121,11 @@ public class PlaceGrave {
 
     DimensionType dimension = world.getDimension();
     return !(pos.getY() < dimension.getMinimumY() || pos.getY() > world.getTopY());
+  }
+
+  private static void resetPlayerExperience(PlayerEntity player) {
+    player.totalExperience = 0;
+    player.experienceProgress = 0;
+    player.experienceLevel = 0;
   }
 }

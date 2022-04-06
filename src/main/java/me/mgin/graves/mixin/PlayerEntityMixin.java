@@ -1,9 +1,7 @@
 package me.mgin.graves.mixin;
 
 import me.mgin.graves.block.api.PlaceGrave;
-import me.mgin.graves.compat.TrinketsCompat;
 import me.mgin.graves.config.GravesConfig;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,8 +36,5 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 		}
 
 		PlaceGrave.place(this.world, this.getPos(), player);
-
-		if (FabricLoader.getInstance().isModLoaded("trinkets"))
-			TrinketsCompat.clearInventory((PlayerEntity) (Object) this);
 	}
 }

@@ -6,7 +6,7 @@ import java.util.Map;
 import com.mojang.authlib.GameProfile;
 
 import me.mgin.graves.Graves;
-import me.mgin.graves.api.GravesApi;
+import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.api.GraveNbtHelper;
 import me.mgin.graves.registry.GraveBlocks;
 import net.minecraft.block.BlockState;
@@ -32,11 +32,7 @@ public class GraveBlockEntity extends BlockEntity {
 	private String customName;
 	private String graveSkull;
 	private Map<String, DefaultedList<ItemStack>> inventories =
-		new HashMap<String, DefaultedList<ItemStack>>() {
-			{
-				put("Items", DefaultedList.ofSize(41, ItemStack.EMPTY));
-			}
-		};
+		new HashMap<String, DefaultedList<ItemStack>>() {};
 
 	public GraveBlockEntity(BlockPos pos, BlockState state) {
 		super(GraveBlocks.GRAVE_BLOCK_ENTITY, pos, state);
@@ -225,20 +221,12 @@ public class GraveBlockEntity extends BlockEntity {
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
 
-		nbt = GraveNbtHelper.writeInventory(
-			"Items",
-			this.getInventory("Items"),
-			nbt
-		);
+		for (InventoriesApi api : Graves.inventories) {
+			String id = api.getID();
+			DefaultedList<ItemStack> inventory = this.getInventory(id);
 
-		for (GravesApi mod : Graves.apiMods) {
-			String modID = mod.getModID();
-			if (getInventory(modID) != null) {
-				nbt = GraveNbtHelper.writeInventory(
-					modID, 
-					this.getInventory(modID),
-					nbt
-				);
+			if (inventory != null) {
+				nbt = GraveNbtHelper.writeInventory(id, inventory,	nbt);
 			}
 		}
 		
@@ -258,20 +246,14 @@ public class GraveBlockEntity extends BlockEntity {
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		// Needed for backwards compatibility
-		if (nbt.getType("ItemCount") == 3) nbt = GraveNbtHelper.update(nbt)
-		;
+		if (nbt.getType("ItemCount") == 3) nbt = GraveNbtHelper.update(nbt);
 		super.readNbt(nbt);
 
-		// Store default inventory
-		if (nbt.contains("Items")) {
-			this.setInventory("Items", GraveNbtHelper.readInventory("Items", nbt));
-		}
-
-		// Store any mod inventories
-		for (GravesApi mod : Graves.apiMods) {
-			String modID = mod.getModID();
-			if (nbt.contains(modID)) {
-				this.setInventory(modID, GraveNbtHelper.readInventory(modID, nbt));
+		// Store inventories
+		for (InventoriesApi api : Graves.inventories) {
+			String id = api.getID();
+			if (nbt.contains(id)) {
+				this.setInventory(id, GraveNbtHelper.readInventory(id, nbt));
 			}
 		}
 		

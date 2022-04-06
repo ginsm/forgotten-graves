@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.Random;
 
 import me.mgin.graves.Graves;
-import me.mgin.graves.api.GravesApi;
+import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import net.minecraft.block.Block;
@@ -131,12 +131,14 @@ public interface Ageable<T extends Enum<T>> {
 			GameProfile owner = graveEntity.getGraveOwner();
 
 			// Decay inventotries (if enabled) and store them
-			DefaultedList<ItemStack> items = graveEntity.getInventory("Items");
-			newGraveEntity.setInventory("Items", itemsDecay ? decayItems(items, owner) : items);
+			for (InventoriesApi api : Graves.inventories) {
+				String id = api.getID();
+				DefaultedList<ItemStack> inventory = graveEntity.getInventory(id);
 
-			for (GravesApi mod : Graves.apiMods) {
-				DefaultedList<ItemStack> inventory = graveEntity.getInventory(mod.getModID());
-				newGraveEntity.setInventory(mod.getModID(), itemsDecay ? decayItems(inventory, owner) : inventory);
+				newGraveEntity.setInventory(
+					id,
+					itemsDecay ? decayItems(inventory, owner) : inventory
+				);
 			}
 
 			// Transfer previous data

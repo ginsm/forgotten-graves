@@ -1,4 +1,4 @@
-package me.mgin.graves.compat;
+package me.mgin.graves.inventories;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,7 @@ import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketInventory;
 import dev.emi.trinkets.api.TrinketsApi;
-import me.mgin.graves.api.GravesApi;
+import me.mgin.graves.api.InventoriesApi;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -16,14 +16,35 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.event.GameEvent;
 
-public class TrinketsCompat implements GravesApi {
+public class Trinkets implements InventoriesApi {
 	/**
 	 * The mod ID string used for storing and retrieving the mod's inventory.
 	 */
-	public String modID = "trinkets";
+	public String inventoryID = "trinkets";
 
-	public String getModID() {
-		return this.modID;
+	public String getID() {
+		return this.inventoryID;
+	}
+
+	/**
+	 * Retrieve the amount of trinket slots available.
+	 *
+	 * @param player
+	 * @return int
+	 */
+	@Override
+	public int getInventorySize(PlayerEntity player) {
+		Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
+		var slotWrapper = new Object() {
+			int slots = 0;
+		};
+
+		if (component.isPresent())
+			component.get().forEach((ref, itemStack) -> {
+				slotWrapper.slots++;
+			});
+
+		return slotWrapper.slots;
 	}
 
 	/**
@@ -79,32 +100,11 @@ public class TrinketsCompat implements GravesApi {
 	}
 
 	/**
-	 * Retrieve the amount of trinket slots available.
-	 *
-	 * @param player
-	 * @return int
-	 */
-	@Override
-	public int getInventorySize(PlayerEntity player) {
-		Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
-		var slotWrapper = new Object() {
-			int slots = 0;
-		};
-
-		if (component.isPresent())
-			component.get().forEach((ref, itemStack) -> {
-				slotWrapper.slots++;
-			});
-
-		return slotWrapper.slots;
-	}
-
-	/**
 	 * Remove all items from the trinket slots.
 	 *
 	 * @param player
 	 */
-	public static void clearInventory(PlayerEntity player) {
+	public void clearInventory(PlayerEntity player) {
 		Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
 
 		if (component.isPresent()) {

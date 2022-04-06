@@ -1,16 +1,11 @@
 package me.mgin.graves.block.api;
 
-import java.util.List;
-
 import me.mgin.graves.Graves;
-import me.mgin.graves.api.GravesApi;
+import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GraveDropType;
 import me.mgin.graves.config.GravesConfig;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -39,65 +34,36 @@ public class RetrieveGrave {
       if (!Permission.playerCanOverride(player))
         return false;
 
-    // Get inventories (grave & player)
-    DefaultedList<ItemStack> items = graveEntity.getInventory("Items");
-    DefaultedList<ItemStack> inventory = Inventory.getMainInventory(player);
+    // Store old inventories as one big inventory
+    DefaultedList<ItemStack> oldInventory = DefaultedList.of();
 
-    // Add any other inventories to inventory
-    for (GravesApi mod : Graves.apiMods) {
-      inventory.addAll(mod.getInventory(player));
+    for (InventoriesApi api : Graves.inventories) {
+      oldInventory.addAll(api.getInventory(player));
     }
 
     // Resolve drop type
     GraveDropType dropType = GravesConfig.resolveConfig("dropType", player.getGameProfile()).main.dropType;
 
     if (dropType == GraveDropType.PUT_IN_INVENTORY) {
-      // Clear player's current inventory
-      player.getInventory().clear();
-
       DefaultedList<ItemStack> extraItems = DefaultedList.of();
-      
-      // Equip armor slots that do not have curse of binding
-      List<ItemStack> armor = items.subList(36, 40);
-
-      for (int i = 0; i < armor.size(); i++) {
-        if (EnchantmentHelper.hasBindingCurse(armor.get(i))) {
-          extraItems.add(armor.get(i));
-          continue;
-        }
-
-        EquipmentSlot equipmentSlot = MobEntity.getPreferredEquipmentSlot(armor.get(i));
-        player.equipStack(equipmentSlot, armor.get(i));
-      }
-
-      if (!EnchantmentHelper.hasBindingCurse(items.get(40)))
-        player.equipStack(EquipmentSlot.OFFHAND, items.get(40));
-
-      // Restore grave inventory
-      List<ItemStack> mainInventory = items.subList(0, 36);
-
-      for (int i = 0; i < mainInventory.size(); i++) {
-        player.getInventory().setStack(i, mainInventory.get(i));
-      }
      
-      // Equip third party inventories
-      for (GravesApi mod : Graves.apiMods) {
-        DefaultedList<ItemStack> modInventory = graveEntity.getInventory(mod.getModID());
-        int size = mod.getInventorySize(player);
+      // Equip inventories
+      for (InventoriesApi api : Graves.inventories) {
+        DefaultedList<ItemStack> inventory = graveEntity.getInventory(api.getID());
 
-        if (size == modInventory.size()) {
-          DefaultedList<ItemStack> unequippedItems = mod.setInventory(modInventory, player);
+        if (api.getInventorySize(player) == inventory.size()) {
+          DefaultedList<ItemStack> unequippedItems = api.setInventory(inventory, player);
           extraItems.addAll(unequippedItems);
         } else {
-          extraItems.addAll(modInventory);
+          extraItems.addAll(inventory);
         }
       }
 
       // Preserve previous inventory
-      extraItems.addAll(inventory.subList(0, 36));
+      extraItems.addAll(oldInventory.subList(0, 36));
 
-      if (inventory.size() > 41) {
-        extraItems.addAll(inventory.subList(41, inventory.size()));
+      if (oldInventory.size() > 41) {
+        extraItems.addAll(oldInventory.subList(41, oldInventory.size()));
       }
 
       // Remove any empty or air slots from extraItems
@@ -120,14 +86,18 @@ public class RetrieveGrave {
       dropItems.addAll(extraItems);
       ItemScatterer.spawn(world, pos, dropItems);
     } else if (dropType == GraveDropType.DROP_ITEMS) {
-      // Drop all items
-      ItemScatterer.spawn(world, pos, items);
+      // Drop all inventories' items
+      for (InventoriesApi api : Graves.inventories) {
+        ItemScatterer.spawn(world, pos, api.getInventory(player));
+      }
     }
 
+    // Add player experience back
     player.addExperience((int) (1 * graveEntity.getXp()));
 
     // spawnBreakParticles(world, player, pos, defaultState);
 
+    // Remove block
     world.removeBlock(pos, false);
     return true;
   }

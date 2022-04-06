@@ -5,21 +5,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
-public interface GravesApi {
-	String modID = null;
+public interface InventoriesApi {
+	String inventoryID = null;
+
+	String getID();
 
 	DefaultedList<ItemStack> getInventory(PlayerEntity entity);
-
-	/**
-	 * Set the inventory for a given mod.
-	 *
-	 * @param inventory
-	 * @param entity
-	 * @return Items that could not be equipped.
-	 */
-	DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity entity);
-
+	
 	int getInventorySize(PlayerEntity entity);
 
-	String getModID();
+	DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity entity);
+
+	void clearInventory(PlayerEntity player);
 }

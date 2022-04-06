@@ -62,11 +62,7 @@ public class RetrieveGrave {
 			}
 
 			// Preserve previous inventory
-			extraItems.addAll(oldInventory.subList(0, 36));
-
-			if (oldInventory.size() > 41) {
-				extraItems.addAll(oldInventory.subList(41, oldInventory.size()));
-			}
+			extraItems.addAll(oldInventory);
 
 			// Remove any empty or air slots from extraItems
 			extraItems.removeIf(item -> item == ItemStack.EMPTY || item.getItem() == Items.AIR);

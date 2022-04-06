@@ -7,71 +7,66 @@ import net.minecraft.util.collection.DefaultedList;
 
 public class GraveNbtHelper {
 
-  static public DefaultedList<ItemStack> readInventory(String key, NbtCompound nbt) {
-    if (nbt.contains(key)) {
-      int itemCount = nbt.getCompound("ItemCount").getInt(key);
-  
-      DefaultedList<ItemStack> stacks = DefaultedList.ofSize(
-        itemCount,
-        ItemStack.EMPTY
-      );
-  
-      Inventories.readNbt(nbt.getCompound(key), stacks);
-  
-      return stacks;
-    }
+	static public DefaultedList<ItemStack> readInventory(String key, NbtCompound nbt) {
+		if (nbt.contains(key)) {
+			int itemCount = nbt.getCompound("ItemCount").getInt(key);
 
-    return DefaultedList.ofSize(0);
-  }
+			DefaultedList<ItemStack> stacks = DefaultedList.ofSize(itemCount, ItemStack.EMPTY);
 
-  public static NbtCompound writeInventory(String key, DefaultedList<ItemStack> stacks, NbtCompound nbt) {
-    if (stacks == null) return nbt;
+			Inventories.readNbt(nbt.getCompound(key), stacks);
 
-    // Write item count
-    NbtCompound itemCount = new NbtCompound();
+			return stacks;
+		}
 
-    if (nbt.contains("ItemCount"))
-      itemCount = nbt.getCompound("ItemCount");
+		return DefaultedList.ofSize(0);
+	}
 
-    itemCount.putInt(key, stacks.size());
-    nbt.put("ItemCount", itemCount);
+	public static NbtCompound writeInventory(String key, DefaultedList<ItemStack> stacks, NbtCompound nbt) {
+		if (stacks == null)
+			return nbt;
 
-    // Store the inventory
-    nbt.put(key, Inventories.writeNbt(new NbtCompound(), stacks, true));
+		// Write item count
+		NbtCompound itemCount = new NbtCompound();
 
-    return nbt;
-  }
+		if (nbt.contains("ItemCount"))
+			itemCount = nbt.getCompound("ItemCount");
 
-  public static NbtCompound update(NbtCompound nbt) {
-    // Retrieve the items like normal
-    DefaultedList<ItemStack> oldItems = DefaultedList.ofSize(
-      nbt.getInt("ItemCount"),
-      ItemStack.EMPTY
-    );
-    Inventories.readNbt(nbt.getCompound("Items"), oldItems);
+		itemCount.putInt(key, stacks.size());
+		nbt.put("ItemCount", itemCount);
 
-    // Separate the item lists
-    DefaultedList<ItemStack> items = DefaultedList.ofSize(0);
-    items.addAll(oldItems.subList(0, 41));
+		// Store the inventory
+		nbt.put(key, Inventories.writeNbt(new NbtCompound(), stacks, true));
 
-    DefaultedList<ItemStack> trinkets = DefaultedList.ofSize(0);
-    if (oldItems.size() > 41) {
-      trinkets.addAll(oldItems.subList(41, oldItems.size()));
-    }
+		return nbt;
+	}
 
-    // Create/store new ItemCount format
-    NbtCompound itemCount = new NbtCompound();
+	public static NbtCompound update(NbtCompound nbt) {
+		// Retrieve the items like normal
+		DefaultedList<ItemStack> oldItems = DefaultedList.ofSize(nbt.getInt("ItemCount"), ItemStack.EMPTY);
+		Inventories.readNbt(nbt.getCompound("Items"), oldItems);
 
-    itemCount.putInt("Items", items.size());
-    itemCount.putInt("trinkets", trinkets.size());
-    
-    nbt.put("ItemCount", itemCount);
-      
-    // Store the two inventories
-    nbt.put("Items", Inventories.writeNbt(new NbtCompound(), items, true));
-    
-    nbt.put("trinkets", Inventories.writeNbt(new NbtCompound(), trinkets, true));
+		// Separate the item lists
+		DefaultedList<ItemStack> items = DefaultedList.ofSize(0);
+		items.addAll(oldItems.subList(0, 41));
 
-    return nbt;
-  }
+		DefaultedList<ItemStack> trinkets = DefaultedList.ofSize(0);
+		if (oldItems.size() > 41) {
+			trinkets.addAll(oldItems.subList(41, oldItems.size()));
+		}
+
+		// Create/store new ItemCount format
+		NbtCompound itemCount = new NbtCompound();
+
+		itemCount.putInt("Items", items.size());
+		itemCount.putInt("trinkets", trinkets.size());
+
+		nbt.put("ItemCount", itemCount);
+
+		// Store the two inventories
+		nbt.put("Items", Inventories.writeNbt(new NbtCompound(), items, true));
+
+		nbt.put("trinkets", Inventories.writeNbt(new NbtCompound(), trinkets, true));
+
+		return nbt;
+	}
 }

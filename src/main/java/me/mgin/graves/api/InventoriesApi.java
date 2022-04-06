@@ -11,7 +11,7 @@ public interface InventoriesApi {
 	String getID();
 
 	DefaultedList<ItemStack> getInventory(PlayerEntity entity);
-	
+
 	int getInventorySize(PlayerEntity entity);
 
 	DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity entity);

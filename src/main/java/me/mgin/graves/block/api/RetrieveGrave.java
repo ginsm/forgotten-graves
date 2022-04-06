@@ -15,90 +15,90 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class RetrieveGrave {
-  static public boolean retrieve(PlayerEntity player, World world, BlockPos pos) {
-    // Edge case checking & variable initialization
-    if (world.isClient)
-      return false;
+	static public boolean retrieve(PlayerEntity player, World world, BlockPos pos) {
+		// Edge case checking & variable initialization
+		if (world.isClient)
+			return false;
 
-    BlockEntity blockEntity = world.getBlockEntity(pos);
+		BlockEntity blockEntity = world.getBlockEntity(pos);
 
-    if (!(blockEntity instanceof GraveBlockEntity graveEntity))
-      return false;
+		if (!(blockEntity instanceof GraveBlockEntity graveEntity))
+			return false;
 
-    graveEntity.sync(world, pos);
-    
-    if (graveEntity.getInventory("Items") == null) return false;
-    if (graveEntity.getGraveOwner() == null) return false;
+		graveEntity.sync(world, pos);
 
-    if (!Permission.playerCanAttemptRetrieve(player, graveEntity))
-      if (!Permission.playerCanOverride(player))
-        return false;
+		if (graveEntity.getInventory("Items") == null)
+			return false;
+		if (graveEntity.getGraveOwner() == null)
+			return false;
 
-    // Store old inventories as one big inventory
-    DefaultedList<ItemStack> oldInventory = DefaultedList.of();
+		if (!Permission.playerCanAttemptRetrieve(player, graveEntity))
+			if (!Permission.playerCanOverride(player))
+				return false;
 
-    for (InventoriesApi api : Graves.inventories) {
-      oldInventory.addAll(api.getInventory(player));
-    }
+		// Store old inventories as one big inventory
+		DefaultedList<ItemStack> oldInventory = DefaultedList.of();
 
-    // Resolve drop type
-    GraveDropType dropType = GravesConfig.resolveConfig("dropType", player.getGameProfile()).main.dropType;
+		for (InventoriesApi api : Graves.inventories) {
+			oldInventory.addAll(api.getInventory(player));
+		}
 
-    if (dropType == GraveDropType.PUT_IN_INVENTORY) {
-      DefaultedList<ItemStack> extraItems = DefaultedList.of();
-     
-      // Equip inventories
-      for (InventoriesApi api : Graves.inventories) {
-        DefaultedList<ItemStack> inventory = graveEntity.getInventory(api.getID());
+		// Resolve drop type
+		GraveDropType dropType = GravesConfig.resolveConfig("dropType", player.getGameProfile()).main.dropType;
 
-        if (api.getInventorySize(player) == inventory.size()) {
-          DefaultedList<ItemStack> unequippedItems = api.setInventory(inventory, player);
-          extraItems.addAll(unequippedItems);
-        } else {
-          extraItems.addAll(inventory);
-        }
-      }
+		if (dropType == GraveDropType.PUT_IN_INVENTORY) {
+			DefaultedList<ItemStack> extraItems = DefaultedList.of();
 
-      // Preserve previous inventory
-      extraItems.addAll(oldInventory.subList(0, 36));
+			// Equip inventories
+			for (InventoriesApi api : Graves.inventories) {
+				DefaultedList<ItemStack> inventory = graveEntity.getInventory(api.getID());
 
-      if (oldInventory.size() > 41) {
-        extraItems.addAll(oldInventory.subList(41, oldInventory.size()));
-      }
+				if (api.getInventorySize(player) == inventory.size()) {
+					DefaultedList<ItemStack> unequippedItems = api.setInventory(inventory, player);
+					extraItems.addAll(unequippedItems);
+				} else {
+					extraItems.addAll(inventory);
+				}
+			}
 
-      // Remove any empty or air slots from extraItems
-      extraItems.removeIf(item -> 
-        item == ItemStack.EMPTY || item.getItem() == Items.AIR
-      );
+			// Preserve previous inventory
+			extraItems.addAll(oldInventory.subList(0, 36));
 
-      // Move extra items to open slots
-      DefaultedList<Integer> openSlots = Inventory.getInventoryOpenSlots(player.getInventory().main);
+			if (oldInventory.size() > 41) {
+				extraItems.addAll(oldInventory.subList(41, oldInventory.size()));
+			}
 
-      for (int i = 0; i < openSlots.size(); i++) {
-        if (extraItems.size() > 0) {
-          player.getInventory().setStack(openSlots.get(i), extraItems.get(0));
-          extraItems.remove(0);
-        }
-      }
+			// Remove any empty or air slots from extraItems
+			extraItems.removeIf(item -> item == ItemStack.EMPTY || item.getItem() == Items.AIR);
 
-      // Drop any excess items
-      DefaultedList<ItemStack> dropItems = DefaultedList.of();
-      dropItems.addAll(extraItems);
-      ItemScatterer.spawn(world, pos, dropItems);
-    } else if (dropType == GraveDropType.DROP_ITEMS) {
-      // Drop all inventories' items
-      for (InventoriesApi api : Graves.inventories) {
-        ItemScatterer.spawn(world, pos, api.getInventory(player));
-      }
-    }
+			// Move extra items to open slots
+			DefaultedList<Integer> openSlots = Inventory.getInventoryOpenSlots(player.getInventory().main);
 
-    // Add player experience back
-    player.addExperience((int) (1 * graveEntity.getXp()));
+			for (int i = 0; i < openSlots.size(); i++) {
+				if (extraItems.size() > 0) {
+					player.getInventory().setStack(openSlots.get(i), extraItems.get(0));
+					extraItems.remove(0);
+				}
+			}
 
-    // spawnBreakParticles(world, player, pos, defaultState);
+			// Drop any excess items
+			DefaultedList<ItemStack> dropItems = DefaultedList.of();
+			dropItems.addAll(extraItems);
+			ItemScatterer.spawn(world, pos, dropItems);
+		} else if (dropType == GraveDropType.DROP_ITEMS) {
+			// Drop all inventories' items
+			for (InventoriesApi api : Graves.inventories) {
+				ItemScatterer.spawn(world, pos, api.getInventory(player));
+			}
+		}
 
-    // Remove block
-    world.removeBlock(pos, false);
-    return true;
-  }
+		// Add player experience back
+		player.addExperience((int) (1 * graveEntity.getXp()));
+
+		// spawnBreakParticles(world, player, pos, defaultState);
+
+		// Remove block
+		world.removeBlock(pos, false);
+		return true;
+	}
 }

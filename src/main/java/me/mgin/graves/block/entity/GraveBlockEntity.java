@@ -31,8 +31,8 @@ public class GraveBlockEntity extends BlockEntity {
 	private int noAge;
 	private String customName;
 	private String graveSkull;
-	private Map<String, DefaultedList<ItemStack>> inventories =
-		new HashMap<String, DefaultedList<ItemStack>>() {};
+	private Map<String, DefaultedList<ItemStack>> inventories = new HashMap<String, DefaultedList<ItemStack>>() {
+	};
 
 	public GraveBlockEntity(BlockPos pos, BlockState state) {
 		super(GraveBlocks.GRAVE_BLOCK_ENTITY, pos, state);
@@ -46,6 +46,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Set an inventory inside inventories.
+	 *
 	 * @param key
 	 * @param items
 	 */
@@ -56,6 +57,7 @@ public class GraveBlockEntity extends BlockEntity {
 
 	/**
 	 * Retrieve an inventory from the inventories.
+	 *
 	 * @param key
 	 * @return
 	 */
@@ -226,10 +228,10 @@ public class GraveBlockEntity extends BlockEntity {
 			DefaultedList<ItemStack> inventory = this.getInventory(id);
 
 			if (inventory != null) {
-				nbt = GraveNbtHelper.writeInventory(id, inventory,	nbt);
+				nbt = GraveNbtHelper.writeInventory(id, inventory, nbt);
 			}
 		}
-		
+
 		nbt.putInt("XP", xp);
 		nbt.putInt("noAge", noAge);
 
@@ -246,7 +248,8 @@ public class GraveBlockEntity extends BlockEntity {
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		// Needed for backwards compatibility
-		if (nbt.getType("ItemCount") == 3) nbt = GraveNbtHelper.update(nbt);
+		if (nbt.getType("ItemCount") == 3)
+			nbt = GraveNbtHelper.update(nbt);
 		super.readNbt(nbt);
 
 		// Store inventories
@@ -256,19 +259,19 @@ public class GraveBlockEntity extends BlockEntity {
 				this.setInventory(id, GraveNbtHelper.readInventory(id, nbt));
 			}
 		}
-		
+
 		this.xp = nbt.getInt("XP");
 		this.noAge = nbt.getInt("noAge");
-		
+
 		if (nbt.contains("GraveOwner"))
 			this.graveOwner = NbtHelper.toGameProfile(nbt.getCompound("GraveOwner"));
-			
+
 		if (nbt.contains("CustomName"))
 			this.customName = nbt.getString("CustomName");
-			
+
 		if (nbt.contains("GraveSkull"))
 			this.graveSkull = nbt.getString("GraveSkull");
-			
+
 		super.markDirty();
 	}
 

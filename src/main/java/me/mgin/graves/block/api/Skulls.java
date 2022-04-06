@@ -82,7 +82,8 @@ public class Skulls {
 	 * Generates a GameProfile with a random UUID and attaches a texture property to
 	 * it utilizing the given SkinURL.
 	 *
-	 * @param skinURL - Base64 Skin URL
+	 * @param skinURL
+	 *            - Base64 Skin URL
 	 * @return Custom GameProfile
 	 */
 	public static GameProfile getCustomSkullProfile(String skinURL) {

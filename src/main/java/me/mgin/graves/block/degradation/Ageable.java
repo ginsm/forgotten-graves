@@ -79,7 +79,8 @@ public interface Ageable<T extends Enum<T>> {
 
 	static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items, GameProfile profile) {
 		float maxDecayPercent = GravesConfig.resolveConfig("maxDecayPercent", profile).itemDecay.maxDecayPercent / 100f;
-		boolean itemDecayBreaksItems = GravesConfig.resolveConfig("itemDecayBreaksItems", profile).itemDecay.itemDecayBreaksItems;
+		boolean itemDecayBreaksItems = GravesConfig.resolveConfig("itemDecayBreaksItems",
+				profile).itemDecay.itemDecayBreaksItems;
 
 		if (maxDecayPercent == 0.0f)
 			return items;
@@ -112,7 +113,7 @@ public interface Ageable<T extends Enum<T>> {
 						item.setDamage((int) damage + decay);
 					} else if (itemDecayBreaksItems) {
 						items.set(i, ItemStack.EMPTY);
-					}else {
+					} else {
 						item.setDamage(maxDamage - 1);
 					}
 				}
@@ -135,10 +136,7 @@ public interface Ageable<T extends Enum<T>> {
 				String id = api.getID();
 				DefaultedList<ItemStack> inventory = graveEntity.getInventory(id);
 
-				newGraveEntity.setInventory(
-					id,
-					itemsDecay ? decayItems(inventory, owner) : inventory
-				);
+				newGraveEntity.setInventory(id, itemsDecay ? decayItems(inventory, owner) : inventory);
 			}
 
 			// Transfer previous data

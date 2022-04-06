@@ -33,8 +33,8 @@ public class ShovelItemMixin {
 
 		if (blockEntity instanceof GraveBlockEntity graveEntity
 				&& Permission.playerCanAttemptRetrieve(player, graveEntity))
-			if (hand == Hand.MAIN_HAND && (graveEntity.getNoAge() == 1
-					|| DegradationStateManager.decreaseDegradationState(world, pos))) {
+			if (hand == Hand.MAIN_HAND
+					&& (graveEntity.getNoAge() == 1 || DegradationStateManager.decreaseDegradationState(world, pos))) {
 				graveEntity.setNoAge(0);
 				if (!player.isCreative())
 					player.getStackInHand(hand).damage(1, player, (p) -> p.sendToolBreakStatus(hand));

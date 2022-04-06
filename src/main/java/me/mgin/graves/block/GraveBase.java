@@ -160,7 +160,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		if (RetrieveGrave.retrieve(player, world, pos)) {
 			// Add break particles?
 			world.removeBlock(pos, false);
-			return true; 
+			return true;
 		}
 
 		return false;

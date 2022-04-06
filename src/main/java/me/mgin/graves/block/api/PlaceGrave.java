@@ -56,7 +56,8 @@ public class PlaceGrave {
 				for (InventoriesApi api : Graves.inventories) {
 					DefaultedList<ItemStack> inventory = api.getInventory(player);
 
-					if (inventory == null) continue;
+					if (inventory == null)
+						continue;
 
 					graveEntity.setInventory(api.getID(), inventory);
 					api.clearInventory(player);

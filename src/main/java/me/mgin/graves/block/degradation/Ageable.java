@@ -136,7 +136,8 @@ public interface Ageable<T extends Enum<T>> {
 				String id = api.getID();
 				DefaultedList<ItemStack> inventory = graveEntity.getInventory(id);
 
-				if (inventory == null) continue;
+				if (inventory == null)
+					continue;
 
 				newGraveEntity.setInventory(id, itemsDecay ? decayItems(inventory, owner) : inventory);
 			}

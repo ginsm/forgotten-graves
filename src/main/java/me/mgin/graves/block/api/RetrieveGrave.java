@@ -42,7 +42,8 @@ public class RetrieveGrave {
 		for (InventoriesApi api : Graves.inventories) {
 			DefaultedList<ItemStack> inventory = api.getInventory(player);
 
-			if (inventory == null) continue;
+			if (inventory == null)
+				continue;
 
 			oldInventory.addAll(inventory);
 		}
@@ -57,7 +58,8 @@ public class RetrieveGrave {
 			for (InventoriesApi api : Graves.inventories) {
 				DefaultedList<ItemStack> inventory = graveEntity.getInventory(api.getID());
 
-				if (inventory == null) continue;
+				if (inventory == null)
+					continue;
 
 				if (api.getInventorySize(player) == inventory.size()) {
 					DefaultedList<ItemStack> unequippedItems = api.setInventory(inventory, player);
@@ -92,7 +94,8 @@ public class RetrieveGrave {
 			for (InventoriesApi api : Graves.inventories) {
 				DefaultedList<ItemStack> inventory = api.getInventory(player);
 
-				if (inventory == null) continue;
+				if (inventory == null)
+					continue;
 
 				ItemScatterer.spawn(world, pos, inventory);
 			}

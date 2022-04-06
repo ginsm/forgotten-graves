@@ -4,6 +4,9 @@ import com.mojang.authlib.GameProfile;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.Random;
+
+import me.mgin.graves.Graves;
+import me.mgin.graves.api.GravesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import net.minecraft.block.Block;
@@ -118,27 +121,32 @@ public interface Ageable<T extends Enum<T>> {
 		return items;
 	}
 
-	static void setDegradationState(World world, BlockPos pos, BlockState state, boolean itemsDecay) {
+	public static void setDegradationState(World world, BlockPos pos, BlockState state, boolean itemsDecay) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
-		if (blockEntity instanceof GraveBlockEntity entity) {
-			GameProfile owner = entity.getGraveOwner();
-			String name = entity.getCustomName();
-			DefaultedList<ItemStack> items = itemsDecay ? decayItems(entity.getInventory("items"), owner) : entity.getInventory("items");
-			int xp = entity.getXp();
-			int noAge = entity.getNoAge();
-			String graveSkull = entity.getGraveSkull();
 
+		if (blockEntity instanceof GraveBlockEntity graveEntity) {
 			world.setBlockState(pos, state);
 
-			GraveBlockEntity newGraveBlockEntity = new GraveBlockEntity(pos, state);
-			newGraveBlockEntity.setGraveOwner(owner);
-			newGraveBlockEntity.setInventory("items", items);
-			newGraveBlockEntity.setCustomName(name);
-			newGraveBlockEntity.setXp(xp);
-			newGraveBlockEntity.setNoAge(noAge);
-			newGraveBlockEntity.setGraveSkull(graveSkull);
+			GraveBlockEntity newGraveEntity = new GraveBlockEntity(pos, state);
+			GameProfile owner = graveEntity.getGraveOwner();
 
-			world.addBlockEntity(newGraveBlockEntity);
+			// Decay inventotries (if enabled) and store them
+			DefaultedList<ItemStack> items = graveEntity.getInventory("Items");
+			newGraveEntity.setInventory("Items", itemsDecay ? decayItems(items, owner) : items);
+
+			for (GravesApi mod : Graves.apiMods) {
+				DefaultedList<ItemStack> inventory = graveEntity.getInventory(mod.getModID());
+				newGraveEntity.setInventory(mod.getModID(), itemsDecay ? decayItems(inventory, owner) : inventory);
+			}
+
+			// Transfer previous data
+			newGraveEntity.setGraveOwner(owner);
+			newGraveEntity.setCustomName(graveEntity.getCustomName());
+			newGraveEntity.setXp(graveEntity.getXp());
+			newGraveEntity.setNoAge(graveEntity.getNoAge());
+			newGraveEntity.setGraveSkull(graveEntity.getGraveSkull());
+
+			world.addBlockEntity(newGraveEntity);
 		}
 	}
 }

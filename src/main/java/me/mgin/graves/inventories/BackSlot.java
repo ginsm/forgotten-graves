@@ -17,8 +17,8 @@ public class BackSlot implements InventoriesApi {
 	public DefaultedList<ItemStack> getInventory(PlayerEntity player) {
 		DefaultedList<ItemStack> items = DefaultedList.of();
 
+		items.add(player.getInventory().getStack(41));
 		items.add(player.getInventory().getStack(42));
-		items.add(player.getInventory().getStack(43));
 
 		return items;
 	}
@@ -28,10 +28,12 @@ public class BackSlot implements InventoriesApi {
 	}
 
 	public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity player) {
-		player.getInventory().setStack(42, inventory.get(0));
-		player.getInventory().setStack(43, inventory.get(1));
+		DefaultedList<ItemStack> unequipped = DefaultedList.of();
 
-		return DefaultedList.of();
+		unequipped.add(inventory.get(0));
+		unequipped.add(inventory.get(1));
+
+		return unequipped;
 	}
 
 	public void clearInventory(PlayerEntity player) {

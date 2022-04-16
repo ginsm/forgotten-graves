@@ -62,7 +62,7 @@ public class PlaceGrave {
 					graveEntity.setInventory(api.getID(), inventory);
 					api.clearInventory(player);
 				}
-				
+
 				// Set grave owner
 				graveEntity.setGraveOwner(player.getGameProfile());
 

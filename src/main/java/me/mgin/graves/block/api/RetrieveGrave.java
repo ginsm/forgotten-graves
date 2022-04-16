@@ -72,7 +72,8 @@ public class RetrieveGrave {
 			// Check for any potentionally unloaded inventories; store them if found
 			for (String modID : Graves.unloadedInventories) {
 				DefaultedList<ItemStack> inventory = graveEntity.getInventory(modID);
-				if (inventory != null) extraItems.addAll(inventory);
+				if (inventory != null)
+					extraItems.addAll(inventory);
 			}
 
 			// Preserve previous inventory

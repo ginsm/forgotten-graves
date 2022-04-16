@@ -55,9 +55,10 @@ public class Graves implements ModInitializer {
 				inventories.add(modInventory.getDeclaredConstructor().newInstance());
 			else
 				unloadedInventories.add(modID);
-		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+		} catch (InstantiationException | IllegalAccessException | InvocationTargetException
+				| NoSuchMethodException e) {
 			e.printStackTrace();
 		}
-		}
+	}
 
 }

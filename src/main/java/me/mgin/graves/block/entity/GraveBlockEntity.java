@@ -232,6 +232,14 @@ public class GraveBlockEntity extends BlockEntity {
 			}
 		}
 
+		for (String modID : Graves.unloadedInventories) {
+			DefaultedList<ItemStack> inventory = this.getInventory(modID);
+
+			if (inventory != null) {
+				nbt = GraveNbtHelper.writeInventory(modID, inventory, nbt);
+			}
+		}
+
 		nbt.putInt("XP", xp);
 		nbt.putInt("noAge", noAge);
 
@@ -252,11 +260,18 @@ public class GraveBlockEntity extends BlockEntity {
 			nbt = GraveNbtHelper.update(nbt);
 		super.readNbt(nbt);
 
-		// Store inventories
+		// Store loaded inventories
 		for (InventoriesApi api : Graves.inventories) {
 			String id = api.getID();
 			if (nbt.contains(id)) {
 				this.setInventory(id, GraveNbtHelper.readInventory(id, nbt));
+			}
+		}
+
+		// Store unloaded inventories
+		for (String modID : Graves.unloadedInventories) {
+			if (nbt.contains(modID)) {
+				this.setInventory(modID, GraveNbtHelper.readInventory(modID, nbt));
 			}
 		}
 

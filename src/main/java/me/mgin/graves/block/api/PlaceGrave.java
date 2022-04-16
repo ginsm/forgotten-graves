@@ -60,12 +60,9 @@ public class PlaceGrave {
 						continue;
 
 					graveEntity.setInventory(api.getID(), inventory);
-				}
-
-				for (InventoriesApi api : Graves.inventories) {
 					api.clearInventory(player);
 				}
-
+				
 				// Set grave owner
 				graveEntity.setGraveOwner(player.getGameProfile());
 

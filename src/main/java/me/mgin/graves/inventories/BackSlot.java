@@ -37,7 +37,8 @@ public class BackSlot implements InventoriesApi {
 	}
 
 	public void clearInventory(PlayerEntity player) {
-		player.getInventory().clear();
+		player.getInventory().setStack(41, ItemStack.EMPTY);
+		player.getInventory().setStack(42, ItemStack.EMPTY);
 	}
 
 }

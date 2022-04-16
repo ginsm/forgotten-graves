@@ -80,6 +80,8 @@ public class Vanilla implements InventoriesApi {
 	}
 
 	public void clearInventory(PlayerEntity player) {
-		player.getInventory().clear();
+		player.getInventory().main.clear();
+		player.getInventory().armor.clear();
+		player.getInventory().offHand.clear();
 	}
 }

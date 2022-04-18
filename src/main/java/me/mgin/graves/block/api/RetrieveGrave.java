@@ -97,15 +97,25 @@ public class RetrieveGrave {
 			dropItems.addAll(extraItems);
 			ItemScatterer.spawn(world, pos, dropItems);
 		} else if (dropType == GraveDropType.DROP_ITEMS) {
-			// Drop all inventories' items
+			DefaultedList<ItemStack> droppedItems = DefaultedList.of();
+
+			// Add loaded inventories to droppedItems list
 			for (InventoriesApi api : Graves.inventories) {
-				DefaultedList<ItemStack> inventory = api.getInventory(player);
+				DefaultedList<ItemStack> modInventory = graveEntity.getInventory(api.getID());
 
-				if (inventory == null)
-					continue;
-
-				ItemScatterer.spawn(world, pos, inventory);
+				if (modInventory != null)
+					droppedItems.addAll(modInventory);
 			}
+
+			// Add any unloaded inventories to droppedItems list
+			for (String modID : Graves.unloadedInventories) {
+				DefaultedList<ItemStack> modInventory = graveEntity.getInventory(modID);
+
+				if (modInventory != null)
+					droppedItems.addAll(modInventory);
+			}
+
+			ItemScatterer.spawn(world, pos, droppedItems);
 		}
 
 		// Add player experience back

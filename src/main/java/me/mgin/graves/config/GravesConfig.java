@@ -1,5 +1,7 @@
 package me.mgin.graves.config;
 
+import java.util.List;
+
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
@@ -71,6 +73,6 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 		public int minOperatorOverrideLevel = 4;
 
 		@ConfigEntry.Gui.Tooltip
-		public String clientSideOptions = "";
+		public List<String> clientsideOptions = List.of();
 	}
 }

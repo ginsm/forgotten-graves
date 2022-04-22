@@ -45,7 +45,7 @@
   
 
 
-  "text.autoconfig.forgottengraves.option.itemDecay": "Item Decay Settings",
+  "text.autoconfig.forgottengraves.option.itemDecay": "Decay Settings",
   
   "text.autoconfig.forgottengraves.option.itemDecay.maxDecayPercent": "Max Item Decay Percent",
   "text.autoconfig.forgottengraves.option.itemDecay.maxDecayPercent.@Tooltip": "What is the max percentage an item can decay at one time?",
@@ -65,6 +65,6 @@
   "text.autoconfig.forgottengraves.option.server.minOperatorOverrideLevel": "Minimum OP Override Lvl",
   "text.autoconfig.forgottengraves.option.server.minOperatorOverrideLevel.@Tooltip": "Minimum OP level to override grave protection?",
 
-  "text.autoconfig.forgottengraves.option.server.clientSideOptions": "Client Side Options",
-  "text.autoconfig.forgottengraves.option.server.clientSideOptions.@Tooltip": "What options should be handled by the client? (comma separated)"
+  "text.autoconfig.forgottengraves.option.server.clientsideOptions": "Client Side Options",
+  "text.autoconfig.forgottengraves.option.server.clientsideOptions.@Tooltip": "What options should be handled by the client?"
 }

@@ -45,7 +45,7 @@ public class Graves implements ModInitializer {
 		addInventory("backslot", BackSlot.class);
 		addInventory("trinkets", Trinkets.class);
 		addInventory("inventorio", Inventorio.class);
-		
+
 		inventories.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, InventoriesApi.class));
 
 		// Dependency Registry
@@ -58,7 +58,6 @@ public class Graves implements ModInitializer {
 				inventories.add(modInventory.getDeclaredConstructor().newInstance());
 			else
 				unloadedInventories.add(modID);
-			System.out.println(unloadedInventories);
 		} catch (InstantiationException | IllegalAccessException | InvocationTargetException
 				| NoSuchMethodException e) {
 			e.printStackTrace();

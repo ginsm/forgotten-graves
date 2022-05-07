@@ -19,7 +19,6 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 	@ConfigEntry.Gui.CollapsibleObject(startExpanded = false)
 	public ServerSettings server = new ServerSettings();
 
-
 	public static GravesConfig getConfig() {
 		return AutoConfig.getConfigHolder(GravesConfig.class).getConfig();
 	}

@@ -13,6 +13,7 @@ group = project.maven_group
 
 repositories {
   mavenCentral()
+
   maven {
     name = "TerraformersMC"
     url = "https://maven.terraformersmc.com/"
@@ -25,7 +26,14 @@ repositories {
   }
 
   // Cloth Config
-  maven { url "https://maven.shedaniel.me/" }
+  maven {
+    url "https://maven.shedaniel.me/"
+  }
+
+  // Inventorio
+  maven {
+    url 'https://jitpack.io'
+  }
 }
 
 dependencies {
@@ -47,6 +55,8 @@ dependencies {
   // Compat Mods
   modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
   modImplementation "dev.emi:trinkets:${project.trinkets_version}"
+  modCompileOnly ('com.github.Lizard-Of-Oz.Inventorio:inventorio-1.18-fabric:1.18-SNAPSHOT') { transitive = false }
+
 }
 
 processResources {

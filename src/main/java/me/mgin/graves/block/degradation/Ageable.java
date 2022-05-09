@@ -4,6 +4,9 @@ import com.mojang.authlib.GameProfile;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.Random;
+
+import me.mgin.graves.Graves;
+import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import net.minecraft.block.Block;
@@ -76,7 +79,8 @@ public interface Ageable<T extends Enum<T>> {
 
 	static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items, GameProfile profile) {
 		float maxDecayPercent = GravesConfig.resolveConfig("maxDecayPercent", profile).itemDecay.maxDecayPercent / 100f;
-		boolean itemDecayBreaksItems = GravesConfig.resolveConfig("itemDecayBreaksItems", profile).itemDecay.itemDecayBreaksItems;
+		boolean itemDecayBreaksItems = GravesConfig.resolveConfig("itemDecayBreaksItems",
+				profile).itemDecay.itemDecayBreaksItems;
 
 		if (maxDecayPercent == 0.0f)
 			return items;
@@ -109,7 +113,7 @@ public interface Ageable<T extends Enum<T>> {
 						item.setDamage((int) damage + decay);
 					} else if (itemDecayBreaksItems) {
 						items.set(i, ItemStack.EMPTY);
-					}else {
+					} else {
 						item.setDamage(maxDamage - 1);
 					}
 				}
@@ -118,27 +122,34 @@ public interface Ageable<T extends Enum<T>> {
 		return items;
 	}
 
-	static void setDegradationState(World world, BlockPos pos, BlockState state, boolean itemsDecay) {
+	public static void setDegradationState(World world, BlockPos pos, BlockState state, boolean itemsDecay) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
-		if (blockEntity instanceof GraveBlockEntity entity) {
-			GameProfile owner = entity.getGraveOwner();
-			String name = entity.getCustomName();
-			DefaultedList<ItemStack> items = itemsDecay ? decayItems(entity.getItems(), owner) : entity.getItems();
-			int xp = entity.getXp();
-			int noAge = entity.getNoAge();
-			String graveSkull = entity.getGraveSkull();
 
+		if (blockEntity instanceof GraveBlockEntity graveEntity) {
 			world.setBlockState(pos, state);
 
-			GraveBlockEntity newGraveBlockEntity = new GraveBlockEntity(pos, state);
-			newGraveBlockEntity.setGraveOwner(owner);
-			newGraveBlockEntity.setItems(items);
-			newGraveBlockEntity.setCustomName(name);
-			newGraveBlockEntity.setXp(xp);
-			newGraveBlockEntity.setNoAge(noAge);
-			newGraveBlockEntity.setGraveSkull(graveSkull);
+			GraveBlockEntity newGraveEntity = new GraveBlockEntity(pos, state);
+			GameProfile owner = graveEntity.getGraveOwner();
 
-			world.addBlockEntity(newGraveBlockEntity);
+			// Decay inventotries (if enabled) and store them
+			for (InventoriesApi api : Graves.inventories) {
+				String id = api.getID();
+				DefaultedList<ItemStack> inventory = graveEntity.getInventory(id);
+
+				if (inventory == null)
+					continue;
+
+				newGraveEntity.setInventory(id, itemsDecay ? decayItems(inventory, owner) : inventory);
+			}
+
+			// Transfer previous data
+			newGraveEntity.setGraveOwner(owner);
+			newGraveEntity.setCustomName(graveEntity.getCustomName());
+			newGraveEntity.setXp(graveEntity.getXp());
+			newGraveEntity.setNoAge(graveEntity.getNoAge());
+			newGraveEntity.setGraveSkull(graveEntity.getGraveSkull());
+
+			world.addBlockEntity(newGraveEntity);
 		}
 	}
 }

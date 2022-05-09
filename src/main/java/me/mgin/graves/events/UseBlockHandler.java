@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import me.mgin.graves.api.ParticlesApi;
+import me.mgin.graves.block.api.Particles;
 import me.mgin.graves.block.entity.GraveBlockEntity;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -72,6 +74,7 @@ public class UseBlockHandler {
 			Item itemInHand, String itemName) {
 		NbtCompound baseNbt = itemStack.getNbt();
 		BlockPos pos = graveEntity.getPos();
+		BlockState state = graveEntity.getState();
 		String graveSkull;
 
 		if (baseNbt != null) {
@@ -88,8 +91,12 @@ public class UseBlockHandler {
 			graveEntity.setGraveSkull(itemName);
 		}
 
+		// Required for client sync
+		world.updateListeners(pos, state, state, Block.NOTIFY_ALL);
+
+		// Polish
 		world.playSound(null, pos, SoundEvents.BLOCK_ROOTED_DIRT_HIT, SoundCategory.BLOCKS, 1f, 1f);
-		ParticlesApi.spawnAtBlockBottom(world, pos, ParticleTypes.SOUL, 6, 0.025, 0.125);
+		Particles.spawnAtBlockBottom(world, pos, ParticleTypes.SOUL, 6, 0.025, 0.125);
 
 		return ActionResult.SUCCESS;
 	}

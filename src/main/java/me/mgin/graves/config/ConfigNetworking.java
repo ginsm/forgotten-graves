@@ -69,11 +69,13 @@ public class ConfigNetworking {
 	public static GravesConfig resolveConfig(String option, GameProfile profile) {
 		GravesConfig config = GravesConfig.getConfig();
 
-		if (config.server.clientSideOptions.contains(option)) {
+		if (config.server.clientsideOptions.contains(option)) {
 			GravesConfig clientConfig = Graves.clientConfigs.get(profile);
 
-			if (clientConfig != null)
+			if (clientConfig != null) {
+				System.out.println("reached");
 				return clientConfig;
+			}
 		}
 
 		return config;

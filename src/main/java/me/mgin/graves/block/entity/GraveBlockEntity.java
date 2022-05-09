@@ -1,14 +1,17 @@
 package me.mgin.graves.block.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.mojang.authlib.GameProfile;
 
-import me.mgin.graves.config.GraveRetrievalType;
-import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.Graves;
+import me.mgin.graves.api.InventoriesApi;
+import me.mgin.graves.block.api.GraveNbtHelper;
 import me.mgin.graves.registry.GraveBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
@@ -22,18 +25,18 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import org.jetbrains.annotations.Nullable;
 
 public class GraveBlockEntity extends BlockEntity {
-	private DefaultedList<ItemStack> items;
+	private GameProfile graveOwner;
+	private BlockState state;
 	private int xp;
 	private int noAge;
-	private GameProfile graveOwner;
 	private String customName;
 	private String graveSkull;
-	private BlockState state;
+	private Map<String, DefaultedList<ItemStack>> inventories = new HashMap<String, DefaultedList<ItemStack>>() {
+	};
 
 	public GraveBlockEntity(BlockPos pos, BlockState state) {
 		super(GraveBlocks.GRAVE_BLOCK_ENTITY, pos, state);
 		this.graveOwner = null;
-		this.items = DefaultedList.ofSize(41, ItemStack.EMPTY);
 		this.customName = "";
 		this.graveSkull = "";
 		this.xp = 0;
@@ -42,31 +45,28 @@ public class GraveBlockEntity extends BlockEntity {
 	}
 
 	/**
-	 * Set the GraveBlockEntity's items.
+	 * Set an inventory inside inventories.
 	 *
+	 * @param key
 	 * @param items
 	 */
-	public void setItems(DefaultedList<ItemStack> items) {
-		this.items = items;
+	public void setInventory(String key, DefaultedList<ItemStack> items) {
+		this.inventories.put(key, items);
 		this.markDirty();
 	}
 
 	/**
-	 * Retrieve the GraveBlockEntity's items.
+	 * Retrieve an inventory from the inventories.
 	 *
+	 * @param key
 	 * @return
 	 */
-	public DefaultedList<ItemStack> getItems() {
-		return items;
+	public DefaultedList<ItemStack> getInventory(String key) {
+		return this.inventories.get(key);
 	}
 
-	/**
-	 * Determines whether the GraveBlockEntity has items in it.
-	 *
-	 * @return boolean
-	 */
-	public boolean hasItems() {
-		return !items.isEmpty();
+	public int getInventorySize(String key) {
+		return this.inventories.get(key).size();
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class GraveBlockEntity extends BlockEntity {
 	 * @return
 	 */
 	public boolean hasCustomName() {
-		return customName != "";
+		return customName.length() > 0;
 	}
 
 	/**
@@ -219,100 +219,34 @@ public class GraveBlockEntity extends BlockEntity {
 		return this.graveSkull != "";
 	}
 
-	/**
-	 * Determines whether any of the following is true:
-	 *
-	 * <p>
-	 * The grave has no owner, the player is the owner, grave robbing is enabled, or
-	 * the player's operator permission level meets the requirements.
-	 * </p>
-	 *
-	 * @param player
-	 * @return boolean
-	 */
-	public boolean playerCanAttemptRetrieve(PlayerEntity player) {
-		boolean graveRobbing = GravesConfig.getConfig().server.enableGraveRobbing;
-
-		if (getGraveOwner() == null || isGraveOwner(player) || graveRobbing || playerCanOverride(player)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Determines whether operator override is enabled, and if the player meets the
-	 * necessary override level requirements.
-	 *
-	 * @param player
-	 * @return boolean
-	 */
-	public boolean playerCanOverride(PlayerEntity player) {
-		int operatorOverrideLevel = GravesConfig.getConfig().server.minOperatorOverrideLevel;
-		return (operatorOverrideLevel != -1 && player.hasPermissionLevel(operatorOverrideLevel));
-	}
-
-	/**
-	 * Determines whether the player can break the block with left click
-	 * (RetrievalType.ON_BREAK || RetrievalType.ON_BOTH).
-	 *
-	 * <p>
-	 * In addition, it checks whether the player is the owner, if grave robbing is
-	 * enabled, or if the player can override the protection with the proper
-	 * operator level.
-	 * <p>
-	 *
-	 * @param player
-	 * @return boolean
-	 */
-	public boolean playerCanBreakGrave(PlayerEntity player) {
-		GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType",
-				player.getGameProfile()).main.retrievalType;
-
-		if (playerCanAttemptRetrieve(player))
-			if (retrievalType == GraveRetrievalType.ON_BREAK || retrievalType == GraveRetrievalType.ON_BOTH)
-				return true;
-
-		return false;
-	}
-
-	/**
-	 * Determines whether the player can use the block with right click
-	 * (RetrievalType.ON_USE || RetrievalType.ON_BOTH).
-	 *
-	 * <p>
-	 * In addition, it checks whether the player is the owner, if grave robbing is
-	 * enabled, or if the player can override the protection with the proper
-	 * operator level.
-	 * </p>
-	 *
-	 * @param player
-	 * @return
-	 */
-	public boolean playerCanUseGrave(PlayerEntity player) {
-		GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType",
-				player.getGameProfile()).main.retrievalType;
-
-		if (playerCanAttemptRetrieve(player))
-			if (retrievalType == GraveRetrievalType.ON_USE || retrievalType == GraveRetrievalType.ON_BOTH)
-				return true;
-
-		return false;
-	}
-
 	@Override
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
 
-		nbt.putInt("ItemCount", this.items.size());
-		nbt.put("Items", Inventories.writeNbt(new NbtCompound(), this.items, true));
+		for (InventoriesApi api : Graves.inventories) {
+			String id = api.getID();
+			DefaultedList<ItemStack> inventory = this.getInventory(id);
+
+			if (inventory != null) {
+				nbt = GraveNbtHelper.writeInventory(id, inventory, nbt);
+			}
+		}
+
+		for (String modID : Graves.unloadedInventories) {
+			DefaultedList<ItemStack> inventory = this.getInventory(modID);
+
+			if (inventory != null) {
+				nbt = GraveNbtHelper.writeInventory(modID, inventory, nbt);
+			}
+		}
+
 		nbt.putInt("XP", xp);
 		nbt.putInt("noAge", noAge);
 
 		if (graveOwner != null)
 			nbt.put("GraveOwner", NbtHelper.writeGameProfile(new NbtCompound(), graveOwner));
 
-		if (customName != null && !customName.isEmpty())
+		if (customName != null && this.hasCustomName())
 			nbt.putString("CustomName", customName);
 
 		if (graveSkull != null)
@@ -321,10 +255,26 @@ public class GraveBlockEntity extends BlockEntity {
 
 	@Override
 	public void readNbt(NbtCompound nbt) {
+		// Needed for backwards compatibility
+		if (nbt.getType("ItemCount") == 3)
+			nbt = GraveNbtHelper.update(nbt);
 		super.readNbt(nbt);
 
-		this.items = DefaultedList.ofSize(nbt.getInt("ItemCount"), ItemStack.EMPTY);
-		Inventories.readNbt(nbt.getCompound("Items"), this.items);
+		// Store loaded inventories
+		for (InventoriesApi api : Graves.inventories) {
+			String id = api.getID();
+			if (nbt.contains(id)) {
+				this.setInventory(id, GraveNbtHelper.readInventory(id, nbt));
+			}
+		}
+
+		// Store unloaded inventories
+		for (String modID : Graves.unloadedInventories) {
+			if (nbt.contains(modID)) {
+				this.setInventory(modID, GraveNbtHelper.readInventory(modID, nbt));
+			}
+		}
+
 		this.xp = nbt.getInt("XP");
 		this.noAge = nbt.getInt("noAge");
 

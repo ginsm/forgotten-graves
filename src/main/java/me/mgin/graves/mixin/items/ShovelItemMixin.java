@@ -5,7 +5,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import me.mgin.graves.api.ParticlesApi;
+import me.mgin.graves.block.api.Particles;
+import me.mgin.graves.block.api.Permission;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.util.DegradationStateManager;
 import net.minecraft.block.entity.BlockEntity;
@@ -31,13 +32,13 @@ public class ShovelItemMixin {
 		Hand hand = context.getHand();
 
 		if (blockEntity instanceof GraveBlockEntity graveEntity
-				&& graveEntity.playerCanAttemptRetrieve(player))
-			if (hand == Hand.MAIN_HAND && (graveEntity.getNoAge() == 1
-					|| DegradationStateManager.decreaseDegradationState(world, pos))) {
+				&& Permission.playerCanAttemptRetrieve(player, graveEntity))
+			if (hand == Hand.MAIN_HAND
+					&& (graveEntity.getNoAge() == 1 || DegradationStateManager.decreaseDegradationState(world, pos))) {
 				graveEntity.setNoAge(0);
 				if (!player.isCreative())
 					player.getStackInHand(hand).damage(1, player, (p) -> p.sendToolBreakStatus(hand));
-				ParticlesApi.spawnAtBlock(world, pos, ParticleTypes.WAX_OFF, 8, 3);
+				Particles.spawnAtBlock(world, pos, ParticleTypes.WAX_OFF, 8, 3);
 				world.playSound(null, pos, SoundEvents.BLOCK_ROOTED_DIRT_BREAK, SoundCategory.BLOCKS, 1f, 1f);
 			}
 	}

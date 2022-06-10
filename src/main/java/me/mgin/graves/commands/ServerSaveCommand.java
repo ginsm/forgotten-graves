@@ -10,7 +10,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigHolder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 
 public class ServerSaveCommand {
@@ -26,14 +26,14 @@ public class ServerSaveCommand {
 				holder.setConfig(config);
 				holder.save();
 				source.sendFeedback(
-						new TranslatableText("text.forgottengraves.command.serversave").formatted(Formatting.GRAY),
+						new TranslatableTextContent("text.forgottengraves.command.serversave").formatted(Formatting.GRAY),
 						true);
 			} else {
-				source.sendError(new TranslatableText("error.forgottengraves.command.serversave.fail")
+				source.sendError(new TranslatableTextContent("error.forgottengraves.command.serversave.fail")
 						.formatted(Formatting.GRAY));
 			}
 		} else {
-			source.sendError(new TranslatableText("error.forgottengraves.command.notplayer"));
+			source.sendError(new TranslatableTextContent("error.forgottengraves.command.notplayer"));
 		}
 
 		return Command.SINGLE_SUCCESS;

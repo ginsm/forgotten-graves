@@ -9,7 +9,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.TranslatableTextContent;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 public class ClientConfigReload {
@@ -20,10 +20,10 @@ public class ClientConfigReload {
 			PacketByteBuf buf = PacketByteBufs.create();
 			ServerPlayNetworking.send(player, Constants.UPDATE_CLIENTSIDE_CONFIG, buf);
 
-			source.sendFeedback(new TranslatableTextContent("text.forgottengraves.command.reload").formatted(Formatting.GRAY),
+			source.sendFeedback(new TranslatableText("text.forgottengraves.command.reload").formatted(Formatting.GRAY),
 					true);
 		} else {
-			source.sendError(new TranslatableTextContent("error.forgottengraves.command.notplayer"));
+			source.sendError(new TranslatableText("error.forgottengraves.command.notplayer"));
 		}
 
 		return Command.SINGLE_SUCCESS;

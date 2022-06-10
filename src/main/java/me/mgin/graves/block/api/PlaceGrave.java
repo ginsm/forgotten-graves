@@ -15,7 +15,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
-import net.minecraft.text.TranslatableTextContent;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -83,12 +83,12 @@ public class PlaceGrave {
 				GravesConfig config = GravesConfig.resolveConfig("sendGraveCoordinates", player.getGameProfile());
 
 				if (config.main.sendGraveCoordinates) {
-					player.sendMessage(new TranslatableTextContent("text.forgottengraves.mark_coords", gravePos.getX(),
+					player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(),
 							gravePos.getY(), gravePos.getZ()), false);
 				}
 
 				System.out.println("[Graves] Grave spawned at: " + gravePos.getX() + ", " + gravePos.getY() + ", "
-						+ gravePos.getZ() + " for player " + player.getName().getContent() + ".");
+						+ gravePos.getZ() + " for player " + player.getName().asString() + ".");
 
 				break;
 			}

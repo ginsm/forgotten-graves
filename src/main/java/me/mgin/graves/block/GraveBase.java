@@ -1,6 +1,5 @@
 package me.mgin.graves.block;
 
-import java.util.Random;
 import me.mgin.graves.block.api.Permission;
 import me.mgin.graves.block.api.RetrieveGrave;
 import me.mgin.graves.block.degradation.AgingGrave;
@@ -27,6 +26,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -223,7 +223,6 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		return this.blockAge;
 	}
 
-	@Override
 	public void tickDegradation(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 

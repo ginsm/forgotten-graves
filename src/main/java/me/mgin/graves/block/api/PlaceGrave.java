@@ -15,7 +15,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -31,7 +31,7 @@ public class PlaceGrave {
 		BlockPos pos = new BlockPos(vecPos.x, vecPos.y - 1, vecPos.z);
 
 		// Handle dying below the dimension's minimum Y height
-		int minY = world.getDimension().getMinimumY();
+		int minY = world.getDimension().minY();
 		if (minY > pos.getY()) {
 			pos = new BlockPos(pos.getX(), minY + 5, pos.getZ());
 		}
@@ -83,12 +83,12 @@ public class PlaceGrave {
 				GravesConfig config = GravesConfig.resolveConfig("sendGraveCoordinates", player.getGameProfile());
 
 				if (config.main.sendGraveCoordinates) {
-					player.sendMessage(new TranslatableText("text.forgottengraves.mark_coords", gravePos.getX(),
+					player.sendMessage(Text.translatable("text.forgottengraves.mark_coords", gravePos.getX(),
 							gravePos.getY(), gravePos.getZ()), false);
 				}
 
 				System.out.println("[Graves] Grave spawned at: " + gravePos.getX() + ", " + gravePos.getY() + ", "
-						+ gravePos.getZ() + " for player " + player.getName().asString() + ".");
+						+ gravePos.getZ() + " for player " + player.getName().getString() + ".");
 
 				break;
 			}
@@ -111,7 +111,7 @@ public class PlaceGrave {
 			return false;
 
 		DimensionType dimension = world.getDimension();
-		return !(pos.getY() < dimension.getMinimumY() || pos.getY() > world.getTopY());
+		return !(pos.getY() < dimension.minY() || pos.getY() > world.getTopY());
 	}
 
 	private static void resetPlayerExperience(PlayerEntity player) {

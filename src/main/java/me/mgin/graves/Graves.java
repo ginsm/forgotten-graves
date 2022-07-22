@@ -12,7 +12,6 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.inventories.BackSlot;
-import me.mgin.graves.inventories.Inventorio;
 import me.mgin.graves.inventories.Trinkets;
 import me.mgin.graves.inventories.Vanilla;
 import me.mgin.graves.registry.ServerBlocks;

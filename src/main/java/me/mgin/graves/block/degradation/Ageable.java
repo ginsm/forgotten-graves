@@ -3,7 +3,6 @@ package me.mgin.graves.block.degradation;
 import com.mojang.authlib.GameProfile;
 import java.util.Iterator;
 import java.util.Optional;
-import java.util.Random;
 
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.InventoriesApi;
@@ -19,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public interface Ageable<T extends Enum<T>> {
@@ -92,7 +92,7 @@ public interface Ageable<T extends Enum<T>> {
 
 			// item has durability
 			if (maxDamage > 0) {
-				Random random = new Random();
+				Random random = Random.create();
 				float unbreaking = (float) EnchantmentHelper.getLevel(Enchantments.UNBREAKING, item);
 
 				float currentItemDecay = (float) damage / (float) maxDamage;

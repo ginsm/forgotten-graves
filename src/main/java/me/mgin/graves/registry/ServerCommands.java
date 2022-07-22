@@ -6,7 +6,7 @@ import me.mgin.graves.commands.ClientConfigReload;
 import me.mgin.graves.commands.GravesCommand;
 import me.mgin.graves.commands.ServerReloadCommand;
 import me.mgin.graves.commands.ServerSaveCommand;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 
 public class ServerCommands {
 
@@ -15,7 +15,7 @@ public class ServerCommands {
 	 */
 	public static void register() {
 		// Register server-side commands
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> dispatcher.register(literal("graves")
+		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, access) -> dispatcher.register(literal("graves")
 				.executes(context -> GravesCommand.execute(context))
 				.then(literal("config").then(literal("reload").executes(context -> ClientConfigReload.execute(context)))
 						.then(literal("server").requires(source -> source.hasPermissionLevel(4))

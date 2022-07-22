@@ -44,8 +44,7 @@ public class Experience {
 	// This function mimics the above one but allows for a custom maximum level,
 	// i.e. 30.
 	public static int calculateCustomExperience(int level, int maxLevel) {
-		int maximumExperiencePoints = maxLevel > 0 ? calculateLevelExperience(maxLevel) : 0;
-		return Math.min(7 * level, maximumExperiencePoints);
+		return Math.min(level, maxLevel);
 	}
 
 	// This leverages the "total experience" equations found here:

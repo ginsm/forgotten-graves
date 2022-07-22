@@ -73,7 +73,6 @@ public class ConfigNetworking {
 			GravesConfig clientConfig = Graves.clientConfigs.get(profile);
 
 			if (clientConfig != null) {
-				System.out.println("reached");
 				return clientConfig;
 			}
 		}

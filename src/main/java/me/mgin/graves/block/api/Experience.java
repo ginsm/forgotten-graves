@@ -41,8 +41,8 @@ public class Experience {
 		return Math.min(7 * level, 100);
 	}
 
-	// This function mimics the above one but allows for a custom maximum level,
-	// i.e. 30.
+	// This function allows for a custom maximum level,
+	// i.e. 30, 5, 100, so forth.
 	public static int calculateCustomExperience(int level, int maxLevel) {
 		return Math.min(level, maxLevel);
 	}
@@ -69,18 +69,18 @@ public class Experience {
 		float progressExperience = 0;
 
 		if (level <= 15)
-			progressExperience = (int) ((2 * level + 7) * progress);
+			progressExperience = (2 * level + 7) * progress;
 		if (level >= 16 && level <= 30)
-			progressExperience = (int) ((5 * level - 38) * progress);
+			progressExperience = (5 * level - 38) * progress;
 		if (level > 30)
-			progressExperience = (int) ((9 * level - 158) * progress);
+			progressExperience = (9 * level - 158) * progress;
 
 		/*
 		 * The below conditional is in place to prevent an issue where Minecraft doesn't
 		 * quite reach the level it should.. i.e. 17 might become 16.999 and so forth. I
 		 * rather give 1 xp than have someone almost the level they were.
 		 */
-		int result = (int) Math.ceil(progressExperience);
+		int result = (int) Math.round(progressExperience);
 		return (result > 0) ? result : (level > 0) ? 1 : 0;
 	}
 }

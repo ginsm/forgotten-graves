@@ -119,7 +119,7 @@ public class RetrieveGrave {
 		}
 
 		// Add player experience back
-		player.addExperience((int) (1 * graveEntity.getXp()));
+		player.addExperience(graveEntity.getXp());
 
 		// spawnBreakParticles(world, player, pos, defaultState);
 

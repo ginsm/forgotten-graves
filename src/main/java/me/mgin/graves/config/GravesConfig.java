@@ -16,7 +16,7 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 	@ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
 	public ItemDecaySettings itemDecay = new ItemDecaySettings();
 
-	@ConfigEntry.Gui.CollapsibleObject(startExpanded = false)
+	@ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
 	public ServerSettings server = new ServerSettings();
 
 	public static GravesConfig getConfig() {
@@ -39,15 +39,15 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 
 		@ConfigEntry.Gui.Tooltip
 		@ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
-		public GraveRetrievalType retrievalType = GraveRetrievalType.ON_BOTH;
+		public GraveRetrievalType retrievalType = GraveRetrievalType.BOTH;
 
 		@ConfigEntry.Gui.Tooltip
 		@ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
-		public GraveDropType dropType = GraveDropType.PUT_IN_INVENTORY;
+		public GraveDropType dropType = GraveDropType.INVENTORY;
 
 		@ConfigEntry.Gui.Tooltip
 		@ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
-		public GraveExpStoreType expStorageType = GraveExpStoreType.STORE_ALL_XP;
+		public GraveExpStoreType expStorageType = GraveExpStoreType.ALL;
 
 		@ConfigEntry.Gui.Tooltip
 		public int maxCustomXPLevel = 30;
@@ -72,6 +72,6 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 		public int minOperatorOverrideLevel = 4;
 
 		@ConfigEntry.Gui.Tooltip
-		public List<String> clientsideOptions = List.of();
+		public List<String> clientOptions = List.of();
 	}
 }

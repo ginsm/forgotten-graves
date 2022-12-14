@@ -69,7 +69,7 @@ public class ConfigNetworking {
 	public static GravesConfig resolveConfig(String option, GameProfile profile) {
 		GravesConfig config = GravesConfig.getConfig();
 
-		if (config.server.clientsideOptions.contains(option)) {
+		if (config.server.clientOptions.contains(option)) {
 			GravesConfig clientConfig = Graves.clientConfigs.get(profile);
 
 			if (clientConfig != null) {

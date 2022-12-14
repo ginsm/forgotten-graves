@@ -6,11 +6,15 @@
 
 
   "text.forgottengraves.command.graves": "[Graves] That command hasn't been implemented yet.",
+
   "text.forgottengraves.command.reloadserver": "[Graves] The server config has been reloaded.",
   "text.forgottengraves.command.reload": "[Graves] Your config has been reloaded.",
-  "text.forgottengraves.command.serversave": "[Graves] The server config has been updated.",
 
+  "text.forgottengraves.command.set": "[Graves] Changing config option %s to %b.",
+
+  "text.forgottengraves.command.serversave": "[Graves] The server config has been updated.",
   "error.forgottengraves.command.serversave.fail": "[Graves] The server config could not be updated.",
+
   "error.forgottengraves.command.notplayer": "[Graves] You must run this as a valid player.",
 
 
@@ -25,7 +29,7 @@
   
   "text.autoconfig.forgottengraves.option.main.graveCoordinates": "Grave Coordinates",
   "text.autoconfig.forgottengraves.option.main.graveCoordinates.@Tooltip": "Should the coords of the grave be sent in chat?",
-  "text.forgottengraves.mark_coords": "Your grave has spawned at [x: %d, y: %d, z: %d]",
+  "text.forgottengraves.mark_coords": "[Graves] Grave spawned at [x: %d, y: %d, z: %d]",
   
   "text.autoconfig.forgottengraves.option.main.OPOverrideLevel": "OP Override Level",
   "text.autoconfig.forgottengraves.option.main.OPOverrideLevel.@Tooltip": "Operator level needed to override protection?",

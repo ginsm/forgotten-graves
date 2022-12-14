@@ -12,31 +12,34 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class ClientSetCommand {
-    static public <T> void execute(CommandContext<ServerCommandSource> context, String option, String subclass, T value) {
-        ServerCommandSource source = context.getSource();
+	static public <T> void execute(CommandContext<ServerCommandSource> context, String option,
+								   T value, String type) {
+		ServerCommandSource source = context.getSource();
 
-        if (source.getEntity() instanceof ServerPlayerEntity player) {
-            PacketByteBuf buf = PacketByteBufs.create();
+		if (source.getEntity()instanceof ServerPlayerEntity player) {
+			PacketByteBuf buf = PacketByteBufs.create();
 
-            // Store the option and value in nbt and write to buf
-            NbtCompound nbt = new NbtCompound();
-            nbt.putString("option", option);
-            nbt.putString("subclass", subclass);
+			// Store the option and value in nbt and write to buf
+			NbtCompound nbt = new NbtCompound();
+			nbt.putString("option", option);
+			nbt.putString("type", type);
 
-            switch(value.getClass().getSimpleName()) {
-                case "Boolean" -> nbt.putBoolean("value", (Boolean) value);
-                case "Integer" -> nbt.putInt("value", (Integer) value);
-                case "String" -> nbt.putString("value", (String) value);
-            }
+			switch (value.getClass().getSimpleName()) {
+				case "Boolean" -> nbt.putBoolean("value", (Boolean) value);
+				case "Integer" -> nbt.putInt("value", (Integer) value);
+				case "String" -> nbt.putString("value", (String) value);
+			}
 
-            buf.writeNbt(nbt);
+			buf.writeNbt(nbt);
 
-            // Send the buf and relevant info to client
-            ServerPlayNetworking.send(player, Constants.SET_CLIENTSIDE_CONFIG, buf);
-            source.sendFeedback(Text.translatable("text.forgottengraves.command.set", option, value).formatted(Formatting.GRAY),
-                    true);
-        } else {
-            source.sendError(Text.translatable("error.forgottengraves.command.notplayer"));
-        }
-    }
+			// Send the buf and relevant info to client
+			ServerPlayNetworking.send(player, Constants.SET_CLIENTSIDE_CONFIG, buf);
+
+			source.sendFeedback(
+					Text.translatable("text.forgottengraves.command.set", option, value).formatted(Formatting.GRAY),
+					true);
+		} else {
+			source.sendError(Text.translatable("error.forgottengraves.command.notplayer"));
+		}
+	}
 }

@@ -1,7 +1,6 @@
 plugins {
   id 'fabric-loom' version '1.0-SNAPSHOT'
   id 'maven-publish'
-  id "com.diffplug.spotless" version "6.0.0"
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -110,31 +109,4 @@ publishing {
     // The repositories here will be used for publishing your artifact, not for
     // retrieving dependencies.
   }
-}
-
-spotless {
-  // Only formats files that have changed since origin/develop.
-  ratchetFrom 'origin/develop'
-
-  java {
-    target fileTree('.') {
-      include '**/*.java'
-      exclude '**/build/**', '**/build-*/**'
-    }
-    toggleOffOn()
-    eclipse()
-    removeUnusedImports()
-    trimTrailingWhitespace()
-    endWithNewline()
-   }
-
-   format 'misc', {
-    target fileTree('.') {
-      include '*.gradle', '**/*.md', '**/.gitignore'
-      exclude '**/build/**', '**/build-*/**'
-    }
-    trimTrailingWhitespace()
-    indentWithSpaces(2)
-    endWithNewline()
-   }
 }

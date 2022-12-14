@@ -22,8 +22,6 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public interface Ageable<T extends Enum<T>> {
-	int field_31056 = 4;
-
 	Optional<BlockState> getDegradationResultState(BlockState state);
 
 	float getDegradationChanceMultiplier();
@@ -44,7 +42,7 @@ public interface Ageable<T extends Enum<T>> {
 		Iterator<BlockPos> var8 = BlockPos.iterateOutwards(pos, 4, 4, 4).iterator();
 
 		while (var8.hasNext()) {
-			BlockPos nextPos = (BlockPos) var8.next();
+			BlockPos nextPos = var8.next();
 			int l = nextPos.getManhattanDistance(pos);
 			if (l > 4) {
 				break;
@@ -78,9 +76,9 @@ public interface Ageable<T extends Enum<T>> {
 	}
 
 	static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items, GameProfile profile) {
-		float maxDecayPercent = GravesConfig.resolveConfig("maxDecayPercent", profile).itemDecay.maxDecayPercent / 100f;
-		boolean itemDecayBreaksItems = GravesConfig.resolveConfig("itemDecayBreaksItems",
-				profile).itemDecay.itemDecayBreaksItems;
+		float maxDecayPercent = GravesConfig.resolveConfig("decayPercent", profile).itemDecay.decayPercent / 100f;
+		boolean decayBreaksItems = GravesConfig.resolveConfig("decayBreaksItems",
+				profile).itemDecay.decayBreaksItems;
 
 		if (maxDecayPercent == 0.0f)
 			return items;
@@ -110,8 +108,8 @@ public interface Ageable<T extends Enum<T>> {
 					int decay = (int) Math.ceil((float) remainingDamage * decayPercent);
 
 					if (remainingDamage - decay > 0) {
-						item.setDamage((int) damage + decay);
-					} else if (itemDecayBreaksItems) {
+						item.setDamage(damage + decay);
+					} else if (decayBreaksItems) {
 						items.set(i, ItemStack.EMPTY);
 					} else {
 						item.setDamage(maxDamage - 1);
@@ -122,7 +120,7 @@ public interface Ageable<T extends Enum<T>> {
 		return items;
 	}
 
-	public static void setDegradationState(World world, BlockPos pos, BlockState state, boolean itemsDecay) {
+	static void setDegradationState(World world, BlockPos pos, BlockState state, boolean itemsDecay) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 
 		if (blockEntity instanceof GraveBlockEntity graveEntity) {

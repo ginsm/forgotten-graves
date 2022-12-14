@@ -15,8 +15,6 @@ public class ConfigNetworking {
 	/**
 	 * Transmits JSON-formatted config data to the (dedicated) server. The data will
 	 * not be transmitted to integrated servers (singleplayer).
-	 *
-	 * @param configData
 	 */
 	public void sendToServer() {
 		MinecraftClient client = MinecraftClient.getInstance();

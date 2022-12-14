@@ -11,25 +11,25 @@ import net.minecraft.block.BlockState;
 
 public interface AgingGrave extends Ageable<AgingGrave.BlockAge> {
 
-	Supplier<ImmutableBiMap<Object, Object>> BLOCK_AGE_INCREASES = Suppliers.memoize(() -> {
-		return ImmutableBiMap.builder().put(GraveBlocks.GRAVE, GraveBlocks.GRAVE_OLD)
-				.put(GraveBlocks.GRAVE_OLD, GraveBlocks.GRAVE_WEATHERED)
-				.put(GraveBlocks.GRAVE_WEATHERED, GraveBlocks.GRAVE_FORGOTTEN).build();
-	});
+	Supplier<ImmutableBiMap<Object, Object>> BLOCK_AGE_INCREASES = Suppliers.memoize(() ->
+		ImmutableBiMap.builder()
+			.put(GraveBlocks.GRAVE, GraveBlocks.GRAVE_OLD)
+			.put(GraveBlocks.GRAVE_OLD, GraveBlocks.GRAVE_WEATHERED)
+			.put(GraveBlocks.GRAVE_WEATHERED, GraveBlocks.GRAVE_FORGOTTEN).build());
 
-	Supplier<BiMap<Object, Object>> BLOCK_AGE_DECREASES = Suppliers.memoize(() -> {
-		return ((BiMap<Object, Object>) BLOCK_AGE_INCREASES.get()).inverse();
-	});
+	Supplier<BiMap<Object, Object>> BLOCK_AGE_DECREASES = Suppliers.memoize(() -> (
+			(BiMap<Object, Object>) BLOCK_AGE_INCREASES.get()).inverse()
+	);
 
 	static Optional<Block> getDecreasedOxidationBlock(Block block) {
-		return Optional.ofNullable((Block) ((BiMap<Object, Object>) BLOCK_AGE_DECREASES.get()).get(block));
+		return Optional.ofNullable((Block) BLOCK_AGE_DECREASES.get().get(block));
 	}
 
 	static Block getUnaffectedOxidationBlock(Block block) {
 		Block block2 = block;
 
-		for (Block block3 = (Block) ((BiMap<Object, Object>) BLOCK_AGE_DECREASES.get())
-				.get(block); block3 != null; block3 = (Block) ((BiMap<Object, Object>) BLOCK_AGE_DECREASES.get())
+		for (Block block3 = (Block) BLOCK_AGE_DECREASES.get()
+				.get(block); block3 != null; block3 = (Block) BLOCK_AGE_DECREASES.get()
 						.get(block3)) {
 			block2 = block3;
 		}
@@ -38,9 +38,7 @@ public interface AgingGrave extends Ageable<AgingGrave.BlockAge> {
 	}
 
 	static Optional<BlockState> getDecreasedOxidationState(BlockState state) {
-		return getDecreasedOxidationBlock(state.getBlock()).map((block) -> {
-			return block.getStateWithProperties(state);
-		});
+		return getDecreasedOxidationBlock(state.getBlock()).map((block) -> block.getStateWithProperties(state));
 	}
 
 	static Optional<Block> getIncreasedOxidationBlock(Block block) {
@@ -48,9 +46,7 @@ public interface AgingGrave extends Ageable<AgingGrave.BlockAge> {
 	}
 
 	static Optional<BlockState> getIncreasedOxidationState(BlockState state) {
-		return getIncreasedOxidationBlock(state.getBlock()).map((block) -> {
-			return block.getStateWithProperties(state);
-		});
+		return getIncreasedOxidationBlock(state.getBlock()).map((block) -> block.getStateWithProperties(state));
 	}
 
 	static BlockState getUnaffectedOxidationState(BlockState state) {
@@ -58,19 +54,17 @@ public interface AgingGrave extends Ageable<AgingGrave.BlockAge> {
 	}
 
 	default Optional<BlockState> getDegradationResultState(BlockState state) {
-		return getIncreasedOxidationBlock(state.getBlock()).map((block) -> {
-			return block.getStateWithProperties(state);
-		});
+		return getIncreasedOxidationBlock(state.getBlock()).map((block) -> block.getStateWithProperties(state));
 	}
 
 	default float getDegradationChanceMultiplier() {
 		return this.getDegradationLevel() == AgingGrave.BlockAge.FRESH ? 0.75F : 1.0F;
 	}
 
-	public static enum BlockAge {
+	enum BlockAge {
 		FRESH, OLD, WEATHERED, FORGOTTEN;
 
-		private BlockAge() {
+		BlockAge() {
 		}
 	}
 }

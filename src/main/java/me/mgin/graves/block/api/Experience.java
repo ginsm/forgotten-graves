@@ -16,16 +16,17 @@ public class Experience {
 		int maxCustomXPLevel = GravesConfig.resolveConfig("maxCustomXPLevel", profile).main.maxCustomXPLevel;
 
 		switch (expStorageType) {
-			case ALL:
+			case ALL -> {
 				return calculateTotalExperience(level, progress);
-			case DEFAULT:
-				return calculateDefaultExperience(level);
-			case CUSTOM:
+			}
+			case CUSTOM -> {
 				// Enforce a minimum threshold (0).
 				int maxLevel = Math.max(maxCustomXPLevel, 0);
 				return calculateCustomExperience(level, maxLevel);
-			default :
+			}
+			default -> {
 				return calculateDefaultExperience(level);
+			}
 		}
 	}
 
@@ -54,7 +55,7 @@ public class Experience {
 		int levelExperience = 0;
 
 		if (level <= 16)
-			levelExperience = (int) (levelSquared + 6 * level);
+			levelExperience = levelSquared + 6 * level;
 		if (level >= 17 && level <= 31)
 			levelExperience = (int) (2.5 * levelSquared - 40.5 * level + 360);
 		if (level > 31)
@@ -80,7 +81,7 @@ public class Experience {
 		 * quite reach the level it should.. i.e. 17 might become 16.999 and so forth. I
 		 * rather give 1 xp than have someone almost the level they were.
 		 */
-		int result = (int) Math.round(progressExperience);
+		int result = Math.round(progressExperience);
 		return (result > 0) ? result : (level > 0) ? 1 : 0;
 	}
 }

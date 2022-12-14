@@ -8,7 +8,6 @@ import me.mgin.graves.registry.GraveBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -47,35 +46,21 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	}
 
 	public int getWeathered() {
-		int stage;
-		switch (blockAge) {
-			default :
-				stage = 0;
-				break;
-			case OLD :
-				stage = 1;
-				break;
-			case WEATHERED :
-				stage = 2;
-				break;
-			case FORGOTTEN :
-				stage = 3;
-				break;
-		}
-		return stage;
+		return switch (blockAge) {
+			default -> 0;
+			case OLD -> 1;
+			case WEATHERED -> 2;
+			case FORGOTTEN -> 3;
+		};
 	}
 
 	public static GraveBase getAgedBlock(BlockAge blockAge) {
-		switch (blockAge) {
-			default :
-				return GraveBlocks.GRAVE;
-			case OLD :
-				return GraveBlocks.GRAVE_OLD;
-			case WEATHERED :
-				return GraveBlocks.GRAVE_WEATHERED;
-			case FORGOTTEN :
-				return GraveBlocks.GRAVE_FORGOTTEN;
-		}
+		return switch (blockAge) {
+			default -> GraveBlocks.GRAVE;
+			case OLD -> GraveBlocks.GRAVE_OLD;
+			case WEATHERED -> GraveBlocks.GRAVE_WEATHERED;
+			case FORGOTTEN -> GraveBlocks.GRAVE_FORGOTTEN;
+		};
 	}
 
 	@Override
@@ -110,7 +95,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 				return;
 
 		if (graveEntity.getGraveOwner() == null)
-			if (!world.isClient && graveEntity.hasCustomName() && !player.isCreative()) {
+			if (graveEntity.hasCustomName() && !player.isCreative()) {
 				onBreakRetainName(world, pos, player, graveEntity);
 				return;
 			}
@@ -132,7 +117,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		world.spawnEntity(itemEntity);
 		world.removeBlock(pos, false);
 
-		world.emitGameEvent((Entity) player, GameEvent.BLOCK_DESTROY, pos);
+		world.emitGameEvent(player, GameEvent.BLOCK_DESTROY, pos);
 	}
 
 	@Override
@@ -173,12 +158,10 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 
-		if (!(blockEntity instanceof GraveBlockEntity) || !itemStack.hasCustomName()) {
+		if (!(blockEntity instanceof GraveBlockEntity graveEntity) || !itemStack.hasCustomName()) {
 			super.onPlaced(world, pos, state, placer, itemStack);
 			return;
 		}
-
-		GraveBlockEntity graveEntity = (GraveBlockEntity) blockEntity;
 
 		graveEntity.setCustomName(itemStack.getOrCreateSubNbt("display").getString("Name"));
 	}

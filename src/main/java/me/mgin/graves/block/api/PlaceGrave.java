@@ -80,9 +80,9 @@ public class PlaceGrave {
 
 				block.onBreak(world, pos, state, player);
 
-				GravesConfig config = GravesConfig.resolveConfig("sendGraveCoordinates", player.getGameProfile());
+				GravesConfig config = GravesConfig.resolveConfig("graveCoordinates", player.getGameProfile());
 
-				if (config.main.sendGraveCoordinates) {
+				if (config.main.graveCoordinates) {
 					player.sendMessage(Text.translatable("text.forgottengraves.mark_coords", gravePos.getX(),
 							gravePos.getY(), gravePos.getZ()), false);
 				}
@@ -101,7 +101,7 @@ public class PlaceGrave {
 		if (blockEntity != null)
 			return false;
 
-		Set<Block> blackListedBlocks = new HashSet<Block>() {
+		Set<Block> blackListedBlocks = new HashSet<>() {
 			{
 				add(Blocks.BEDROCK);
 			}

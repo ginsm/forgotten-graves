@@ -18,7 +18,7 @@ public class DegradationStateManager {
 		return setDegradationState(world, pos, potentialNewState, false);
 	}
 
-	static public boolean increaseDegradationState(World world, BlockPos pos) throws Exception {
+	static public boolean increaseDegradationState(World world, BlockPos pos) {
 		if (world.isClient)
 			return false;
 

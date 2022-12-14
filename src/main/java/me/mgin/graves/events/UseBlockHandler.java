@@ -36,7 +36,7 @@ public class UseBlockHandler {
 				String itemName = itemInHand.asItem().toString();
 
 				if (graveEntity.getGraveOwner() == null && validSkulls.contains(itemName))
-					return handlePlayerHeads(graveEntity, world, itemStack, itemInHand, itemName);
+					return handlePlayerHeads(graveEntity, world, itemStack, itemName);
 
 				// Prevent block placement and unintentional item usage
 				if (Item.BLOCK_ITEMS.containsValue(itemInHand) || restrictedItems.containsValue(itemInHand))
@@ -50,7 +50,7 @@ public class UseBlockHandler {
 	/**
 	 * Items that should be prevented from activating. Mostly blocks.
 	 */
-	private static Map<Item, Item> restrictedItems = new HashMap<Item, Item>() {
+	private static final Map<Item, Item> restrictedItems = new HashMap<>() {
 		{
 			put(Items.LAVA_BUCKET, Items.LAVA_BUCKET.asItem());
 			put(Items.FLINT_AND_STEEL, Items.FLINT_AND_STEEL.asItem());
@@ -66,12 +66,11 @@ public class UseBlockHandler {
 	 * @param graveEntity
 	 * @param world
 	 * @param itemStack
-	 * @param itemInHand
 	 * @param itemName
 	 * @return
 	 */
 	private static ActionResult handlePlayerHeads(GraveBlockEntity graveEntity, World world, ItemStack itemStack,
-			Item itemInHand, String itemName) {
+												  String itemName) {
 		NbtCompound baseNbt = itemStack.getNbt();
 		BlockPos pos = graveEntity.getPos();
 		BlockState state = graveEntity.getState();
@@ -83,7 +82,7 @@ public class UseBlockHandler {
 			graveSkull = startCompound.getCompound("SkullOwner").getCompound("Properties").getList("textures", 10)
 					.getCompound(0).getString("Value");
 
-			if (graveSkull != "" && graveSkull != graveEntity.getGraveSkull())
+			if (!graveSkull.equals("") && !graveSkull.equals(graveEntity.getGraveSkull()))
 				graveEntity.setGraveSkull(graveSkull);
 			else
 				return ActionResult.FAIL;

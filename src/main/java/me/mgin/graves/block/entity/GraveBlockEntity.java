@@ -31,7 +31,7 @@ public class GraveBlockEntity extends BlockEntity {
 	private int noAge;
 	private String customName;
 	private String graveSkull;
-	private Map<String, DefaultedList<ItemStack>> inventories = new HashMap<String, DefaultedList<ItemStack>>() {
+	private final Map<String, DefaultedList<ItemStack>> inventories = new HashMap<>() {
 	};
 
 	public GraveBlockEntity(BlockPos pos, BlockState state) {
@@ -63,10 +63,6 @@ public class GraveBlockEntity extends BlockEntity {
 	 */
 	public DefaultedList<ItemStack> getInventory(String key) {
 		return this.inventories.get(key);
-	}
-
-	public int getInventorySize(String key) {
-		return this.inventories.get(key).size();
 	}
 
 	/**
@@ -216,7 +212,7 @@ public class GraveBlockEntity extends BlockEntity {
 	 * @return boolean
 	 */
 	public boolean hasGraveSkull() {
-		return this.graveSkull != "";
+		return !this.graveSkull.equals("");
 	}
 
 	@Override

@@ -17,8 +17,7 @@ import net.minecraft.util.math.Vec3f;
 public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockEntity> {
 
 	private final TextRenderer textRenderer;
-	private EntityModelLoader modelLoader;
-	private int blockAge = 0;
+	private final EntityModelLoader modelLoader;
 
 	public GraveBlockEntityRenderer(Context context) {
 		super();
@@ -31,7 +30,7 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 			VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
 		BlockState state = graveEntity.getCachedState();
-		blockAge = ((GraveBase) state.getBlock()).getWeathered();
+		int blockAge = ((GraveBase) state.getBlock()).getWeathered();
 		Direction direction = state.get(Properties.HORIZONTAL_FACING);
 
 		matrices.push();
@@ -61,14 +60,14 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 
 		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(50));
 
-		Skulls.renderSkull(graveEntity, modelLoader, blockAge, state, matrices, light, vertexConsumers);
+		Skulls.renderSkull(graveEntity, modelLoader, blockAge, matrices, light, vertexConsumers);
 
 		matrices.pop();
 
 		// Outline
 		if (graveEntity.getGraveOwner() != null
 				|| (graveEntity.getCustomName() != null && !graveEntity.getCustomName().isEmpty())) {
-			String text = "";
+			String text;
 
 			if (graveEntity.getGraveOwner() != null) {
 				text = graveEntity.getGraveOwner().getName();
@@ -89,7 +88,7 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
 					matrices.translate(-1, 0, -1);
 					break;
-				case SOUTH :
+				case SOUTH, UP, DOWN:
 					break;
 				case EAST :
 					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90));
@@ -98,9 +97,6 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 				case WEST :
 					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(270));
 					matrices.translate(0, 0, -1);
-					break;
-				case UP :
-				case DOWN :
 					break;
 			}
 

@@ -18,14 +18,10 @@ public class Permission {
 	 * @return boolean
 	 */
 	static public boolean playerCanAttemptRetrieve(PlayerEntity player, GraveBlockEntity graveEntity) {
-		boolean graveRobbing = GravesConfig.getConfig().server.enableGraveRobbing;
+		boolean graveRobbing = GravesConfig.getConfig().server.graveRobbing;
 
-		if (graveEntity.getGraveOwner() == null || graveEntity.isGraveOwner(player) || graveRobbing
-				|| playerCanOverride(player)) {
-			return true;
-		}
-
-		return false;
+		return graveEntity.getGraveOwner() == null || graveEntity.isGraveOwner(player) || graveRobbing
+				|| playerCanOverride(player);
 	}
 
 	/**
@@ -36,8 +32,8 @@ public class Permission {
 	 * @return boolean
 	 */
 	static public boolean playerCanOverride(PlayerEntity player) {
-		int operatorOverrideLevel = GravesConfig.getConfig().server.minOperatorOverrideLevel;
-		return (operatorOverrideLevel != -1 && player.hasPermissionLevel(operatorOverrideLevel));
+		int OPOverrideLevel = GravesConfig.getConfig().server.OPOverrideLevel;
+		return (OPOverrideLevel != -1 && player.hasPermissionLevel(OPOverrideLevel));
 	}
 
 	/**
@@ -58,8 +54,7 @@ public class Permission {
 				player.getGameProfile()).main.retrievalType;
 
 		if (playerCanAttemptRetrieve(player, graveEntity))
-			if (retrievalType == GraveRetrievalType.BREAK || retrievalType == GraveRetrievalType.BOTH)
-				return true;
+			return retrievalType == GraveRetrievalType.BREAK || retrievalType == GraveRetrievalType.BOTH;
 
 		return false;
 	}
@@ -82,8 +77,7 @@ public class Permission {
 				player.getGameProfile()).main.retrievalType;
 
 		if (playerCanAttemptRetrieve(player, graveEntity))
-			if (retrievalType == GraveRetrievalType.USE || retrievalType == GraveRetrievalType.BOTH)
-				return true;
+			return retrievalType == GraveRetrievalType.USE || retrievalType == GraveRetrievalType.BOTH;
 
 		return false;
 	}

@@ -39,10 +39,7 @@ public class Trinkets implements InventoriesApi {
 			int slots = 0;
 		};
 
-		if (component.isPresent())
-			component.get().forEach((ref, itemStack) -> {
-				slotWrapper.slots++;
-			});
+		component.ifPresent(trinketComponent -> trinketComponent.forEach((ref, itemStack) -> slotWrapper.slots++));
 
 		return slotWrapper.slots;
 	}
@@ -58,15 +55,13 @@ public class Trinkets implements InventoriesApi {
 		Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
 		DefaultedList<ItemStack> itemStacks = DefaultedList.of();
 
-		if (component.isPresent()) {
-			component.get().forEach((ref, itemStack) -> {
-				if (EnchantmentHelper.hasVanishingCurse(itemStack)) {
-					itemStacks.add(ItemStack.EMPTY);
-				} else {
-					itemStacks.add(itemStack);
-				}
-			});
-		}
+		component.ifPresent(trinketComponent -> trinketComponent.forEach((ref, itemStack) -> {
+			if (EnchantmentHelper.hasVanishingCurse(itemStack)) {
+				itemStacks.add(ItemStack.EMPTY);
+			} else {
+				itemStacks.add(itemStack);
+			}
+		}));
 
 		return itemStacks;
 	}
@@ -107,12 +102,10 @@ public class Trinkets implements InventoriesApi {
 	public void clearInventory(PlayerEntity player) {
 		Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
 
-		if (component.isPresent()) {
-			component.get().forEach((ref, itemStack) -> {
-				TrinketInventory inventory = ref.inventory();
-				inventory.setStack(ref.index(), ItemStack.EMPTY);
-			});
-		}
+		component.ifPresent(trinketComponent -> trinketComponent.forEach((ref, itemStack) -> {
+			TrinketInventory inventory = ref.inventory();
+			inventory.setStack(ref.index(), ItemStack.EMPTY);
+		}));
 	}
 
 	/**

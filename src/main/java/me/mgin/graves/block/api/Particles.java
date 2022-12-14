@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class Particles {
-	private static Random rng = new Random();
+	private static final Random rng = new Random();
 
 	static public void spawnAtBlock(World world, BlockPos pos, DefaultParticleType type, int amount,
 			double maxVelocity) {

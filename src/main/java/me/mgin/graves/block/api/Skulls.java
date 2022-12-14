@@ -9,7 +9,6 @@ import com.mojang.authlib.properties.Property;
 
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.annotation.Nullable;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SkullBlock;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -34,7 +33,7 @@ public class Skulls {
 	 * <strong>Note:</strong> "dragon_head" is currently disabled -- the matrices
 	 * will need to be adjusted in order for it to render properly.
 	 */
-	public static Map<String, SkullWrapper> skulls = new HashMap<String, SkullWrapper>() {
+	public static Map<String, SkullWrapper> skulls = new HashMap<>() {
 		{
 			put("wither_skeleton_skull",
 					new SkullWrapper(SkullBlock.Type.WITHER_SKELETON, EntityModelLayers.WITHER_SKELETON_SKULL));
@@ -101,13 +100,12 @@ public class Skulls {
 	 * in me.mgin.graves.events.UseBlockHandler.
 	 *
 	 * @param graveEntity
-	 * @param state
 	 * @param matrices
 	 * @param light
 	 * @param vertexConsumers
 	 */
 	public static void renderSkull(GraveBlockEntity graveEntity, EntityModelLoader modelLoader, int blockAge,
-			BlockState state, MatrixStack matrices, int light, VertexConsumerProvider vertexConsumers) {
+								   MatrixStack matrices, int light, VertexConsumerProvider vertexConsumers) {
 		GameProfile profile = null;
 		SkullWrapper skullData = null;
 		float yaw = Float.max(10f, blockAge * 12f);
@@ -143,8 +141,8 @@ public class Skulls {
 			this.model = model;
 		}
 
-		private SkullBlock.SkullType type;
-		private EntityModelLayer model;
+		private final SkullBlock.SkullType type;
+		private final EntityModelLayer model;
 
 		public SkullBlock.SkullType getType() {
 			return this.type;

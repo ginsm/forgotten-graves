@@ -19,7 +19,7 @@ public class GraveBlocks {
 	public static final GraveBase GRAVE_WEATHERED = createGrave(BlockAge.WEATHERED);
 	public static final GraveBase GRAVE_FORGOTTEN = createGrave(BlockAge.FORGOTTEN);
 
-	public static final Map<GraveBase, String> GRAVE_MAP = new HashMap<GraveBase, String>(){
+	public static final Map<GraveBase, String> GRAVE_MAP = new HashMap<>() {
 		{
 			put(GraveBlocks.GRAVE, "");
 			put(GraveBlocks.GRAVE_OLD, "_old");
@@ -28,7 +28,7 @@ public class GraveBlocks {
 		}
 	};
 
-	private static final GraveBase createGrave(BlockAge blockAge) {
+	private static GraveBase createGrave(BlockAge blockAge) {
 		return new GraveBase(blockAge, FabricBlockSettings.of(Material.ORGANIC_PRODUCT).strength(0.8f, -1f));
 	}
 

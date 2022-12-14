@@ -26,16 +26,16 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 	@Override
 	public void validatePostLoad() {
 		main.maxCustomXPLevel = Math.max(main.maxCustomXPLevel, 0);
-		itemDecay.maxDecayPercent = Math.max(Math.min(itemDecay.maxDecayPercent, 100), 0);
-		server.minOperatorOverrideLevel = Math.max(Math.min(server.minOperatorOverrideLevel, 4), -1);
+		itemDecay.decayPercent = Math.max(Math.min(itemDecay.decayPercent, 100), 0);
+		server.OPOverrideLevel = Math.max(Math.min(server.OPOverrideLevel, 4), -1);
 	}
 
 	public static class MainSettings {
 		@ConfigEntry.Gui.Tooltip
-		public boolean enableGraves = true;
+		public boolean graves = true;
 
 		@ConfigEntry.Gui.Tooltip
-		public boolean sendGraveCoordinates = true;
+		public boolean graveCoordinates = true;
 
 		@ConfigEntry.Gui.Tooltip
 		@ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
@@ -56,20 +56,20 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 	public static class ItemDecaySettings {
 		@ConfigEntry.Gui.Tooltip
 		@ConfigEntry.BoundedDiscrete(min = 0, max = 100)
-		public int maxDecayPercent = 0;
+		public int decayPercent = 0;
 
 		@ConfigEntry.Gui.Tooltip
-		public boolean itemDecayBreaksItems = false;
+		public boolean decayBreaksItems = false;
 	}
 
 	public static class ServerSettings {
 		@ConfigEntry.Gui.PrefixText
 		@ConfigEntry.Gui.Tooltip
-		public boolean enableGraveRobbing = false;
+		public boolean graveRobbing = false;
 
 		@ConfigEntry.Gui.Tooltip
 		@ConfigEntry.BoundedDiscrete(min = -1, max = 4)
-		public int minOperatorOverrideLevel = 4;
+		public int OPOverrideLevel = 4;
 
 		@ConfigEntry.Gui.Tooltip
 		public List<String> clientOptions = List.of();

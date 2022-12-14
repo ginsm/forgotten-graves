@@ -40,9 +40,7 @@ public class Vanilla implements InventoriesApi {
 		// Equip armor pieces
 		List<ItemStack> armor = inventory.subList(36, 40);
 
-		for (int i = 0; i < armor.size(); i++) {
-			ItemStack armorItem = armor.get(i);
-
+		for (ItemStack armorItem : armor) {
 			// Do nothing with items with curse of vanishing
 			if (EnchantmentHelper.hasVanishingCurse(armorItem)) {
 				continue;

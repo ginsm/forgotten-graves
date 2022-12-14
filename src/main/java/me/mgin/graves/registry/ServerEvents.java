@@ -27,10 +27,9 @@ public class ServerEvents {
 	public static void register() {
 
 		PlayerBlockBreakEvents.BEFORE.register((World world, PlayerEntity player, BlockPos pos, BlockState state,
-				BlockEntity entity) -> PlayerBlockBreakHandler.handleBeforeEvent(player, pos, entity));
+				BlockEntity entity) -> PlayerBlockBreakHandler.handleBeforeEvent(player, entity));
 
-		UseBlockCallback.EVENT.register((PlayerEntity player, World world, Hand hand,
-				BlockHitResult hitResult) -> UseBlockHandler.handleEvent(player, world, hand, hitResult));
+		UseBlockCallback.EVENT.register(UseBlockHandler::handleEvent);
 
 		// Remove client configs on disconnect
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
@@ -40,7 +39,7 @@ public class ServerEvents {
 
 		if (FabricLoader.getInstance().isModLoaded("trinkets"))
 			TrinketDropCallback.EVENT.register((DropRule rule, ItemStack stack, SlotReference ref,
-					LivingEntity entity) -> TrinketDropHandler.handleTrinketDrop(rule, stack, ref, entity));
+					LivingEntity entity) -> TrinketDropHandler.handleTrinketDrop(rule, entity));
 
 	}
 }

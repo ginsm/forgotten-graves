@@ -18,18 +18,17 @@
   
   "text.autoconfig.forgottengraves.option.main": "Main Settings",
   
-  "text.autoconfig.forgottengraves.option.main.enableGraves": "Enable Forgotten Graves",
-  "text.autoconfig.forgottengraves.option.main.enableGraves.@Tooltip": "Enable the Forgotten Graves mod?",
+  "text.autoconfig.forgottengraves.option.main.graves": "Enable Graves",
+  "text.autoconfig.forgottengraves.option.main.graves.@Tooltip": "Enable the Forgotten Graves mod?",
   
-  "text.autoconfig.forgottengraves.option.main.enableGraveRobbing": "Enable Grave Robbing",
-  "text.autoconfig.forgottengraves.option.main.enableGraveRobbing.@Tooltip": "Can players retrieve other players' graves?",
+
   
-  "text.autoconfig.forgottengraves.option.main.sendGraveCoordinates": "Send Grave Coordinates",
-  "text.autoconfig.forgottengraves.option.main.sendGraveCoordinates.@Tooltip": "Should the coords of the grave be sent in chat?",
+  "text.autoconfig.forgottengraves.option.main.graveCoordinates": "Grave Coordinates",
+  "text.autoconfig.forgottengraves.option.main.graveCoordinates.@Tooltip": "Should the coords of the grave be sent in chat?",
   "text.forgottengraves.mark_coords": "Your grave has spawned at [x: %d, y: %d, z: %d]",
   
-  "text.autoconfig.forgottengraves.option.main.minOperatorOverrideLevel": "Minimum OP Level Override",
-  "text.autoconfig.forgottengraves.option.main.minOperatorOverrideLevel.@Tooltip": "Min. operator level needed to override protection?",
+  "text.autoconfig.forgottengraves.option.main.OPOverrideLevel": "OP Override Level",
+  "text.autoconfig.forgottengraves.option.main.OPOverrideLevel.@Tooltip": "Operator level needed to override protection?",
   
   "text.autoconfig.forgottengraves.option.main.retrievalType": "Grave Retrieval Type",
   "text.autoconfig.forgottengraves.option.main.retrievalType.@Tooltip": "How are the items retrieved?",
@@ -47,24 +46,24 @@
 
   "text.autoconfig.forgottengraves.option.itemDecay": "Decay Settings",
   
-  "text.autoconfig.forgottengraves.option.itemDecay.maxDecayPercent": "Max Item Decay Percent",
-  "text.autoconfig.forgottengraves.option.itemDecay.maxDecayPercent.@Tooltip": "What is the max percentage an item can decay at one time?",
+  "text.autoconfig.forgottengraves.option.itemDecay.decayPercent": "Item Decay Percent",
+  "text.autoconfig.forgottengraves.option.itemDecay.decayPercent.@Tooltip": "What is the max percentage an item can decay at one time?",
   
-  "text.autoconfig.forgottengraves.option.itemDecay.itemDecayBreaksItems": "Item Decay Breaks Items",
-  "text.autoconfig.forgottengraves.option.itemDecay.itemDecayBreaksItems.@Tooltip": "Should item decay ever completely break an item?",
+  "text.autoconfig.forgottengraves.option.itemDecay.decayBreaksItems": "Decay Breaks Items",
+  "text.autoconfig.forgottengraves.option.itemDecay.decayBreaksItems.@Tooltip": "Should item decay ever completely break an item?",
   
 
 
   "text.autoconfig.forgottengraves.option.server": "Server Settings",
   
-  "text.autoconfig.forgottengraves.option.server.enableGraveRobbing.@PrefixText": "Note: These settings cannot be handled by the client.",
-  
-  "text.autoconfig.forgottengraves.option.server.enableGraveRobbing": "Enable Grave Robbing",
-  "text.autoconfig.forgottengraves.option.server.enableGraveRobbing.@Tooltip": "Should players be able to rob graves?",
+  "text.autoconfig.forgottengraves.option.server.graveRobbing.@PrefixText": "Note: These settings cannot be handled by the client.",
 
-  "text.autoconfig.forgottengraves.option.server.minOperatorOverrideLevel": "Minimum OP Override Lvl",
-  "text.autoconfig.forgottengraves.option.server.minOperatorOverrideLevel.@Tooltip": "Minimum OP level to override grave protection?",
+  "text.autoconfig.forgottengraves.option.server.graveRobbing": "Grave Robbing",
+  "text.autoconfig.forgottengraves.option.server.graveRobbing.@Tooltip": "Should players be able to rob other players' graves?",
 
-  "text.autoconfig.forgottengraves.option.server.clientsideOptions": "Client Side Options",
-  "text.autoconfig.forgottengraves.option.server.clientsideOptions.@Tooltip": "What options should be handled by the client?"
+  "text.autoconfig.forgottengraves.option.server.OPOverrideLevel": "OP Override Lvl",
+  "text.autoconfig.forgottengraves.option.server.OPOverrideLevel.@Tooltip": "Minimum OP level to override grave protection?",
+
+  "text.autoconfig.forgottengraves.option.server.clientOptions": "Client Options",
+  "text.autoconfig.forgottengraves.option.server.clientOptions.@Tooltip": "What options should be handled by the client?"
 }

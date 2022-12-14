@@ -58,7 +58,7 @@ public class Permission {
 				player.getGameProfile()).main.retrievalType;
 
 		if (playerCanAttemptRetrieve(player, graveEntity))
-			if (retrievalType == GraveRetrievalType.ON_BREAK || retrievalType == GraveRetrievalType.ON_BOTH)
+			if (retrievalType == GraveRetrievalType.BREAK || retrievalType == GraveRetrievalType.BOTH)
 				return true;
 
 		return false;
@@ -82,7 +82,7 @@ public class Permission {
 				player.getGameProfile()).main.retrievalType;
 
 		if (playerCanAttemptRetrieve(player, graveEntity))
-			if (retrievalType == GraveRetrievalType.ON_USE || retrievalType == GraveRetrievalType.ON_BOTH)
+			if (retrievalType == GraveRetrievalType.USE || retrievalType == GraveRetrievalType.BOTH)
 				return true;
 
 		return false;

@@ -42,7 +42,7 @@ public class ClientPlayerInteractionManagerMixin {
 		boolean graveRobbingEnabled = GravesConfig.getConfig().server.enableGraveRobbing;
 
 		if (blockEntity instanceof GraveBlockEntity graveEntity && graveEntity.getGraveOwner() != null) {
-			if (retrievalType != GraveRetrievalType.ON_BREAK && retrievalType != GraveRetrievalType.ON_BOTH)
+			if (retrievalType != GraveRetrievalType.BREAK && retrievalType != GraveRetrievalType.BOTH)
 				cir.setReturnValue(false);
 
 			if (!graveEntity.getGraveOwner().getId().equals(this.networkHandler.getProfile().getId())

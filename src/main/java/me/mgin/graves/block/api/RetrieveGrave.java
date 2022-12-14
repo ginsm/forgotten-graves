@@ -51,7 +51,7 @@ public class RetrieveGrave {
 		// Resolve drop type
 		GraveDropType dropType = GravesConfig.resolveConfig("dropType", player.getGameProfile()).main.dropType;
 
-		if (dropType == GraveDropType.PUT_IN_INVENTORY) {
+		if (dropType == GraveDropType.INVENTORY) {
 			DefaultedList<ItemStack> extraItems = DefaultedList.of();
 
 			// Equip inventories
@@ -96,7 +96,7 @@ public class RetrieveGrave {
 			DefaultedList<ItemStack> dropItems = DefaultedList.of();
 			dropItems.addAll(extraItems);
 			ItemScatterer.spawn(world, pos, dropItems);
-		} else if (dropType == GraveDropType.DROP_ITEMS) {
+		} else if (dropType == GraveDropType.DROP) {
 			DefaultedList<ItemStack> droppedItems = DefaultedList.of();
 
 			// Add loaded inventories to droppedItems list

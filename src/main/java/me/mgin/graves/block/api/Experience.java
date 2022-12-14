@@ -16,11 +16,11 @@ public class Experience {
 		int maxCustomXPLevel = GravesConfig.resolveConfig("maxCustomXPLevel", profile).main.maxCustomXPLevel;
 
 		switch (expStorageType) {
-			case STORE_ALL_XP :
+			case ALL:
 				return calculateTotalExperience(level, progress);
-			case STORE_DEFAULT_XP :
+			case DEFAULT:
 				return calculateDefaultExperience(level);
-			case STORE_CUSTOM_XP :
+			case CUSTOM:
 				// Enforce a minimum threshold (0).
 				int maxLevel = Math.max(maxCustomXPLevel, 0);
 				return calculateCustomExperience(level, maxLevel);

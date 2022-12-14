@@ -17,7 +17,7 @@ public class ServerSaveCommand {
 	static public int execute(CommandContext<ServerCommandSource> context) {
 		ServerCommandSource source = context.getSource();
 
-		if (source.getEntity()instanceof PlayerEntity player) {
+		if (source.getEntity() instanceof PlayerEntity player) {
 			GameProfile profile = player.getGameProfile();
 			GravesConfig config = Graves.clientConfigs.get(profile);
 

@@ -46,8 +46,6 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		this.blockAge = blockAge;
 	}
 
-	FlowerBlock f;
-
 	public int getWeathered() {
 		int stage;
 		switch (blockAge) {

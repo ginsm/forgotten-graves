@@ -26,7 +26,7 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 	@Override
 	public void validatePostLoad() {
 		main.maxCustomXPLevel = Math.max(main.maxCustomXPLevel, 0);
-		itemDecay.decayPercent = Math.max(Math.min(itemDecay.decayPercent, 100), 0);
+		itemDecay.decayModifier = Math.max(Math.min(itemDecay.decayModifier, 100), 0);
 		server.OPOverrideLevel = Math.max(Math.min(server.OPOverrideLevel, 4), -1);
 	}
 
@@ -56,7 +56,7 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 	public static class ItemDecaySettings {
 		@ConfigEntry.Gui.Tooltip
 		@ConfigEntry.BoundedDiscrete(min = 0, max = 100)
-		public int decayPercent = 0;
+		public int decayModifier = 0;
 
 		@ConfigEntry.Gui.Tooltip
 		public boolean decayBreaksItems = false;

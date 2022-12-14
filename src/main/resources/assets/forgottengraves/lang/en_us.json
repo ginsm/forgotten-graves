@@ -46,8 +46,8 @@
 
   "text.autoconfig.forgottengraves.option.itemDecay": "Decay Settings",
   
-  "text.autoconfig.forgottengraves.option.itemDecay.decayPercent": "Item Decay Percent",
-  "text.autoconfig.forgottengraves.option.itemDecay.decayPercent.@Tooltip": "What is the max percentage an item can decay at one time?",
+  "text.autoconfig.forgottengraves.option.itemDecay.decayModifier": "Decay Modifier",
+  "text.autoconfig.forgottengraves.option.itemDecay.decayModifier.@Tooltip": "How quickly should an item decay (0-100)?",
   
   "text.autoconfig.forgottengraves.option.itemDecay.decayBreaksItems": "Decay Breaks Items",
   "text.autoconfig.forgottengraves.option.itemDecay.decayBreaksItems.@Tooltip": "Should item decay ever completely break an item?",

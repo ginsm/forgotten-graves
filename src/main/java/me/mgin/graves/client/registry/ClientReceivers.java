@@ -39,7 +39,7 @@ public class ClientReceivers {
 			Field field = target.getType().getDeclaredField(option);
 
 			// Set the target instance's field in config
-			field.set(	target.get(config),	extractNbtValue(nbt, option, type));
+			field.set(target.get(config), extractNbtValue(nbt, option, type));
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}

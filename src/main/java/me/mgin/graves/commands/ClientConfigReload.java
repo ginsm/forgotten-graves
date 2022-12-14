@@ -16,7 +16,7 @@ public class ClientConfigReload {
 	static public int execute(CommandContext<ServerCommandSource> context) {
 		ServerCommandSource source = context.getSource();
 
-		if (source.getEntity() instanceof ServerPlayerEntity player) {
+		if (source.getEntity()instanceof ServerPlayerEntity player) {
 			PacketByteBuf buf = PacketByteBufs.create();
 			ServerPlayNetworking.send(player, Constants.UPDATE_CLIENTSIDE_CONFIG, buf);
 

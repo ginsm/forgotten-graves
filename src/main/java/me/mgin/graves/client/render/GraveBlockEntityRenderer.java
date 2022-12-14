@@ -88,7 +88,7 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
 					matrices.translate(-1, 0, -1);
 					break;
-				case SOUTH, UP, DOWN:
+				case SOUTH, UP, DOWN :
 					break;
 				case EAST :
 					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90));

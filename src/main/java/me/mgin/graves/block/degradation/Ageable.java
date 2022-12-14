@@ -77,8 +77,7 @@ public interface Ageable<T extends Enum<T>> {
 
 	static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items, GameProfile profile) {
 		float decayModifier = GravesConfig.resolveConfig("decayModifier", profile).itemDecay.decayModifier / 100f;
-		boolean decayBreaksItems = GravesConfig.resolveConfig("decayBreaksItems",
-				profile).itemDecay.decayBreaksItems;
+		boolean decayBreaksItems = GravesConfig.resolveConfig("decayBreaksItems", profile).itemDecay.decayBreaksItems;
 
 		if (decayModifier == 0.0f)
 			return items;

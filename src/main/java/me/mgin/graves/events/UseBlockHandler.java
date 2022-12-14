@@ -70,7 +70,7 @@ public class UseBlockHandler {
 	 * @return
 	 */
 	private static ActionResult handlePlayerHeads(GraveBlockEntity graveEntity, World world, ItemStack itemStack,
-												  String itemName) {
+			String itemName) {
 		NbtCompound baseNbt = itemStack.getNbt();
 		BlockPos pos = graveEntity.getPos();
 		BlockState state = graveEntity.getState();

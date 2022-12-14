@@ -17,7 +17,7 @@ public class ServerSaveCommand {
 	static public int execute(CommandContext<ServerCommandSource> context) {
 		ServerCommandSource source = context.getSource();
 
-		if (source.getEntity() instanceof PlayerEntity player) {
+		if (source.getEntity()instanceof PlayerEntity player) {
 			GameProfile profile = player.getGameProfile();
 			GravesConfig config = Graves.clientConfigs.get(profile);
 
@@ -26,11 +26,10 @@ public class ServerSaveCommand {
 				holder.setConfig(config);
 				holder.save();
 				source.sendFeedback(
-						Text.translatable("text.forgottengraves.command.serversave").formatted(Formatting.GRAY),
-						true);
+						Text.translatable("text.forgottengraves.command.serversave").formatted(Formatting.GRAY), true);
 			} else {
-				source.sendError(Text.translatable("error.forgottengraves.command.serversave.fail")
-						.formatted(Formatting.GRAY));
+				source.sendError(
+						Text.translatable("error.forgottengraves.command.serversave.fail").formatted(Formatting.GRAY));
 			}
 		} else {
 			source.sendError(Text.translatable("error.forgottengraves.command.notplayer"));

@@ -105,7 +105,7 @@ public class Skulls {
 	 * @param vertexConsumers
 	 */
 	public static void renderSkull(GraveBlockEntity graveEntity, EntityModelLoader modelLoader, int blockAge,
-								   MatrixStack matrices, int light, VertexConsumerProvider vertexConsumers) {
+			MatrixStack matrices, int light, VertexConsumerProvider vertexConsumers) {
 		GameProfile profile = null;
 		SkullWrapper skullData = null;
 		float yaw = Float.max(10f, blockAge * 12f);

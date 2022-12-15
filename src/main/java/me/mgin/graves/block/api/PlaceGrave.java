@@ -5,9 +5,9 @@ import java.util.Set;
 
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.InventoriesApi;
-import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.block.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
-import me.mgin.graves.registry.GraveBlocks;
+import me.mgin.graves.block.GraveBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 import me.mgin.graves.block.api.Particles;
-import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.block.GraveBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

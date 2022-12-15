@@ -1,8 +1,8 @@
 package me.mgin.graves.client.render;
 
-import me.mgin.graves.block.GraveBase;
+import me.mgin.graves.block.GraveBlock;
 import me.mgin.graves.block.api.Skulls;
-import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.block.GraveBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -30,7 +30,7 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 			VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
 		BlockState state = graveEntity.getCachedState();
-		int blockAge = ((GraveBase) state.getBlock()).getWeathered();
+		int blockAge = ((GraveBlock) state.getBlock()).getWeathered();
 		Direction direction = state.get(Properties.HORIZONTAL_FACING);
 
 		matrices.push();

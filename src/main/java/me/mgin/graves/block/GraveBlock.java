@@ -3,8 +3,6 @@ package me.mgin.graves.block;
 import me.mgin.graves.block.api.Permission;
 import me.mgin.graves.block.api.RetrieveGrave;
 import me.mgin.graves.block.degradation.AgingGrave;
-import me.mgin.graves.block.entity.GraveBlockEntity;
-import me.mgin.graves.registry.GraveBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
@@ -33,12 +31,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 
-public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvider, AgingGrave, Waterloggable {
+public class GraveBlock extends HorizontalFacingBlock implements BlockEntityProvider, AgingGrave, Waterloggable {
 
 	private final BlockAge blockAge;
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
-	public GraveBase(BlockAge blockAge, Settings settings) {
+	public GraveBlock(BlockAge blockAge, Settings settings) {
 		super(settings);
 		setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false).with(Properties.HORIZONTAL_FACING,
 				Direction.NORTH));
@@ -54,7 +52,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 		};
 	}
 
-	public static GraveBase getAgedBlock(BlockAge blockAge) {
+	public static GraveBlock getAgedBlock(BlockAge blockAge) {
 		return switch (blockAge) {
 			default -> GraveBlocks.GRAVE;
 			case OLD -> GraveBlocks.GRAVE_OLD;
@@ -150,7 +148,7 @@ public class GraveBase extends HorizontalFacingBlock implements BlockEntityProvi
 	}
 
 	public ItemStack getItemStack() {
-		GraveBase agedBlock = getAgedBlock(this.blockAge);
+		GraveBlock agedBlock = getAgedBlock(this.blockAge);
 		return new ItemStack(agedBlock);
 	}
 

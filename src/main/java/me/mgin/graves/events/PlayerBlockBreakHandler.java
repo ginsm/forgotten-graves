@@ -1,7 +1,7 @@
 package me.mgin.graves.events;
 
 import me.mgin.graves.block.api.Permission;
-import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.block.GraveBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 

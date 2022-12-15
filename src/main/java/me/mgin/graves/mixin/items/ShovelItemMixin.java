@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import me.mgin.graves.block.api.Particles;
 import me.mgin.graves.block.api.Permission;
-import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.block.GraveBlockEntity;
 import me.mgin.graves.util.DegradationStateManager;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;

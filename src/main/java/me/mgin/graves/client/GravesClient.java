@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import me.mgin.graves.client.registry.ClientEvents;
 import me.mgin.graves.client.registry.ClientReceivers;
 import me.mgin.graves.client.render.GraveBlockEntityRenderer;
-import me.mgin.graves.registry.GraveBlocks;
+import me.mgin.graves.block.GraveBlocks;
 
 public class GravesClient implements ClientModInitializer {
 	@Override

@@ -5,7 +5,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import java.util.Optional;
 import java.util.function.Supplier;
-import me.mgin.graves.registry.GraveBlocks;
+import me.mgin.graves.block.GraveBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 

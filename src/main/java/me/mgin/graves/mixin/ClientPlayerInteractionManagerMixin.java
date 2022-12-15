@@ -1,6 +1,6 @@
 package me.mgin.graves.mixin;
 
-import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.block.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.config.GraveRetrievalType;
 import net.minecraft.block.Block;

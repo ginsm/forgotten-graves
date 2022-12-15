@@ -7,6 +7,7 @@ import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.util.Constants;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 
@@ -21,10 +22,10 @@ public class ClientReceivers {
 				(client, handler, buf, sender) -> GravesConfig.getConfig().reload());
 
 		ClientPlayNetworking.registerGlobalReceiver(Constants.SET_CLIENTSIDE_CONFIG,
-				(client, handler, buf, sender) -> setClientConfig(buf));
+				(client, handler, buf, sender) -> setClientConfig(buf, handler));
 	}
 
-	private static void setClientConfig(PacketByteBuf buf) {
+	private static void setClientConfig(PacketByteBuf buf, ClientPlayNetworkHandler handler) {
 		GravesConfig config = GravesConfig.getConfig();
 		NbtCompound nbt = buf.readNbt();
 		if (nbt == null) return;

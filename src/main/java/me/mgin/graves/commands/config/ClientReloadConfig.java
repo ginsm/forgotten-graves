@@ -1,4 +1,4 @@
-package me.mgin.graves.commands;
+package me.mgin.graves.commands.config;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
@@ -12,7 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class ClientConfigReload {
+public class ClientReloadConfig {
 	static public int execute(CommandContext<ServerCommandSource> context) {
 		ServerCommandSource source = context.getSource();
 

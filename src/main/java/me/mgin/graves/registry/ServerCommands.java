@@ -5,9 +5,11 @@ import static net.minecraft.server.command.CommandManager.argument;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import me.mgin.graves.commands.*;
-import me.mgin.graves.commands.ConfigSetter;
+import me.mgin.graves.commands.config.ClientConfigSetter;
+import me.mgin.graves.commands.config.ClientReloadConfig;
+import me.mgin.graves.commands.config.ServerReloadConfig;
+import me.mgin.graves.commands.config.ServerSyncConfig;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 
 public class ServerCommands {
@@ -22,50 +24,50 @@ public class ServerCommands {
 				literal("graves").executes(GravesCommand::execute)
 					.then(literal("server").requires(source -> source.hasPermissionLevel(4))
 						.then(literal("config")
-							.then(literal("reload").executes(ServerReloadCommand::execute))
-							.then(literal("sync").executes(ServerSaveCommand::execute))
+							.then(literal("reload").executes(ServerReloadConfig::execute))
+							.then(literal("sync").executes(ServerSyncConfig::execute))
 						)
 					)
 					.then(literal("config")
-						.then(literal("reload").executes(ClientConfigReload::execute))
+						.then(literal("reload").executes(ClientReloadConfig::execute))
 						.then(literal("set")
 							// Boolean Args
 							.then(literal("graves")
-								.then(argument("value", BoolArgumentType.bool()).executes(ConfigSetter::execute))
+								.then(argument("value", BoolArgumentType.bool()).executes(ClientConfigSetter::execute))
 							)
 							.then(literal("graveCoordinates")
-								.then(argument("value", BoolArgumentType.bool()).executes(ConfigSetter::execute))
+								.then(argument("value", BoolArgumentType.bool()).executes(ClientConfigSetter::execute))
 							)
 							.then(literal("decayBreaksItems")
-								.then(argument("value", BoolArgumentType.bool()).executes(ConfigSetter::execute))
+								.then(argument("value", BoolArgumentType.bool()).executes(ClientConfigSetter::execute))
 							)
 							.then(literal("graveRobbing")
-								.then(argument("value", BoolArgumentType.bool()).executes(ConfigSetter::execute))
+								.then(argument("value", BoolArgumentType.bool()).executes(ClientConfigSetter::execute))
 							)
 							// Integer Args
 							.then(literal("maxCustomXPLevel")
-								.then(argument("value", IntegerArgumentType.integer(0)).executes(ConfigSetter::execute))
+								.then(argument("value", IntegerArgumentType.integer(0)).executes(ClientConfigSetter::execute))
 							)
 							.then(literal("decayModifier")
-								.then(argument("value", IntegerArgumentType.integer(0, 100)).executes(ConfigSetter::execute))
+								.then(argument("value", IntegerArgumentType.integer(0, 100)).executes(ClientConfigSetter::execute))
 							)
 							.then(literal("OPOverrideLevel")
-								.then(argument("value", IntegerArgumentType.integer(-1, 4)).executes(ConfigSetter::execute))
+								.then(argument("value", IntegerArgumentType.integer(-1, 4)).executes(ClientConfigSetter::execute))
 							)
 							// Enums
 							.then(literal("retrievalType")
-								.then(literal("USE").executes(ConfigSetter::execute))
-								.then(literal("BREAK").executes(ConfigSetter::execute))
-								.then(literal("BOTH").executes(ConfigSetter::execute))
+								.then(literal("USE").executes(ClientConfigSetter::execute))
+								.then(literal("BREAK").executes(ClientConfigSetter::execute))
+								.then(literal("BOTH").executes(ClientConfigSetter::execute))
 							)
 							.then(literal("dropType")
-								.then(literal("DROP").executes(ConfigSetter::execute))
-								.then(literal("INVENTORY").executes(ConfigSetter::execute))
+								.then(literal("DROP").executes(ClientConfigSetter::execute))
+								.then(literal("INVENTORY").executes(ClientConfigSetter::execute))
 							)
 							.then(literal("expStorageType")
-								.then(literal("ALL").executes(ConfigSetter::execute))
-								.then(literal("DEFAULT").executes(ConfigSetter::execute))
-								.then(literal("CUSTOM").executes(ConfigSetter::execute))
+								.then(literal("ALL").executes(ClientConfigSetter::execute))
+								.then(literal("DEFAULT").executes(ClientConfigSetter::execute))
+								.then(literal("CUSTOM").executes(ClientConfigSetter::execute))
 							)
 						)
 					)

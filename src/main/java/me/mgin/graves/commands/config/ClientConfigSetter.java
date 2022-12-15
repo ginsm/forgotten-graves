@@ -1,27 +1,22 @@
-package me.mgin.graves.commands;
+package me.mgin.graves.commands.config;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.context.ParsedCommandNode;
-import me.mgin.graves.config.GraveDropType;
-import me.mgin.graves.config.GraveExpStoreType;
-import me.mgin.graves.config.GraveRetrievalType;
 import net.minecraft.server.command.ServerCommandSource;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ConfigSetter {
+public class ClientConfigSetter {
 	public static int execute(CommandContext<ServerCommandSource> context) {
 		String option = determineOption(context);
 		String type = determineArgumentType(context);
 		Object value = determineValue(context, type, option);
-		ClientSetCommand.execute(context, option, value, type);
+		ClientSetConfig.execute(context, option, value, type);
 		return Command.SINGLE_SUCCESS;
 	}
 

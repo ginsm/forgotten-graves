@@ -1,4 +1,4 @@
-package me.mgin.graves.commands;
+package me.mgin.graves.commands.config;
 
 import com.mojang.brigadier.context.CommandContext;
 import me.mgin.graves.util.Constants;
@@ -11,7 +11,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class ClientSetCommand {
+public class ClientSetConfig {
 	static public <T> void execute(CommandContext<ServerCommandSource> context, String option,
 								   T value, String type) {
 		ServerCommandSource source = context.getSource();

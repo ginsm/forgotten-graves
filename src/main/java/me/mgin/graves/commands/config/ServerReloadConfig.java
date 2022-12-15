@@ -1,4 +1,4 @@
-package me.mgin.graves.commands;
+package me.mgin.graves.commands.config;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
@@ -9,7 +9,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class ServerReloadCommand {
+public class ServerReloadConfig {
 	static public int execute(CommandContext<ServerCommandSource> context) {
 		AutoConfig.getConfigHolder(GravesConfig.class).load();
 		context.getSource().sendFeedback(

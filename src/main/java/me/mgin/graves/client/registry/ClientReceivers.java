@@ -48,6 +48,19 @@ public class ClientReceivers {
 		AutoConfig.getConfigHolder(GravesConfig.class).save();
 	}
 
+	static private Field determineSubClass(String option) {
+		List<Field> fields = Arrays.stream(GravesConfig.class.getDeclaredFields()).filter((field) -> {
+			Class<?> subclass = field.getType();
+			for (Field f : subclass.getDeclaredFields()) {
+				if (f.getName().equals(option)) return true;
+			}
+			return false;
+		}).collect(Collectors.toList());
+
+		if (fields.isEmpty()) throw new RuntimeException("No subclass could be found.");
+		return fields.get(0);
+	}
+
 	static private Object extractNbtValue(NbtCompound nbt, String option, String type) {
 		return switch(type) {
 			case "BoolArgumentType" -> nbt.getBoolean("value");
@@ -63,18 +76,5 @@ public class ClientReceivers {
 			}
 			default -> throw new IllegalStateException("Unexpected value: " + type);
 		};
-	}
-
-	static private Field determineSubClass(String option) {
-		List<Field> fields = Arrays.stream(GravesConfig.class.getDeclaredFields()).filter((field) -> {
-			Class<?> subclass = field.getType();
-			for (Field f : subclass.getDeclaredFields()) {
-				if (f.getName().equals(option)) return true;
-			}
-			return false;
-		}).collect(Collectors.toList());
-
-		if (fields.isEmpty()) throw new RuntimeException("No subclass could be found.");
-		return fields.get(0);
 	}
 }

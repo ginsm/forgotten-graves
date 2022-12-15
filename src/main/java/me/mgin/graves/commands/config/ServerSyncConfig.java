@@ -1,4 +1,4 @@
-package me.mgin.graves.commands;
+package me.mgin.graves.commands.config;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
@@ -13,7 +13,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class ServerSaveCommand {
+public class ServerSyncConfig {
 	static public int execute(CommandContext<ServerCommandSource> context) {
 		ServerCommandSource source = context.getSource();
 

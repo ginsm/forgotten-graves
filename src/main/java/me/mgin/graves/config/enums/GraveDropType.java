@@ -1,4 +1,4 @@
-package me.mgin.graves.config;
+package me.mgin.graves.config.enums;
 
 public enum GraveDropType {
 	DROP, INVENTORY

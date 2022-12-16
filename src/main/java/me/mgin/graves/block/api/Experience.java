@@ -2,7 +2,7 @@ package me.mgin.graves.block.api;
 
 import com.mojang.authlib.GameProfile;
 
-import me.mgin.graves.config.GraveExpStoreType;
+import me.mgin.graves.config.enums.GraveExpStoreType;
 import me.mgin.graves.config.GravesConfig;
 import net.minecraft.entity.player.PlayerEntity;
 

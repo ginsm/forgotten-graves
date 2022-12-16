@@ -1,7 +1,7 @@
 package me.mgin.graves.block.api;
 
 import me.mgin.graves.block.GraveBlockEntity;
-import me.mgin.graves.config.GraveRetrievalType;
+import me.mgin.graves.config.enums.GraveRetrievalType;
 import me.mgin.graves.config.GravesConfig;
 import net.minecraft.entity.player.PlayerEntity;
 

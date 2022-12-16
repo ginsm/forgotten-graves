@@ -2,6 +2,9 @@ package me.mgin.graves.config;
 
 import java.util.List;
 
+import me.mgin.graves.config.enums.GraveDropType;
+import me.mgin.graves.config.enums.GraveExpStoreType;
+import me.mgin.graves.config.enums.GraveRetrievalType;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;

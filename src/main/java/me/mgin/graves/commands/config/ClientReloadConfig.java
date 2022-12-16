@@ -18,7 +18,7 @@ public class ClientReloadConfig {
 
 		if (source.getEntity()instanceof ServerPlayerEntity player) {
 			PacketByteBuf buf = PacketByteBufs.create();
-			ServerPlayNetworking.send(player, Constants.UPDATE_CLIENTSIDE_CONFIG, buf);
+			ServerPlayNetworking.send(player, Constants.UPDATE_CLIENT_CONFIG, buf);
 
 			source.sendFeedback(Text.translatable("text.forgottengraves.command.reload").formatted(Formatting.GRAY),
 					true);

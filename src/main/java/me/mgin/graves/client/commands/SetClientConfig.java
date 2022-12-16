@@ -24,9 +24,7 @@ public class SetClientConfig {
         String option = nbt.getString("option");
         String type = nbt.getString("type");
         Object value = extractNbtValue(nbt, option, type, config);
-
-        // Ensure that the enum option is valid
-        if (ConfigOptions.enums.contains(option) && !ConfigOptions.validEnumValue(option, (String) value)) return;
+        if (value == null) return;
 
         // Handle clientOptions commands
         if (option.contains(":")) {
@@ -95,6 +93,7 @@ public class SetClientConfig {
 
     static private Enum<?> determineEnumValue(NbtCompound nbt, String option, GravesConfig config) {
         String value = nbt.getString("value");
+        if (!ConfigOptions.validEnumValue(option, (String) value)) return null;
         return switch (option) {
             case "retrievalType" -> GraveRetrievalType.valueOf(value);
             case "dropType" -> GraveDropType.valueOf(value);

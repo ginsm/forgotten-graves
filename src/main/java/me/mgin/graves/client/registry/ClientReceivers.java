@@ -7,10 +7,10 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 public class ClientReceivers {
 	public static void register() {
-		ClientPlayNetworking.registerGlobalReceiver(Constants.UPDATE_CLIENTSIDE_CONFIG,
+		ClientPlayNetworking.registerGlobalReceiver(Constants.UPDATE_CLIENT_CONFIG,
 				(client, handler, buf, sender) -> GravesConfig.getConfig().reload());
 
-		ClientPlayNetworking.registerGlobalReceiver(Constants.SET_CLIENTSIDE_CONFIG,
+		ClientPlayNetworking.registerGlobalReceiver(Constants.SET_CLIENT_CONFIG,
 				(client, handler, buf, sender) -> SetClientConfig.execute(buf));
 	}
 }

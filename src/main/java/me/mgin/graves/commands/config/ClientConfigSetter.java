@@ -31,7 +31,7 @@ public class ClientConfigSetter {
 			PacketByteBuf buf = generateBuf(context, option, value, type);
 
 			// Dispatch the buf to the client and tell it to set clientside config
-			ServerPlayNetworking.send(player, Constants.SET_CLIENTSIDE_CONFIG, buf);
+			ServerPlayNetworking.send(player, Constants.SET_CLIENT_CONFIG, buf);
 
 			// TODO - Move this to ClientReceivers and run after completion
 			if (option.contains(":")) option = option.split(":")[0];

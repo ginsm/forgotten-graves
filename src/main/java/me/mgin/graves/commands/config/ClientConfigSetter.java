@@ -1,10 +1,9 @@
 package me.mgin.graves.commands.config;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.context.ParsedCommandNode;
+import me.mgin.graves.util.ArrayUtil;
 import me.mgin.graves.util.Constants;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -14,29 +13,32 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ClientConfigSetter {
 	public static int execute(CommandContext<ServerCommandSource> context) {
 		ServerCommandSource source = context.getSource();
+
 		if (source.getEntity() instanceof ServerPlayerEntity player) {
 			// Determine option, type, and value. Generate a buf to send the data
 			// to the client.
-			String option = determineOption(context);
 			String type = determineArgumentType(context);
-			Object value = determineValue(context, type, option);
-			PacketByteBuf buf = generateBuf(option, value, type);
+			String option = determineOptionName(context, type.equals("literal"));
+			Object value = parseArgumentForValue(context, type, option);
+			PacketByteBuf buf = generateBuf(context, option, value, type);
 
 			// Dispatch the buf to the client and tell it to set clientside config
 			ServerPlayNetworking.send(player, Constants.SET_CLIENTSIDE_CONFIG, buf);
 
-			// TODO - Move this to ClientReceivers and figure out the substitutes
-			source.sendFeedback(
-				Text.translatable("text.forgottengraves.command.set", option,value),
-				true
+			// TODO - Move this to ClientReceivers and run after completion
+			if (option.contains(":")) option = option.split(":")[0];
+
+			player.sendMessage(
+				Text.translatable("text.forgottengraves.command.set", option).formatted(Formatting.GRAY),
+				false
 			);
 		} else {
 			source.sendError(Text.translatable("error.forgottengraves.command.notplayer"));
@@ -46,32 +48,42 @@ public class ClientConfigSetter {
 
 	private static String determineArgumentType(CommandContext<ServerCommandSource> context) {
 		String node = context.getNodes().get(context.getNodes().size() - 1).toString();
-		Pattern pattern = Pattern.compile("(integer|BoolArgumentType|literal)");
+		Pattern pattern = Pattern.compile("(integer|BoolArgumentType|literal|string)");
 		Matcher matcher = pattern.matcher(node);
 		if (!matcher.find()) throw new IllegalStateException("Unexpected value: " + node);
 		return matcher.group();
 	}
 
-	private static String determineOption(CommandContext<ServerCommandSource> context) {
-		String[] input = context.getInput().split(" ");
-		return input[ArrayUtils.indexOf(input, "set") + 1];
+	private static String determineOptionName(CommandContext<ServerCommandSource> context, Boolean literal) {
+		// Commands with type "literal" need to look at the input in order to
+		// derive the config option's name.
+		if (literal) {
+			String[] input = context.getInput().split(" ");
+			return input[ArrayUtil.indexOf(input, "set") + 1];
+		}
+
+		// Gathers the option name from the argument name (in case of literals,
+		// it returns the name of the literal).
+		List<ParsedCommandNode<ServerCommandSource>> nodes = context.getNodes();
+		return nodes.get(nodes.size() - 1).getNode().getName();
 	}
 
-	private static Object determineValue(CommandContext<ServerCommandSource> context, String type, String option) {
+	private static Object parseArgumentForValue(CommandContext<ServerCommandSource> context, String type, String option) {
 		return switch (type) {
-			case "BoolArgumentType" -> BoolArgumentType.getBool(context, "value");
-			case "StringArgumentType" -> StringArgumentType.getString(context, "value");
-			case "integer" -> IntegerArgumentType.getInteger(context, "value");
-			case "literal" -> context.getNodes().get(context.getNodes().size() - 1).getNode().getName();
+			case "BoolArgumentType" -> context.getArgument(option, Boolean.class);
+			case "string" -> context.getArgument(option, String.class);
+			case "integer" -> context.getArgument(option, Integer.class);
+			case "literal" -> determineOptionName(context, false);
 			default -> throw new IllegalStateException("Unexpected value: " + type);
 		};
 	}
 
-	private static PacketByteBuf generateBuf(String option, Object value, String type) {
+	private static PacketByteBuf generateBuf(CommandContext<ServerCommandSource> context, String option, Object value, String type) {
 		PacketByteBuf buf = PacketByteBufs.create();
 		NbtCompound nbt = new NbtCompound();
 		nbt.putString("option", option);
 		nbt.putString("type", type);
+		nbt.putString("input", context.getInput());
 
 		switch (value.getClass().getSimpleName()) {
 			case "Boolean" -> nbt.putBoolean("value", (Boolean) value);

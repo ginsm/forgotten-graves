@@ -4,10 +4,10 @@
   "package": "me.mgin.graves.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "PlayerEntityMixin",
     "ExplosionMixin",
-    "items/ShovelItemMixin",
-    "items/HoneycombItemMixin"
+    "items.HoneycombItemMixin",
+    "items.ShovelItemMixin",
+    "PlayerEntityMixin",
   ],
   "client": [
     "ClientPlayerInteractionManagerMixin"

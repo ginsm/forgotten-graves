@@ -32,14 +32,6 @@ public class ClientConfigSetter {
 
 			// Dispatch the buf to the client and tell it to set clientside config
 			ServerPlayNetworking.send(player, Constants.SET_CLIENT_CONFIG, buf);
-
-			// TODO - Move this to ClientReceivers and run after completion
-			if (option.contains(":")) option = option.split(":")[0];
-
-			player.sendMessage(
-				Text.translatable("text.forgottengraves.command.set", option).formatted(Formatting.GRAY),
-				false
-			);
 		} else {
 			source.sendError(Text.translatable("error.forgottengraves.command.notplayer"));
 		}

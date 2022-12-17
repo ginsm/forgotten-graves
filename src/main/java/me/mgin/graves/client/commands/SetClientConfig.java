@@ -2,41 +2,51 @@ package me.mgin.graves.client.commands;
 
 import me.mgin.graves.config.ConfigOptions;
 import me.mgin.graves.config.GravesConfig;
-import me.mgin.graves.config.enums.GraveDropType;
-import me.mgin.graves.config.enums.GraveExpStoreType;
-import me.mgin.graves.config.enums.GraveRetrievalType;
+import me.mgin.graves.util.Constants;
 import me.shedaniel.autoconfig.AutoConfig;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
+import static me.mgin.graves.util.ConfigCommandUtil.determineSubClass;
+import static me.mgin.graves.util.ConfigCommandUtil.extractNbtValue;
+
 public class SetClientConfig {
-    // TODO - Send server completion response to dynamically respond to player
-    // Rather than just having "Option '<name>' has been changed." inside ClientConfigSetter
     public static void execute(PacketByteBuf buf) {
         GravesConfig config = GravesConfig.getConfig();
         NbtCompound nbt = buf.readNbt();
-        if (nbt == null) return;
+        if (nbt == null) {
+            sendResponse("error.missing-nbt", null);
+            return;
+        }
 
         // Passed by respective option handler
         String option = nbt.getString("option");
         String type = nbt.getString("type");
-        Object value = extractNbtValue(nbt, option, type, config);
-        if (value == null) return;
+        Object value = extractNbtValue(nbt, option, type);
+
+        // An improper enum value was given.
+        if (value == null) {
+            sendResponse("error.invalid-enum-value", nbt);
+            return;
+        }
 
         // Handle clientOptions commands
         if (option.contains(":")) {
             // Do not add non-option values to the list
-            if (!ConfigOptions.all.contains(value)) return;
+            if (!ConfigOptions.all.contains(value)) {
+                sendResponse("error.invalid-config-option", nbt);
+                return;
+            }
 
             // Generate the value
             String[] options = option.split(":");
             value = updateClientOptions(config, options[1], (String) value);
-
-            // Stop work if nothing was added or removed
-            if (value.equals(config.server.clientOptions)) return;
 
             // Reassign option so determineSubClass can operate properly
             option = options[0];
@@ -53,6 +63,7 @@ public class SetClientConfig {
 
         // Save the config
         AutoConfig.getConfigHolder(GravesConfig.class).save();
+        sendResponse("success", nbt);
     }
 
     static private List<String> updateClientOptions(GravesConfig config, String secondaryOption, String value) {
@@ -71,34 +82,12 @@ public class SetClientConfig {
         return clientOptions;
     }
 
-    static private Field determineSubClass(String option) throws NoSuchFieldException {
-        for (String subclass : ConfigOptions.subclass) {
-            if (ConfigOptions.getSubclass(subclass).contains(option))
-                return GravesConfig.class.getDeclaredField(subclass);
-        }
-        return null;
-    }
+    static private void sendResponse(String text, NbtCompound nbt) {
+        PacketByteBuf buf = PacketByteBufs.create();
+        if (nbt == null) nbt = new NbtCompound();
+        nbt.putString("text", text);
+        buf.writeNbt(nbt);
 
-    static private Object extractNbtValue(NbtCompound nbt, String option, String type, GravesConfig config) {
-        return switch(type) {
-            case "BoolArgumentType" -> nbt.getBoolean("value");
-            case "integer" -> nbt.getInt("value");
-            case "literal", "string" -> {
-                if (ConfigOptions.enums.contains(option)) yield determineEnumValue(nbt, option, config);
-                yield nbt.getString("value");
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + type);
-        };
-    }
-
-    static private Enum<?> determineEnumValue(NbtCompound nbt, String option, GravesConfig config) {
-        String value = nbt.getString("value");
-        if (!ConfigOptions.validEnumValue(option, (String) value)) return null;
-        return switch (option) {
-            case "retrievalType" -> GraveRetrievalType.valueOf(value);
-            case "dropType" -> GraveDropType.valueOf(value);
-            case "expStorageType" ->  GraveExpStoreType.valueOf(value);
-            default -> throw new IllegalStateException("Unexpected value for '" + option + "': " + value);
-        };
+        ClientPlayNetworking.send(Constants.SET_CLIENT_CONFIG_DONE, buf);
     }
 }

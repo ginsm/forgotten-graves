@@ -13,7 +13,7 @@ public class ServerReloadConfig {
 	static public int execute(CommandContext<ServerCommandSource> context) {
 		AutoConfig.getConfigHolder(GravesConfig.class).load();
 		context.getSource().sendFeedback(
-				Text.translatable("text.forgottengraves.command.reloadserver").formatted(Formatting.GRAY), true);
+				Text.translatable("command.server.config.reload:success").formatted(Formatting.GRAY), true);
 
 		return Command.SINGLE_SUCCESS;
 	}

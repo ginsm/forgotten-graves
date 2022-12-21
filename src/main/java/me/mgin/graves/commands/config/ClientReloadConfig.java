@@ -20,10 +20,10 @@ public class ClientReloadConfig {
 			PacketByteBuf buf = PacketByteBufs.create();
 			ServerPlayNetworking.send(player, Constants.UPDATE_CLIENT_CONFIG, buf);
 
-			source.sendFeedback(Text.translatable("text.forgottengraves.command.reload").formatted(Formatting.GRAY),
+			source.sendFeedback(Text.translatable("command.config.reload:success").formatted(Formatting.GRAY),
 					true);
 		} else {
-			source.sendError(Text.translatable("error.forgottengraves.command.notplayer"));
+			source.sendError(Text.translatable("command.generic:error.not-player"));
 		}
 
 		return Command.SINGLE_SUCCESS;

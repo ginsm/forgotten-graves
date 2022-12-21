@@ -5,10 +5,11 @@ import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.util.Constants;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-import static me.mgin.graves.util.ConfigCommandUtil.extractNbtValue;
+import java.util.Objects;
 
 public class ServerReceivers {
 	public static void register() {
@@ -21,41 +22,38 @@ public class ServerReceivers {
 		ServerPlayNetworking.registerGlobalReceiver(Constants.SET_CLIENT_CONFIG_DONE,
 			(server, player, handler, buf, sender) -> {
 				NbtCompound nbt = buf.readNbt();
-				String text = nbt.getString("text");
-				String fullText = String.format("config.set.%s", text);
+				String slug = nbt.getString("text");
+				String text = "command.config.set:" + slug;
 
-				switch (text) {
-					case "error.missing-nbt", "error.invalid-enum-value" -> {
-						player.sendMessage(
-							Text.translatable(fullText).formatted(Formatting.RED)
-						);
-					}
-					case "error.invalid-config-option" -> {
-						String option = nbt.getString("option");
-						Object value = extractNbtValue(nbt, option, nbt.getString("type"));
-						player.sendMessage(
-							Text.translatable(fullText, value.toString()).formatted(Formatting.RED)
-						);
-					}
-					case "success" -> {
-						String option = nbt.getString("option");
-						String value = nbt.getString("value");
+				String option = nbt.getString("option");
+				String value = nbt.getString("value");
 
-						// Customized alert for clientOptions setting
-						if (option.contains(":")) {
-							String[] options = option.split(":");
-							String action = options[1].equals("add") ? "added to" : "removed from";
-							player.sendMessage(
-								Text.translatable(fullText + "-client-options", value, action).formatted(Formatting.GREEN)
-							);
-							break;
-						}
-
-						player.sendMessage(
-								Text.translatable(fullText, option, value).formatted(Formatting.GREEN)
-						);
-					}
+				switch (Objects.requireNonNull(slug)) {
+					// Success messages
+					case "success" -> player.sendMessage(
+							Text.translatable(text, option, value).formatted(Formatting.GREEN)
+					);
+					case "success-client-options" -> clientOptionsAlert(player, nbt, text, Formatting.GREEN);
+					// Error messages
+					case "error.invalid-enum-value" -> player.sendMessage(
+						Text.translatable(text, option).formatted(Formatting.RED)
+					);
+					case "error.invalid-config-option" -> player.sendMessage(
+						Text.translatable(text, value).formatted(Formatting.RED)
+					);
+					case "error.nothing-changed-client-options" -> clientOptionsAlert(player, nbt, text, Formatting.RED);
 				}
 			});
+	}
+
+	private static void clientOptionsAlert(ServerPlayerEntity player, NbtCompound nbt, String text, Formatting color) {
+		String option = nbt.getString("option");
+		String value = nbt.getString("value");
+		String[] options = option.split(":");
+
+		// Get the action ("added to", "removed to", etc)
+		Text action = Text.translatable(text + ":" + options[1]);
+
+		player.sendMessage(Text.translatable(text, value, action).formatted(color).append(Text.literal("test").formatted(Formatting.RED)));
 	}
 }

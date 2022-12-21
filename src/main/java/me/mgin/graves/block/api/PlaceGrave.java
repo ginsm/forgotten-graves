@@ -83,7 +83,7 @@ public class PlaceGrave {
 				GravesConfig config = GravesConfig.resolveConfig("graveCoordinates", player.getGameProfile());
 
 				if (config.main.graveCoordinates) {
-					player.sendMessage(Text.translatable("text.forgottengraves.mark_coords", gravePos.getX(),
+					player.sendMessage(Text.translatable("on_death:mark-coords", gravePos.getX(),
 							gravePos.getY(), gravePos.getZ()), false);
 				}
 

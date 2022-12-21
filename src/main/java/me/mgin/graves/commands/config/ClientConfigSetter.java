@@ -33,7 +33,7 @@ public class ClientConfigSetter {
 			// Dispatch the buf to the client and tell it to set clientside config
 			ServerPlayNetworking.send(player, Constants.SET_CLIENT_CONFIG, buf);
 		} else {
-			source.sendError(Text.translatable("error.forgottengraves.command.notplayer"));
+			source.sendError(Text.translatable("command.generic:error.not-player"));
 		}
 		return Command.SINGLE_SUCCESS;
 	}
@@ -46,7 +46,7 @@ public class ClientConfigSetter {
 		return matcher.group();
 	}
 
-	private static String determineOptionName(CommandContext<ServerCommandSource> context, Boolean literal) {
+	public static String determineOptionName(CommandContext<ServerCommandSource> context, Boolean literal) {
 		// Commands with type "literal" need to look at the input in order to
 		// derive the config option's name.
 		if (literal) {

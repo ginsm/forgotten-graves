@@ -26,13 +26,13 @@ public class ServerSyncConfig {
 				holder.setConfig(config);
 				holder.save();
 				source.sendFeedback(
-						Text.translatable("text.forgottengraves.command.serversave").formatted(Formatting.GRAY), true);
+						Text.translatable("command.server.config.sync:success").formatted(Formatting.GRAY), true);
 			} else {
 				source.sendError(
-						Text.translatable("error.forgottengraves.command.serversave.fail").formatted(Formatting.GRAY));
+						Text.translatable("command.server.sync:error.unable-to-update").formatted(Formatting.GRAY));
 			}
 		} else {
-			source.sendError(Text.translatable("error.forgottengraves.command.notplayer"));
+			source.sendError(Text.translatable("command.generic:error.not-player"));
 		}
 
 		return Command.SINGLE_SUCCESS;

@@ -8,7 +8,7 @@ import net.minecraft.text.Text;
 
 public class GravesCommand {
 	static public int execute(CommandContext<ServerCommandSource> context) {
-		context.getSource().sendError(Text.translatable("text.forgottengraves.command.graves"));
+		context.getSource().sendError(Text.translatable("command.generic:error.not-yet-implemented"));
 		return Command.SINGLE_SUCCESS;
 	}
 }

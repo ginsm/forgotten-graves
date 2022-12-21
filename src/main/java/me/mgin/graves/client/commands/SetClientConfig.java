@@ -12,6 +12,7 @@ import net.minecraft.network.PacketByteBuf;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static me.mgin.graves.util.ConfigCommandUtil.determineSubClass;
 import static me.mgin.graves.util.ConfigCommandUtil.extractNbtValue;
@@ -19,16 +20,13 @@ import static me.mgin.graves.util.ConfigCommandUtil.extractNbtValue;
 public class SetClientConfig {
     public static void execute(PacketByteBuf buf) {
         GravesConfig config = GravesConfig.getConfig();
-        NbtCompound nbt = buf.readNbt();
-        if (nbt == null) {
-            sendResponse("error.missing-nbt", null);
-            return;
-        }
+        NbtCompound nbt = Objects.requireNonNull(buf.readNbt());
 
         // Passed by respective option handler
         String option = nbt.getString("option");
         String type = nbt.getString("type");
         Object value = extractNbtValue(nbt, option, type);
+        String success = "success";
 
         // An improper enum value was given.
         if (value == null) {
@@ -46,24 +44,31 @@ public class SetClientConfig {
 
             // Generate the value
             String[] options = option.split(":");
+            List<String> oldClientOptions = new ArrayList<>(config.server.clientOptions);
             value = updateClientOptions(config, options[1], (String) value);
+
+            if (value.equals(oldClientOptions)) {
+                sendResponse("error.nothing-changed-client-options", nbt);
+                return;
+            }
 
             // Reassign option so determineSubClass can operate properly
             option = options[0];
+            success = "success-client-options";
         }
 
         // Sets the config field dynamically
         try {
             Field target = determineSubClass(option);
-            Field field = target.getType().getDeclaredField(option);
+            Field field = Objects.requireNonNull(target).getType().getDeclaredField(option);
             field.set(target.get(config), value);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (NullPointerException | NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
 
         // Save the config
         AutoConfig.getConfigHolder(GravesConfig.class).save();
-        sendResponse("success", nbt);
+        sendResponse(success, nbt);
     }
 
     static private List<String> updateClientOptions(GravesConfig config, String secondaryOption, String value) {
@@ -71,12 +76,12 @@ public class SetClientConfig {
 
         if (secondaryOption.equals("add")) {
             if (clientOptions.contains(value)) return clientOptions;
-            clientOptions.add((String) value);
+            clientOptions.add(value);
         }
 
         if (secondaryOption.equals("remove")) {
             if (!clientOptions.contains(value)) return clientOptions;
-            clientOptions.remove((String) value);
+            clientOptions.remove(value);
         }
 
         return clientOptions;

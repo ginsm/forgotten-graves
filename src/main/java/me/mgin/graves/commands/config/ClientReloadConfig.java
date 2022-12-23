@@ -16,11 +16,11 @@ public class ClientReloadConfig {
 	static public int execute(CommandContext<ServerCommandSource> context) {
 		ServerCommandSource source = context.getSource();
 
-		if (source.getEntity()instanceof ServerPlayerEntity player) {
+		if (source.getEntity() instanceof ServerPlayerEntity player) {
 			PacketByteBuf buf = PacketByteBufs.create();
-			ServerPlayNetworking.send(player, Constants.UPDATE_CLIENT_CONFIG, buf);
+			ServerPlayNetworking.send(player, Constants.RELOAD_CLIENT_CONFIG, buf);
 
-			source.sendFeedback(Text.translatable("command.config.reload:success").formatted(Formatting.GRAY),
+			source.sendFeedback(Text.translatable("command.config.reload:success").formatted(Formatting.GREEN),
 					true);
 		} else {
 			source.sendError(Text.translatable("command.generic:error.not-player"));

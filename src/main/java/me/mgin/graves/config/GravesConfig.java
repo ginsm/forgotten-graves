@@ -1,5 +1,7 @@
 package me.mgin.graves.config;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import me.mgin.graves.config.enums.GraveDropType;
@@ -75,6 +77,6 @@ public class GravesConfig extends ConfigNetworking implements ConfigData {
 		public int OPOverrideLevel = 4;
 
 		@ConfigEntry.Gui.Tooltip
-		public List<String> clientOptions = List.of();
+		public List<String> clientOptions = new ArrayList<>();
 	}
 }

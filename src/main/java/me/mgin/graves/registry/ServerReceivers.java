@@ -26,12 +26,16 @@ public class ServerReceivers {
 				String text = "command.config.set:" + slug;
 
 				String option = nbt.getString("option");
-				String value = nbt.getString("value");
+				String value = String.valueOf(nbt.get("value"));
+
+				// Make booleans a bit prettier.
+				if (value.equals("0b")) value = "false";
+				if (value.equals("1b")) value = "true";
 
 				switch (Objects.requireNonNull(slug)) {
 					// Success messages
 					case "success" -> player.sendMessage(
-							Text.translatable(text, option, value).formatted(Formatting.GREEN)
+							Text.translatable(text, option, value.toString()).formatted(Formatting.GREEN)
 					);
 					case "success-client-options" -> clientOptionsAlert(player, nbt, text, Formatting.GREEN);
 					// Error messages

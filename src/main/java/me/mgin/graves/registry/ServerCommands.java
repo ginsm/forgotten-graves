@@ -31,6 +31,7 @@ public class ServerCommands {
 				)
 				.then(literal("config")
 					.then(literal("reload").executes(ClientReloadConfig::execute))
+					.then(literal("reset").executes(ClientResetConfig::execute))
 					.then(literal("set")
 						// Boolean Args
 						.then(literal("graves")

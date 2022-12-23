@@ -7,10 +7,7 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import me.mgin.graves.commands.*;
-import me.mgin.graves.commands.config.ClientConfigSetter;
-import me.mgin.graves.commands.config.ClientReloadConfig;
-import me.mgin.graves.commands.config.ServerReloadConfig;
-import me.mgin.graves.commands.config.ServerSyncConfig;
+import me.mgin.graves.commands.config.*;
 import me.mgin.graves.config.ConfigOptions;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 

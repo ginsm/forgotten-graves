@@ -36,16 +36,11 @@ public class SetClientConfig {
 
         // Handle clientOptions commands
         if (option.contains(":")) {
-            // Do not add non-option values to the list
-            if (!ConfigOptions.all.contains(value)) {
-                sendResponse("error.invalid-config-option", nbt);
-                return;
-            }
 
             // Generate the value
             String[] options = option.split(":");
             List<String> oldClientOptions = new ArrayList<>(config.server.clientOptions);
-            value = updateClientOptions(config, options[1], (String) value);
+            value = updateClientOptions(config, options[1], (String) value, nbt);
 
             if (value.equals(oldClientOptions)) {
                 sendResponse("error.nothing-changed-client-options", nbt);
@@ -71,18 +66,30 @@ public class SetClientConfig {
         sendResponse(success, nbt);
     }
 
-    static private List<String> updateClientOptions(GravesConfig config, String secondaryOption, String value) {
+    static private List<String> updateClientOptions(GravesConfig config, String secondaryOption, String value, NbtCompound nbt) {
         List<String> clientOptions = config.server.clientOptions;
 
-        if (secondaryOption.equals("add")) {
-            if (clientOptions.contains(value)) return clientOptions;
-            clientOptions.add(value);
+        // Split the value by potential spaces
+        String[] values = value.split(" ");
+
+        for (String v : values) {
+            // Do not add non-option values to the list
+            if (!ConfigOptions.all.contains(v)) {
+                sendResponse("error.invalid-config-option", nbt);
+                continue;
+            }
+
+            if (secondaryOption.equals("add")) {
+                if (clientOptions.contains(v)) return clientOptions;
+                clientOptions.add(v);
+            }
+
+            if (secondaryOption.equals("remove")) {
+                if (!clientOptions.contains(v)) return clientOptions;
+                clientOptions.remove(v);
+            }
         }
 
-        if (secondaryOption.equals("remove")) {
-            if (!clientOptions.contains(value)) return clientOptions;
-            clientOptions.remove(value);
-        }
 
         return clientOptions;
     }

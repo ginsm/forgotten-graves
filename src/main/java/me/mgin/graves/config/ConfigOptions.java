@@ -92,7 +92,7 @@ public class ConfigOptions {
         return (context, builder) -> {
             String opt = context.getNodes().get(context.getNodes().size() - 1).getNode().getName();
             String[] input = context.getInput().split(" ");
-            String action = null;
+            String argument = null;
             String option = null;
 
             // Necessary for secondary options (i.e. option:secondary)
@@ -101,14 +101,29 @@ public class ConfigOptions {
                 opt = opt.split(":")[1];;
             }
 
-            // Determine if user is typing an argument or not
+            // Ensure proper input before making any suggestions
+            if (!all.contains(opt)) return CompletableFuture.completedFuture(builder.build());
+
+            // Ensure that the last portion of the input is in fact an argument
             if (!input[input.length - 1].equals(opt))
-                action = context.getArgument(option == null ? opt : option, String.class);
+                argument = context.getArgument(option == null ? opt : option, String.class);
 
             for (String listOption : list) {
-                if (action == null ) builder.suggest(listOption);
+                if (argument == null) {
+                    builder.suggest(listOption);
+                    break;
+                }
+
+                // Handle greedy strings
+                if (argument.contains(" ")) {
+                    String[] args = argument.split(" ");
+                    argument = args[args.length - 1];
+                }
+
                 // Suggest arguments that partially contain current argument
-                else if (listOption.toLowerCase().contains(action.toLowerCase())) builder.suggest(listOption);
+                else if (listOption.toLowerCase().contains(argument.toLowerCase())) {
+                    builder.suggest(listOption);
+                }
             }
 
             return CompletableFuture.completedFuture(builder.build());

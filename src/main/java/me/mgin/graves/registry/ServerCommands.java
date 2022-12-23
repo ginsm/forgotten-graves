@@ -77,9 +77,9 @@ public class ServerCommands {
 						)
 						// Client Options
 						.then(literal("clientOptions")
-							.then(literal("list"))
+							.then(literal("list")) // TODO
 							.then(literal("add")
-								.then(argument("clientOptions:add", StringArgumentType.string())
+								.then(argument("clientOptions:add", StringArgumentType.greedyString())
 									.suggests(ConfigOptions.suggest(
 										ConfigOptions.buildSet(ConfigOptions.main, ConfigOptions.itemDecay)
 									))
@@ -87,7 +87,7 @@ public class ServerCommands {
 								)
 							)
 							.then(literal("remove")
-								.then(argument("clientOptions:remove", StringArgumentType.string())
+								.then(argument("clientOptions:remove", StringArgumentType.greedyString())
 									.suggests(ConfigOptions.suggest(
 										ConfigOptions.buildSet(ConfigOptions.main, ConfigOptions.itemDecay)
 									))

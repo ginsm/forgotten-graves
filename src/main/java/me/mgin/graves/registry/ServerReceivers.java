@@ -48,12 +48,15 @@ public class ServerReceivers {
 
 	private static void clientOptionsAlert(ServerPlayerEntity player, NbtCompound nbt, String text, Formatting color) {
 		String option = nbt.getString("option");
-		String value = nbt.getString("value");
+		String[] values = nbt.getString("value").split(" ");
 		String[] options = option.split(":");
 
 		// Get the action ("added to", "removed to", etc)
 		Text action = Text.translatable(text + ":" + options[1]);
 
-		player.sendMessage(Text.translatable(text, value, action).formatted(color).append(Text.literal("test").formatted(Formatting.RED)));
+		for (String value : values) {
+			player.sendMessage(Text.translatable(text, value, action).formatted(color));
+		}
+
 	}
 }

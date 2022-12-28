@@ -53,7 +53,7 @@ public class Graves implements ModInitializer {
 
 	public void addInventory(String modID, Class<? extends InventoriesApi> modInventory) {
 		try {
-			if (modID == "vanilla" || FabricLoader.getInstance().isModLoaded(modID))
+			if (modID.equals("vanilla") || FabricLoader.getInstance().isModLoaded(modID))
 				inventories.add(modInventory.getDeclaredConstructor().newInstance());
 			else
 				unloadedInventories.add(modID);

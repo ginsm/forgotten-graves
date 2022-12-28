@@ -20,7 +20,8 @@ public class ServerCommands {
 		// Register server-side commands
 		CommandRegistrationCallback.EVENT.register(
 			(dispatcher, dedicated, access) -> dispatcher.register(literal("graves").executes(GravesCommand::execute)
-				.then(literal("server").requires(source -> source.hasPermissionLevel(4))
+				// This is set to 2 to allow command blocks to run the commands
+				.then(literal("server").requires(source -> source.hasPermissionLevel(2))
 					.then(literal("config")
 						.then(literal("reload").executes(ServerReloadConfig::execute))
 						.then(literal("sync").executes(ServerSyncConfig::execute))

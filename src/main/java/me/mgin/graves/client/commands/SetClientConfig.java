@@ -72,27 +72,14 @@ public class SetClientConfig {
     static private List<String> updateClientOptions(GravesConfig config, String secondaryOption, String value, NbtCompound nbt) {
         List<String> clientOptions = config.server.clientOptions;
 
-        // Split the value by potential spaces
-        String[] values = value.split(" ");
+        if (!ConfigOptions.all.contains(value))
+            sendResponse("error.invalid-config-option", nbt);
 
-        for (String v : values) {
-            // Do not add non-option values to the list
-            if (!ConfigOptions.all.contains(v)) {
-                sendResponse("error.invalid-config-option", nbt);
-                continue;
-            }
+        if (secondaryOption.equals("add") && !clientOptions.contains(value))
+            clientOptions.add(value);
 
-            if (secondaryOption.equals("add")) {
-                if (clientOptions.contains(v)) return clientOptions;
-                clientOptions.add(v);
-            }
-
-            if (secondaryOption.equals("remove")) {
-                if (!clientOptions.contains(v)) return clientOptions;
-                clientOptions.remove(v);
-            }
-        }
-
+        if (secondaryOption.equals("remove") && clientOptions.contains(value))
+            clientOptions.remove(value);
 
         return clientOptions;
     }

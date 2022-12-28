@@ -88,41 +88,34 @@ public class ConfigOptions {
         };
     }
 
-    public static SuggestionProvider<ServerCommandSource> suggest(Set<String> list) {
+    public static SuggestionProvider<ServerCommandSource> suggest(Set<String> suggestionList) {
         return (context, builder) -> {
-            String opt = context.getNodes().get(context.getNodes().size() - 1).getNode().getName();
+            String option = context.getNodes().get(context.getNodes().size() - 1).getNode().getName();
             String[] input = context.getInput().split(" ");
+            String original = null;
             String argument = null;
-            String option = null;
 
             // Necessary for secondary options (i.e. option:secondary)
-            if (opt.contains(":")) {
-                option = opt; // store original option
-                opt = opt.split(":")[1];;
+            if (option.contains(":")) {
+                original = option; // store original option
+                option = option.split(":")[1];;
             }
 
-            // Ensure proper input before making any suggestions
-            if (!all.contains(opt)) return CompletableFuture.completedFuture(builder.build());
+            if (option.equals("add") || option.equals("remove")) option = "clientOptions";
+
+            if (!all.contains(original != null ? original.split(":")[0] : option)) {
+                return CompletableFuture.completedFuture(builder.build());
+            }
 
             // Ensure that the last portion of the input is in fact an argument
-            if (!input[input.length - 1].equals(opt))
-                argument = context.getArgument(option == null ? opt : option, String.class);
+            if (!input[input.length - 1].equals(option)) {
+                argument = context.getArgument(original == null ? option : original, String.class);
+            }
 
-            for (String listOption : list) {
-                if (argument == null) {
-                    builder.suggest(listOption);
-                    break;
-                }
-
-                // Handle greedy strings
-                if (argument.contains(" ")) {
-                    String[] args = argument.split(" ");
-                    argument = args[args.length - 1];
-                }
-
-                // Suggest arguments that partially contain current argument
-                else if (listOption.toLowerCase().contains(argument.toLowerCase())) {
-                    builder.suggest(listOption);
+            for (String suggestion : suggestionList) {
+                // If there is a partial match, or no argument, recommend option
+                if (argument == null || suggestion.toLowerCase().contains(argument.toLowerCase())) {
+                    builder.suggest(suggestion);
                 }
             }
 

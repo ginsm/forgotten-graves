@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.world.GameRules;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class SetClientConfig {
         // Passed by respective option handler
         String option = nbt.getString("option");
         String type = nbt.getString("type");
+        Boolean sendCommandFeedback = nbt.getBoolean("sendCommandFeedback");
         Object value = extractNbtValue(nbt, option, type);
         String success = "success";
 
@@ -63,7 +65,8 @@ public class SetClientConfig {
 
         // Save the config
         AutoConfig.getConfigHolder(GravesConfig.class).save();
-        sendResponse(success, nbt);
+
+        if (sendCommandFeedback) sendResponse(success, nbt);
     }
 
     static private List<String> updateClientOptions(GravesConfig config, String secondaryOption, String value, NbtCompound nbt) {

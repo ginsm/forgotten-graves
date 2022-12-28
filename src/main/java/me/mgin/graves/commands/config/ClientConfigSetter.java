@@ -12,7 +12,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.world.GameRules;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 public class ClientConfigSetter {
 	public static int execute(CommandContext<ServerCommandSource> context) {
 		ServerCommandSource source = context.getSource();
+		Boolean sendCommandFeedback = source.getWorld().getGameRules().getBoolean(GameRules.SEND_COMMAND_FEEDBACK);
 
 		if (source.getEntity() instanceof ServerPlayerEntity player) {
 			// Determine option, type, and value. Generate a buf to send the data
@@ -28,7 +29,7 @@ public class ClientConfigSetter {
 			String type = determineArgumentType(context);
 			String option = determineOptionName(context, type.equals("literal"));
 			Object value = parseArgumentForValue(context, type, option);
-			PacketByteBuf buf = generateBuf(context, option, value, type);
+			PacketByteBuf buf = generateBuf(context, option, value, type, sendCommandFeedback);
 
 			// Dispatch the buf to the client and tell it to set clientside config
 			ServerPlayNetworking.send(player, Constants.SET_CLIENT_CONFIG, buf);
@@ -70,12 +71,13 @@ public class ClientConfigSetter {
 		};
 	}
 
-	private static PacketByteBuf generateBuf(CommandContext<ServerCommandSource> context, String option, Object value, String type) {
+	private static PacketByteBuf generateBuf(CommandContext<ServerCommandSource> context, String option, Object value, String type, Boolean sendCommandFeedback) {
 		PacketByteBuf buf = PacketByteBufs.create();
 		NbtCompound nbt = new NbtCompound();
 		nbt.putString("option", option);
 		nbt.putString("type", type);
 		nbt.putString("input", context.getInput());
+		nbt.putBoolean("sendCommandFeedback", sendCommandFeedback);
 
 		switch (value.getClass().getSimpleName()) {
 			case "Boolean" -> nbt.putBoolean("value", (Boolean) value);

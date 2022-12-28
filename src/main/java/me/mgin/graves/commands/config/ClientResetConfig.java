@@ -10,17 +10,22 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.world.GameRules;
 
 public class ClientResetConfig {
     static public int execute(CommandContext<ServerCommandSource> context) {
         ServerCommandSource source = context.getSource();
+        Boolean sendCommandFeedback = source.getWorld().getGameRules().getBoolean(GameRules.SEND_COMMAND_FEEDBACK);
 
         if (source.getEntity() instanceof ServerPlayerEntity player) {
             PacketByteBuf buf = PacketByteBufs.create();
             ServerPlayNetworking.send(player, Constants.RESET_CLIENT_CONFIG, buf);
 
-            source.sendFeedback(Text.translatable("command.config.reset:success").formatted(Formatting.GREEN),
-                    true);
+            if (sendCommandFeedback)
+                source.sendFeedback(
+                    Text.translatable("command.config.reset:success").formatted(Formatting.GREEN),
+                    true
+                );
         } else {
             source.sendError(Text.translatable("command.generic:error.not-player"));
         }

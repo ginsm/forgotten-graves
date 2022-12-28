@@ -22,7 +22,10 @@ public class Experience {
 			case CUSTOM -> {
 				// Enforce a minimum threshold (0).
 				int maxLevel = Math.max(maxCustomXPLevel, 0);
-				return calculateCustomExperience(level, maxLevel);
+				return calculateTotalExperience(
+						Math.min(level, maxLevel),
+						maxLevel > level ? progress : 0
+				);
 			}
 			default -> {
 				return calculateDefaultExperience(level);
@@ -40,12 +43,6 @@ public class Experience {
 	// https://minecraft.fandom.com/wiki/Experience#Sources
 	public static int calculateDefaultExperience(int level) {
 		return Math.min(7 * level, 100);
-	}
-
-	// This function allows for a custom maximum level,
-	// i.e. 30, 5, 100, so forth.
-	public static int calculateCustomExperience(int level, int maxLevel) {
-		return calculateLevelExperience(Math.min(level, maxLevel));
 	}
 
 	// This leverages the "total experience" equations found here:
@@ -82,6 +79,6 @@ public class Experience {
 		 * rather give 1 xp than have someone almost the level they were.
 		 */
 		int result = Math.round(progressExperience);
-		return (result > 0) ? result : (level > 0) ? 1 : 0;
+		return level > 0 ? result + 1 : 0;
 	}
 }

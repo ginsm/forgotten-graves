@@ -12,6 +12,8 @@
 **/bin
 **/build
 **/run
+**/run-server
+**/extmods
 **/.settings
 **/.project
 **/.classpath

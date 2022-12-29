@@ -96,13 +96,16 @@ public class ConfigOptions {
             String argument = null;
 
             // Necessary for secondary options (i.e. option:secondary)
+            if (option.equals("add") || option.equals("remove")) {
+                original = "clientOptions:" + option;
+            }
+
             if (option.contains(":")) {
                 original = option; // store original option
                 option = option.split(":")[1];;
             }
 
-            if (option.equals("add") || option.equals("remove")) option = "clientOptions";
-
+            // Do not suggest anything for improper options
             if (!all.contains(original != null ? original.split(":")[0] : option)) {
                 return CompletableFuture.completedFuture(builder.build());
             }

@@ -22,10 +22,7 @@ public class ClientResetConfig {
             ServerPlayNetworking.send(player, Constants.RESET_CLIENT_CONFIG, buf);
 
             if (sendCommandFeedback)
-                source.sendFeedback(
-                    Text.translatable("command.config.reset:success").formatted(Formatting.GREEN),
-                    true
-                );
+                player.sendMessage(Text.translatable("command.config.reset:success").formatted(Formatting.GREEN));
         } else {
             source.sendError(Text.translatable("command.generic:error.not-player"));
         }

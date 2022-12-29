@@ -27,9 +27,8 @@ public class ServerSyncConfig {
 				ConfigHolder<GravesConfig> holder = AutoConfig.getConfigHolder(GravesConfig.class);
 				holder.setConfig(config);
 				holder.save();
-				if (sendCommandFeedback) source.sendFeedback(
-					Text.translatable("command.server.config.sync:success").formatted(Formatting.GREEN),
-					true
+				if (sendCommandFeedback) player.sendMessage(
+					Text.translatable("command.server.config.sync:success").formatted(Formatting.GREEN)
 				);
 			} else {
 				source.sendError(Text.translatable("command.server.sync:error.unable-to-update"));

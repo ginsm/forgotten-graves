@@ -1,8 +1,8 @@
 {
-  "block.grave": "Grave",
-  "block.grave_old": "Old Grave",
-  "block.grave_weathered": "Weathered Grave",
-  "block.grave_forgotten": "Forgotten Grave",
+  "block.forgottengraves.grave": "Grave",
+  "block.forgottengraves.grave_old": "Old Grave",
+  "block.forgottengraves.grave_weathered": "Weathered Grave",
+  "block.forgottengraves.grave_forgotten": "Forgotten Grave",
 
   "on_death:mark-coords": "[Graves] Grave spawned at %dx %dy %dz.",
 

@@ -3,8 +3,8 @@ package me.mgin.graves.commands.config;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ParsedCommandNode;
+import me.mgin.graves.networking.ConfigNetworking;
 import me.mgin.graves.util.ArrayUtil;
-import me.mgin.graves.util.Constants;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.nbt.NbtCompound;
@@ -31,13 +31,13 @@ public class ClientConfigSetter {
 			Object value = parseArgumentForValue(context, type, option);
 			PacketByteBuf buf = generateBuf(context, option, value, type, sendCommandFeedback);
 
-			// Dispatch the buf to the client and tell it to set clientside config
-			ServerPlayNetworking.send(player, Constants.SET_CLIENT_CONFIG, buf);
 		} else {
 			source.sendError(Text.translatable("command.generic:error.not-player"));
 		}
 		return Command.SINGLE_SUCCESS;
 	}
+            // Dispatch the buf to the client and tell it to set clientside config
+            ServerPlayNetworking.send(player, ConfigNetworking.SET_CONFIG_S2C, buf);
 
 	private static String determineArgumentType(CommandContext<ServerCommandSource> context) {
 		String node = context.getNodes().get(context.getNodes().size() - 1).toString();

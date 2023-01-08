@@ -1,13 +1,11 @@
 package me.mgin.graves.commands.config;
 
-import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 
-import me.mgin.graves.Graves;
-import me.mgin.graves.config.GravesConfig;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.ConfigHolder;
+import me.mgin.graves.networking.ConfigNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -19,9 +17,8 @@ public class ServerSyncConfig {
 		ServerCommandSource source = context.getSource();
 		Boolean sendCommandFeedback = source.getWorld().getGameRules().getBoolean(GameRules.SEND_COMMAND_FEEDBACK);
 
-		if (source.getEntity() instanceof ServerPlayerEntity player) {
-			GameProfile profile = player.getGameProfile();
-			GravesConfig config = Graves.clientConfigs.get(profile);
+        if (source.getEntity() instanceof ServerPlayerEntity player) {
+            ServerPlayNetworking.send(player, ConfigNetworking.REQUEST_CONFIG_S2C, PacketByteBufs.create());
 
 			if (config != null) {
 				ConfigHolder<GravesConfig> holder = AutoConfig.getConfigHolder(GravesConfig.class);

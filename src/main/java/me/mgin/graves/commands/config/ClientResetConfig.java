@@ -2,10 +2,9 @@ package me.mgin.graves.commands.config;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
-import me.mgin.graves.util.Constants;
+import me.mgin.graves.networking.ConfigNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -18,8 +17,7 @@ public class ClientResetConfig {
         Boolean sendCommandFeedback = source.getWorld().getGameRules().getBoolean(GameRules.SEND_COMMAND_FEEDBACK);
 
         if (source.getEntity() instanceof ServerPlayerEntity player) {
-            PacketByteBuf buf = PacketByteBufs.create();
-            ServerPlayNetworking.send(player, Constants.RESET_CLIENT_CONFIG, buf);
+            ServerPlayNetworking.send(player, ConfigNetworking.RESET_CONFIG_S2C, PacketByteBufs.create());
 
             if (sendCommandFeedback)
                 player.sendMessage(Text.translatable("command.config.reset:success").formatted(Formatting.GREEN));

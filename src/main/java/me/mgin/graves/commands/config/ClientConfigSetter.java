@@ -31,13 +31,13 @@ public class ClientConfigSetter {
 			Object value = parseArgumentForValue(context, type, option);
 			PacketByteBuf buf = generateBuf(context, option, value, type, sendCommandFeedback);
 
-		} else {
-			source.sendError(Text.translatable("command.generic:error.not-player"));
-		}
-		return Command.SINGLE_SUCCESS;
-	}
             // Dispatch the buf to the client and tell it to set clientside config
             ServerPlayNetworking.send(player, ConfigNetworking.SET_CONFIG_S2C, buf);
+        } else {
+            source.sendError(Text.translatable("command.generic:error.not-player"));
+        }
+        return Command.SINGLE_SUCCESS;
+    }
 
 	private static String determineArgumentType(CommandContext<ServerCommandSource> context) {
 		String node = context.getNodes().get(context.getNodes().size() - 1).toString();

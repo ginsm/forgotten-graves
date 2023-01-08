@@ -6,9 +6,8 @@
 
   "on_death:mark-coords": "[Graves] Grave spawned at %dx %dy %dz.",
 
-
   "text.autoconfig.forgottengraves.title": "Forgotten Graves Settings",
-  
+
   "text.autoconfig.forgottengraves.option.main": "Main Settings",
   "text.autoconfig.forgottengraves.option.main.graves": "Enable Graves",
   "text.autoconfig.forgottengraves.option.main.graves.@Tooltip": "Enable the Forgotten Graves mod?",
@@ -40,20 +39,19 @@
   "text.autoconfig.forgottengraves.option.server.clientOptions": "Client Options",
   "text.autoconfig.forgottengraves.option.server.clientOptions.@Tooltip": "What options should be handled by the client?",
 
-
   "command.generic:error.not-yet-implemented": "[Graves] That command hasn't been implemented yet.",
   "command.generic:error.not-player": "[Graves] You must run this as a valid player.",
 
   "command.config.reset:success": "[Graves] Your config has been reset to the defaults.",
   "command.config.set:success": "[Graves] \"%s\" has been set to %s.",
-  "command.config.set:success-client-options": "[Graves] \"%s\" has been %s the client options.",
+  "command.config.set:success-client-options": "[Graves] %s has been %s the client options.",
   "command.config.set:success-client-options:add": "added to",
   "command.config.set:success-client-options:remove": "removed from",
   "command.config.set:error.invalid-enum-value": "[Graves] Please choose a suggested option for %s.",
   "command.config.set:error.invalid-config-option": "[Graves] %s is not a valid config option.",
   "command.config.set:error.nothing-changed-client-options": "[Graves] %s %s in the client options.",
   "command.config.set:error.nothing-changed-client-options:add": "is already present",
-  "command.config.set:error.nothing-changed-client-options:remove": "was not found",
+  "command.config.set:error.nothing-changed-client-options:remove": "doesn't exist",
   "command.config.reload:success": "[Graves] Your config has been reloaded.",
 
   "command.server.config.sync:error.unable-to-update": "[Graves] The server config could not be updated.",

@@ -2,13 +2,11 @@ package me.mgin.graves.client.commands;
 
 import me.mgin.graves.config.ConfigOptions;
 import me.mgin.graves.config.GravesConfig;
-import me.mgin.graves.util.Constants;
-import me.shedaniel.autoconfig.AutoConfig;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.world.GameRules;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -19,20 +17,26 @@ import static me.mgin.graves.util.ConfigCommandUtil.determineSubClass;
 import static me.mgin.graves.util.ConfigCommandUtil.extractNbtValue;
 
 public class SetClientConfig {
-    public static void execute(PacketByteBuf buf) {
-        GravesConfig config = GravesConfig.getConfig();
-        NbtCompound nbt = Objects.requireNonNull(buf.readNbt());
+    private static MinecraftClient client;
+    private static NbtCompound nbt;
 
-        // Passed by respective option handler
+    public static void execute(MinecraftClient playerClient, PacketByteBuf buf) {
+        GravesConfig config = GravesConfig.getConfig();
+
+        // Initialize class fields
+        nbt = Objects.requireNonNull(buf.readNbt());
+        client = playerClient;
+        String success = "success";
+
+        // Extract nbt data
+        Boolean sendCommandFeedback = nbt.getBoolean("sendCommandFeedback");
         String option = nbt.getString("option");
         String type = nbt.getString("type");
-        Boolean sendCommandFeedback = nbt.getBoolean("sendCommandFeedback");
         Object value = extractNbtValue(nbt, option, type);
-        String success = "success";
 
         // An improper enum value was given.
         if (value == null) {
-            sendResponse("error.invalid-enum-value", nbt);
+            sendResponse("error.invalid-enum-value");
             return;
         }
 
@@ -41,14 +45,20 @@ public class SetClientConfig {
             // Generate the value
             String[] options = option.split(":");
             List<String> oldClientOptions = new ArrayList<>(config.server.clientOptions);
-            value = updateClientOptions(config, options[1], (String) value, nbt);
+
+            if (!ConfigOptions.all.contains(value)) {
+                sendResponse("error.invalid-config-option");
+                return;
+            }
+
+            value = updateClientOptions(config, options[1], (String) value);
 
             // Value will be null if the option given was invalid
             if (value == null) return;
 
             // Nothing changed
             if (value.equals(oldClientOptions)) {
-                sendResponse("error.nothing-changed-client-options", nbt);
+                sendResponse("error.nothing-changed-client-options");
                 return;
             }
 
@@ -67,18 +77,13 @@ public class SetClientConfig {
         }
 
         // Save the config
-        AutoConfig.getConfigHolder(GravesConfig.class).save();
+        config.save();
 
-        if (sendCommandFeedback) sendResponse(success, nbt);
+        if (sendCommandFeedback) sendResponse(success);
     }
 
-    static private List<String> updateClientOptions(GravesConfig config, String secondaryOption, String value, NbtCompound nbt) {
+    static private List<String> updateClientOptions(GravesConfig config, String secondaryOption, String value) {
         List<String> clientOptions = config.server.clientOptions;
-
-        if (!ConfigOptions.all.contains(value)) {
-            sendResponse("error.invalid-config-option", nbt);
-            return null;
-        }
 
         if (secondaryOption.equals("add") && !clientOptions.contains(value))
             clientOptions.add(value);
@@ -89,12 +94,40 @@ public class SetClientConfig {
         return clientOptions;
     }
 
-    static private void sendResponse(String text, NbtCompound nbt) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        if (nbt == null) nbt = new NbtCompound();
-        nbt.putString("text", text);
-        buf.writeNbt(nbt);
+    private static void sendResponse(String slug) {
+        String val = String.valueOf(nbt.get("value"));
+        String option = nbt.getString("option");
+        String text = "command.config.set:" + slug;
+        Text action = null;
 
-        ClientPlayNetworking.send(Constants.SET_CLIENT_CONFIG_DONE, buf);
+        // Handle client option responses
+        if (option.contains(":")) {
+            action = Text.translatable(text + ":" + option.split(":")[1]);
+        }
+
+        // Pretty boolean values
+        if (val.equals("0b")) val = "false";
+        if (val.equals("1b")) val = "true";
+
+
+        switch (Objects.requireNonNull(slug)) {
+            case "success" -> client.player.sendMessage(
+                    Text.translatable(text, option, val).formatted(Formatting.GREEN)
+            );
+            case "success-client-options" -> client.player.sendMessage(
+                    Text.translatable(text, val, action).formatted(Formatting.GREEN)
+            );
+            // Error messages
+            case "error.invalid-enum-value" -> client.player.sendMessage(
+                    Text.translatable(text, option).formatted(Formatting.RED)
+            );
+            case "error.invalid-config-option" -> client.player.sendMessage(
+                    Text.translatable(text, val).formatted(Formatting.RED)
+            );
+            case "error.nothing-changed-client-options" -> client.player.sendMessage(
+                    Text.translatable(text, val, action).formatted(Formatting.RED)
+            );
+        }
+
     }
 }

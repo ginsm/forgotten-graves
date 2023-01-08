@@ -44,7 +44,7 @@ public class Graves implements ModInitializer {
 		addInventory("vanilla", Vanilla.class);
 		addInventory("backslot", BackSlot.class);
 		addInventory("trinkets", Trinkets.class);
-		// addInventory("inventorio", Inventorio.class);
+        addInventory("inventorio", Inventorio.class);
 
 		inventories.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, InventoriesApi.class));
 

@@ -25,11 +25,11 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class Graves implements ModInitializer {
 
-	public static final ArrayList<InventoriesApi> inventories = new ArrayList<>();
-	public static final ArrayList<String> unloadedInventories = new ArrayList<>();
-	public static String MOD_ID = "forgottengraves";
-	public static String BRAND_BLOCK = "grave";
-	public static Map<GameProfile, GravesConfig> clientConfigs = new HashMap<>();
+    public static final ArrayList<InventoriesApi> inventories = new ArrayList<>();
+    public static final ArrayList<String> unloadedInventories = new ArrayList<>();
+    public static String MOD_ID = "forgottengraves";
+    public static String BRAND_BLOCK = "grave";
+    public static Map<GameProfile, GravesConfig> clientConfigs = new HashMap<>();
 
     @Override
     public void onInitialize() {
@@ -40,28 +40,28 @@ public class Graves implements ModInitializer {
         ServerCommands.register();
         ConfigNetworking.registerC2SPackets();
 
-		// Register inventory classes
-		addInventory("vanilla", Vanilla.class);
-		addInventory("backslot", BackSlot.class);
-		addInventory("trinkets", Trinkets.class);
+        // Register inventory classes
+        addInventory("vanilla", Vanilla.class);
+        addInventory("backslot", BackSlot.class);
+        addInventory("trinkets", Trinkets.class);
         addInventory("inventorio", Inventorio.class);
 
-		inventories.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, InventoriesApi.class));
+        inventories.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, InventoriesApi.class));
 
-		// Dependency Registry
-		AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);
-	}
+        // Dependency Registry
+        AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);
+    }
 
-	public void addInventory(String modID, Class<? extends InventoriesApi> modInventory) {
-		try {
-			if (modID.equals("vanilla") || FabricLoader.getInstance().isModLoaded(modID))
-				inventories.add(modInventory.getDeclaredConstructor().newInstance());
-			else
-				unloadedInventories.add(modID);
-		} catch (InstantiationException | IllegalAccessException | InvocationTargetException
-				| NoSuchMethodException e) {
-			e.printStackTrace();
-		}
-	}
+    public void addInventory(String modID, Class<? extends InventoriesApi> modInventory) {
+        try {
+            if (modID.equals("vanilla") || FabricLoader.getInstance().isModLoaded(modID))
+                inventories.add(modInventory.getDeclaredConstructor().newInstance());
+            else
+                unloadedInventories.add(modID);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException
+                 | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

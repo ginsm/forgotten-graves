@@ -1,6 +1,7 @@
 package me.mgin.graves.block.degradation;
 
 import com.mojang.authlib.GameProfile;
+
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -22,131 +23,131 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public interface Ageable<T extends Enum<T>> {
-	Optional<BlockState> getDegradationResultState(BlockState state);
+    Optional<BlockState> getDegradationResultState(BlockState state);
 
-	float getDegradationChanceMultiplier();
+    float getDegradationChanceMultiplier();
 
-	default void tickDegradation(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		float f = 0.05688889F;
-		if (random.nextFloat() < f) {
-			this.tryDegrade(state, world, pos, random);
-		}
-	}
+    default void tickDegradation(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        float f = 0.05688889F;
+        if (random.nextFloat() < f) {
+            this.tryDegrade(state, world, pos, random);
+        }
+    }
 
-	T getDegradationLevel();
+    T getDegradationLevel();
 
-	default void tryDegrade(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		int i = this.getDegradationLevel().ordinal();
-		int j = 0;
-		int k = 0;
-		Iterator<BlockPos> var8 = BlockPos.iterateOutwards(pos, 4, 4, 4).iterator();
+    default void tryDegrade(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        int i = this.getDegradationLevel().ordinal();
+        int j = 0;
+        int k = 0;
+        Iterator<BlockPos> var8 = BlockPos.iterateOutwards(pos, 4, 4, 4).iterator();
 
-		while (var8.hasNext()) {
-			BlockPos nextPos = var8.next();
-			int l = nextPos.getManhattanDistance(pos);
-			if (l > 4) {
-				break;
-			}
+        while (var8.hasNext()) {
+            BlockPos nextPos = var8.next();
+            int l = nextPos.getManhattanDistance(pos);
+            if (l > 4) {
+                break;
+            }
 
-			if (!nextPos.equals(pos)) {
-				BlockState newState = world.getBlockState(pos);
-				Block block = newState.getBlock();
-				if (block instanceof Degradable) {
-					Enum<?> enum_ = ((Degradable<?>) block).getDegradationLevel();
-					if (this.getDegradationLevel().getClass() == enum_.getClass()) {
-						int m = enum_.ordinal();
-						if (m < i) {
-							return;
-						}
+            if (!nextPos.equals(pos)) {
+                BlockState newState = world.getBlockState(pos);
+                Block block = newState.getBlock();
+                if (block instanceof Degradable) {
+                    Enum<?> enum_ = ((Degradable<?>) block).getDegradationLevel();
+                    if (this.getDegradationLevel().getClass() == enum_.getClass()) {
+                        int m = enum_.ordinal();
+                        if (m < i) {
+                            return;
+                        }
 
-						if (m > i) {
-							++k;
-						} else {
-							++j;
-						}
-					}
-				}
-			}
-		}
-		float f = (float) (k + 1) / (float) (k + j + 1);
-		float g = f * f * this.getDegradationChanceMultiplier();
-		if (random.nextFloat() < g) {
-			this.getDegradationResultState(state).ifPresent((statex) -> setDegradationState(world, pos, statex, true));
-		}
-	}
+                        if (m > i) {
+                            ++k;
+                        } else {
+                            ++j;
+                        }
+                    }
+                }
+            }
+        }
+        float f = (float) (k + 1) / (float) (k + j + 1);
+        float g = f * f * this.getDegradationChanceMultiplier();
+        if (random.nextFloat() < g) {
+            this.getDegradationResultState(state).ifPresent((statex) -> setDegradationState(world, pos, statex, true));
+        }
+    }
 
-	static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items, GameProfile profile) {
-		float decayModifier = GravesConfig.resolveConfig("decayModifier", profile).itemDecay.decayModifier / 100f;
-		boolean decayBreaksItems = GravesConfig.resolveConfig("decayBreaksItems", profile).itemDecay.decayBreaksItems;
+    static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items, GameProfile profile) {
+        float decayModifier = GravesConfig.resolveConfig("decayModifier", profile).itemDecay.decayModifier / 100f;
+        boolean decayBreaksItems = GravesConfig.resolveConfig("decayBreaksItems", profile).itemDecay.decayBreaksItems;
 
-		if (decayModifier == 0.0f)
-			return items;
+        if (decayModifier == 0.0f)
+            return items;
 
-		for (int i = 0; i < items.size(); i++) {
-			ItemStack item = items.get(i);
-			int maxDamage = item.getMaxDamage();
-			int damage = item.getDamage();
+        for (int i = 0; i < items.size(); i++) {
+            ItemStack item = items.get(i);
+            int maxDamage = item.getMaxDamage();
+            int damage = item.getDamage();
 
-			// item has durability
-			if (maxDamage > 0) {
-				Random random = Random.create();
-				float unbreaking = (float) EnchantmentHelper.getLevel(Enchantments.UNBREAKING, item);
+            // item has durability
+            if (maxDamage > 0) {
+                Random random = Random.create();
+                float unbreaking = (float) EnchantmentHelper.getLevel(Enchantments.UNBREAKING, item);
 
-				float currentItemDecay = (float) damage / (float) maxDamage;
+                float currentItemDecay = (float) damage / (float) maxDamage;
 
-				if (currentItemDecay == 0.0f) {
-					currentItemDecay = 1f / (float) maxDamage;
-				}
+                if (currentItemDecay == 0.0f) {
+                    currentItemDecay = 1f / (float) maxDamage;
+                }
 
-				float decayPercent = decayModifier * currentItemDecay;
-				float unbreakingModifier = (((100f / (unbreaking + 1f)) / 100f));
-				float decayChance = 0.35f * unbreakingModifier;
+                float decayPercent = decayModifier * currentItemDecay;
+                float unbreakingModifier = ((100f / (unbreaking + 1f)) / 100f);
+                float decayChance = 0.35f * unbreakingModifier;
 
-				if (decayChance >= random.nextFloat()) {
-					int remainingDamage = maxDamage - damage;
-					int decay = (int) Math.ceil((float) remainingDamage * decayPercent);
+                if (decayChance >= random.nextFloat()) {
+                    int remainingDamage = maxDamage - damage;
+                    int decay = (int) Math.ceil((float) remainingDamage * decayPercent);
 
-					if (remainingDamage - decay > 0) {
-						item.setDamage(damage + decay);
-					} else if (decayBreaksItems) {
-						items.set(i, ItemStack.EMPTY);
-					} else {
-						item.setDamage(maxDamage - 1);
-					}
-				}
-			}
-		}
-		return items;
-	}
+                    if (remainingDamage - decay > 0) {
+                        item.setDamage(damage + decay);
+                    } else if (decayBreaksItems) {
+                        items.set(i, ItemStack.EMPTY);
+                    } else {
+                        item.setDamage(maxDamage - 1);
+                    }
+                }
+            }
+        }
+        return items;
+    }
 
-	static void setDegradationState(World world, BlockPos pos, BlockState state, boolean itemsDecay) {
-		BlockEntity blockEntity = world.getBlockEntity(pos);
+    static void setDegradationState(World world, BlockPos pos, BlockState state, boolean itemsDecay) {
+        BlockEntity blockEntity = world.getBlockEntity(pos);
 
-		if (blockEntity instanceof GraveBlockEntity graveEntity) {
-			world.setBlockState(pos, state);
+        if (blockEntity instanceof GraveBlockEntity graveEntity) {
+            world.setBlockState(pos, state);
 
-			GraveBlockEntity newGraveEntity = new GraveBlockEntity(pos, state);
-			GameProfile owner = graveEntity.getGraveOwner();
+            GraveBlockEntity newGraveEntity = new GraveBlockEntity(pos, state);
+            GameProfile owner = graveEntity.getGraveOwner();
 
-			// Decay inventotries (if enabled) and store them
-			for (InventoriesApi api : Graves.inventories) {
-				String id = api.getID();
-				DefaultedList<ItemStack> inventory = graveEntity.getInventory(id);
+            // Decay inventotries (if enabled) and store them
+            for (InventoriesApi api : Graves.inventories) {
+                String id = api.getID();
+                DefaultedList<ItemStack> inventory = graveEntity.getInventory(id);
 
-				if (inventory == null)
-					continue;
+                if (inventory == null)
+                    continue;
 
-				newGraveEntity.setInventory(id, itemsDecay ? decayItems(inventory, owner) : inventory);
-			}
+                newGraveEntity.setInventory(id, itemsDecay ? decayItems(inventory, owner) : inventory);
+            }
 
-			// Transfer previous data
-			newGraveEntity.setGraveOwner(owner);
-			newGraveEntity.setCustomName(graveEntity.getCustomName());
-			newGraveEntity.setXp(graveEntity.getXp());
-			newGraveEntity.setNoAge(graveEntity.getNoAge());
-			newGraveEntity.setGraveSkull(graveEntity.getGraveSkull());
+            // Transfer previous data
+            newGraveEntity.setGraveOwner(owner);
+            newGraveEntity.setCustomName(graveEntity.getCustomName());
+            newGraveEntity.setXp(graveEntity.getXp());
+            newGraveEntity.setNoAge(graveEntity.getNoAge());
+            newGraveEntity.setGraveSkull(graveEntity.getGraveSkull());
 
-			world.addBlockEntity(newGraveEntity);
-		}
-	}
+            world.addBlockEntity(newGraveEntity);
+        }
+    }
 }

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import me.mgin.graves.block.api.Particles;
+import me.mgin.graves.block.feature.Particles;
 import me.mgin.graves.block.GraveBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -25,89 +25,89 @@ import net.minecraft.world.World;
 
 public class UseBlockHandler {
 
-	public static ActionResult handleEvent(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
-		BlockEntity blockEntity = world.getBlockEntity(hitResult.getBlockPos());
+    public static ActionResult handleEvent(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
+        BlockEntity blockEntity = world.getBlockEntity(hitResult.getBlockPos());
 
-		if (blockEntity instanceof GraveBlockEntity graveEntity) {
-			ItemStack itemStack = player.getStackInHand(hand);
-			Item itemInHand = itemStack.getItem();
+        if (blockEntity instanceof GraveBlockEntity graveEntity) {
+            ItemStack itemStack = player.getStackInHand(hand);
+            Item itemInHand = itemStack.getItem();
 
-			if (!player.isSneaking()) {
-				String itemName = itemInHand.asItem().toString();
+            if (!player.isSneaking()) {
+                String itemName = itemInHand.asItem().toString();
 
-				if (graveEntity.getGraveOwner() == null && validSkulls.contains(itemName))
-					return handlePlayerHeads(graveEntity, world, itemStack, itemName);
+                if (graveEntity.getGraveOwner() == null && validSkulls.contains(itemName))
+                    return handlePlayerHeads(graveEntity, world, itemStack, itemName);
 
-				// Prevent block placement and unintentional item usage
-				if (Item.BLOCK_ITEMS.containsValue(itemInHand) || restrictedItems.containsValue(itemInHand))
-					return ActionResult.FAIL;
-			}
-		}
+                // Prevent block placement and unintentional item usage
+                if (Item.BLOCK_ITEMS.containsValue(itemInHand) || restrictedItems.containsValue(itemInHand))
+                    return ActionResult.FAIL;
+            }
+        }
 
-		return ActionResult.PASS;
-	}
+        return ActionResult.PASS;
+    }
 
-	/**
-	 * Items that should be prevented from activating. Mostly blocks.
-	 */
-	private static final Map<Item, Item> restrictedItems = new HashMap<>() {
-		{
-			put(Items.LAVA_BUCKET, Items.LAVA_BUCKET.asItem());
-			put(Items.FLINT_AND_STEEL, Items.FLINT_AND_STEEL.asItem());
-		}
-	};
+    /**
+     * Items that should be prevented from activating. Mostly blocks.
+     */
+    private static final Map<Item, Item> restrictedItems = new HashMap<>() {
+        {
+            put(Items.LAVA_BUCKET, Items.LAVA_BUCKET.asItem());
+            put(Items.FLINT_AND_STEEL, Items.FLINT_AND_STEEL.asItem());
+        }
+    };
 
-	/**
-	 * This method determines the type of head (normal head or custom player head)
-	 * and assigns it to the clicked on GraveBlockEntity so that it can be
-	 * displayed.
-	 * <p>
-	 *
-	 * @param graveEntity
-	 * @param world
-	 * @param itemStack
-	 * @param itemName
-	 * @return
-	 */
-	private static ActionResult handlePlayerHeads(GraveBlockEntity graveEntity, World world, ItemStack itemStack,
-			String itemName) {
-		NbtCompound baseNbt = itemStack.getNbt();
-		BlockPos pos = graveEntity.getPos();
-		BlockState state = graveEntity.getState();
-		String graveSkull;
+    /**
+     * This method determines the type of head (normal head or custom player head)
+     * and assigns it to the clicked on GraveBlockEntity so that it can be
+     * displayed.
+     * <p>
+     *
+     * @param graveEntity
+     * @param world
+     * @param itemStack
+     * @param itemName
+     * @return
+     */
+    private static ActionResult handlePlayerHeads(GraveBlockEntity graveEntity, World world, ItemStack itemStack,
+                                                  String itemName) {
+        NbtCompound baseNbt = itemStack.getNbt();
+        BlockPos pos = graveEntity.getPos();
+        BlockState state = graveEntity.getState();
+        String graveSkull;
 
-		if (baseNbt != null) {
-			NbtCompound startCompound = baseNbt.contains("tag") ? baseNbt.getCompound("tag") : baseNbt;
+        if (baseNbt != null) {
+            NbtCompound startCompound = baseNbt.contains("tag") ? baseNbt.getCompound("tag") : baseNbt;
 
-			graveSkull = startCompound.getCompound("SkullOwner").getCompound("Properties").getList("textures", 10)
-					.getCompound(0).getString("Value");
+            graveSkull = startCompound.getCompound("SkullOwner").getCompound("Properties").getList("textures", 10)
+                    .getCompound(0).getString("Value");
 
-			if (!graveSkull.equals("") && !graveSkull.equals(graveEntity.getGraveSkull()))
-				graveEntity.setGraveSkull(graveSkull);
-			else
-				return ActionResult.FAIL;
-		} else {
-			graveEntity.setGraveSkull(itemName);
-		}
+            if (!graveSkull.equals("") && !graveSkull.equals(graveEntity.getGraveSkull()))
+                graveEntity.setGraveSkull(graveSkull);
+            else
+                return ActionResult.FAIL;
+        } else {
+            graveEntity.setGraveSkull(itemName);
+        }
 
-		// Required for client sync
-		world.updateListeners(pos, state, state, Block.NOTIFY_ALL);
+        // Required for client sync
+        world.updateListeners(pos, state, state, Block.NOTIFY_ALL);
 
-		// Polish
-		world.playSound(null, pos, SoundEvents.BLOCK_ROOTED_DIRT_HIT, SoundCategory.BLOCKS, 1f, 1f);
-		Particles.spawnAtBlockBottom(world, pos, ParticleTypes.SOUL, 6, 0.025, 0.125);
+        // Polish
+        world.playSound(null, pos, SoundEvents.BLOCK_ROOTED_DIRT_HIT, SoundCategory.BLOCKS, 1f, 1f);
+        Particles.spawnAtBlockBottom(world, pos, ParticleTypes.SOUL, 6, 0.025, 0.125);
 
-		return ActionResult.SUCCESS;
-	}
+        return ActionResult.SUCCESS;
+    }
 
-	public static HashSet<String> validSkulls = new HashSet<>() {
-		{
-			add("wither_skeleton_skull");
-			add("skeleton_skull");
-			add("player_head");
-			add("zombie_head");
-			add("creeper_head");
-		}
-	};
+    public static HashSet<String> validSkulls = new HashSet<>() {
+        {
+            add("wither_skeleton_skull");
+            add("skeleton_skull");
+            add("player_head");
+            add("zombie_head");
+            add("creeper_head");
+        }
+    };
 
 }

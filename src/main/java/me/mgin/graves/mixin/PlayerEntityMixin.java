@@ -1,6 +1,6 @@
 package me.mgin.graves.mixin;
 
-import me.mgin.graves.block.api.PlaceGrave;
+import me.mgin.graves.block.feature.PlaceGrave;
 import me.mgin.graves.config.GravesConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -16,24 +16,24 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity {
 
-	@Shadow
-	@Final
-	private PlayerInventory inventory;
+    @Shadow
+    @Final
+    private PlayerInventory inventory;
 
-	protected PlayerEntityMixin(EntityType<? extends LivingEntity> type, World world) {
-		super(type, world);
-	}
+    protected PlayerEntityMixin(EntityType<? extends LivingEntity> type, World world) {
+        super(type, world);
+    }
 
-	@Redirect(method = "dropInventory", at = @At(value = "INVOKE", target = "net.minecraft.entity.player.PlayerInventory.dropAll()V"))
-	private void dropAll(PlayerInventory inventory) {
-		PlayerEntity player = this.inventory.player;
-		boolean forgottenGravesEnabled = GravesConfig.resolveConfig("graves", player.getGameProfile()).main.graves;
+    @Redirect(method = "dropInventory", at = @At(value = "INVOKE", target = "net.minecraft.entity.player.PlayerInventory.dropAll()V"))
+    private void dropAll(PlayerInventory inventory) {
+        PlayerEntity player = this.inventory.player;
+        boolean forgottenGravesEnabled = GravesConfig.resolveConfig("graves", player.getGameProfile()).main.graves;
 
-		if (!forgottenGravesEnabled) {
-			this.inventory.dropAll();
-			return;
-		}
+        if (!forgottenGravesEnabled) {
+            this.inventory.dropAll();
+            return;
+        }
 
-		PlaceGrave.place(this.world, this.getPos(), player);
-	}
+        PlaceGrave.place(this.world, this.getPos(), player);
+    }
 }

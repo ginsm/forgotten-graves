@@ -146,7 +146,7 @@ public class PlaceGrave {
     }
 
     /**
-     * Interates outwards until it finds a valid position to spawn the grave; ensuring the grave sinks when necessary.
+     * Iterates outwards until it finds a valid position to spawn the grave; ensuring the grave sinks when necessary.
      *
      * @param world  World
      * @param pos    BlockPos
@@ -163,8 +163,10 @@ public class PlaceGrave {
 
                 if (graveShouldSink(world, belowPos, player)) {
                     pos = sinkDownwards(world, belowPos, pos.getY() - (minY + 7), player);
+                    break;
                 }
 
+                pos = newPos;
                 break;
             }
         }
@@ -185,7 +187,7 @@ public class PlaceGrave {
         Block block = state.getBlock();
 
         world.setBlockState(pos, GraveBlocks.GRAVE.getDefaultState().with(Properties.HORIZONTAL_FACING,
-                player.getHorizontalFacing()));
+            player.getHorizontalFacing()));
 
         // Create new grave entity
         GraveBlockEntity graveEntity = new GraveBlockEntity(pos, world.getBlockState(pos));
@@ -222,13 +224,13 @@ public class PlaceGrave {
 
         if (config.main.graveCoordinates) {
             player.sendMessage(
-                    Text.translatable("on_death:mark-coords", pos.getX(), pos.getY(), pos.getZ()),
-                    false
+                Text.translatable("on_death:mark-coords", pos.getX(), pos.getY(), pos.getZ()),
+                false
             );
         }
 
         System.out.println("[Graves] Grave spawned at: " + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + " for" +
-                " player " + player.getName().getString() + ".");
+            " player " + player.getName().getString() + ".");
     }
 
     /**

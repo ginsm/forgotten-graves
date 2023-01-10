@@ -17,6 +17,9 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
     public MainSettings main = new MainSettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+    public FloatingSettings floating = new FloatingSettings();
+
+    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
     public ItemDecaySettings itemDecay = new ItemDecaySettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
@@ -50,6 +53,18 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         public int maxCustomXPLevel = 30;
+    }
+
+
+    public static class FloatingSettings {
+        @ConfigEntry.Gui.Tooltip
+        public boolean floatInAir = false;
+        
+        @ConfigEntry.Gui.Tooltip
+        public boolean floatInWater = false;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean floatInLava = true;
     }
 
     public static class ItemDecaySettings {

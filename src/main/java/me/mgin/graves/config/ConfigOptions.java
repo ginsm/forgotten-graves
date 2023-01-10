@@ -19,6 +19,7 @@ public class ConfigOptions {
         add("main");
         add("itemDecay");
         add("server");
+        add("floating");
     }};
 
     static public Set<String> main = new HashSet<>() {{
@@ -44,11 +45,19 @@ public class ConfigOptions {
         add("clientOptions");
     }};
 
+    static public Set<String> floating = new HashSet<>() {{
+        // FloatingSettings
+        add("floatInAir");
+        add("floatInWater");
+        add("floatInLava");
+    }};
+
     // Create a HashSet of all valid options.
     static {
         all.addAll(main);
         all.addAll(itemDecay);
         all.addAll(server);
+        all.addAll(floating);
     }
 
     static public Set<String> enums = new HashSet<>() {{
@@ -67,11 +76,12 @@ public class ConfigOptions {
             case "main" -> main;
             case "itemDecay" -> itemDecay;
             case "server" -> server;
+            case "floating" -> floating;
             default -> throw new IllegalStateException("Unexpected value: " + subclass);
         };
     }
 
-    public static Set<String> buildSet(Set<String> ... sets) {
+    public static Set<String> buildSet(Set<String>... sets) {
         Set<String> result = new HashSet<>();
         for (Set<String> set : sets) {
             result.addAll(set);
@@ -102,7 +112,8 @@ public class ConfigOptions {
 
             if (option.contains(":")) {
                 original = option; // store original option
-                option = option.split(":")[1];;
+                option = option.split(":")[1];
+                ;
             }
 
             // Do not suggest anything for improper options

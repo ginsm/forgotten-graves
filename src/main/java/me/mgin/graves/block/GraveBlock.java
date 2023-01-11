@@ -39,7 +39,7 @@ public class GraveBlock extends HorizontalFacingBlock implements BlockEntityProv
     public GraveBlock(BlockAge blockAge, Settings settings) {
         super(settings);
         setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false).with(Properties.HORIZONTAL_FACING,
-                Direction.NORTH));
+            Direction.NORTH));
         this.blockAge = blockAge;
     }
 
@@ -101,6 +101,19 @@ public class GraveBlock extends HorizontalFacingBlock implements BlockEntityProv
         super.onBreak(world, pos, state, player);
     }
 
+    @Override
+    public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
+        GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
+        ItemStack itemStack = this.getItemStack();
+
+        if (graveEntity.hasCustomName()) {
+            Text itemText = Text.Serializer.fromJson(graveEntity.getCustomName());
+            itemStack.setCustomName(itemText);
+        }
+
+        return itemStack;
+    }
+
     public void onBreakRetainName(World world, BlockPos pos, PlayerEntity player, GraveBlockEntity graveEntity) {
         Text itemText = Text.Serializer.fromJson(graveEntity.getCustomName());
 
@@ -108,7 +121,7 @@ public class GraveBlock extends HorizontalFacingBlock implements BlockEntityProv
         itemStack.setCustomName(itemText);
 
         ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5,
-                (double) pos.getZ() + 0.5, itemStack);
+            (double) pos.getZ() + 0.5, itemStack);
         itemEntity.setToDefaultPickupDelay();
 
         spawnBreakParticles(world, player, pos, getDefaultState());
@@ -117,6 +130,7 @@ public class GraveBlock extends HorizontalFacingBlock implements BlockEntityProv
 
         world.emitGameEvent(player, GameEvent.BLOCK_DESTROY, pos);
     }
+
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ct) {
@@ -168,7 +182,7 @@ public class GraveBlock extends HorizontalFacingBlock implements BlockEntityProv
         BlockPos blockPos = context.getBlockPos();
         FluidState fluidState = context.getWorld().getFluidState(blockPos);
         return this.getDefaultState().with(FACING, context.getPlayerFacing()).with(WATERLOGGED,
-                fluidState.getFluid() == Fluids.WATER);
+            fluidState.getFluid() == Fluids.WATER);
     }
 
     // Waterlogging

@@ -7,11 +7,9 @@
     "ExplosionMixin",
     "items.HoneycombItemMixin",
     "items.ShovelItemMixin",
-    "PlayerEntityMixin",
+    "PlayerEntityMixin"
   ],
-  "client": [
-    "ClientPlayerInteractionManagerMixin"
-  ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   }

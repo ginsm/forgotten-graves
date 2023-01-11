@@ -154,7 +154,6 @@ public class PlaceGrave {
      * @return BlockPos
      */
     private static BlockPos searchOutwards(World world, BlockPos pos, PlayerEntity player) {
-
         for (BlockPos newPos : BlockPos.iterateOutwards(pos, 10, 10, 10)) {
             Block block = world.getBlockState(newPos).getBlock();
 
@@ -211,15 +210,13 @@ public class PlaceGrave {
         graveEntity.setXp(experience);
         resetPlayerExperience(player);
 
-        // Add the block entity
-        world.addBlockEntity(graveEntity);
-
-        // Sync with the server
-        if (world.isClient())
-            graveEntity.sync(world, pos);
-
+        // Spawn break particles
         block.onBreak(world, pos, state, player);
 
+        // Add the block entity to the world
+        world.addBlockEntity(graveEntity);
+
+        // Alert user if graveCoordinates is enabled
         GravesConfig config = GravesConfig.resolveConfig("graveCoordinates", player.getGameProfile());
 
         if (config.main.graveCoordinates) {
@@ -229,6 +226,7 @@ public class PlaceGrave {
             );
         }
 
+        // For the logs :)
         System.out.println("[Graves] Grave spawned at: " + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + " for" +
             " player " + player.getName().getString() + ".");
     }

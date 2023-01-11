@@ -70,7 +70,7 @@ public class RetrieveGrave {
                 }
             }
 
-            // Check for any potentionally unloaded inventories; store them if found
+            // Check for any potentially unloaded inventories; store them if found
             for (String modID : Graves.unloadedInventories) {
                 DefaultedList<ItemStack> inventory = graveEntity.getInventory(modID);
                 if (inventory != null)
@@ -121,8 +121,6 @@ public class RetrieveGrave {
 
         // Add player experience back
         player.addExperience(graveEntity.getXp());
-
-        // spawnBreakParticles(world, player, pos, defaultState);
 
         // Remove block
         world.removeBlock(pos, false);

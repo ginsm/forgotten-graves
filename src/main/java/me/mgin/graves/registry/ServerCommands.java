@@ -41,7 +41,7 @@ public class ServerCommands {
                         .then(literal("decayBreaksItems")
                             .then(argument("decayBreaksItems", BoolArgumentType.bool()).executes(ClientConfigSetter::execute))
                         )
-                        .then(literal("graveRobbing")
+                        .then(literal("graveRobbing").requires(source -> source.hasPermissionLevel(2))
                             .then(argument("graveRobbing", BoolArgumentType.bool()).executes(ClientConfigSetter::execute))
                         )
                         .then(literal("floatInAir")
@@ -60,7 +60,7 @@ public class ServerCommands {
                         .then(literal("decayModifier")
                             .then(argument("decayModifier", IntegerArgumentType.integer(0, 100)).executes(ClientConfigSetter::execute))
                         )
-                        .then(literal("OPOverrideLevel")
+                        .then(literal("OPOverrideLevel").requires(source -> source.hasPermissionLevel(2))
                             .then(argument("OPOverrideLevel", IntegerArgumentType.integer(-1, 4)).executes(ClientConfigSetter::execute))
                         )
                         // Enums
@@ -83,7 +83,7 @@ public class ServerCommands {
                             )
                         )
                         // Client Options
-                        .then(literal("clientOptions")
+                        .then(literal("clientOptions").requires(source -> source.hasPermissionLevel(2))
                             .then(literal("list")) // TODO
                             .then(literal("add")
                                 .then(argument("clientOptions:add", StringArgumentType.string())

@@ -31,10 +31,10 @@ public class HoneycombItemMixin {
         Hand hand = context.getHand();
 
         if (blockEntity instanceof GraveBlockEntity graveEntity
-                && Permission.playerCanAttemptRetrieve(player, graveEntity))
-            if (hand == Hand.MAIN_HAND && graveEntity.getNoAge() == 0) {
+            && Permission.playerCanAttemptRetrieve(player, graveEntity))
+            if (hand == Hand.MAIN_HAND && graveEntity.getNoDecay() == 0) {
                 player.getStackInHand(context.getHand()).decrement(1);
-                graveEntity.setNoAge(1);
+                graveEntity.setNoDecay(1);
                 Particles.spawnAtBlock(world, pos, ParticleTypes.WAX_ON, 8, 3);
                 world.playSound(null, pos, SoundEvents.ITEM_HONEYCOMB_WAX_ON, SoundCategory.BLOCKS, 1f, 1f);
             }

@@ -2,7 +2,7 @@ package me.mgin.graves.block;
 
 import me.mgin.graves.block.feature.Permission;
 import me.mgin.graves.block.feature.RetrieveGrave;
-import me.mgin.graves.block.degradation.AgingGrave;
+import me.mgin.graves.block.feature.decay.DecayingGrave;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
@@ -31,20 +31,20 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 
-public class GraveBlock extends HorizontalFacingBlock implements BlockEntityProvider, AgingGrave, Waterloggable {
+public class GraveBlock extends HorizontalFacingBlock implements BlockEntityProvider, DecayingGrave, Waterloggable {
 
-    private final BlockAge blockAge;
+    private final BlockDecay blockDecay;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
-    public GraveBlock(BlockAge blockAge, Settings settings) {
+    public GraveBlock(BlockDecay blockDecay, Settings settings) {
         super(settings);
         setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false).with(Properties.HORIZONTAL_FACING,
             Direction.NORTH));
-        this.blockAge = blockAge;
+        this.blockDecay = blockDecay;
     }
 
     public int getWeathered() {
-        return switch (blockAge) {
+        return switch (blockDecay) {
             default -> 0;
             case OLD -> 1;
             case WEATHERED -> 2;
@@ -52,8 +52,8 @@ public class GraveBlock extends HorizontalFacingBlock implements BlockEntityProv
         };
     }
 
-    public static GraveBlock getAgedBlock(BlockAge blockAge) {
-        return switch (blockAge) {
+    public static GraveBlock getDecayedBlock(BlockDecay blockDecay) {
+        return switch (blockDecay) {
             default -> GraveBlocks.GRAVE;
             case OLD -> GraveBlocks.GRAVE_OLD;
             case WEATHERED -> GraveBlocks.GRAVE_WEATHERED;
@@ -162,8 +162,8 @@ public class GraveBlock extends HorizontalFacingBlock implements BlockEntityProv
     }
 
     public ItemStack getItemStack() {
-        GraveBlock agedBlock = getAgedBlock(this.blockAge);
-        return new ItemStack(agedBlock);
+        GraveBlock decayedBlock = getDecayedBlock(this.blockDecay);
+        return new ItemStack(decayedBlock);
     }
 
     @Override
@@ -200,30 +200,30 @@ public class GraveBlock extends HorizontalFacingBlock implements BlockEntityProv
         return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
     }
 
-    // Degradation
+    // Decay
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        this.tickDegradation(state, world, pos, random);
+        this.tickDecay(state, world, pos, random);
     }
 
     @Override
     public boolean hasRandomTicks(BlockState state) {
-        return AgingGrave.getIncreasedOxidationBlock(state.getBlock()).isPresent();
+        return DecayingGrave.getIncreasedDecayBlock(state.getBlock()).isPresent();
     }
 
     @Override
-    public BlockAge getDegradationLevel() {
-        return this.blockAge;
+    public BlockDecay getDecayLevel() {
+        return this.blockDecay;
     }
 
-    public void tickDegradation(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+    public void tickDecay(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
 
         if (blockEntity instanceof GraveBlockEntity graveEntity) {
-            if (graveEntity.getNoAge() == 1)
+            if (graveEntity.getNoDecay() == 1)
                 return;
         }
 
-        AgingGrave.super.tickDegradation(state, world, pos, random);
+        DecayingGrave.super.tickDecay(state, world, pos, random);
     }
 }

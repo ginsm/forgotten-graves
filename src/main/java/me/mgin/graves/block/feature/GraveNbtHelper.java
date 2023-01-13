@@ -6,7 +6,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
 
 public class GraveNbtHelper {
-
     static public DefaultedList<ItemStack> readInventory(String key, NbtCompound nbt) {
         if (nbt.contains(key)) {
             int itemCount = nbt.getCompound("ItemCount").getInt(key);
@@ -40,7 +39,42 @@ public class GraveNbtHelper {
         return nbt;
     }
 
-    public static NbtCompound update(NbtCompound nbt) {
+    /**
+     * Upgrades any old graves nbt to newer formats
+     *
+     * @param nbt NbtCompound
+     * @return NbtCompound
+     */
+    public static NbtCompound upgradeOldGraves(NbtCompound nbt) {
+        if (nbt.getType("ItemCount") == 3)
+            nbt = upgradeInventories(nbt);
+
+        if (nbt.contains("noAge"))
+            nbt = upgradeNoAge(nbt);
+
+        return nbt;
+    }
+
+    /**
+     * Converts noAge key to noDecay key while preserving the value.
+     *
+     * @param nbt NbtCompound
+     * @return NbtCompound
+     */
+    private static NbtCompound upgradeNoAge(NbtCompound nbt) {
+        int noAge = nbt.getInt("noAge");
+        nbt.putInt("noDecay", noAge);
+        nbt.remove("noAge");
+        return nbt;
+    }
+
+    /**
+     * Converts the old inventory nbt format to the new format.
+     *
+     * @param nbt NbtCompound
+     * @return NbtCompound
+     */
+    private static NbtCompound upgradeInventories(NbtCompound nbt) {
         // Retrieve the items like normal
         DefaultedList<ItemStack> oldItems = DefaultedList.ofSize(nbt.getInt("ItemCount"), ItemStack.EMPTY);
         Inventories.readNbt(nbt.getCompound("Items"), oldItems);
@@ -56,15 +90,12 @@ public class GraveNbtHelper {
 
         // Create/store new ItemCount format
         NbtCompound itemCount = new NbtCompound();
-
         itemCount.putInt("Items", items.size());
         itemCount.putInt("trinkets", trinkets.size());
-
         nbt.put("ItemCount", itemCount);
 
         // Store the two inventories
         nbt.put("Items", Inventories.writeNbt(new NbtCompound(), items, true));
-
         nbt.put("trinkets", Inventories.writeNbt(new NbtCompound(), trinkets, true));
 
         return nbt;

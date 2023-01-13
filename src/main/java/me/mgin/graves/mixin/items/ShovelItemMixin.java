@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import me.mgin.graves.block.feature.Particles;
 import me.mgin.graves.block.feature.Permission;
 import me.mgin.graves.block.GraveBlockEntity;
-import me.mgin.graves.util.DegradationStateManager;
+import me.mgin.graves.util.DecayStateManager;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ShovelItem;
@@ -32,10 +32,10 @@ public class ShovelItemMixin {
         Hand hand = context.getHand();
 
         if (blockEntity instanceof GraveBlockEntity graveEntity
-                && Permission.playerCanAttemptRetrieve(player, graveEntity))
+            && Permission.playerCanAttemptRetrieve(player, graveEntity))
             if (hand == Hand.MAIN_HAND
-                    && (graveEntity.getNoAge() == 1 || DegradationStateManager.decreaseDegradationState(world, pos))) {
-                graveEntity.setNoAge(0);
+                && (graveEntity.getNoDecay() == 1 || DecayStateManager.decreaseDecayState(world, pos))) {
+                graveEntity.setNoDecay(0);
                 if (!player.isCreative())
                     player.getStackInHand(hand).damage(1, player, (p) -> p.sendToolBreakStatus(hand));
                 Particles.spawnAtBlock(world, pos, ParticleTypes.WAX_OFF, 8, 3);

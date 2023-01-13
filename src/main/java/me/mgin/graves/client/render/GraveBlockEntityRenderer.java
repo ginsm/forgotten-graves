@@ -30,7 +30,7 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
                        VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
         BlockState state = graveEntity.getCachedState();
-        int blockAge = ((GraveBlock) state.getBlock()).getWeathered();
+        int blockDecay = ((GraveBlock) state.getBlock()).getWeathered();
         Direction direction = state.get(Properties.HORIZONTAL_FACING);
 
         matrices.push();
@@ -40,18 +40,18 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
         switch (direction) {
             case NORTH:
                 matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
-                matrices.translate(-1.2, 0.25 - (blockAge * 0.03), -0.99);
+                matrices.translate(-1.2, 0.25 - (blockDecay * 0.03), -0.99);
                 break;
             case SOUTH:
-                matrices.translate(0.15, 0.25 - (blockAge * 0.03), 0.34);
+                matrices.translate(0.15, 0.25 - (blockDecay * 0.03), 0.34);
                 break;
             case EAST:
                 matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90));
-                matrices.translate(-1.2, 0.25 - (blockAge * 0.03), 0.34);
+                matrices.translate(-1.2, 0.25 - (blockDecay * 0.03), 0.34);
                 break;
             case WEST:
                 matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(270));
-                matrices.translate(0.15, 0.25 - (blockAge * 0.03), -0.99);
+                matrices.translate(0.15, 0.25 - (blockDecay * 0.03), -0.99);
                 break;
             case UP:
             case DOWN:
@@ -60,13 +60,13 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 
         matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(50));
 
-        Skulls.renderSkull(graveEntity, modelLoader, blockAge, matrices, light, vertexConsumers);
+        Skulls.renderSkull(graveEntity, modelLoader, blockDecay, matrices, light, vertexConsumers);
 
         matrices.pop();
 
         // Outline
         if (graveEntity.getGraveOwner() != null
-                || (graveEntity.getCustomName() != null && !graveEntity.getCustomName().isEmpty())) {
+            || (graveEntity.getCustomName() != null && !graveEntity.getCustomName().isEmpty())) {
             String text;
 
             if (graveEntity.getGraveOwner() != null) {
@@ -107,7 +107,7 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
             matrices.translate(-width / 2.0, -4.5, 0);
 
             this.textRenderer.draw(text, 0, 0, 0xFFFFFF, false, matrices.peek().getPositionMatrix(), vertexConsumers,
-                    false, 0, light);
+                false, 0, light);
             matrices.pop();
         }
     }

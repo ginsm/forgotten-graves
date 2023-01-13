@@ -27,7 +27,7 @@ public class GraveBlockEntity extends BlockEntity {
     private GameProfile graveOwner;
     private BlockState state;
     private int xp;
-    private int noAge;
+    private int noDecay;
     private String customName;
     private String graveSkull;
     private final Map<String, DefaultedList<ItemStack>> inventories = new HashMap<>() {
@@ -39,7 +39,7 @@ public class GraveBlockEntity extends BlockEntity {
         this.customName = "";
         this.graveSkull = "";
         this.xp = 0;
-        this.noAge = 0;
+        this.noDecay = 0;
         setState(state);
     }
 
@@ -166,18 +166,18 @@ public class GraveBlockEntity extends BlockEntity {
      *
      * @param aging
      */
-    public void setNoAge(int aging) {
-        this.noAge = aging;
+    public void setNoDecay(int aging) {
+        this.noDecay = aging;
         this.markDirty();
     }
 
     /**
-     * Get the current noAge value.
+     * Get the current noDecay value.
      *
      * @return int
      */
-    public int getNoAge() {
-        return this.noAge;
+    public int getNoDecay() {
+        return this.noDecay;
     }
 
     /**
@@ -236,7 +236,7 @@ public class GraveBlockEntity extends BlockEntity {
         }
 
         nbt.putInt("XP", xp);
-        nbt.putInt("noAge", noAge);
+        nbt.putInt("noDecay", noDecay);
 
         if (graveOwner != null)
             nbt.put("GraveOwner", NbtHelper.writeGameProfile(new NbtCompound(), graveOwner));
@@ -251,8 +251,7 @@ public class GraveBlockEntity extends BlockEntity {
     @Override
     public void readNbt(NbtCompound nbt) {
         // Needed for backwards compatibility
-        if (nbt.getType("ItemCount") == 3)
-            nbt = GraveNbtHelper.update(nbt);
+        nbt = GraveNbtHelper.upgradeOldGraves(nbt);
         super.readNbt(nbt);
 
         // Store loaded inventories
@@ -271,7 +270,7 @@ public class GraveBlockEntity extends BlockEntity {
         }
 
         this.xp = nbt.getInt("XP");
-        this.noAge = nbt.getInt("noAge");
+        this.noDecay = nbt.getInt("noDecay");
 
         if (nbt.contains("GraveOwner"))
             this.graveOwner = NbtHelper.toGameProfile(nbt.getCompound("GraveOwner"));

@@ -1,6 +1,6 @@
 package me.mgin.graves.mixin;
 
-import me.mgin.graves.block.GraveBlockEntity;
+import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.block.GraveBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -16,28 +16,28 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(Explosion.class)
 public class ExplosionMixin {
-	@Shadow
-	@Final
-	private World world;
-	private BlockPos lastPos;
+    @Shadow
+    @Final
+    private World world;
+    private BlockPos lastPos;
 
-	@ModifyVariable(method = "affectWorld", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
-	private BlockPos modifyAffectedBlocks(BlockPos old) {
-		lastPos = old;
-		return old;
-	}
+    @ModifyVariable(method = "affectWorld", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
+    private BlockPos modifyAffectedBlocks(BlockPos old) {
+        lastPos = old;
+        return old;
+    }
 
-	@ModifyVariable(method = "affectWorld", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
-	private BlockState modifyAffectedBlocks(BlockState old) {
-		if (GraveBlocks.GRAVE_MAP.containsKey(old.getBlock()))  {
-			BlockEntity blockEntity = world.getBlockEntity(lastPos);
+    @ModifyVariable(method = "affectWorld", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
+    private BlockState modifyAffectedBlocks(BlockState old) {
+        if (GraveBlocks.GRAVE_MAP.containsKey(old.getBlock())) {
+            BlockEntity blockEntity = world.getBlockEntity(lastPos);
 
-			if (blockEntity instanceof GraveBlockEntity graveEntity) {
-				if (graveEntity.getGraveOwner() != null)
-					return Blocks.AIR.getDefaultState();
-			}
-		}
+            if (blockEntity instanceof GraveBlockEntity graveEntity) {
+                if (graveEntity.getGraveOwner() != null)
+                    return Blocks.AIR.getDefaultState();
+            }
+        }
 
-		return old;
-	}
+        return old;
+    }
 }

@@ -1,7 +1,7 @@
 package me.mgin.graves.networking;
 
 import me.mgin.graves.Graves;
-import me.mgin.graves.networking.packets.*;
+import me.mgin.graves.networking.packet.*;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;

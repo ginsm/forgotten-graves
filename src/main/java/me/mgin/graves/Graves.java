@@ -8,18 +8,19 @@ import java.util.Map;
 import com.mojang.authlib.GameProfile;
 
 import me.mgin.graves.api.InventoriesApi;
-import me.mgin.graves.inventories.Inventorio;
+import me.mgin.graves.block.GraveBlocks;
+import me.mgin.graves.command.Commands;
+import me.mgin.graves.event.Events;
+import me.mgin.graves.inventory.Inventorio;
+import me.mgin.graves.item.Items;
 import me.mgin.graves.networking.ConfigNetworking;
+import me.mgin.graves.networking.event.ConfigNetworkingEvents;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import me.mgin.graves.config.GravesConfig;
-import me.mgin.graves.inventories.BackSlot;
-import me.mgin.graves.inventories.Trinkets;
-import me.mgin.graves.inventories.Vanilla;
-import me.mgin.graves.registry.ServerBlocks;
-import me.mgin.graves.registry.ServerCommands;
-import me.mgin.graves.registry.ServerEvents;
-import me.mgin.graves.registry.ServerItems;
+import me.mgin.graves.inventory.BackSlot;
+import me.mgin.graves.inventory.Trinkets;
+import me.mgin.graves.inventory.Vanilla;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -34,11 +35,12 @@ public class Graves implements ModInitializer {
     @Override
     public void onInitialize() {
         // Graves Registry
-        ServerBlocks.register(MOD_ID, BRAND_BLOCK);
-        ServerItems.register(MOD_ID, BRAND_BLOCK);
-        ServerEvents.register();
-        ServerCommands.register();
+        GraveBlocks.registerServerBlocks(MOD_ID, BRAND_BLOCK);
+        Items.registerItems(MOD_ID, BRAND_BLOCK);
+        Commands.registerServerCommands();
+        Events.registerServerEvents();
         ConfigNetworking.registerC2SPackets();
+        ConfigNetworkingEvents.registerServerEvents();
 
         // Register inventory classes
         addInventory("vanilla", Vanilla.class);

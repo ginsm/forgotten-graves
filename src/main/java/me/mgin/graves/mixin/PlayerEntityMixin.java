@@ -1,6 +1,6 @@
 package me.mgin.graves.mixin;
 
-import me.mgin.graves.block.feature.PlaceGrave;
+import me.mgin.graves.block.utility.PlaceGrave;
 import me.mgin.graves.config.GravesConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

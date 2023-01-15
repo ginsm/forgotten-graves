@@ -5,10 +5,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import me.mgin.graves.block.feature.Particles;
-import me.mgin.graves.block.feature.Permission;
-import me.mgin.graves.block.GraveBlockEntity;
-import me.mgin.graves.util.DecayStateManager;
+import me.mgin.graves.block.utility.Particles;
+import me.mgin.graves.block.utility.Permission;
+import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.block.decay.DecayStateManager;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ShovelItem;

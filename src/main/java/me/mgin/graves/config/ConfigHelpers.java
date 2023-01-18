@@ -11,6 +11,9 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.PacketByteBuf;
 
+import java.lang.reflect.Field;
+import java.util.Objects;
+
 public class ConfigHelpers {
     /**
      * Converts the GravesConfig instance into a string.
@@ -94,5 +97,29 @@ public class ConfigHelpers {
         }
 
         return config;
+    }
+
+    /**
+     * Dynamically set a field based on option name.
+     *
+     * @param option String
+     * @param value  Object
+     */
+    public void setDynamicField(String option, Object value) {
+        try {
+            Field target = determineSubClass(option);
+            Field field = Objects.requireNonNull(target).getType().getDeclaredField(option);
+            field.set(target.get(this), value);
+        } catch (NullPointerException | NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static private Field determineSubClass(String option) throws NoSuchFieldException {
+        for (String subclass : ConfigOptions.subclass) {
+            if (ConfigOptions.getSubclass(subclass).contains(option))
+                return GravesConfig.class.getDeclaredField(subclass);
+        }
+        return null;
     }
 }

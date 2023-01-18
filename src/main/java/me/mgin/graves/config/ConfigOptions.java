@@ -56,8 +56,8 @@ public class ConfigOptions {
     static {
         all.addAll(main);
         all.addAll(itemDecay);
-        all.addAll(server);
         all.addAll(floating);
+        all.addAll(server);
     }
 
     static public Set<String> enums = new HashSet<>() {{

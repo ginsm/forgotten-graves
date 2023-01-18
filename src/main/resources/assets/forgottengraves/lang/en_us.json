@@ -51,8 +51,9 @@
   "command.generic:error.not-player": "[Graves] You must run this as a valid player.",
 
   "command.config.reset:success": "[Graves] Your config has been reset to the defaults.",
-  "command.config.set:success": "[Graves] \"%s\" has been set to %s.",
-  "command.config.set:success-client-options": "[Graves] %s has been %s the client options.",
+  "command.config.set:success": "[Graves] \"%s\" has been set to %s%s.",
+  "command.config.set:success-server": " on the server",
+  "command.config.set:success-client-options": "[Graves] %s has been %s the client options%s.",
   "command.config.set:success-client-options:add": "added to",
   "command.config.set:success-client-options:remove": "removed from",
   "command.config.set:error.invalid-enum-value": "[Graves] Please choose a suggested option for %s.",
@@ -64,5 +65,6 @@
 
   "command.server.config.sync:error.unable-to-update": "[Graves] The server config could not be updated.",
   "command.server.config.sync:success": "[Graves] The server config has been updated.",
-  "command.server.config.reload:success": "[Graves] The server config has been reloaded."
+  "command.server.config.reload:success": "[Graves] The server config has been reloaded.",
+  "command.server.config.reset:success": "[Graves] The server config has been reset."
 }

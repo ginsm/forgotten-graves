@@ -22,7 +22,7 @@ public class CommandContextData {
     public String ACTION = null;
     public boolean IS_SERVER = false;
 
-    public boolean SEND_COMMAND_FEEDBACK = false;
+    public boolean SEND_COMMAND_FEEDBACK;
 
     /**
      * Parses the context to gather argument data (type, option, value) and
@@ -35,6 +35,7 @@ public class CommandContextData {
         this.TYPE = determineArgumentType(context);
         this.OPTION = determineOptionName(context, this.TYPE.equals("literal"));
         this.VAL = getArgumentValue(context, this.TYPE, this.OPTION);
+        System.out.println("reached");
 
         // Determine whether command feedback should be sent or not
         this.SEND_COMMAND_FEEDBACK = context.getSource()
@@ -90,24 +91,19 @@ public class CommandContextData {
     }
 
     /**
-     * Gets the argument value based on type and option.
+     * Parses the last node of context.getNodes() to determine argument type.
      *
      * @param context CommandContext.ServerCommandSource
-     * @param type    String
-     * @param option  String
-     * @return Object
+     * @return String
      */
-    private Object getArgumentValue(CommandContext<ServerCommandSource> context, String type, String option) {
-        return switch (type) {
-            case "BoolArgumentType" -> context.getArgument(option, Boolean.class);
-            case "integer" -> context.getArgument(option, Integer.class);
-            case "string" -> {
-                String value = context.getArgument(option, String.class);
-                if (ConfigOptions.enums.contains(option)) yield determineEnumValue(value, option);
-                yield value;
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + type);
-        };
+    private String determineArgumentType(CommandContext<ServerCommandSource> context) {
+        String node = context.getNodes().get(context.getNodes().size() - 1).toString();
+        Pattern pattern = Pattern.compile("(integer|BoolArgumentType|string|literal)");
+        Matcher matcher = pattern.matcher(node);
+
+        if (!matcher.find()) throw new IllegalStateException("Unknown Argument Type: " + node);
+
+        return matcher.group();
     }
 
     /**
@@ -118,25 +114,39 @@ public class CommandContextData {
      * @return String
      */
     private String determineOptionName(CommandContext<ServerCommandSource> context, boolean literal) {
+        // Commands with type "literal" need to look at the input in order to
+        // derive the config option's name.
+        if (literal) {
+            String[] input = context.getInput().split(" ");
+            return input[ArrayUtil.indexOf(input, "set") + 1];
+        }
+
         // Gathers the option name from the argument name.
         List<ParsedCommandNode<ServerCommandSource>> nodes = context.getNodes();
         return nodes.get(nodes.size() - 1).getNode().getName();
     }
 
     /**
-     * Parses the last node of context.getNodes() to determine argument type.
+     * Gets the argument value based on type and option.
      *
      * @param context CommandContext.ServerCommandSource
-     * @return String
+     * @param type    String
+     * @param option  String
+     * @return Object
      */
-    private String determineArgumentType(CommandContext<ServerCommandSource> context) {
-        String node = context.getNodes().get(context.getNodes().size() - 1).toString();
-        Pattern pattern = Pattern.compile("(integer|BoolArgumentType|string)");
-        Matcher matcher = pattern.matcher(node);
-
-        if (!matcher.find()) throw new IllegalStateException("Unknown Argument Type: " + node);
-
-        return matcher.group();
+    private Object getArgumentValue(CommandContext<ServerCommandSource> context, String type, String option) {
+        String[] input = context.getInput().split(" ");
+        return switch (type) {
+            case "BoolArgumentType" -> context.getArgument(option, Boolean.class);
+            case "integer" -> context.getArgument(option, Integer.class);
+            case "literal" -> input[input.length - 1];
+            case "string" -> {
+                String value = context.getArgument(option, String.class);
+                if (ConfigOptions.enums.contains(option)) yield determineEnumValue(value, option);
+                yield value;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + type);
+        };
     }
 
     /**

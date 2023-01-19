@@ -108,13 +108,13 @@ public class Commands {
         CommandRegistrationCallback.EVENT.register(
             (dispatcher, dedicated, access) -> dispatcher.register(
                 literal("graves")
+                    // Client config commands
+                    .then(commonConfigCommands)
                     // Server config commands
                     .then(serverCommands
                         .then(commonConfigCommands)
                         .then(serverConfigCommands)
                     )
-                    // Client config commands
-                    .then(commonConfigCommands)
             )
         );
     }

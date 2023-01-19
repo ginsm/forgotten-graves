@@ -36,23 +36,24 @@ public class RetrieveGrave {
             if (!Permission.playerCanOverride(player))
                 return false;
 
-        // Store old inventories as one big inventory
-        DefaultedList<ItemStack> oldInventory = DefaultedList.of();
-
-        for (InventoriesApi api : Graves.inventories) {
-            DefaultedList<ItemStack> inventory = api.getInventory(player);
-
-            // Skip empty inventories
-            if (inventory == null) continue;
-
-            oldInventory.addAll(inventory);
-            api.clearInventory(player);
-        }
-
         // Resolve drop type
         GraveDropType dropType = GravesConfig.resolveConfig("dropType", player.getGameProfile()).main.dropType;
 
         if (dropType == GraveDropType.INVENTORY) {
+            // Store old inventories as one big inventory
+            DefaultedList<ItemStack> oldInventory = DefaultedList.of();
+
+            for (InventoriesApi api : Graves.inventories) {
+                DefaultedList<ItemStack> inventory = api.getInventory(player);
+
+                // Skip empty inventories
+                if (inventory == null) continue;
+
+                oldInventory.addAll(inventory);
+                api.clearInventory(player);
+            }
+
+            // Keeps track of
             DefaultedList<ItemStack> extraItems = DefaultedList.of();
 
             // Equip inventories

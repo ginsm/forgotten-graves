@@ -50,7 +50,7 @@
   "command.generic:error.not-yet-implemented": "[Graves] That command hasn't been implemented yet.",
   "command.generic:error.not-player": "[Graves] You must run this as a valid player.",
 
-  "command.config.reset:success": "[Graves] Your config has been reset to the defaults.",
+  "command.config.reset:success": "[Graves] Your config has been reset.",
   "command.config.set:success": "[Graves] \"%s\" has been set to %s%s.",
   "command.config.set:success-server": " on the server",
   "command.config.set:success-client-options": "[Graves] %s has been %s the client options%s.",

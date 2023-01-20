@@ -24,8 +24,8 @@
   "text.autoconfig.forgottengraves.option.main.maxCustomXPLevel": "Max Custom XP Level",
   "text.autoconfig.forgottengraves.option.main.maxCustomXPLevel.@Tooltip": "(Custom XP) What's the max amount of levels that you want stored?",
 
-  "text.autoconfig.forgottengraves.option.itemDecay": "Decay Settings",
-  "text.autoconfig.forgottengraves.option.itemDecay.decayModifier": "Decay Modifier",
+  "text.autoconfig.forgottengraves.option.itemDecay": "Item Decay Settings",
+  "text.autoconfig.forgottengraves.option.itemDecay.decayModifier": "Item Decay Modifier",
   "text.autoconfig.forgottengraves.option.itemDecay.decayModifier.@Tooltip": "How quickly should an item decay (0-100)?",
   "text.autoconfig.forgottengraves.option.itemDecay.decayBreaksItems": "Decay Breaks Items",
   "text.autoconfig.forgottengraves.option.itemDecay.decayBreaksItems.@Tooltip": "Should item decay ever completely break an item?",

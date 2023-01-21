@@ -76,7 +76,6 @@ public class Commands {
             )
             // Client Options
             .then(literal("clientOptions").requires(s -> s.hasPermissionLevel(2))
-                .then(literal("list")) // TODO
                 .then(literal("add")
                     .then(argument("clientOptions:add", StringArgumentType.string())
                         .suggests(ConfigOptions.suggest(
@@ -99,6 +98,7 @@ public class Commands {
         LiteralArgumentBuilder<ServerCommandSource> commonConfigCommands = literal("config")
             .then(literal("reload").executes(ReloadConfigCommand::execute))
             .then(literal("reset").executes(ResetConfigCommand::execute))
+            .then(literal("list").executes(ListConfigCommand::execute))
             .then(setConfigCommands);
 
         LiteralArgumentBuilder<ServerCommandSource> serverConfigCommands = literal("config")

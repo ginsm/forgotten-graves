@@ -1,22 +1,16 @@
 package me.mgin.graves.event.server;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
-import me.mgin.graves.block.utility.Particles;
 import me.mgin.graves.block.entity.GraveBlockEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import me.mgin.graves.event.item.Honeycomb;
+import me.mgin.graves.event.item.Shovel;
+import me.mgin.graves.event.item.Skull;
+import me.mgin.graves.event.item.DecayItem;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.item.*;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -26,20 +20,36 @@ import net.minecraft.world.World;
 public class UseBlockHandler {
 
     public static ActionResult handleEvent(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
-        BlockEntity blockEntity = world.getBlockEntity(hitResult.getBlockPos());
+        BlockPos pos = hitResult.getBlockPos();
+        BlockEntity blockEntity = world.getBlockEntity(pos);
 
         if (blockEntity instanceof GraveBlockEntity graveEntity) {
             ItemStack itemStack = player.getStackInHand(hand);
-            Item itemInHand = itemStack.getItem();
+            Item item = itemStack.getItem();
 
+            // Prevent Decay
+            if (Honeycomb.use(player, world, hand, pos, item, graveEntity)) {
+                return ActionResult.SUCCESS;
+            };
+
+            // Remove Decay
+            if (Shovel.use(player, world, hand, pos, item, graveEntity)) {
+                return ActionResult.SUCCESS;
+            }
+
+            // Skulls/Player Heads
+            if (Skull.use(world, hand, pos, item, itemStack, graveEntity)) {
+                return ActionResult.SUCCESS;
+            }
+
+            // Vines, Mushrooms
+            if (DecayItem.use(player, world, hand, pos, item, graveEntity)) {
+                return ActionResult.SUCCESS;
+            }
+
+            // Prevent block placement and restricted item usage if the player isn't sneaking
             if (!player.isSneaking()) {
-                String itemName = itemInHand.asItem().toString();
-
-                if (graveEntity.getGraveOwner() == null && validSkulls.contains(itemName))
-                    return handlePlayerHeads(graveEntity, world, itemStack, itemName);
-
-                // Prevent block placement and unintentional item usage
-                if (Item.BLOCK_ITEMS.containsValue(itemInHand) || restrictedItems.containsValue(itemInHand))
+                if (Item.BLOCK_ITEMS.containsValue(item) || restrictedItems.containsValue(item))
                     return ActionResult.FAIL;
             }
         }
@@ -56,58 +66,4 @@ public class UseBlockHandler {
             put(Items.FLINT_AND_STEEL, Items.FLINT_AND_STEEL.asItem());
         }
     };
-
-    /**
-     * This method determines the type of head (normal head or custom player head)
-     * and assigns it to the clicked on GraveBlockEntity so that it can be
-     * displayed.
-     * <p>
-     *
-     * @param graveEntity
-     * @param world
-     * @param itemStack
-     * @param itemName
-     * @return
-     */
-    private static ActionResult handlePlayerHeads(GraveBlockEntity graveEntity, World world, ItemStack itemStack,
-                                                  String itemName) {
-        NbtCompound baseNbt = itemStack.getNbt();
-        BlockPos pos = graveEntity.getPos();
-        BlockState state = graveEntity.getState();
-        String graveSkull;
-
-        if (baseNbt != null) {
-            NbtCompound startCompound = baseNbt.contains("tag") ? baseNbt.getCompound("tag") : baseNbt;
-
-            graveSkull = startCompound.getCompound("SkullOwner").getCompound("Properties").getList("textures", 10)
-                .getCompound(0).getString("Value");
-
-            if (!graveSkull.equals("") && !graveSkull.equals(graveEntity.getGraveSkull()))
-                graveEntity.setGraveSkull(graveSkull);
-            else
-                return ActionResult.FAIL;
-        } else {
-            graveEntity.setGraveSkull(itemName);
-        }
-
-        // Required for client sync
-        world.updateListeners(pos, state, state, Block.NOTIFY_ALL);
-
-        // Polish
-        world.playSound(null, pos, SoundEvents.BLOCK_ROOTED_DIRT_HIT, SoundCategory.BLOCKS, 1f, 1f);
-        Particles.spawnAtBlockBottom(world, pos, ParticleTypes.SOUL, 6, 0.025, 0.125);
-
-        return ActionResult.SUCCESS;
-    }
-
-    public static HashSet<String> validSkulls = new HashSet<>() {
-        {
-            add("wither_skeleton_skull");
-            add("skeleton_skull");
-            add("player_head");
-            add("zombie_head");
-            add("creeper_head");
-        }
-    };
-
 }

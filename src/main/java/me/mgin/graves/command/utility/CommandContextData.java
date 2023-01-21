@@ -35,7 +35,6 @@ public class CommandContextData {
         this.TYPE = determineArgumentType(context);
         this.OPTION = determineOptionName(context, this.TYPE.equals("literal"));
         this.VAL = getArgumentValue(context, this.TYPE, this.OPTION);
-        System.out.println("reached");
 
         // Determine whether command feedback should be sent or not
         this.SEND_COMMAND_FEEDBACK = context.getSource()

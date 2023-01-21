@@ -47,7 +47,6 @@ public class Skull {
         }
 
         // Required for client sync
-        // TODO - Implement this for when a player can't break a grave
         world.updateListeners(pos, state, state, Block.NOTIFY_ALL);
 
         // Polish

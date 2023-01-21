@@ -49,6 +49,7 @@
 
   "command.generic:error.not-yet-implemented": "[Graves] That command hasn't been implemented yet.",
   "command.generic:error.not-player": "[Graves] You must run this as a valid player.",
+  "command.generic.config.list:null": "[Graves] An error occurred while trying to print the config.",
 
   "command.config.reset:success": "[Graves] Your config has been reset.",
   "command.config.set:success": "[Graves] \"%s\" has been set to %s%s.",
@@ -66,5 +67,7 @@
   "command.server.config.sync:error.unable-to-update": "[Graves] The server config could not be updated.",
   "command.server.config.sync:success": "[Graves] The server config has been updated.",
   "command.server.config.reload:success": "[Graves] The server config has been reloaded.",
-  "command.server.config.reset:success": "[Graves] The server config has been reset."
+  "command.server.config.reset:success": "[Graves] The server config has been reset.",
+  "command.server.config.list": "[Graves] Here's the server config: %s",
+  "command.client.config.list": "[Graves] Here's your config: %s"
 }

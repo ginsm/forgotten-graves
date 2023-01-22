@@ -22,15 +22,14 @@ public class Events {
      * Registers all generic server-side event handlers.
      */
     public static void registerServerEvents() {
-        // Handle player using blocks
+        // Handle player using grave
         UseBlockCallback.EVENT.register(UseBlockHandler::handleEvent);
 
-        // Handle player breaking blocks
+        // Handle player breaking grave
         PlayerBlockBreakEvents.BEFORE.register(
             (World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity entity) ->
                 PlayerBlockBreakHandler.handleBeforeEvent(player, entity)
         );
-
 
         // Needed to override trinket drop behavior
         if (FabricLoader.getInstance().isModLoaded("trinkets"))

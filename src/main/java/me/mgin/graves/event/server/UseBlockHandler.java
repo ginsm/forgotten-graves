@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import me.mgin.graves.block.entity.GraveBlockEntity;
-import me.mgin.graves.event.item.Honeycomb;
-import me.mgin.graves.event.item.Shovel;
-import me.mgin.graves.event.item.Skull;
-import me.mgin.graves.event.item.DecayItem;
+import me.mgin.graves.event.server.useblock.item.Honeycomb;
+import me.mgin.graves.event.server.useblock.item.Shovel;
+import me.mgin.graves.event.server.useblock.item.Skull;
+import me.mgin.graves.event.server.useblock.item.DecayItem;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -19,6 +19,16 @@ import net.minecraft.world.World;
 
 public class UseBlockHandler {
 
+    /**
+     * This event handler controls what items can be used on a grave
+     * and what effects they have.
+     *
+     * @param player PlayerEntity
+     * @param world World
+     * @param hand Hand
+     * @param hitResult BlockHitResult
+     * @return ActionResult
+     */
     public static ActionResult handleEvent(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
         BlockPos pos = hitResult.getBlockPos();
         BlockEntity blockEntity = world.getBlockEntity(pos);
@@ -28,22 +38,22 @@ public class UseBlockHandler {
             Item item = itemStack.getItem();
 
             // Prevent Decay
-            if (Honeycomb.use(player, world, hand, pos, item, graveEntity)) {
+            if (Honeycomb.handle(player, world, hand, pos, item, graveEntity)) {
                 return ActionResult.SUCCESS;
             };
 
             // Remove Decay
-            if (Shovel.use(player, world, hand, pos, item, graveEntity)) {
+            if (Shovel.handle(player, world, hand, pos, item, graveEntity)) {
                 return ActionResult.SUCCESS;
             }
 
             // Skulls/Player Heads
-            if (Skull.use(world, hand, pos, item, itemStack, graveEntity)) {
+            if (Skull.handle(world, hand, pos, item, itemStack, graveEntity)) {
                 return ActionResult.SUCCESS;
             }
 
             // Vines, Mushrooms
-            if (DecayItem.use(player, world, hand, pos, item, graveEntity)) {
+            if (DecayItem.handle(player, world, hand, pos, item, graveEntity)) {
                 return ActionResult.SUCCESS;
             }
 

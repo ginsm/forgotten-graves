@@ -1,4 +1,4 @@
-package me.mgin.graves.event.item;
+package me.mgin.graves.event.server.useblock.item;
 
 import me.mgin.graves.block.decay.DecayStateManager;
 import me.mgin.graves.block.entity.GraveBlockEntity;
@@ -15,8 +15,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DecayItem {
-    public static Boolean use(PlayerEntity player, World world, Hand hand, BlockPos pos,
-                              Item item, GraveBlockEntity entity) {
+    /**
+     * This event handler determines whether a decay item is in the main hand,
+     * whether the grave is unowned or is owned by the player, and then increases
+     * the amount of decay on the grave if all criteria is met.
+     *
+     * @param player PlayerEntity
+     * @param world World
+     * @param hand Hand
+     * @param pos BlockPos
+     * @param item Itm
+     * @param entity GraveBlockEntity
+     * @return Boolean
+     */
+    public static Boolean handle(PlayerEntity player, World world, Hand hand, BlockPos pos,
+                                 Item item, GraveBlockEntity entity) {
         boolean isDecayItem = decayItems.contains(item);
         boolean hasOwner = entity.getGraveOwner() != null;
 

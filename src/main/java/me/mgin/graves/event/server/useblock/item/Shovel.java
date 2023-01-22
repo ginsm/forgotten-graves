@@ -1,4 +1,4 @@
-package me.mgin.graves.event.item;
+package me.mgin.graves.event.server.useblock.item;
 
 import me.mgin.graves.block.decay.DecayStateManager;
 import me.mgin.graves.block.entity.GraveBlockEntity;
@@ -19,8 +19,21 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class Shovel {
-    public static Boolean use(PlayerEntity player, World world, Hand hand, BlockPos pos,
-                              Item item, GraveBlockEntity entity) {
+    /**
+     * This event handler determines whether a shovel is in the main hand,
+     * whether the grave is unowned or is owned by the player, and then reduces
+     * the amount of decay on the grave if all criteria is met.
+     *
+     * @param player PlayerEntity
+     * @param world World
+     * @param hand Hand
+     * @param pos BlockPos
+     * @param item Item
+     * @param entity GraveBlockEntity
+     * @return Boolean
+     */
+    public static Boolean handle(PlayerEntity player, World world, Hand hand, BlockPos pos,
+                                 Item item, GraveBlockEntity entity) {
         // Cases in which an early termination is necessary
         boolean isShovelItem = item instanceof ShovelItem;
         boolean canRetrieve = Permission.playerCanAttemptRetrieve(player, entity);

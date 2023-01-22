@@ -1,4 +1,4 @@
-package me.mgin.graves.event.item;
+package me.mgin.graves.event.server.useblock.item;
 
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.block.utility.Particles;
@@ -16,9 +16,25 @@ import net.minecraft.world.World;
 
 import java.util.HashSet;
 
+/**
+ * This event handler
+ */
 public class Skull {
-    public static Boolean use(World world, Hand hand, BlockPos pos,
-                              Item item, ItemStack stack, GraveBlockEntity entity) {
+    /**
+     * This event handler determines whether a player is holding a skull and clicking
+     * on an unowned grave. If that is the case, the grave will be set to display the
+     * skull; the skull is not consumed in the process.
+     *
+     * @param world World
+     * @param hand Hand
+     * @param pos BlockPos
+     * @param item Item
+     * @param stack ItemStack
+     * @param entity GraveBlockEntity
+     * @return Boolean
+     */
+    public static Boolean handle(World world, Hand hand, BlockPos pos,
+                                 Item item, ItemStack stack, GraveBlockEntity entity) {
         // Cases in which an early termination is necessary
         boolean hasOwner = entity.getGraveOwner() != null;
         boolean isValidSkull = validSkulls.contains(item.asItem().toString());

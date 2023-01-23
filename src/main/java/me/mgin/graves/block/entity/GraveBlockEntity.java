@@ -295,16 +295,6 @@ public class GraveBlockEntity extends BlockEntity {
         return tag;
     }
 
-    /**
-     * When called on the server, schedules a BlockEntity sync to client.
-     *
-     * @param world World
-     * @param pos BlockPos
-     */
-    public void sync(World world, BlockPos pos) {
-        ((ServerWorld) world).getChunkManager().markForUpdate(pos);
-    }
-
     @Nullable
     @Override
     public Packet<ClientPlayPacketListener> toUpdatePacket() {

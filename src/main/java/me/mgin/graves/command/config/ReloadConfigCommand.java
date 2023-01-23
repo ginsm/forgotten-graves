@@ -41,7 +41,7 @@ public class ReloadConfigCommand {
      */
     private static void executeOnServer(CommandContext<ServerCommandSource> context, CommandContextData data) {
         ServerCommandSource source = context.getSource();
-        Boolean sendCommandFeedback = data.SEND_COMMAND_FEEDBACK;
+        boolean sendCommandFeedback = data.SEND_COMMAND_FEEDBACK;
 
         // Reload the config
         AutoConfig.getConfigHolder(GravesConfig.class).load();
@@ -64,7 +64,7 @@ public class ReloadConfigCommand {
      */
     private static void executeOnClient(CommandContext<ServerCommandSource> context, CommandContextData data) {
         ServerCommandSource source = context.getSource();
-        Boolean sendCommandFeedback = data.SEND_COMMAND_FEEDBACK;
+        boolean sendCommandFeedback = data.SEND_COMMAND_FEEDBACK;
 
         if (source.getEntity() instanceof ServerPlayerEntity player) {
             ServerPlayNetworking.send(player, ConfigNetworking.RELOAD_CONFIG_S2C, PacketByteBufs.create());

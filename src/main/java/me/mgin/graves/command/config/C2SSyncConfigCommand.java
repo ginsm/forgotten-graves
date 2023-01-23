@@ -15,7 +15,7 @@ import net.minecraft.world.GameRules;
 public class C2SSyncConfigCommand {
     static public int execute(CommandContext<ServerCommandSource> context) {
         ServerCommandSource source = context.getSource();
-        Boolean sendCommandFeedback = source.getWorld().getGameRules().getBoolean(GameRules.SEND_COMMAND_FEEDBACK);
+        boolean sendCommandFeedback = source.getWorld().getGameRules().getBoolean(GameRules.SEND_COMMAND_FEEDBACK);
 
         if (source.getEntity() instanceof ServerPlayerEntity player) {
             if (player.hasPermissionLevel(4))

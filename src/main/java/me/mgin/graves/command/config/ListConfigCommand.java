@@ -1,18 +1,13 @@
 package me.mgin.graves.command.config;
 
-import com.google.gson.JsonElement;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.JsonOps;
 import me.mgin.graves.Graves;
 import me.mgin.graves.command.utility.CommandContextData;
 import me.mgin.graves.config.GravesConfig;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;

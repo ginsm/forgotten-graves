@@ -81,6 +81,7 @@ public class ConfigOptions {
         };
     }
 
+    @SafeVarargs
     public static Set<String> buildSet(Set<String>... sets) {
         Set<String> result = new HashSet<>();
         for (Set<String> set : sets) {
@@ -113,7 +114,6 @@ public class ConfigOptions {
             if (option.contains(":")) {
                 original = option; // store original option
                 option = option.split(":")[1];
-                ;
             }
 
             // Do not suggest anything for improper options

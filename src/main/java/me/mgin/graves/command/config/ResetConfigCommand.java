@@ -39,7 +39,7 @@ public class ResetConfigCommand {
      */
     public static void executeOnServer(CommandContext<ServerCommandSource> context, CommandContextData data) {
         ServerCommandSource source = context.getSource();
-        Boolean sendCommandFeedback = data.SEND_COMMAND_FEEDBACK;
+        boolean sendCommandFeedback = data.SEND_COMMAND_FEEDBACK;
 
         // Reset the config
         GravesConfig.setConfig(new GravesConfig());
@@ -63,7 +63,7 @@ public class ResetConfigCommand {
      */
     public static void executeOnClient(CommandContext<ServerCommandSource> context, CommandContextData data) {
         ServerCommandSource source = context.getSource();
-        Boolean sendCommandFeedback = data.SEND_COMMAND_FEEDBACK;
+        boolean sendCommandFeedback = data.SEND_COMMAND_FEEDBACK;
 
         if (source.getEntity() instanceof ServerPlayerEntity player) {
             ServerPlayNetworking.send(player, ConfigNetworking.RESET_CONFIG_S2C, PacketByteBufs.create());

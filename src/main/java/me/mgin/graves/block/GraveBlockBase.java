@@ -101,18 +101,20 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     public void onBreakRetainName(World world, BlockPos pos, PlayerEntity player, GraveBlockEntity graveEntity) {
         Text itemText = Text.Serializer.fromJson(graveEntity.getCustomName());
 
+        // Create named item stack
         ItemStack itemStack = this.getItemStack();
         itemStack.setCustomName(itemText);
-
         ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5,
             (double) pos.getZ() + 0.5, itemStack);
         itemEntity.setToDefaultPickupDelay();
 
+        // Break block
         spawnBreakParticles(world, player, pos, getDefaultState());
-        world.spawnEntity(itemEntity);
         world.removeBlock(pos, false);
-
         world.emitGameEvent(player, GameEvent.BLOCK_DESTROY, pos);
+
+        // Spawn entity
+        world.spawnEntity(itemEntity);
     }
 
 

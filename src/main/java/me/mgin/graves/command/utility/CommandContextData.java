@@ -156,7 +156,7 @@ public class CommandContextData {
      * @return Enum.?
      */
     static private Enum<?> determineEnumValue(String value, String option) {
-        if (!ConfigOptions.validEnumValue(option, (String) value)) return null;
+        if (!ConfigOptions.validEnumValue(option, value)) return null;
         return switch (option) {
             case "retrievalType" -> GraveRetrievalType.valueOf(value);
             case "dropType" -> GraveDropType.valueOf(value);

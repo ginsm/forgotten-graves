@@ -13,25 +13,19 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 
 public class RetrieveGrave {
     static public boolean retrieve(PlayerEntity player, World world, BlockPos pos) {
-        // Edge case checking & variable initialization
-        if (world.isClient)
-            return false;
-
         BlockEntity blockEntity = world.getBlockEntity(pos);
 
-        if (!(blockEntity instanceof GraveBlockEntity graveEntity))
-            return false;
+        // Edge case checking & variable initialization
+        if (!(blockEntity instanceof GraveBlockEntity graveEntity)) return false;
+        if (world.isClient) return false;
+        if (graveEntity.getInventory("Items") == null) return false;
+        if (graveEntity.getGraveOwner() == null) return false;
 
-        graveEntity.sync(world, pos);
-
-        if (graveEntity.getInventory("Items") == null)
-            return false;
-        if (graveEntity.getGraveOwner() == null)
-            return false;
-
+        // Ensure they have proper permission
         if (!Permission.playerCanAttemptRetrieve(player, graveEntity))
             if (!Permission.playerCanOverride(player))
                 return false;
@@ -125,6 +119,7 @@ public class RetrieveGrave {
 
         // Remove block
         world.removeBlock(pos, false);
+        world.emitGameEvent(player, GameEvent.BLOCK_DESTROY, pos);
         return true;
     }
 }

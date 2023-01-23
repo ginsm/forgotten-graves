@@ -40,7 +40,7 @@ public class UseBlockHandler {
             // Prevent Decay
             if (Honeycomb.handle(player, world, hand, pos, item, graveEntity)) {
                 return ActionResult.SUCCESS;
-            };
+            }
 
             // Remove Decay
             if (Shovel.handle(player, world, hand, pos, item, graveEntity)) {

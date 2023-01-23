@@ -46,8 +46,8 @@ public class GraveBlockEntity extends BlockEntity {
     /**
      * Set an inventory inside inventories.
      *
-     * @param key
-     * @param items
+     * @param key String
+     * @param items {@code DefaultedList<ItemStack>}
      */
     public void setInventory(String key, DefaultedList<ItemStack> items) {
         this.inventories.put(key, items);
@@ -57,8 +57,8 @@ public class GraveBlockEntity extends BlockEntity {
     /**
      * Retrieve an inventory from the inventories.
      *
-     * @param key
-     * @return
+     * @param key String
+     * @return {@code DefaultedList<ItemStack>}
      */
     public DefaultedList<ItemStack> getInventory(String key) {
         return this.inventories.get(key);
@@ -67,7 +67,7 @@ public class GraveBlockEntity extends BlockEntity {
     /**
      * Store the grave owner's GameProfile.
      *
-     * @param profile
+     * @param profile GameProfile
      */
     public void setGraveOwner(GameProfile profile) {
         this.graveOwner = profile;
@@ -87,7 +87,7 @@ public class GraveBlockEntity extends BlockEntity {
      * Determines whether the player's gameprofile ID matches the grave owner's
      * gameprofile ID.
      *
-     * @param player
+     * @param player GameProfile
      * @return boolean
      */
     public boolean isGraveOwner(PlayerEntity player) {
@@ -97,7 +97,7 @@ public class GraveBlockEntity extends BlockEntity {
     /**
      * Set the GraveBlockEntity's custom name.
      *
-     * @param name
+     * @param name String
      */
     public void setCustomName(String name) {
         this.customName = name;
@@ -107,7 +107,7 @@ public class GraveBlockEntity extends BlockEntity {
     /**
      * Get the GraveBlockEntity's custom name.
      *
-     * @return
+     * @return String
      */
     public String getCustomName() {
         return customName;
@@ -116,7 +116,7 @@ public class GraveBlockEntity extends BlockEntity {
     /**
      * Determines whether the GraveBlockEntity has a custom name.
      *
-     * @return
+     * @return boolean
      */
     public boolean hasCustomName() {
         return customName.length() > 0;
@@ -125,7 +125,7 @@ public class GraveBlockEntity extends BlockEntity {
     /**
      * Set GraveBlockEntity's current state.
      *
-     * @param state
+     * @param state BlockState
      */
     public void setState(BlockState state) {
         this.state = state;
@@ -134,7 +134,7 @@ public class GraveBlockEntity extends BlockEntity {
     /**
      * Get GraveBlockEntity's current state.
      *
-     * @return
+     * @return BlockState
      */
     public BlockState getState() {
         return state;
@@ -143,7 +143,7 @@ public class GraveBlockEntity extends BlockEntity {
     /**
      * Set the stored XP amount.
      *
-     * @param xp
+     * @param xp int
      */
     public void setXp(int xp) {
         this.xp = xp;
@@ -153,7 +153,7 @@ public class GraveBlockEntity extends BlockEntity {
     /**
      * Get the stored XP amount.
      *
-     * @return
+     * @return int
      */
     public int getXp() {
         return xp;
@@ -164,7 +164,7 @@ public class GraveBlockEntity extends BlockEntity {
      * <p>
      * <strong>Note:</strong> The grave stops aging if the value is set to 1 (one).
      *
-     * @param aging
+     * @param aging int
      */
     public void setNoDecay(int aging) {
         this.noDecay = aging;
@@ -186,7 +186,7 @@ public class GraveBlockEntity extends BlockEntity {
      * <strong>Note:</strong> A SkinURL is the base64 encoded string typically
      * attached to custom player heads.
      *
-     * @param graveSkull
+     * @param graveSkull String
      */
     public void setGraveSkull(String graveSkull) {
         this.graveSkull = graveSkull;
@@ -298,8 +298,8 @@ public class GraveBlockEntity extends BlockEntity {
     /**
      * When called on the server, schedules a BlockEntity sync to client.
      *
-     * @param world
-     * @param pos
+     * @param world World
+     * @param pos BlockPos
      */
     public void sync(World world, BlockPos pos) {
         ((ServerWorld) world).getChunkManager().markForUpdate(pos);

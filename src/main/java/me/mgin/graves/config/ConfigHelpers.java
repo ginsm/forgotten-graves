@@ -81,8 +81,8 @@ public class ConfigHelpers {
      * Resolves whether the option is being handled by the client or server and
      * returns the appropriate GravesConfig instance.
      *
-     * @param option
-     * @param profile
+     * @param option String
+     * @param profile GameProfile
      * @return GravesConfig
      */
     public static GravesConfig resolveConfig(String option, GameProfile profile) {

@@ -29,7 +29,7 @@ public class Trinkets implements InventoriesApi {
     /**
      * Retrieve the amount of trinket slots available.
      *
-     * @param player
+     * @param player PlayerEntity
      * @return int
      */
     @Override
@@ -47,7 +47,7 @@ public class Trinkets implements InventoriesApi {
     /**
      * Retrieve a list containing items occupying the trinket slots.
      *
-     * @param player
+     * @param player PlayerEntity
      * @return List<ItemStack>
      */
     @Override
@@ -69,8 +69,8 @@ public class Trinkets implements InventoriesApi {
     /**
      * Equips all items within a list of ItemStacks into the trinket slots.
      *
-     * @param inventory
-     * @param player
+     * @param inventory {@code List<ItemStack>}
+     * @param player PlayerEntity
      * @return Items that could not be equipped
      */
     @Override
@@ -97,7 +97,7 @@ public class Trinkets implements InventoriesApi {
     /**
      * Remove all items from the trinket slots.
      *
-     * @param player
+     * @param player PlayerEntity
      */
     public void clearInventory(PlayerEntity player) {
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
@@ -112,9 +112,9 @@ public class Trinkets implements InventoriesApi {
      * Equips an item based on a given index; this is meant to be used with
      * setInventory. The index is based on each TrinketSlot -- not group.
      *
-     * @param item
-     * @param player
-     * @param index
+     * @param item ItemStack
+     * @param player PlayerEntity
+     * @param index int
      */
     public static void equipItem(ItemStack item, PlayerEntity player, int index) {
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);

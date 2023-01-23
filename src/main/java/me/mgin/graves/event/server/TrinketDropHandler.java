@@ -10,8 +10,8 @@ public class TrinketDropHandler {
      * TrinketDropCallback handler; this method prevents Trinkets from handling item
      * drops unless graves is set to false.
      *
-     * @param rule
-     * @param entity
+     * @param rule DropRule
+     * @param entity LivingEntity
      * @return DropRule
      */
     public static DropRule handleTrinketDrop(DropRule rule, LivingEntity entity) {

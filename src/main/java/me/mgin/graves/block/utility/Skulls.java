@@ -57,7 +57,8 @@ public class Skulls {
     /**
      * Generates a new SkullBlockEntityModel based on the given model.
      *
-     * @param model
+     * @param model EntityModelLayer
+     * @param modelLoader EntityModelLoader
      * @return SkullBlockEntityModel
      */
     public static SkullBlockEntityModel getSkullModel(EntityModelLayer model, EntityModelLoader modelLoader) {
@@ -69,9 +70,9 @@ public class Skulls {
     /**
      * Generate a RenderLayer for the given SkullType.
      *
-     * @param skullType
-     * @param profile
-     * @return
+     * @param skullType SkullType
+     * @param profile GameProfile
+     * @return RenderLayer
      */
     public static RenderLayer getSkullLayer(SkullBlock.SkullType skullType, @Nullable GameProfile profile) {
         return SkullBlockEntityRenderer.getRenderLayer(skullType, profile);
@@ -98,10 +99,12 @@ public class Skulls {
      * You can see how the custom player head or in game player head data is stored
      * in me.mgin.graves.events.server.UseBlockHandler.
      *
-     * @param graveEntity
-     * @param matrices
-     * @param light
-     * @param vertexConsumers
+     * @param graveEntity GraveBlockEntity
+     * @param modelLoader EntityModelLoader
+     * @param blockAge int
+     * @param matrices MatrixStak
+     * @param light int
+     * @param vertexConsumers VertexConsumerProvider
      */
     public static void renderSkull(GraveBlockEntity graveEntity, EntityModelLoader modelLoader, int blockAge,
                                    MatrixStack matrices, int light, VertexConsumerProvider vertexConsumers) {

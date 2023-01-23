@@ -14,7 +14,8 @@ public class Permission {
      * the player's operator permission level meets the requirements.
      * </p>
      *
-     * @param player
+     * @param player PlayerEntity
+     * @param graveEntity GraveBlockEntity
      * @return boolean
      */
     static public boolean playerCanAttemptRetrieve(PlayerEntity player, GraveBlockEntity graveEntity) {
@@ -28,7 +29,7 @@ public class Permission {
      * Determines whether operator override is enabled, and if the player meets the
      * necessary override level requirements.
      *
-     * @param player
+     * @param player PlayerEntity
      * @return boolean
      */
     static public boolean playerCanOverride(PlayerEntity player) {
@@ -46,7 +47,8 @@ public class Permission {
      * operator level.
      * <p>
      *
-     * @param player
+     * @param player PlayerEntity
+     * @param graveEntity GraveBlockEntity
      * @return boolean
      */
     static public boolean playerCanBreakGrave(PlayerEntity player, GraveBlockEntity graveEntity) {
@@ -69,8 +71,9 @@ public class Permission {
      * operator level.
      * </p>
      *
-     * @param player
-     * @return
+     * @param player PlayerEntity
+     * @param graveEntity GraveBlockEntity
+     * @return boolean
      */
     static public boolean playerCanUseGrave(PlayerEntity player, GraveBlockEntity graveEntity) {
         GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType",

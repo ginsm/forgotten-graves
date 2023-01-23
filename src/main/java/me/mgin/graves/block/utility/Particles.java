@@ -27,12 +27,12 @@ public class Particles {
     /**
      * Spawn particles at the bottom of a block
      *
-     * @param world
-     * @param pos
-     * @param type
-     * @param amount
-     * @param maxVelocity
-     * @param maxStartHeight
+     * @param world World
+     * @param pos BlockPos
+     * @param type DefaultParticleType
+     * @param amount int
+     * @param maxVelocity double
+     * @param maxStartHeight double
      */
     static public void spawnAtBlockBottom(World world, BlockPos pos, DefaultParticleType type, int amount,
                                           double maxVelocity, double maxStartHeight) {

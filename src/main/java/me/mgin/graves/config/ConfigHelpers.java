@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.mojang.authlib.GameProfile;
 
 import me.mgin.graves.Graves;
-import me.mgin.graves.networking.ConfigNetworking;
+import me.mgin.graves.networking.config.ConfigNetworking;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;

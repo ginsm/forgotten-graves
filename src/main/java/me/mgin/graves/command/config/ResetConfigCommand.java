@@ -4,7 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import me.mgin.graves.command.utility.CommandContextData;
 import me.mgin.graves.config.GravesConfig;
-import me.mgin.graves.networking.ConfigNetworking;
+import me.mgin.graves.networking.config.ConfigNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.command.ServerCommandSource;

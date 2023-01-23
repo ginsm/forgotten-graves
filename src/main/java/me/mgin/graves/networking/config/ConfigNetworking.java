@@ -1,7 +1,12 @@
-package me.mgin.graves.networking;
+package me.mgin.graves.networking.config;
 
 import me.mgin.graves.Graves;
-import me.mgin.graves.networking.packet.*;
+import me.mgin.graves.networking.config.packet.ReloadClientConfigS2CPacket;
+import me.mgin.graves.networking.config.packet.RequestConfigS2CPacket;
+import me.mgin.graves.networking.config.packet.ResetClientConfigS2CPacket;
+import me.mgin.graves.networking.config.packet.SetClientConfigS2CPacket;
+import me.mgin.graves.networking.config.packet.StoreConfigC2SPacket;
+import me.mgin.graves.networking.config.packet.SyncConfigC2SPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;

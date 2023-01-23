@@ -1,4 +1,4 @@
-package me.mgin.graves.networking.event;
+package me.mgin.graves.networking.config.event;
 
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;

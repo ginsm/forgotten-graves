@@ -1,4 +1,4 @@
-package me.mgin.graves.networking.packet;
+package me.mgin.graves.networking.config.packet;
 
 import me.mgin.graves.config.GravesConfig;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;

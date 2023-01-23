@@ -57,7 +57,7 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
 
         if (hand != Hand.OFF_HAND)
             if (player.getStackInHand(hand).isEmpty() && Permission.playerCanUseGrave(player, graveEntity))
-                useGrave(player, world, pos);
+                RetrieveGrave.retrieve(player, world, pos);
 
         return ActionResult.PASS;
     }
@@ -66,19 +66,23 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
-        if (world.isClient)
-            return;
+        if (world.isClient) return;
 
-        if (Permission.playerCanBreakGrave(player, graveEntity))
-            if (useGrave(player, world, pos)) return;
-
-        if (graveEntity.getGraveOwner() == null)
-            if (graveEntity.hasCustomName() && !player.isCreative()) {
-                onBreakRetainName(world, pos, player, graveEntity);
+        if (Permission.playerCanBreakGrave(player, graveEntity)) {
+            if (RetrieveGrave.retrieve(player, world, pos)) {
+                spawnBreakParticles(world, player, pos, getDefaultState());
+                super.onBreak(world, pos, state, player);
                 return;
             }
 
-        super.onBreak(world, pos, state, player);
+            if (graveEntity.hasCustomName() && !player.isCreative()) {
+                onBreakRetainName(world, pos, player, graveEntity);
+                super.onBreak(world, pos, state, player);
+                return;
+            }
+        }
+
+        world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
     }
 
     @Override
@@ -129,16 +133,6 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new GraveBlockEntity(pos, state);
-    }
-
-    private boolean useGrave(PlayerEntity player, World world, BlockPos pos) {
-        if (RetrieveGrave.retrieve(player, world, pos)) {
-            // Add break particles?
-            world.removeBlock(pos, false);
-            return true;
-        }
-
-        return false;
     }
 
     public ItemStack getItemStack() {

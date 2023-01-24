@@ -3,8 +3,8 @@ package me.mgin.graves.block.utility;
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
-import me.mgin.graves.config.enums.GraveDropType;
 import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.config.enums.GraveDropType;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -13,7 +13,6 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 
 public class RetrieveGrave {
     static public boolean retrieve(PlayerEntity player, World world, BlockPos pos) {
@@ -119,7 +118,6 @@ public class RetrieveGrave {
 
         // Remove block
         world.removeBlock(pos, false);
-        world.emitGameEvent(player, GameEvent.BLOCK_DESTROY, pos);
         return true;
     }
 }

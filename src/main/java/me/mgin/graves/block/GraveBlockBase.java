@@ -1,9 +1,9 @@
 package me.mgin.graves.block;
 
+import me.mgin.graves.block.decay.DecayingGrave;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.block.utility.Permission;
 import me.mgin.graves.block.utility.RetrieveGrave;
-import me.mgin.graves.block.decay.DecayingGrave;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
@@ -30,7 +30,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
-import net.minecraft.world.event.GameEvent;
 
 public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntityProvider, DecayingGrave, Waterloggable {
     private final BlockDecay blockDecay;
@@ -62,6 +61,15 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         return ActionResult.PASS;
     }
 
+    /**
+     * Either retrieves a player owned grave, drops a named grave, or defaults
+     * to vanilla behavior.
+     *
+     * @param world World
+     * @param pos BlockPos
+     * @param state BlockState
+     * @param player PlayerEntity
+     */
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
@@ -69,19 +77,15 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         if (world.isClient) return;
 
         if (Permission.playerCanBreakGrave(player, graveEntity)) {
-            if (RetrieveGrave.retrieve(player, world, pos)) {
-                spawnBreakParticles(world, player, pos, getDefaultState());
-                super.onBreak(world, pos, state, player);
-                return;
-            }
+            // This will be true if the grave had an owner
+            boolean retrieved = RetrieveGrave.retrieve(player, world, pos);
 
-            if (graveEntity.hasCustomName() && !player.isCreative()) {
+            // Ensures dropped item stack has proper custom name
+            if (!retrieved && graveEntity.hasCustomName() && !player.isCreative())
                 onBreakRetainName(world, pos, player, graveEntity);
-                super.onBreak(world, pos, state, player);
-                return;
-            }
         }
 
+        super.onBreak(world, pos, state, player);
         world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
     }
 
@@ -111,7 +115,6 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         // Break block
         spawnBreakParticles(world, player, pos, getDefaultState());
         world.removeBlock(pos, false);
-        world.emitGameEvent(player, GameEvent.BLOCK_DESTROY, pos);
 
         // Spawn entity
         world.spawnEntity(itemEntity);

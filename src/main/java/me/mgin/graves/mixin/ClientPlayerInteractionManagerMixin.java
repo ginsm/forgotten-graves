@@ -39,18 +39,7 @@ public class ClientPlayerInteractionManagerMixin {
     private void breakBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir, World world, BlockState state,
                             Block block) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
-
-        /*
-            TODO - Test the shit out of this
-            Test whether it works when set to USE ✅
-            Test whether it works when no override/grave robbing ✅
-            Test whether it works when set to BREAK ✅
-            Test whether it works when clientOptions are set for retrievalType ✅
-            Test whether it works on unowned graves ✅
-
-            TODO - Commit all the files!
-            Test it again, make a test for it, even. And then start committing.
-         */
+        
         if (blockEntity instanceof GraveBlockEntity graveEntity) {
             if (graveEntity.getGraveOwner() == null) return;
 

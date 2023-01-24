@@ -1,29 +1,27 @@
 package me.mgin.graves;
 
+import com.mojang.authlib.GameProfile;
+import me.mgin.graves.api.InventoriesApi;
+import me.mgin.graves.block.GraveBlocks;
+import me.mgin.graves.command.Commands;
+import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.event.Events;
+import me.mgin.graves.inventory.BackSlot;
+import me.mgin.graves.inventory.Inventorio;
+import me.mgin.graves.inventory.Trinkets;
+import me.mgin.graves.inventory.Vanilla;
+import me.mgin.graves.item.Items;
+import me.mgin.graves.networking.config.ConfigNetworking;
+import me.mgin.graves.networking.config.event.ConfigNetworkingEvents;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.mojang.authlib.GameProfile;
-
-import me.mgin.graves.api.InventoriesApi;
-import me.mgin.graves.block.GraveBlocks;
-import me.mgin.graves.command.Commands;
-import me.mgin.graves.event.Events;
-import me.mgin.graves.inventory.Inventorio;
-import me.mgin.graves.item.Items;
-import me.mgin.graves.networking.config.ConfigNetworking;
-import me.mgin.graves.networking.config.ConfigNetworkingEvents;
-import me.mgin.graves.networking.config.event.ConfigNetworkingEvents;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
-import me.mgin.graves.config.GravesConfig;
-import me.mgin.graves.inventory.BackSlot;
-import me.mgin.graves.inventory.Trinkets;
-import me.mgin.graves.inventory.Vanilla;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
 
 public class Graves implements ModInitializer {
 
@@ -35,6 +33,9 @@ public class Graves implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        // Register Config
+        AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);
+
         // Graves Registry
         GraveBlocks.registerServerBlocks(MOD_ID, BRAND_BLOCK);
         Items.registerItems(MOD_ID, BRAND_BLOCK);
@@ -50,9 +51,6 @@ public class Graves implements ModInitializer {
         addInventory("inventorio", Inventorio.class);
 
         inventories.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, InventoriesApi.class));
-
-        // Dependency Registry
-        AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);
     }
 
     public void addInventory(String modID, Class<? extends InventoriesApi> modInventory) {

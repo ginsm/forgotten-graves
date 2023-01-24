@@ -2,14 +2,8 @@ package me.mgin.graves.config;
 
 import com.google.gson.Gson;
 import com.mojang.authlib.GameProfile;
-
 import me.mgin.graves.Graves;
-import me.mgin.graves.networking.config.ConfigNetworking;
 import me.shedaniel.autoconfig.AutoConfig;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.PacketByteBuf;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
@@ -59,22 +53,6 @@ public class ConfigHelpers {
      */
     public void reload() {
         AutoConfig.getConfigHolder(GravesConfig.class).load();
-    }
-
-    /**
-     * Transmits JSON-formatted config data to the (dedicated) server. The data will
-     * not be transmitted to integrated servers (singleplayer).
-     */
-    public void storeOnServer() {
-        MinecraftClient client = MinecraftClient.getInstance();
-
-        // Do not send a packet whilst in the menus
-        if (client.world == null)
-            return;
-
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeString(this.serialize());
-        ClientPlayNetworking.send(ConfigNetworking.STORE_CONFIG_C2S, buf);
     }
 
     /**

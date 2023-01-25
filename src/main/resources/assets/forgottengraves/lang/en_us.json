@@ -4,7 +4,8 @@
   "block.forgottengraves.grave_weathered": "Weathered Grave",
   "block.forgottengraves.grave_forgotten": "Forgotten Grave",
 
-  "on_death:mark-coords": "[Graves] Grave spawned at %dx %dy %dz.",
+  "event.death:send-player-coordinates": "[Graves] Grave spawned at %dx %dy %dz.",
+  "event.use.itemDecay:error.noDecayEnabled": "[Graves] This grave has been waxed, preventing it from decaying.",
 
   "text.autoconfig.forgottengraves.title": "Forgotten Graves Settings",
 

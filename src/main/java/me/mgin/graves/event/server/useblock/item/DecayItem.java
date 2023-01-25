@@ -2,11 +2,14 @@ package me.mgin.graves.event.server.useblock.item;
 
 import me.mgin.graves.block.decay.DecayStateManager;
 import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.block.utility.Permission;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,9 +34,17 @@ public class DecayItem {
     public static Boolean handle(PlayerEntity player, World world, Hand hand, BlockPos pos,
                                  Item item, GraveBlockEntity entity) {
         boolean isDecayItem = decayItems.contains(item);
-        boolean hasOwner = entity.getGraveOwner() != null;
+        boolean canRetrieve = Permission.playerCanAttemptRetrieve(player, entity);
+        boolean isMainHand = hand.equals(Hand.MAIN_HAND);
+        boolean canDecay = entity.getNoDecay() == 0;
 
-        if (!isDecayItem || hasOwner) return false;
+        if (!canDecay) {
+            player.sendMessage(
+                Text.translatable("event.use.itemDecay:error.noDecayEnabled").formatted(Formatting.RED)
+            );
+        }
+
+        if (!isDecayItem || !canRetrieve || !isMainHand || !canDecay) return false;
 
         if (DecayStateManager.increaseDecayState(world, pos)) {
             if (!player.isCreative()) {

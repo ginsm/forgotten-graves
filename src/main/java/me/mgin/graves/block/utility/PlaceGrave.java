@@ -1,14 +1,11 @@
 package me.mgin.graves.block.utility;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.InventoriesApi;
+import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
-import me.mgin.graves.block.GraveBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -23,6 +20,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class PlaceGrave {
     private static int minY;
@@ -221,7 +221,7 @@ public class PlaceGrave {
 
         if (config.main.graveCoordinates) {
             player.sendMessage(
-                Text.translatable("on_death:mark-coords", pos.getX(), pos.getY(), pos.getZ()),
+                Text.translatable("event.death:send-player-coordinates", pos.getX(), pos.getY(), pos.getZ()),
                 false
             );
         }

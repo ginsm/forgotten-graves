@@ -41,8 +41,10 @@ public class ClientPlayerInteractionManagerMixin {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         
         if (blockEntity instanceof GraveBlockEntity graveEntity) {
+            // Unowned graves can always be broken
             if (graveEntity.getGraveOwner() == null) return;
 
+            // Cases in which the grave should break
             boolean graveRobbing = resolveConfig("graveRobbing").server.graveRobbing;
             boolean canBreak = resolveConfig("retrievalType").main.retrievalType.equals(GraveRetrievalType.BREAK);
             boolean canOverride = false;
@@ -55,7 +57,6 @@ public class ClientPlayerInteractionManagerMixin {
                 );
                 isOwner = graveEntity.getGraveOwner().equals(client.player.getGameProfile());
             }
-
 
             if (!graveRobbing || !canOverride || !canBreak || !isOwner) {
                 cir.setReturnValue(false);

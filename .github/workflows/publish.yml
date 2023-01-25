@@ -5,8 +5,8 @@ on: [ pull_request, workflow_dispatch ]
 env:
   MINECRAFT_VERSION: 1.19
   JAVA_VERSION: 17
-  VERSION: 1.19-3.0.2
-  RELEASE_NAME: Forgotten Graves 1.19-3.0.2
+  VERSION: 1.19.1-3.0.2
+  RELEASE_NAME: Forgotten Graves 1.19.1-3.0.2
   MODRINTH_TOKEN: ${{ secrets.PUBLISH_MODRINTH_TOKEN }}
   CURSEFORGE_TOKEN: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
 

@@ -1,3 +1,6 @@
+## 1.19-3.0.1
+- Fix: CurseForge only offers 0.14.12 as the highest fabric loader version for 1.19. The mod now requires ">=0.14.0" instead of "0.14.13".
+
 ## 1.19-3.0.0
 
 - New: Updated to Minecraft v1.19.

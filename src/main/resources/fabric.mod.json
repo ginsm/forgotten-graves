@@ -39,7 +39,7 @@
   },
 
   "recommends": {
-    "mod-menu": "*"
+    "modmenu": "*"
   },
 
   "suggests": {

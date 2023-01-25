@@ -38,7 +38,7 @@ public class DecayItem {
         boolean isMainHand = hand.equals(Hand.MAIN_HAND);
         boolean canDecay = entity.getNoDecay() == 0;
 
-        if (!canDecay) {
+        if (isDecayItem && canRetrieve && isMainHand && !canDecay) {
             player.sendMessage(
                 Text.translatable("event.use.itemDecay:error.noDecayEnabled").formatted(Formatting.RED)
             );

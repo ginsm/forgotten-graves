@@ -1,12 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "AAA",
-    "BBB"
+    "A",
+    "B"
   ],
   "key": {
     "A": {
-      "item": "minecraft:cobblestone"
+      "tag": "minecraft:stone_tool_materials"
     },
     "B": {
       "item": "minecraft:dirt"

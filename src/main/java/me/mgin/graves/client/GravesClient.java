@@ -1,19 +1,20 @@
 package me.mgin.graves.client;
 
+import me.mgin.graves.block.GraveBlocks;
+import me.mgin.graves.block.render.GraveBlockEntityRenderer;
+import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.networking.config.ConfigNetworking;
+import me.mgin.graves.networking.config.event.ConfigNetworkingEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 
-import me.mgin.graves.client.registry.ClientEvents;
-import me.mgin.graves.client.registry.ClientReceivers;
-import me.mgin.graves.client.render.GraveBlockEntityRenderer;
-import me.mgin.graves.registry.GraveBlocks;
-
 public class GravesClient implements ClientModInitializer {
-	@Override
-	public void onInitializeClient() {
-		BlockEntityRendererRegistry.register(GraveBlocks.GRAVE_BLOCK_ENTITY, GraveBlockEntityRenderer::new);
+    public static GravesConfig SERVER_CONFIG = null;
 
-		ClientEvents.register();
-		ClientReceivers.register();
-	}
+    @Override
+    public void onInitializeClient() {
+        BlockEntityRendererRegistry.register(GraveBlocks.GRAVE_BLOCK_ENTITY, GraveBlockEntityRenderer::new);
+        ConfigNetworkingEvents.registerClientEvents();
+        ConfigNetworking.registerS2CPackets();
+    }
 }

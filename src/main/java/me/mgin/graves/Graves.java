@@ -1,67 +1,68 @@
 package me.mgin.graves;
 
+import com.mojang.authlib.GameProfile;
+import me.mgin.graves.api.InventoriesApi;
+import me.mgin.graves.block.GraveBlocks;
+import me.mgin.graves.command.Commands;
+import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.event.Events;
+import me.mgin.graves.inventory.BackSlot;
+import me.mgin.graves.inventory.Inventorio;
+import me.mgin.graves.inventory.Trinkets;
+import me.mgin.graves.inventory.Vanilla;
+import me.mgin.graves.item.Items;
+import me.mgin.graves.networking.config.ConfigNetworking;
+import me.mgin.graves.networking.config.event.ConfigNetworkingEvents;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mojang.authlib.GameProfile;
-
-import me.mgin.graves.api.InventoriesApi;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
-import me.mgin.graves.config.GravesConfig;
-import me.mgin.graves.inventories.BackSlot;
-import me.mgin.graves.inventories.Inventorio;
-import me.mgin.graves.inventories.Trinkets;
-import me.mgin.graves.inventories.Vanilla;
-import me.mgin.graves.registry.ServerBlocks;
-import me.mgin.graves.registry.ServerCommands;
-import me.mgin.graves.registry.ServerEvents;
-import me.mgin.graves.registry.ServerItems;
-import me.mgin.graves.registry.ServerReceivers;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
-
 public class Graves implements ModInitializer {
 
-	public static final ArrayList<InventoriesApi> inventories = new ArrayList<>();
-	public static final ArrayList<String> unloadedInventories = new ArrayList<>();
-	public static String MOD_ID = "forgottengraves";
-	public static String BRAND_BLOCK = "grave";
-	public static Map<GameProfile, GravesConfig> clientConfigs = new HashMap<>();
+    public static final ArrayList<InventoriesApi> inventories = new ArrayList<>();
+    public static final ArrayList<String> unloadedInventories = new ArrayList<>();
+    public static String MOD_ID = "forgottengraves";
+    public static String BRAND_BLOCK = "grave";
+    public static Map<GameProfile, GravesConfig> clientConfigs = new HashMap<>();
 
-	@Override
-	public void onInitialize() {
-		// Graves Registry
-		ServerBlocks.register(MOD_ID, BRAND_BLOCK);
-		ServerItems.register(MOD_ID, BRAND_BLOCK);
-		ServerEvents.register();
-		ServerCommands.register();
-		ServerReceivers.register();
+    @Override
+    public void onInitialize() {
+        // Register Config
+        AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);
 
-		// Register inventory classes
-		addInventory("vanilla", Vanilla.class);
-		addInventory("backslot", BackSlot.class);
-		addInventory("trinkets", Trinkets.class);
-		addInventory("inventorio", Inventorio.class);
+        // Graves Registry
+        GraveBlocks.registerServerBlocks(MOD_ID, BRAND_BLOCK);
+        Items.registerItems(MOD_ID, BRAND_BLOCK);
+        Commands.registerServerCommands();
+        Events.registerServerEvents();
+        ConfigNetworking.registerC2SPackets();
+        ConfigNetworkingEvents.registerServerEvents();
 
-		inventories.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, InventoriesApi.class));
+        // Register inventory classes
+        addInventory("vanilla", Vanilla.class);
+        addInventory("backslot", BackSlot.class);
+        addInventory("trinkets", Trinkets.class);
+        addInventory("inventorio", Inventorio.class);
 
-		// Dependency Registry
-		AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);
-	}
+        inventories.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, InventoriesApi.class));
+    }
 
-	public void addInventory(String modID, Class<? extends InventoriesApi> modInventory) {
-		try {
-			if (modID == "vanilla" || FabricLoader.getInstance().isModLoaded(modID))
-				inventories.add(modInventory.getDeclaredConstructor().newInstance());
-			else
-				unloadedInventories.add(modID);
-		} catch (InstantiationException | IllegalAccessException | InvocationTargetException
-				| NoSuchMethodException e) {
-			e.printStackTrace();
-		}
-	}
+    public void addInventory(String modID, Class<? extends InventoriesApi> modInventory) {
+        try {
+            if (modID.equals("vanilla") || FabricLoader.getInstance().isModLoaded(modID))
+                inventories.add(modInventory.getDeclaredConstructor().newInstance());
+            else
+                unloadedInventories.add(modID);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException
+                 | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

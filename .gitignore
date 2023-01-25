@@ -1,6 +1,8 @@
 # VS Code
 **/.vscode
 
+# IDEA
+**/.idea
 
 # OSX
 **/.DS_Store
@@ -10,9 +12,13 @@
 **/bin
 **/build
 **/run
+**/run-server
+**/extmods
 **/.settings
 **/.project
 **/.classpath
+**/.fabric
+logs/
 
 # Ginsm ignores
 description.curseforge

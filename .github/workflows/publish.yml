@@ -47,6 +47,8 @@ jobs:
           modrinth-id: FrZIkosK
           modrinth-token: "${{env.MODRINTH_TOKEN}}"
 
+          files-secondary: build/libs/!*
+
           name: "${{env.RELEASE_NAME}}"
           version: "${{env.VERSION}}"
           version-type: release

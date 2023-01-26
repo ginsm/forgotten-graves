@@ -1,6 +1,7 @@
 package me.mgin.graves.inventory;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import dev.emi.trinkets.TrinketSlot;

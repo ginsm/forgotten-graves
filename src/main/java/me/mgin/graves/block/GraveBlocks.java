@@ -9,8 +9,8 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class GraveBlocks {
     public static BlockEntityType<GraveBlockEntity> GRAVE_BLOCK_ENTITY;

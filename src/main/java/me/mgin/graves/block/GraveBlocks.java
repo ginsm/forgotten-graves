@@ -1,16 +1,17 @@
 package me.mgin.graves.block;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.block.decay.DecayingGrave.BlockDecay;
+import me.mgin.graves.block.entity.GraveBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GraveBlocks {
     public static BlockEntityType<GraveBlockEntity> GRAVE_BLOCK_ENTITY;
@@ -41,14 +42,14 @@ public class GraveBlocks {
      */
     public static void registerServerBlocks(String MOD_ID, String BRAND_BLOCK) {
         for (Map.Entry<GraveBlockBase, String> grave : GraveBlocks.GRAVE_MAP.entrySet()) {
-            Registry.register(Registry.BLOCK, new Identifier(MOD_ID, BRAND_BLOCK + grave.getValue()), grave.getKey());
+            Registry.register(Registries.BLOCK, new Identifier(MOD_ID, BRAND_BLOCK + grave.getValue()), grave.getKey());
         }
 
         BlockEntityType<GraveBlockEntity> blockEntityType = FabricBlockEntityTypeBuilder.create(GraveBlockEntity::new,
                 GraveBlocks.GRAVE, GraveBlocks.GRAVE_OLD, GraveBlocks.GRAVE_WEATHERED, GraveBlocks.GRAVE_FORGOTTEN)
             .build(null);
 
-        GraveBlocks.GRAVE_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, MOD_ID + ":" + BRAND_BLOCK,
+        GraveBlocks.GRAVE_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, MOD_ID + ":" + BRAND_BLOCK,
             blockEntityType);
     }
 }

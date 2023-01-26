@@ -1,1 +1,1 @@
-New: Updated to Minecraft v1.19.2.
+New: Updated to Minecraft v1.19.3.

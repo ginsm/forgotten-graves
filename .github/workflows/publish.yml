@@ -3,7 +3,7 @@ name: Publish on Github, Curseforge & Modrinth
 on: [ pull_request, workflow_dispatch ]
 
 env:
-  MINECRAFT_VERSION: 1.19
+  MINECRAFT_VERSION: 1.19.3
   JAVA_VERSION: 17
   VERSION: 1.19-3.0.3
   RELEASE_NAME: Forgotten Graves 1.19-3.0.3
@@ -47,7 +47,8 @@ jobs:
           modrinth-id: FrZIkosK
           modrinth-token: "${{env.MODRINTH_TOKEN}}"
 
-          files-secondary: build/libs/!*
+          files-primary: build/libs/!(*-@(dev|sources|javadoc)).jar
+          files-secondary: ""
 
           name: "${{env.RELEASE_NAME}}"
           version: "${{env.VERSION}}"

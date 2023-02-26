@@ -13,12 +13,11 @@ group = project.maven_group
 repositories {
     mavenCentral()
 
+    // Trinkets
     maven {
         name = "TerraformersMC"
         url = "https://maven.terraformersmc.com/"
     }
-
-    // Trinkets
     maven {
         name = "Ladysnake Libs"
         url = "https://ladysnake.jfrog.io/artifactory/mods"
@@ -57,7 +56,7 @@ dependencies {
     // Compat Mods
     modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
     modImplementation "dev.emi:trinkets:${project.trinkets_version}"
-    modCompileOnly "curse.maven:inventorio-491073:4066027"
+    modCompileOnly "curse.maven:inventorio-491073:4276100"
 }
 
 processResources {

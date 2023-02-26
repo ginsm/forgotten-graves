@@ -35,7 +35,7 @@ public class Events {
         if (FabricLoader.getInstance().isModLoaded("trinkets"))
             TrinketDropCallback.EVENT.register(
                 (TrinketEnums.DropRule rule, ItemStack stack, SlotReference ref, LivingEntity entity) ->
-                    TrinketDropHandler.handleTrinketDrop(ref, entity)
+                    TrinketDropHandler.handleTrinketDrop(rule, entity)
             );
     }
 }

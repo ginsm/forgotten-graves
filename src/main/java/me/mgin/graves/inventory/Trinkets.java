@@ -5,8 +5,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import dev.emi.trinkets.TrinketSlot;
-import dev.emi.trinkets.api.*;
-import dev.emi.trinkets.api.TrinketEnums.DropRule;
+import dev.emi.trinkets.api.SlotReference;
+import dev.emi.trinkets.api.TrinketComponent;
+import dev.emi.trinkets.api.TrinketInventory;
+import dev.emi.trinkets.api.TrinketsApi;
 import me.mgin.graves.api.InventoriesApi;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
@@ -54,13 +56,11 @@ public class Trinkets implements InventoriesApi {
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
         DefaultedList<ItemStack> itemStacks = DefaultedList.of();
 
-        component.ifPresent(trinketComponent -> trinketComponent.forEach((ref, stack) -> {
-            DropRule rule = ref.inventory().getSlotType().getDropRule();
-
-            if (EnchantmentHelper.hasVanishingCurse(stack) || rule.equals(DropRule.KEEP)) {
+        component.ifPresent(trinketComponent -> trinketComponent.forEach((ref, itemStack) -> {
+            if (EnchantmentHelper.hasVanishingCurse(itemStack)) {
                 itemStacks.add(ItemStack.EMPTY);
             } else {
-                itemStacks.add(stack);
+                itemStacks.add(itemStack);
             }
         }));
 
@@ -79,19 +79,17 @@ public class Trinkets implements InventoriesApi {
         DefaultedList<ItemStack> unequipped = DefaultedList.of();
 
         for (int i = 0; i < inventory.size(); i++) {
-            ItemStack stack = inventory.get(i);
-            if (stack.isEmpty()) continue;
-
-            // Do nothing & let the item be deleted
-            if (EnchantmentHelper.hasVanishingCurse(stack)) continue;
-
             // Add item to be returned as unequipped
-            if (EnchantmentHelper.hasBindingCurse(stack)) {
-                unequipped.add(stack);
+            if (EnchantmentHelper.hasBindingCurse(inventory.get(i))) {
+                unequipped.add(inventory.get(i));
                 continue;
             }
 
-            equipItem(stack, player, i);
+            // Do nothing & let the item be deleted
+            if (EnchantmentHelper.hasVanishingCurse(inventory.get(i)))
+                continue;
+
+            equipItem(inventory.get(i), player, i);
         }
 
         return unequipped;
@@ -105,10 +103,7 @@ public class Trinkets implements InventoriesApi {
     public void clearInventory(PlayerEntity player) {
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
 
-        component.ifPresent(trinketComponent -> trinketComponent.forEach((ref, stack) -> {
-            DropRule rule = ref.inventory().getSlotType().getDropRule();
-            if (rule.equals(DropRule.KEEP)) return;
-
+        component.ifPresent(trinketComponent -> trinketComponent.forEach((ref, itemStack) -> {
             TrinketInventory inventory = ref.inventory();
             inventory.setStack(ref.index(), ItemStack.EMPTY);
         }));

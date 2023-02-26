@@ -47,7 +47,8 @@ jobs:
           modrinth-id: FrZIkosK
           modrinth-token: "${{env.MODRINTH_TOKEN}}"
 
-          files-secondary: build/libs/!*
+          files-primary: build/libs/!(*-@(dev|sources|javadoc)).jar
+          files-secondary: ""
 
           name: "${{env.RELEASE_NAME}}"
           version: "${{env.VERSION}}"

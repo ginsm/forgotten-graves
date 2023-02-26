@@ -1,8 +1,8 @@
 package me.mgin.graves.block.render;
 
 import me.mgin.graves.block.GraveBlockBase;
-import me.mgin.graves.block.utility.Skulls;
 import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.block.utility.Skulls;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -12,7 +12,7 @@ import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 
 public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockEntity> {
 
@@ -39,18 +39,21 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 
         switch (direction) {
             case NORTH:
-                matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
+                // 180 deg (Y)
+                matrices.multiply(RotationAxis.POSITIVE_Y.rotation(3.14159265f));
                 matrices.translate(-1.2, 0.25 - (blockDecayOrdinal * 0.03), -0.99);
                 break;
             case SOUTH:
                 matrices.translate(0.15, 0.25 - (blockDecayOrdinal * 0.03), 0.34);
                 break;
             case EAST:
-                matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90));
+                // 90 deg (Y)
+                matrices.multiply(RotationAxis.POSITIVE_Y.rotation(1.57079633f));
                 matrices.translate(-1.2, 0.25 - (blockDecayOrdinal * 0.03), 0.34);
                 break;
             case WEST:
-                matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(270));
+                // 270 deg (Y)
+                matrices.multiply(RotationAxis.POSITIVE_Y.rotation(4.71239f));
                 matrices.translate(0.15, 0.25 - (blockDecayOrdinal * 0.03), -0.99);
                 break;
             case UP:
@@ -58,7 +61,8 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
                 break;
         }
 
-        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(50));
+        // 50 deg (X)
+        matrices.multiply(RotationAxis.POSITIVE_X.rotation(0.872665f));
 
         Skulls.renderSkull(graveEntity, modelLoader, blockDecayOrdinal, matrices, light, vertexConsumers);
 
@@ -85,17 +89,20 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
 
             switch (direction) {
                 case NORTH:
-                    matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
+                    // 180 deg (Y)
+                    matrices.multiply(RotationAxis.POSITIVE_Y.rotation(3.14159265f));
                     matrices.translate(-1, 0, -1);
                     break;
                 case SOUTH, UP, DOWN:
                     break;
                 case EAST:
-                    matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90));
+                    // 90 deg (Y)
+                    matrices.multiply(RotationAxis.POSITIVE_Y.rotation(1.57079633f));
                     matrices.translate(-1, 0, 0);
                     break;
                 case WEST:
-                    matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(270));
+                    // 270 deg (Y)
+                    matrices.multiply(RotationAxis.POSITIVE_Y.rotation(4.71239f));
                     matrices.translate(0, 0, -1);
                     break;
             }

@@ -2,11 +2,13 @@ package me.mgin.graves.item;
 
 import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.GraveBlocks;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemGroups;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.util.Map;
 
@@ -20,8 +22,11 @@ public class Items {
      */
     public static void registerItems(String MOD_ID, String BRAND_BLOCK) {
         for (Map.Entry<GraveBlockBase, String> grave : GraveBlocks.GRAVE_MAP.entrySet()) {
-            Registry.register(Registry.ITEM, new Identifier(MOD_ID, BRAND_BLOCK + grave.getValue()),
-                new BlockItem(grave.getKey(), new Item.Settings().group(ItemGroup.DECORATIONS)));
+            BlockItem item = new BlockItem(grave.getKey(), new FabricItemSettings());
+
+            Registry.register(Registries.ITEM, new Identifier(MOD_ID, BRAND_BLOCK + grave.getValue()), item);
+
+            ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(entries -> entries.add(item));
         }
     }
 }

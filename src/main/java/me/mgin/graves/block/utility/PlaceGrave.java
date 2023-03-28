@@ -2,8 +2,8 @@ package me.mgin.graves.block.utility;
 
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
-import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.GraveBlocks;
+import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import net.minecraft.block.Block;

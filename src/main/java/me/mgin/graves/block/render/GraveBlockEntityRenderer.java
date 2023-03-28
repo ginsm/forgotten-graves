@@ -1,8 +1,8 @@
 package me.mgin.graves.block.render;
 
 import me.mgin.graves.block.GraveBlockBase;
-import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.block.utility.Skulls;
+import me.mgin.graves.block.entity.GraveBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;

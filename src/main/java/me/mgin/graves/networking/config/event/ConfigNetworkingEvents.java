@@ -2,8 +2,8 @@ package me.mgin.graves.networking.config.event;
 
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
-import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.networking.config.ConfigNetworking;
+import me.mgin.graves.config.GravesConfig;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;

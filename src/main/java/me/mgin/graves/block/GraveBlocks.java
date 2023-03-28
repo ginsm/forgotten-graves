@@ -30,7 +30,7 @@ public class GraveBlocks {
     };
 
     private static GraveBlockBase createGrave(BlockDecay blockDecay) {
-        return new GraveBlockBase(blockDecay, FabricBlockSettings.of(Material.ORGANIC_PRODUCT).strength(0.8f, -1f));
+        return new GraveBlockBase(blockDecay, FabricBlockSettings.of(Material.ORGANIC_PRODUCT).strength(0.8f, 3600000.0F));
     }
 
     /**

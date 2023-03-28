@@ -38,7 +38,8 @@ public class PlaceGrave {
     public static void place(World world, Vec3d vecPos, PlayerEntity player) {
         if (world.isClient()) return;
 
-        BlockPos pos = enforceWorldBoundaries(world, new BlockPos(vecPos.x, vecPos.y, vecPos.z));
+        BlockPos initialPos = new BlockPos((int) vecPos.x, (int) vecPos.y, (int) vecPos.z);
+        BlockPos pos = enforceWorldBoundaries(world, initialPos);
         Block block = world.getBlockState(pos).getBlock();
 
         // This is the position below the grave; used for sinking purposes
@@ -50,7 +51,7 @@ public class PlaceGrave {
         }
 
         // Try and find a new valid position
-        if (!canPlaceGrave(world, block, new BlockPos(vecPos.x, vecPos.y, vecPos.z))) {
+        if (!canPlaceGrave(world, block, initialPos)) {
             pos = searchOutwards(world, pos, player);
         }
 

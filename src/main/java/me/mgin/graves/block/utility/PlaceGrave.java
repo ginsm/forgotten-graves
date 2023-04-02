@@ -38,7 +38,7 @@ public class PlaceGrave {
     public static void place(World world, Vec3d vecPos, PlayerEntity player) {
         if (world.isClient()) return;
 
-        BlockPos initialPos = new BlockPos((int) vecPos.x, (int) vecPos.y, (int) vecPos.z);
+        BlockPos initialPos = new BlockPos((int) vecPos.x - 1, (int) vecPos.y, (int) vecPos.z - 1);
         BlockPos pos = enforceWorldBoundaries(world, initialPos);
         Block block = world.getBlockState(pos).getBlock();
 

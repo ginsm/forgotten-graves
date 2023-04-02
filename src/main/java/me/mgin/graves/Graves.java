@@ -47,14 +47,14 @@ public class Graves implements ModInitializer {
         addInventory("vanilla", Vanilla.class);
         addInventory("backslot", BackSlot.class);
         addInventory("trinkets", Trinkets.class);
-        // addInventory("inventorio", Inventorio.class);
+        addInventory("inventorio", null); // not updated yet
 
         inventories.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, InventoriesApi.class));
     }
 
     public void addInventory(String modID, Class<? extends InventoriesApi> modInventory) {
         try {
-            if (modID.equals("vanilla") || FabricLoader.getInstance().isModLoaded(modID))
+            if (modID.equals("vanilla") || FabricLoader.getInstance().isModLoaded(modID) && modInventory != null)
                 inventories.add(modInventory.getDeclaredConstructor().newInstance());
             else
                 unloadedInventories.add(modID);

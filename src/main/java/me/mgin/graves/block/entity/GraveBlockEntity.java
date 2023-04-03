@@ -6,9 +6,9 @@ import java.util.Map;
 import com.mojang.authlib.GameProfile;
 
 import me.mgin.graves.Graves;
-import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.utility.NbtHelper;
+import me.mgin.graves.api.InventoriesApi;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,10 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.World;
-import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import org.jetbrains.annotations.Nullable;
 

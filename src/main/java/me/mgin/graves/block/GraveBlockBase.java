@@ -160,7 +160,7 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     public BlockState getPlacementState(ItemPlacementContext context) {
         BlockPos blockPos = context.getBlockPos();
         FluidState fluidState = context.getWorld().getFluidState(blockPos);
-        return this.getDefaultState().with(FACING, context.getPlayerFacing()).with(WATERLOGGED,
+        return this.getDefaultState().with(FACING, context.getHorizontalPlayerFacing()).with(WATERLOGGED,
             fluidState.getFluid() == Fluids.WATER);
     }
 

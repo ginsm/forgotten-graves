@@ -9,6 +9,7 @@ import dev.emi.trinkets.api.TrinketsApi;
 import me.mgin.graves.api.InventoriesApi;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Equipment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.collection.DefaultedList;
@@ -120,11 +121,11 @@ public class Trinkets implements InventoriesApi {
      * Equips an item based on a given index; this is meant to be used with
      * setInventory. The index is based on each TrinketSlot -- not group.
      *
-     * @param item ItemStack
+     * @param stack ItemStack
      * @param player PlayerEntity
      * @param index int
      */
-    public static void equipItem(ItemStack item, PlayerEntity player, int index) {
+    public static void equipItem(ItemStack stack, PlayerEntity player, int index) {
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
 
         if (component.isPresent()) {
@@ -134,15 +135,18 @@ public class Trinkets implements InventoriesApi {
                     for (int i = 0; i < inventory.size(); i++) {
                         if (currentSlot == index) {
                             SlotReference ref = new SlotReference(inventory, index);
-                            if (TrinketSlot.canInsert(item, ref, player)) {
-                                ItemStack newStack = item.copy();
+                            if (TrinketSlot.canInsert(stack, ref, player)) {
+                                ItemStack newStack = stack.copy();
                                 inventory.setStack(i, newStack);
-                                SoundEvent soundEvent = item.getEquipSound();
-                                if (!item.isEmpty() && soundEvent != null) {
+                                SoundEvent soundEvent = stack.getItem() instanceof Equipment eq ? eq.getEquipSound() :
+                                    null;
+
+                                if (!stack.isEmpty() && soundEvent != null) {
                                     player.emitGameEvent(GameEvent.EQUIP);
                                     player.playSound(soundEvent, 1.0F, 1.0F);
                                 }
-                                item.setCount(0);
+
+                                stack.setCount(0);
                             }
                         }
                         currentSlot += 1;

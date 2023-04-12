@@ -82,6 +82,10 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         public boolean graveRobbing = false;
 
         @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 20)
+        public int storedGravesAmount = 10;
+
+        @ConfigEntry.Gui.Tooltip
         @ConfigEntry.BoundedDiscrete(min = -1, max = 4)
         public int OPOverrideLevel = 4;
 

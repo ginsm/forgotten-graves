@@ -6,6 +6,7 @@ import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.state.ServerState;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -215,6 +216,9 @@ public class PlaceGrave {
 
         // Add the block entity to the world
         world.addBlockEntity(graveEntity);
+
+        // Store the grave data in persistent server state (used for restore command)
+        ServerState.storePlayerGrave(player, graveEntity);
 
         // Alert user if graveCoordinates is enabled
         GravesConfig config = GravesConfig.resolveConfig("graveCoordinates", player.getGameProfile());

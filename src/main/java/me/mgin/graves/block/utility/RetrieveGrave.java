@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class RetrieveGrave {
-    static public boolean retrieve(PlayerEntity player, World world, BlockPos pos, boolean permissionNeeded) {
+    static public boolean retrieve(PlayerEntity player, World world, BlockPos pos) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
 
         // Edge case checking & variable initialization
@@ -25,7 +25,7 @@ public class RetrieveGrave {
         if (graveEntity.getGraveOwner() == null) return false;
 
         // Ensure they have proper permission
-        if (permissionNeeded && !Permission.playerCanAttemptRetrieve(player, graveEntity))
+        if (!Permission.playerCanAttemptRetrieve(player, graveEntity))
             if (!Permission.playerCanOverride(player))
                 return false;
 

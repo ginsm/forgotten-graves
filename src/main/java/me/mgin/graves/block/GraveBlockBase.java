@@ -56,7 +56,7 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
 
         if (hand != Hand.OFF_HAND)
             if (player.getStackInHand(hand).isEmpty() && Permission.playerCanUseGrave(player, graveEntity))
-                RetrieveGrave.retrieve(player, world, pos);
+                RetrieveGrave.retrieveWithInteract(player, world, pos);
 
         return ActionResult.PASS;
     }
@@ -78,7 +78,7 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
 
         if (Permission.playerCanBreakGrave(player, graveEntity)) {
             // This will be true if the grave had an owner
-            boolean retrieved = RetrieveGrave.retrieve(player, world, pos);
+            boolean retrieved = RetrieveGrave.retrieveWithInteract(player, world, pos);
 
             // Ensures dropped item stack has proper custom name
             if (!retrieved && graveEntity.hasCustomName() && !player.isCreative())

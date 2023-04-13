@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
 
+import java.util.Date;
+
 public class NbtHelper {
     /**
      * Read an inventory from NBT.
@@ -67,6 +69,21 @@ public class NbtHelper {
         if (nbt.contains("noAge"))
             nbt = upgradeNoAge(nbt);
 
+        if (nbt.getLong("mstime") == 0)
+            nbt = upgradeMsTime(nbt);
+
+        return nbt;
+    }
+
+    /**
+     * Converts old graves from having a mstime of 0 to the time they're
+     * first seen in the world.
+     *
+     * @param nbt NbtCompound
+     * @return NbtCompound
+     */
+    private static NbtCompound upgradeMsTime(NbtCompound nbt) {
+        nbt.putLong("mstime", (new Date()).getTime());
         return nbt;
     }
 

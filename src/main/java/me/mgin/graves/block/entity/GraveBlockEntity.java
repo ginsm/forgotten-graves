@@ -16,8 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.World;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
@@ -30,6 +28,7 @@ public class GraveBlockEntity extends BlockEntity {
     private int noDecay;
     private String customName;
     private String graveSkull;
+    private long mstime;
     private final Map<String, DefaultedList<ItemStack>> inventories = new HashMap<>() {
     };
 
@@ -40,6 +39,7 @@ public class GraveBlockEntity extends BlockEntity {
         this.graveSkull = "";
         this.xp = 0;
         this.noDecay = 0;
+        this.mstime = 0;
         setState(state);
     }
 
@@ -160,6 +160,24 @@ public class GraveBlockEntity extends BlockEntity {
     }
 
     /**
+     * Set the time the grave was made
+     *
+     * @param timeInMilliseconds long
+     */
+    public void setMstime(long timeInMilliseconds) {
+        this.mstime = timeInMilliseconds;
+        this.markDirty();
+    }
+
+    /**
+     * Get the time the grave was made (in milliseconds)
+     *
+     */
+    public long getMstime() {
+        return mstime;
+    }
+
+    /**
      * Set whether the grave should age or not.
      * <p>
      * <strong>Note:</strong> The grave stops aging if the value is set to 1 (one).
@@ -237,6 +255,7 @@ public class GraveBlockEntity extends BlockEntity {
 
         nbt.putInt("XP", xp);
         nbt.putInt("noDecay", noDecay);
+        nbt.putLong("mstime", mstime);
 
         if (graveOwner != null)
             nbt.put("GraveOwner", net.minecraft.nbt.NbtHelper.writeGameProfile(new NbtCompound(), graveOwner));
@@ -271,6 +290,7 @@ public class GraveBlockEntity extends BlockEntity {
 
         this.xp = nbt.getInt("XP");
         this.noDecay = nbt.getInt("noDecay");
+        this.mstime = nbt.getLong("mstime");
 
         if (nbt.contains("GraveOwner"))
             this.graveOwner = net.minecraft.nbt.NbtHelper.toGameProfile(nbt.getCompound("GraveOwner"));

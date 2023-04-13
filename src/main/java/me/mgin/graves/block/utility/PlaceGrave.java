@@ -22,6 +22,7 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -210,6 +211,9 @@ public class PlaceGrave {
         int experience = Experience.calculatePlayerExperience(player);
         graveEntity.setXp(experience);
         resetPlayerExperience(player);
+
+        // Set grave spawn time
+        graveEntity.setMstime((new Date()).getTime());
 
         // Spawn break particles
         block.onBreak(world, pos, state, player);

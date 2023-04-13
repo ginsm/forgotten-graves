@@ -42,7 +42,7 @@ public class RetrieveGrave {
             if (!Permission.playerCanOverride(player))
                 return false;
 
-        return retrieve(player, graveEntity, world, pos, false);
+        return retrieve(player, graveEntity, world, pos, false, true);
     }
 
     /**
@@ -66,21 +66,30 @@ public class RetrieveGrave {
         for (ServerWorld world : Objects.requireNonNull(player.getServer()).getWorlds()) {
             String dimensionKey = String.valueOf(world.getDimensionKey().getValue());
             String storedDimensionKey = graveEntityTag.getString("dimension");
-            GraveBlockEntity graveEntity;
+            GraveBlockEntity graveEntity = null;
+            boolean destroyGrave = true;
 
             // Keep iterating if in the wrong dimension
             if (!dimensionKey.equals(storedDimensionKey)) continue;
 
-            // Resolve the GraveBlockEntity; whether it exists in the world or not.
+            // Attempt to locate the requested grave in the dimension
             if (world.getBlockEntity(pos) instanceof GraveBlockEntity graveBlockEntity) {
-                graveEntity = graveBlockEntity;
-            } else {
+                // Ensure the grave creation times are the same
+                if (graveBlockEntity.getMstime() == graveEntityTag.getLong("mstime")) {
+                    graveEntity = graveBlockEntity;
+                }
+            }
+
+            // Create a new grave entity if it did not exist in the world
+            if (graveEntity == null ) {
                 // Create new grave block entity and read the nbt tag into it
                 graveEntity = new GraveBlockEntity(pos, GraveBlocks.GRAVE.getDefaultState());
                 graveEntity.readNbt(graveEntityTag);
+                // Do not delete any grave in that location
+                destroyGrave = false;
             }
 
-            retrieve(player, graveEntity, world, pos, true);
+            retrieve(player, graveEntity, world, pos, true, destroyGrave);
             return;
         }
 
@@ -96,7 +105,7 @@ public class RetrieveGrave {
      * @return boolean
      */
     static public boolean retrieve(PlayerEntity player, GraveBlockEntity graveEntity, World world, BlockPos pos,
-                                   boolean dropOnPlayer) {
+                                   boolean dropOnPlayer, boolean destroyGrave) {
         // Keeps track of items to be dropped
         DefaultedList<ItemStack> droppedItems = DefaultedList.of();
 
@@ -120,7 +129,7 @@ public class RetrieveGrave {
         player.addExperience(graveEntity.getXp());
 
         // Remove block if it exists
-        if (world.getBlockEntity(pos) instanceof GraveBlockEntity) {
+        if (world.getBlockEntity(pos) instanceof GraveBlockEntity && destroyGrave) {
             return world.removeBlock(pos, false);
         }
 

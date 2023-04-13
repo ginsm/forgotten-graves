@@ -17,6 +17,8 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.Objects;
+
 public class RetrieveGrave {
     /**
      * Retrieve the grave by interacting with it; this takes permissions into consideration.
@@ -49,11 +51,10 @@ public class RetrieveGrave {
      * removed during issuing this command. And lastly, any items that need to be dropped will be dropped on
      * top of the player.
      *
-     * @param player PlayerEntity
+     * @param player         PlayerEntity
      * @param graveEntityTag NbtCompound
-     * @return boolean
      */
-    static public boolean retrieveWithCommand(PlayerEntity player, NbtCompound graveEntityTag) {
+    static public void retrieveWithCommand(PlayerEntity player, NbtCompound graveEntityTag) {
         // Get the coordinates from the grave entity tag
         BlockPos pos = new BlockPos(
             graveEntityTag.getInt("x"),
@@ -61,7 +62,8 @@ public class RetrieveGrave {
             graveEntityTag.getInt("z")
         );
 
-        for (ServerWorld world : player.getServer().getWorlds()) {
+        // Iterate over dimensions to locate dimension where the grave can be found
+        for (ServerWorld world : Objects.requireNonNull(player.getServer()).getWorlds()) {
             String dimensionKey = String.valueOf(world.getDimensionKey().getValue());
             String storedDimensionKey = graveEntityTag.getString("dimension");
             GraveBlockEntity graveEntity;
@@ -73,13 +75,15 @@ public class RetrieveGrave {
             if (world.getBlockEntity(pos) instanceof GraveBlockEntity graveBlockEntity) {
                 graveEntity = graveBlockEntity;
             } else {
+                // Create new grave block entity and read the nbt tag into it
                 graveEntity = new GraveBlockEntity(pos, GraveBlocks.GRAVE.getDefaultState());
-            };
+                graveEntity.readNbt(graveEntityTag);
+            }
 
-            return retrieve(player, graveEntity, world, pos, true);
+            retrieve(player, graveEntity, world, pos, true);
+            return;
         }
 
-        return false;
     }
 
     /**
@@ -209,9 +213,9 @@ public class RetrieveGrave {
         // Move extra items to open slots
         DefaultedList<Integer> openSlots = Inventory.getInventoryOpenSlots(player.getInventory().main);
 
-        for (int i = 0; i < openSlots.size(); i++) {
+        for (Integer openSlot : openSlots) {
             if (droppedItems.size() > 0) {
-                player.getInventory().setStack(openSlots.get(i), droppedItems.get(0));
+                player.getInventory().setStack(openSlot, droppedItems.get(0));
                 droppedItems.remove(0);
             }
         }

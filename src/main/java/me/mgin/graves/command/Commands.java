@@ -6,8 +6,10 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import me.mgin.graves.command.config.*;
+import me.mgin.graves.command.restore.RestoreCommand;
 import me.mgin.graves.config.ConfigOptions;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.command.argument.GameProfileArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 
 import static net.minecraft.server.command.CommandManager.argument;
@@ -104,10 +106,22 @@ public class Commands {
         LiteralArgumentBuilder<ServerCommandSource> serverConfigCommands = literal("config")
             .then(literal("sync").executes(C2SSyncConfigCommand::execute));
 
+        LiteralArgumentBuilder<ServerCommandSource> restoreCommand = literal("restore")
+            .then(argument("player", GameProfileArgumentType.gameProfile())
+                .then(argument("graveid", IntegerArgumentType.integer(0))
+                    .executes(RestoreCommand::execute)
+                    .then(argument("recipient", GameProfileArgumentType.gameProfile())
+                        .executes(RestoreCommand::execute)
+                    )
+                )
+            );
+
         // Register commands
         CommandRegistrationCallback.EVENT.register(
             (dispatcher, dedicated, access) -> dispatcher.register(
                 literal("graves")
+                    // Restore commands
+                    .then(restoreCommand)
                     // Client config commands
                     .then(commonConfigCommands)
                     // Server config commands

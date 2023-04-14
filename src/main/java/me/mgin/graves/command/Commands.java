@@ -138,9 +138,9 @@ public class Commands {
             (dispatcher, dedicated, access) -> dispatcher.register(
                 literal("graves")
                     // List commands
-                    .then(listCommand)
+//                    .then(listCommand)
                     // Restore commands
-                    .then(restoreCommand)
+//                    .then(restoreCommand)
                     // Client config commands
                     .then(commonConfigCommands)
                     // Server config commands

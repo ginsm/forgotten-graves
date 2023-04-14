@@ -7,22 +7,21 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.mgin.graves.block.utility.RetrieveGrave;
 import me.mgin.graves.state.PlayerState;
 import me.mgin.graves.state.ServerState;
-import net.minecraft.command.argument.GameProfileArgumentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 
-import static me.mgin.graves.command.restore.RestoreUtility.getOptionalProfileArgument;
+import static me.mgin.graves.command.utility.ArgumentUtility.getProfileArgument;
 
 public class RestoreCommand {
     static public int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        GameProfile player = GameProfileArgumentType.getProfileArgument(context, "player").iterator().next();
-        Integer graveId = context.getArgument("graveid", Integer.class);
         MinecraftServer server = context.getSource().getServer();
+        GameProfile player = getProfileArgument(context, "player", 4);
+        Integer graveId = context.getArgument("graveid", Integer.class) - 1; // Remove one for zero-indexing
 
         // Attempt to get the optional recipient's game profile
-        GameProfile recipient = getOptionalProfileArgument(context, "recipient", 5);
+        GameProfile recipient = getProfileArgument(context, "recipient", 6);
 
         // Get player state for given player
         PlayerState playerState = ServerState.getPlayerState(server, player.getId());

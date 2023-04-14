@@ -13,19 +13,16 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 
+import static me.mgin.graves.command.restore.RestoreUtility.getOptionalProfileArgument;
+
 public class RestoreCommand {
     static public int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         GameProfile player = GameProfileArgumentType.getProfileArgument(context, "player").iterator().next();
         Integer graveId = context.getArgument("graveid", Integer.class);
-
-        //
         MinecraftServer server = context.getSource().getServer();
 
-        // Recipient exists if the input has more than 4 separate words
-        GameProfile recipient = null;
-        if (context.getInput().split(" ").length > 4) {
-            recipient = GameProfileArgumentType.getProfileArgument(context, "recipient").iterator().next();
-        }
+        // Attempt to get the optional recipient's game profile
+        GameProfile recipient = getOptionalProfileArgument(context, "recipient", 5);
 
         // Get player state for given player
         PlayerState playerState = ServerState.getPlayerState(server, player.getId());

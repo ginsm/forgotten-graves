@@ -48,8 +48,8 @@ public class ListCommand {
 
         // Ensure page doesn't exceed the amount of recordable restores or amount of stored graves
         GravesConfig config = GravesConfig.getConfig();
-        if (startOfPage >= config.server.storedGravesAmount || startOfPage > playerState.graves.size()) {
-            System.out.println("There are no results for page " + page + " for player " + target.getName() + ".");
+        if (startOfPage >= config.server.storedGravesAmount || startOfPage >= playerState.graves.size()) {
+            System.out.println("There are no graves on page " + page + " for player " + target.getName() + ".");
             return Command.SINGLE_SUCCESS;
         }
 

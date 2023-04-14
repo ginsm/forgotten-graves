@@ -1,3 +1,3 @@
-## 1.19.2-3.0.4
+## 1.19.2-3.0.5
 **Fixed**
-- Graves are now more reliably immune to explosions (such as Supplementaries' bombs).
+- Creeper explosions no longer blow up graves as they're placing.

@@ -6,6 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import me.mgin.graves.command.config.*;
+import me.mgin.graves.command.restore.ListCommand;
 import me.mgin.graves.command.restore.RestoreCommand;
 import me.mgin.graves.config.ConfigOptions;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -105,16 +106,30 @@ public class Commands {
 
         LiteralArgumentBuilder<ServerCommandSource> serverConfigCommands = literal("config")
             .then(literal("sync").executes(C2SSyncConfigCommand::execute));
-
         LiteralArgumentBuilder<ServerCommandSource> restoreCommand = literal("restore")
-            .then(argument("player", GameProfileArgumentType.gameProfile())
-                .then(argument("graveid", IntegerArgumentType.integer(0))
-                    .executes(RestoreCommand::execute)
-                    .then(argument("recipient", GameProfileArgumentType.gameProfile())
+            // Command to restore graves
+            .then(literal("grave")
+                .then(argument("player", GameProfileArgumentType.gameProfile())
+                    .then(argument("graveid", IntegerArgumentType.integer(1))
                         .executes(RestoreCommand::execute)
+                        // optional recipient arg
+                        .then(argument("recipient", GameProfileArgumentType.gameProfile())
+                            .executes(RestoreCommand::execute)
+                        )
+                    )
+                )
+            )
+            // Command to list potential graves to restore
+            .then(literal("list")
+                .executes(ListCommand::execute)
+                .then(argument("player", GameProfileArgumentType.gameProfile())
+                    .executes(ListCommand::execute)
+                    .then(argument("page", IntegerArgumentType.integer(1))
+                        .executes(ListCommand::execute)
                     )
                 )
             );
+
 
         // Register commands
         CommandRegistrationCallback.EVENT.register(

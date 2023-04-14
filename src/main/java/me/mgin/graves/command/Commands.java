@@ -6,12 +6,13 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import me.mgin.graves.command.config.*;
-import me.mgin.graves.command.restore.ListCommand;
+import me.mgin.graves.command.list.ListCommand;
 import me.mgin.graves.command.restore.RestoreCommand;
 import me.mgin.graves.config.ConfigOptions;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.GameProfileArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -106,6 +107,7 @@ public class Commands {
 
         LiteralArgumentBuilder<ServerCommandSource> serverConfigCommands = literal("config")
             .then(literal("sync").executes(C2SSyncConfigCommand::execute));
+
         LiteralArgumentBuilder<ServerCommandSource> restoreCommand = literal("restore")
             // Command to restore graves
             .then(literal("grave")
@@ -118,15 +120,15 @@ public class Commands {
                         )
                     )
                 )
-            )
-            // Command to list potential graves to restore
-            .then(literal("list")
+            );
+
+        // Command to list graves
+        LiteralArgumentBuilder<ServerCommandSource> listCommand = literal("list")
+            .executes(ListCommand::execute)
+            .then(argument("player", GameProfileArgumentType.gameProfile())
                 .executes(ListCommand::execute)
-                .then(argument("player", GameProfileArgumentType.gameProfile())
+                .then(argument("page", IntegerArgumentType.integer(1))
                     .executes(ListCommand::execute)
-                    .then(argument("page", IntegerArgumentType.integer(1))
-                        .executes(ListCommand::execute)
-                    )
                 )
             );
 
@@ -135,6 +137,8 @@ public class Commands {
         CommandRegistrationCallback.EVENT.register(
             (dispatcher, dedicated, access) -> dispatcher.register(
                 literal("graves")
+                    // List commands
+                    .then(listCommand)
                     // Restore commands
                     .then(restoreCommand)
                     // Client config commands

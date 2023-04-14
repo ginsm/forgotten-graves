@@ -28,7 +28,7 @@ public class RestoreCommand {
         PlayerState playerState = ServerState.getPlayerState(server, player.getId());
 
         // Ensure grave exists within player's PlayerState.graves
-        if (graveId > playerState.graves.size()) {
+        if (graveId + 1 > playerState.graves.size()) {
             System.out.println("Grave does not exist!");
             return Command.SINGLE_SUCCESS;
         }

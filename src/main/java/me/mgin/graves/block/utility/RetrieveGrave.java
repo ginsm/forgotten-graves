@@ -6,6 +6,8 @@ import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.config.enums.GraveDropType;
+import me.mgin.graves.state.PlayerState;
+import me.mgin.graves.state.ServerState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -130,7 +132,19 @@ public class RetrieveGrave {
 
         // Remove block if it exists
         if (world.getBlockEntity(pos) instanceof GraveBlockEntity && destroyGrave) {
-            return world.removeBlock(pos, false);
+            world.removeBlock(pos, false);
+        }
+
+        // Mark as retrieved in global state
+        PlayerState playerState = ServerState.getPlayerState(player.getServer(), player.getUuid());
+
+        for (int i = 0; i < playerState.graves.size(); i++) {
+            NbtCompound grave = (NbtCompound) playerState.graves.get(i);
+
+            if (grave.getLong("mstime") == graveEntity.getMstime()) {
+                grave.putBoolean("retrieved", true);
+                playerState.graves.set(i, grave);
+            }
         }
 
         return true;

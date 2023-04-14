@@ -41,7 +41,7 @@ public class ListCommand {
         // Page header
         System.out.println("Graves for " + target.getName() + " (" + (endOfPage - 4) + "-" + endOfPage + ")" + ":");
 
-        // This should paginate, 5 entries per page up until max.
+        // List graves for given page
         for (int i = startOfPage; i < playerState.graves.size(); i++) {
             // Exit prematurely if page limit has been reached
             if (i == endOfPage) break;
@@ -55,9 +55,10 @@ public class ListCommand {
             int z = grave.getInt("z");
             long created = grave.getLong("mstime");
             String dimension = grave.getString("dimension");
+            boolean retrieved = grave.getBoolean("retrieved");
 
             // Just print a log for now; increment i to start list at 1
-            System.out.println((i + 1) + ": (" + dimension + ") x" + x + " y" + y + " " + "z" + z + " at " + created);
+            System.out.println((i + 1) + ": (" + dimension + ") x" + x + " y" + y + " " + "z" + z + " at " + created + (retrieved ? " (retrieved)" : ""));
         }
 
         // Get PlayerState for requested player (or issuer if no player was provided)

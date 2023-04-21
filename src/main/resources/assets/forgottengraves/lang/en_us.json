@@ -4,9 +4,6 @@
   "block.forgottengraves.grave_weathered": "Weathered Grave",
   "block.forgottengraves.grave_forgotten": "Forgotten Grave",
 
-  "event.death:send-player-coordinates": "[Graves] Grave spawned at %dx %dy %dz.",
-  "event.use.itemDecay:error.noDecayEnabled": "[Graves] This grave has been waxed, preventing it from decaying.",
-
   "text.autoconfig.forgottengraves.title": "Forgotten Graves Settings",
 
   "text.autoconfig.forgottengraves.option.main": "Main Settings",
@@ -50,9 +47,20 @@
   "text.autoconfig.forgottengraves.option.server.clientOptions": "Client Options",
   "text.autoconfig.forgottengraves.option.server.clientOptions.@Tooltip": "What options should be handled by the client?",
 
+  "event.death:send-player-coordinates": "[Graves] Grave spawned at %dx %dy %dz.",
+  "event.use.itemDecay:error.noDecayEnabled": "[Graves] This grave has been waxed, preventing it from decaying.",
+
+  "grave.coordinates": "%dx %dy %dz",
+
+  "forgottengraves.normal": "Forgotten Graves",
+  "forgottengraves.small": "[G] ",
+  "error.prefix": "Error: ",
 
   "command.generic:error.not-yet-implemented": "[Graves] That command hasn't been implemented yet.",
   "command.generic:error.not-player": "[Graves] You must run this as a valid player.",
+  "command.generic:error.specify-player": "[Graves] You must specify a valid player.",
+  "command.generic.error.player-not-online": "That player is not online.",
+  "command.generic.error.no-permission": "You are not permitted to run that command.",
   "command.generic.config.list:null": "[Graves] An error occurred while trying to print the config.",
 
   "command.config.reset:success": "[Graves] Your config has been reset.",
@@ -67,11 +75,34 @@
   "command.config.set:error.nothing-changed-client-options:add": "is already present",
   "command.config.set:error.nothing-changed-client-options:remove": "doesn't exist",
   "command.config.reload:success": "[Graves] Your config has been reloaded.",
+  "command.config.list": "[Graves] Here's your config: %s",
 
   "command.server.config.sync:error.unable-to-update": "[Graves] The server config could not be updated.",
   "command.server.config.sync:success": "[Graves] The server config has been updated.",
   "command.server.config.reload:success": "[Graves] The server config has been reloaded.",
   "command.server.config.reset:success": "[Graves] The server config has been reset.",
   "command.server.config.list": "[Graves] Here's the server config: %s",
-  "command.client.config.list": "[Graves] Here's your config: %s"
+
+  "command.restore.error.grave-doesnt-exist": "There is no grave restore with that ID.",
+  "command.restore.grave-restored": "Your grave has been restored.",
+  "command.restore.grave-restored-by": "Your grave has been restored to you by %s.",
+  "command.restore.restored-players-grave": "You have restored %s's grave to them.",
+  "command.restore.restored-players-grave-to": "You have restored %s's grave to %s.",
+  "command.restore.received-players-grave": "You have received %s's grave.",
+  "command.restore.received-players-grave-by": "You have received %s's grave from %s.",
+  "command.restore.restored.tooltip": "Grave Owner: %s\nDimension: %s\nCoordinates: %dx %dy %dz\nCreated: %s\nGrave ID: %d\nRestored By: %s",
+
+  "command.list.no-graves": "%s has no graves.",
+  "command.list.no-graves-on-page": "Page %d doesn't exist for player %s.",
+  "command.list.header": "Graves for %s:",
+  "command.list.entry.tooltip": "Dimension: %s\nCreated: %s\nRecovered: %s",
+  "command.list.entry.tooltip.click-to-teleport": "\nClick to teleport to this grave.",
+  "command.list.entry.restore-button": " [R]",
+  "command.list.entry.restore-button.tooltip": "Click to recover grave %d.",
+  "command.list.entry.delete-button": "[D]",
+  "command.list.entry.delete-button.tooltip": "Click to delete this grave from storage.",
+  "command.list.pagination.left-arrow.tooltip": "Click to go back a page.",
+  "command.list.pagination.right-arrow.tooltip": "Click to go forward a page.",
+  "command.list.pagination.current-page.tooltip": "You are currently on this page.",
+  "command.list.pagination.page-id.tooltip": "Go to page %d."
 }

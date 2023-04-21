@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class ResponderTheme {
     public static List<Formatting> prefix = new ArrayList<>(){{
-        add(Formatting.WHITE);
+        add(Formatting.DARK_GRAY);
     }};
 
     public static List<Formatting> success = new ArrayList<>(){{

@@ -110,14 +110,12 @@ public class Commands {
 
         LiteralArgumentBuilder<ServerCommandSource> restoreCommand = literal("restore")
             // Command to restore graves
-            .then(literal("grave")
-                .then(argument("player", GameProfileArgumentType.gameProfile())
-                    .then(argument("graveid", IntegerArgumentType.integer(1))
+            .then(argument("player", GameProfileArgumentType.gameProfile())
+                .then(argument("graveid", IntegerArgumentType.integer(1))
+                    .executes(RestoreCommand::execute)
+                    // optional recipient arg
+                    .then(argument("recipient", GameProfileArgumentType.gameProfile())
                         .executes(RestoreCommand::execute)
-                        // optional recipient arg
-                        .then(argument("recipient", GameProfileArgumentType.gameProfile())
-                            .executes(RestoreCommand::execute)
-                        )
                     )
                 )
             );

@@ -3,7 +3,6 @@ package me.mgin.graves.command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
-
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import me.mgin.graves.command.config.*;
 import me.mgin.graves.command.list.ListCommand;
@@ -12,7 +11,6 @@ import me.mgin.graves.config.ConfigOptions;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.GameProfileArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
-import org.apache.logging.log4j.core.jmx.Server;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -23,7 +21,7 @@ public class Commands {
      */
     public static void registerServerCommands() {
         // Server commands
-        LiteralArgumentBuilder<ServerCommandSource> serverCommands = literal("server").requires(s -> s.hasPermissionLevel(2));
+        LiteralArgumentBuilder<ServerCommandSource> serverCommands = literal("server").requires(s -> s.hasPermissionLevel(4));
 
         // Set Config Commands (Both server and client)
         LiteralArgumentBuilder<ServerCommandSource> setConfigCommands = literal("set")
@@ -46,7 +44,7 @@ public class Commands {
             .then(literal("floatInLava")
                 .then(argument("floatInLava", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
             )
-            .then(literal("graveRobbing").requires(s -> s.hasPermissionLevel(2))
+            .then(literal("graveRobbing").requires(s -> s.hasPermissionLevel(4))
                 .then(argument("graveRobbing", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
             )
             // Integer Args
@@ -56,7 +54,7 @@ public class Commands {
             .then(literal("decayModifier")
                 .then(argument("decayModifier", IntegerArgumentType.integer(0, 100)).executes(SetConfigCommand::execute))
             )
-            .then(literal("OPOverrideLevel").requires(s -> s.hasPermissionLevel(2))
+            .then(literal("OPOverrideLevel").requires(s -> s.hasPermissionLevel(4))
                 .then(argument("OPOverrideLevel", IntegerArgumentType.integer(-1, 4)).executes(SetConfigCommand::execute))
             )
             // Enum Args
@@ -79,7 +77,7 @@ public class Commands {
                 )
             )
             // Client Options
-            .then(literal("clientOptions").requires(s -> s.hasPermissionLevel(2))
+            .then(literal("clientOptions").requires(s -> s.hasPermissionLevel(4))
                 .then(literal("add")
                     .then(argument("clientOptions:add", StringArgumentType.string())
                         .suggests(ConfigOptions.suggest(
@@ -108,7 +106,7 @@ public class Commands {
         LiteralArgumentBuilder<ServerCommandSource> serverConfigCommands = literal("config")
             .then(literal("sync").executes(C2SSyncConfigCommand::execute));
 
-        LiteralArgumentBuilder<ServerCommandSource> restoreCommand = literal("restore")
+        LiteralArgumentBuilder<ServerCommandSource> restore = literal("restore").requires(s -> s.hasPermissionLevel(4))
             // Command to restore graves
             .then(argument("player", GameProfileArgumentType.gameProfile())
                 .then(argument("graveid", IntegerArgumentType.integer(1))
@@ -121,7 +119,7 @@ public class Commands {
             );
 
         // Command to list graves
-        LiteralArgumentBuilder<ServerCommandSource> listCommand = literal("list")
+        LiteralArgumentBuilder<ServerCommandSource> list = literal("list")
             .executes(ListCommand::execute)
             .then(argument("player", GameProfileArgumentType.gameProfile())
                 .executes(ListCommand::execute)
@@ -135,10 +133,8 @@ public class Commands {
         CommandRegistrationCallback.EVENT.register(
             (dispatcher, dedicated, access) -> dispatcher.register(
                 literal("graves")
-                    // List commands
-                    .then(listCommand)
-                    // Restore commands
-                    .then(restoreCommand)
+                    .then(list)
+                    .then(restore)
                     // Client config commands
                     .then(commonConfigCommands)
                     // Server config commands

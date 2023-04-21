@@ -1,9 +1,14 @@
-package me.mgin.graves.block.utility;
+package me.mgin.graves.util;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.Date;
 
@@ -54,6 +59,61 @@ public class NbtHelper {
         nbt.put(key, Inventories.writeNbt(new NbtCompound(), stacks, true));
 
         return nbt;
+    }
+
+    /**
+     * Wrapper for <i>NbtHelper.toGameProfile</i>.
+     *
+     * @param nbt NbtCompound
+     * @return GameProfile
+     */
+    public static GameProfile toGameProfile(NbtCompound nbt) {
+        return net.minecraft.nbt.NbtHelper.toGameProfile(nbt);
+    }
+
+    /**
+     * Wrapper for <i>NbtHelper.writeGameProfile</i>.
+     *
+     * @param nbt NbtCompound
+     * @param profile GameProfile
+     * @return NbtCompound
+     */
+    public static NbtCompound writeGameProfile(NbtCompound nbt, GameProfile profile) {
+        return net.minecraft.nbt.NbtHelper.writeGameProfile(nbt, profile);
+    }
+
+    /**
+     * Wrapper for <i>NbtHelper.fromNbtProviderString</i>.
+     *
+     * @param nbtString String
+     * @return NbtCompound
+     */
+    public static NbtCompound fromNbtProviderString(String nbtString) throws CommandSyntaxException {
+        return net.minecraft.nbt.NbtHelper.fromNbtProviderString(nbtString);
+    }
+
+    /**
+     * Wrapper for <i>NbtHelper.toPrettyPrintedText</i>.
+     *
+     * @param nbt NbtElement
+     * @return Text
+     */
+    public static Text toPrettyPrintedText(NbtElement nbt) {
+        return net.minecraft.nbt.NbtHelper.toPrettyPrintedText(nbt);
+    }
+
+    /**
+     * Creates a new BlockPos based on stored coordinates in the given NBT.
+     *
+     * @param nbt NbtCompound
+     * @return BlockPos
+     */
+    public static BlockPos readCoordinates(NbtCompound nbt) {
+        return new BlockPos(
+            nbt.getInt("x"),
+            nbt.getInt("y"),
+            nbt.getInt("z")
+        );
     }
 
     /**

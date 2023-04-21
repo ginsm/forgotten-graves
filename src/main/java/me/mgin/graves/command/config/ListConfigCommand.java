@@ -6,8 +6,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.mgin.graves.Graves;
 import me.mgin.graves.command.utility.CommandContextData;
 import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.util.NbtHelper;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtHelper;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -46,7 +46,7 @@ public class ListConfigCommand {
         try {
             // Convert config to Nbt format
             NbtCompound nbt = NbtHelper.fromNbtProviderString(config.serialize());
-            Text text = Text.translatable("command.server.config.list", NbtHelper.toPrettyPrintedText(nbt));
+            Text text = Text.translatable("command.config.list", NbtHelper.toPrettyPrintedText(nbt));
             nbt.remove("palette");
 
             if (source.getEntity() instanceof ServerPlayerEntity player) {

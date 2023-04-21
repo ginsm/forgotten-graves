@@ -8,7 +8,7 @@ import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.GraveBlocks;
-import me.mgin.graves.block.utility.NbtHelper;
+import me.mgin.graves.util.NbtHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -258,7 +258,7 @@ public class GraveBlockEntity extends BlockEntity {
         nbt.putLong("mstime", mstime);
 
         if (graveOwner != null)
-            nbt.put("GraveOwner", net.minecraft.nbt.NbtHelper.writeGameProfile(new NbtCompound(), graveOwner));
+            nbt.put("GraveOwner", NbtHelper.writeGameProfile(new NbtCompound(), graveOwner));
 
         if (customName != null && this.hasCustomName())
             nbt.putString("CustomName", customName);
@@ -293,7 +293,7 @@ public class GraveBlockEntity extends BlockEntity {
         this.mstime = nbt.getLong("mstime");
 
         if (nbt.contains("GraveOwner"))
-            this.graveOwner = net.minecraft.nbt.NbtHelper.toGameProfile(nbt.getCompound("GraveOwner"));
+            this.graveOwner = NbtHelper.toGameProfile(nbt.getCompound("GraveOwner"));
 
         if (nbt.contains("CustomName"))
             this.customName = nbt.getString("CustomName");

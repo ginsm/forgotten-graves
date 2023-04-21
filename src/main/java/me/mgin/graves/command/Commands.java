@@ -5,8 +5,6 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import me.mgin.graves.command.config.*;
-import me.mgin.graves.command.list.ListCommand;
-import me.mgin.graves.command.restore.RestoreCommand;
 import me.mgin.graves.config.ConfigOptions;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.GameProfileArgumentType;

@@ -1,4 +1,4 @@
-package me.mgin.graves.command.list;
+package me.mgin.graves.command;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;

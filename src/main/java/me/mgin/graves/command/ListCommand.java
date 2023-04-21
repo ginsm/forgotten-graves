@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import me.mgin.graves.command.utility.Interact;
 import me.mgin.graves.util.Responder;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.state.PlayerState;
@@ -109,7 +110,9 @@ public class ListCommand {
 
         // Send pagination (only applies to players issuing the command in game)
         if (player != null) {
-            res.sendInfo(genPagination(res, page, amountOfPages, player), null);
+            String name = player.getName().getString();
+            res.sendInfo(Interact.generatePagination(res, page, amountOfPages,
+                String.format("/graves list %s", name) + " %d"), null);
             res.send(Text.literal(""), null);
         }
     }
@@ -156,44 +159,13 @@ public class ListCommand {
             }
 
             // Attach the op-only command buttons
-            message = message.copy().append(generateButton(res,
+            message = message.copy().append(Interact.generateButton(res,
                 res.success(Text.translatable("command.list.entry.restore-button")),
                 res.hint(Text.translatable("command.list.entry.restore-button.tooltip", i + 1)),
-                String.format("/graves restore grave %s %d", player.getName().getString(), i + 1)
+                String.format("/graves restore %s %d", player.getName().getString(), i + 1)
             ));
         }
 
         return res.hoverText(message, hoverContent);
-    }
-
-    public static Text genPagination(Responder res, int page, int amountOfPages, ServerPlayerEntity player) {
-        Text pagination = Text.literal("Page: ");
-
-        // Player name
-        String name = player.getName().getString();
-
-        // List pages
-        for (int i = 1; i <= amountOfPages; i++) {
-            Text pageText = Text.literal(String.format("%d ", i));
-
-            if (page == i) {
-                pagination = pagination.copy().append(res.hoverText(
-                    res.info(pageText),
-                    Text.translatable("command.list.pagination.current-page.tooltip")
-                ));
-            } else {
-                pagination = pagination.copy().append(generateButton(res,
-                    res.highlight(pageText),
-                    Text.translatable("command.list.pagination.page-id.tooltip", i),
-                    String.format("/graves list %s %d", name, i)
-                ));
-            }
-        }
-
-        return pagination;
-    }
-
-    private static Text generateButton(Responder res, Text message, Text hoverContent, String command) {
-        return res.runOnClick(res.hoverText(message, hoverContent), command);
     }
 }

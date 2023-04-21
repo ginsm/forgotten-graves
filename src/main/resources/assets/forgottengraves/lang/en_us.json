@@ -101,8 +101,8 @@
   "command.list.entry.restore-button.tooltip": "Click to recover grave %d.",
   "command.list.entry.delete-button": "[D]",
   "command.list.entry.delete-button.tooltip": "Click to delete this grave from storage.",
-  "command.list.pagination.left-arrow.tooltip": "Click to go back a page.",
-  "command.list.pagination.right-arrow.tooltip": "Click to go forward a page.",
-  "command.list.pagination.current-page.tooltip": "You are currently on this page.",
-  "command.list.pagination.page-id.tooltip": "Go to page %d."
+
+  "utility.pagination.current-page.tooltip": "You are on this page.",
+  "utility.pagination.page-id.tooltip": "Go to page %d.",
+  "utility.pagination.prefix": "Page: "
 }

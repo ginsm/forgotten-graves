@@ -15,8 +15,8 @@ public class ArgumentUtility {
      * @param position int
      * @return GameProfile or null
      */
-    public static GameProfile getProfileArgument(CommandContext<ServerCommandSource> context,
-                                                 String name, int position) throws CommandSyntaxException {
+    public static GameProfile getProfileArgument(CommandContext<ServerCommandSource> context, String name, int position)
+        throws CommandSyntaxException {
         if (context.getInput().split(" ").length > (position - 1)) {
             return GameProfileArgumentType.getProfileArgument(context, name).iterator().next();
         }
@@ -31,11 +31,27 @@ public class ArgumentUtility {
      * @param position int
      * @return int or null
      */
-    public static int getIntegerArgument(CommandContext<ServerCommandSource> context,
-                                                 String name, int position) throws CommandSyntaxException {
+    public static int getIntegerArgument(CommandContext<ServerCommandSource> context, String name, int position)
+        throws CommandSyntaxException {
         if (context.getInput().split(" ").length > (position - 1)) {
             return context.getArgument(name, Integer.class);
         }
         return -1;
+    }
+
+    /**
+     * Attempts to retrieve an integer argument from the command context, returning -1
+     * if it is not present.
+     *
+     * @param context {@code CommandContext<ServerCommandSource>}
+     * @param position int
+     * @return int or null
+     */
+    public static boolean getBooleanArgument(CommandContext<ServerCommandSource> context, String name, int position)
+        throws CommandSyntaxException {
+        if (context.getInput().split(" ").length > (position - 1)) {
+            return context.getArgument(name, Boolean.class);
+        }
+        return false;
     }
 }

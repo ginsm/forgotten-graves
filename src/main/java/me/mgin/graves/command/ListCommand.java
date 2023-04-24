@@ -5,10 +5,10 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.mgin.graves.command.utility.Interact;
-import me.mgin.graves.util.Responder;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.state.PlayerState;
 import me.mgin.graves.state.ServerState;
+import me.mgin.graves.util.Responder;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
@@ -27,7 +27,6 @@ public class ListCommand {
     static public int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         MinecraftServer server = context.getSource().getServer();
         ServerCommandSource source = context.getSource();
-        GravesConfig config = GravesConfig.getConfig();
         Responder res = new Responder(context);
 
         // Get arguments
@@ -36,7 +35,7 @@ public class ListCommand {
 
         // Require the player argument when issued via console
         if (player == null && source.getPlayer() == null) {
-            res.send(Text.translatable("command.generic:error.specify-player"), null);
+            res.send(Text.translatable("command.generic.error.specify-player"), null);
             return Command.SINGLE_SUCCESS;
         }
 
@@ -53,7 +52,26 @@ public class ListCommand {
 
 
         // Determine which player's graves should be listed
-        GameProfile target = player != null ? player : Objects.requireNonNull(context.getSource().getPlayer()).getGameProfile();
+        GameProfile target = player != null ? player : Objects.requireNonNull(source.getPlayer()).getGameProfile();
+
+        executeWithoutCommand(res, target, page, server, source.getPlayer());
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * Allows for issuing
+     *
+     * @param res Responder
+     * @param target GameProfile
+     * @param page int
+     * @param server MinecraftServer
+     * @param issuer PlayerEntity
+     */
+    public static void executeWithoutCommand(Responder res, GameProfile target, int page, MinecraftServer server,
+                                             ServerPlayerEntity issuer) {
+        // Get server config
+        GravesConfig config = GravesConfig.getConfig();
 
         // Reassign page to 1 if the page was not given
         if (page == -1) page = 1;
@@ -68,16 +86,14 @@ public class ListCommand {
         // Ensure that the page has graves on it before displaying
         if (startOfPage >= config.server.storedGravesAmount || startOfPage >= playerState.graves.size()) {
             res.sendInfo(page == 1 ?
-                Text.translatable("command.list.no-graves", res.highlight(target.getName())) :
-                Text.translatable("command.list" + ".no-graves-on-page", page, res.highlight(target.getName())),
-            null);
-            return Command.SINGLE_SUCCESS;
+                    Text.translatable("command.list.no-graves", res.highlight(target.getName())) :
+                    Text.translatable("command.list" + ".no-graves-on-page", page, res.highlight(target.getName())),
+                null);
+            return;
         }
 
         // Send the grave list to the target
-        sendGraveList(res, target, source.getPlayer(), page, startOfPage, endOfPage, playerState);
-
-        return Command.SINGLE_SUCCESS;
+        sendGraveList(res, target, issuer, page, startOfPage, endOfPage, playerState);
     }
 
     private static void sendGraveList(Responder res, GameProfile target, ServerPlayerEntity player, int page,
@@ -144,6 +160,7 @@ public class ListCommand {
 
         // Add op-only functionality
         if (player != null && player.hasPermissionLevel(4)) {
+            String name = player.getName().getString();
             // Add a message about clicking to teleport if op
             if (!retrieved) {
                 // Tell player they can teleport to the grave
@@ -153,8 +170,7 @@ public class ListCommand {
 
                 // Attach the teleport command to the coordinate message
                 message = res.runOnClick(message,
-                    String.format("/execute as %s in %s run tp %d %d %d", player.getName().getString(), dimension,
-                        pos.getX(), pos.getY(), pos.getZ())
+                    String.format("/execute as %s in %s run tp %d %d %d", name, dimension, pos.getX(), pos.getY(), pos.getZ())
                 );
             }
 
@@ -162,7 +178,7 @@ public class ListCommand {
             message = message.copy().append(Interact.generateButton(res,
                 res.success(Text.translatable("command.list.entry.restore-button")),
                 res.hint(Text.translatable("command.list.entry.restore-button.tooltip", i + 1)),
-                String.format("/graves restore %s %d", player.getName().getString(), i + 1)
+                String.format("/graves restore %s %d", name, i + 1) + (!retrieved ? String.format(" %s true", name) : "")
             ));
         }
 

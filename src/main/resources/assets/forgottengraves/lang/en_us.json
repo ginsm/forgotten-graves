@@ -58,9 +58,10 @@
 
   "command.generic:error.not-yet-implemented": "[Graves] That command hasn't been implemented yet.",
   "command.generic:error.not-player": "[Graves] You must run this as a valid player.",
-  "command.generic:error.specify-player": "[Graves] You must specify a valid player.",
+  "command.generic.error.specify-player": "[Graves] You must specify a valid player.",
   "command.generic.error.player-not-online": "That player is not online.",
   "command.generic.error.no-permission": "You are not permitted to run that command.",
+  "command.generic.error.grave-doesnt-exist": "There is no grave with that ID for %s.",
   "command.generic.config.list:null": "[Graves] An error occurred while trying to print the config.",
 
   "command.config.reset:success": "[Graves] Your config has been reset.",
@@ -83,7 +84,6 @@
   "command.server.config.reset:success": "[Graves] The server config has been reset.",
   "command.server.config.list": "[Graves] Here's the server config: %s",
 
-  "command.restore.error.grave-doesnt-exist": "There is no grave restore with that ID.",
   "command.restore.grave-restored": "Your grave has been restored.",
   "command.restore.grave-restored-by": "Your grave has been restored to you by %s.",
   "command.restore.restored-players-grave": "You have restored %s's grave to them.",

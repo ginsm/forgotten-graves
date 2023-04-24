@@ -17,32 +17,40 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
+import static me.mgin.graves.command.utility.ArgumentUtility.getBooleanArgument;
 import static me.mgin.graves.command.utility.ArgumentUtility.getProfileArgument;
 import static me.mgin.graves.util.DateFormatter.formatDate;
 
 public class RestoreCommand {
     static public int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         MinecraftServer server = context.getSource().getServer();
-        GameProfile player = getProfileArgument(context, "player", 3);
-        int graveId = context.getArgument("graveid", Integer.class) - 1; // Remove one for zero-indexing
-
         Responder res = new Responder(context);
 
-        // Attempt to get the optional recipient's game profile
+        // Get command arguments
+        // graves restore <graveid> <player> <recipient>
+        GameProfile player = getProfileArgument(context, "player", 3);
+        int graveId = context.getArgument("graveid", Integer.class); // Remove one for zero-indexing
         GameProfile recipient = getProfileArgument(context, "recipient", 5);
+        boolean showList = getBooleanArgument(context, "showlist", 6);
 
-        // Get player state for given player
-        assert player != null;
+        // Handle an invalid player
+        if (player == null) {
+            res.send(Text.translatable("command.generic.error.specify-player"), null);
+            return Command.SINGLE_SUCCESS;
+        }
+
+        // Get player name and state
+        String name = player.getName();
         PlayerState playerState = ServerState.getPlayerState(server, player.getId());
 
         // Ensure grave exists within player's PlayerState.graves
-        if (graveId + 1 > playerState.graves.size()) {
-            res.sendError(Text.translatable("command.restore.error.grave-doesnt-exist"), null);
+        if (graveId > playerState.graves.size()) {
+            res.sendError(Text.translatable("command.generic.error.grave-doesnt-exist", name), null);
             return Command.SINGLE_SUCCESS;
         }
 
         // Get requested grave
-        NbtCompound grave = (NbtCompound) playerState.graves.get(graveId);
+        NbtCompound grave = (NbtCompound) playerState.graves.get(graveId - 1);
 
         // Get player entity and ensure they are online
         PlayerEntity entity = server.getPlayerManager().getPlayer(
@@ -68,8 +76,24 @@ public class RestoreCommand {
             context.getSource().getName(),
             player.getName(),
             entity.getGameProfile().getName(),
-            graveId + 1
+            graveId
         );
+
+        // This portion runs the list command after restoring a grave if set to true; mostly used when restoring
+        // said grave from the list command itself.
+        if (showList) {
+            int page;
+
+            // Resolve the page number
+            if (graveId % 5 == 0) {
+                page = graveId / 5;
+            } else {
+                page = (int) (Math.floor((double) graveId / 5) + 1);
+            }
+
+            // Run the List Command
+            ListCommand.executeWithoutCommand(res, player, page, server, context.getSource().getPlayer());
+        }
 
         return Command.SINGLE_SUCCESS;
     }

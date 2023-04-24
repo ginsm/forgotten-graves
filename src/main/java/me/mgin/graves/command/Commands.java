@@ -19,7 +19,7 @@ public class Commands {
      */
     public static void registerServerCommands() {
         // Server commands
-        LiteralArgumentBuilder<ServerCommandSource> serverCommands = literal("server").requires(s -> s.hasPermissionLevel(4));
+        LiteralArgumentBuilder<ServerCommandSource> serverCommands = literal("server").requires(s -> s.hasPermissionLevel(2));
 
         // Set Config Commands (Both server and client)
         LiteralArgumentBuilder<ServerCommandSource> setConfigCommands = literal("set")
@@ -42,7 +42,7 @@ public class Commands {
             .then(literal("floatInLava")
                 .then(argument("floatInLava", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
             )
-            .then(literal("graveRobbing").requires(s -> s.hasPermissionLevel(4))
+            .then(literal("graveRobbing").requires(s -> s.hasPermissionLevel(2))
                 .then(argument("graveRobbing", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
             )
             // Integer Args
@@ -52,7 +52,7 @@ public class Commands {
             .then(literal("decayModifier")
                 .then(argument("decayModifier", IntegerArgumentType.integer(0, 100)).executes(SetConfigCommand::execute))
             )
-            .then(literal("OPOverrideLevel").requires(s -> s.hasPermissionLevel(4))
+            .then(literal("OPOverrideLevel").requires(s -> s.hasPermissionLevel(2))
                 .then(argument("OPOverrideLevel", IntegerArgumentType.integer(-1, 4)).executes(SetConfigCommand::execute))
             )
             // Enum Args
@@ -75,7 +75,7 @@ public class Commands {
                 )
             )
             // Client Options
-            .then(literal("clientOptions").requires(s -> s.hasPermissionLevel(4))
+            .then(literal("clientOptions").requires(s -> s.hasPermissionLevel(2))
                 .then(literal("add")
                     .then(argument("clientOptions:add", StringArgumentType.string())
                         .suggests(ConfigOptions.suggest(
@@ -104,7 +104,7 @@ public class Commands {
         LiteralArgumentBuilder<ServerCommandSource> serverConfigCommands = literal("config")
             .then(literal("sync").executes(C2SSyncConfigCommand::execute));
 
-        LiteralArgumentBuilder<ServerCommandSource> restore = literal("restore").requires(s -> s.hasPermissionLevel(4))
+        LiteralArgumentBuilder<ServerCommandSource> restore = literal("restore").requires(s -> s.hasPermissionLevel(2))
             // Command to restore graves
             .then(argument("player", GameProfileArgumentType.gameProfile())
                 .then(argument("graveid", IntegerArgumentType.integer(1))
@@ -112,6 +112,10 @@ public class Commands {
                     // optional recipient arg
                     .then(argument("recipient", GameProfileArgumentType.gameProfile())
                         .executes(RestoreCommand::execute)
+                        // optional runlistafter argument
+                        .then(argument("showlist", BoolArgumentType.bool())
+                            .executes(RestoreCommand::execute)
+                        )
                     )
                 )
             );
@@ -126,6 +130,14 @@ public class Commands {
                 )
             );
 
+        // Command to clear a grave
+        LiteralArgumentBuilder<ServerCommandSource> clear = literal("clear").requires(s -> s.hasPermissionLevel(2))
+            .then(argument("player", GameProfileArgumentType.gameProfile())
+                    .then(argument("graveid", IntegerArgumentType.integer(1))
+                        .executes(ClearCommand::execute)
+                    )
+            );
+
 
         // Register commands
         CommandRegistrationCallback.EVENT.register(
@@ -133,6 +145,7 @@ public class Commands {
                 literal("graves")
                     .then(list)
                     .then(restore)
+                    .then(clear)
                     // Client config commands
                     .then(commonConfigCommands)
                     // Server config commands

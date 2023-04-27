@@ -175,11 +175,22 @@ public class ListCommand {
             }
 
             // Attach the op-only command buttons
-            message = message.copy().append(Interact.generateButton(res,
-                res.success(Text.translatable("command.list.entry.restore-button")),
-                res.hint(Text.translatable("command.list.entry.restore-button.tooltip", i + 1)),
-                String.format("/graves restore %s %d", name, i + 1) + (!retrieved ? String.format(" %s true", name) : "")
-            ));
+            message = message.copy()
+                .append(Text.literal(" "))
+                .append(Interact.generateButton(res,
+                    res.success(Text.translatable("command.list.entry.restore-button")),
+                    res.hint(Text.translatable("command.list.entry.restore-button.tooltip", i + 1)),
+                    String.format("/graves restore %s %d", target, i + 1) + (!retrieved ? String.format(" %s true",
+                        target) : "")
+                ));
+
+            message = message.copy()
+                .append(Text.literal(" "))
+                .append(Interact.generateButton(res,
+                    res.error(Text.translatable("command.list.entry.delete-button")),
+                    res.hint(Text.translatable("command.list.entry.delete-button.tooltip", i + 1)),
+                    String.format("/graves delete %s %d true", target, i + 1)
+                ));
         }
 
         return res.hoverText(message, hoverContent);

@@ -105,14 +105,13 @@ public class Commands {
             .then(literal("sync").executes(C2SSyncConfigCommand::execute));
 
         LiteralArgumentBuilder<ServerCommandSource> restore = literal("restore").requires(s -> s.hasPermissionLevel(2))
-            // Command to restore graves
             .then(argument("player", GameProfileArgumentType.gameProfile())
                 .then(argument("graveid", IntegerArgumentType.integer(1))
                     .executes(RestoreCommand::execute)
-                    // optional recipient arg
+                    // optional
                     .then(argument("recipient", GameProfileArgumentType.gameProfile())
                         .executes(RestoreCommand::execute)
-                        // optional runlistafter argument
+                        // optional
                         .then(argument("showlist", BoolArgumentType.bool())
                             .executes(RestoreCommand::execute)
                         )
@@ -125,16 +124,21 @@ public class Commands {
             .executes(ListCommand::execute)
             .then(argument("player", GameProfileArgumentType.gameProfile())
                 .executes(ListCommand::execute)
+                // optional
                 .then(argument("page", IntegerArgumentType.integer(1))
                     .executes(ListCommand::execute)
                 )
             );
 
-        // Command to clear a grave
-        LiteralArgumentBuilder<ServerCommandSource> clear = literal("clear").requires(s -> s.hasPermissionLevel(2))
+        // Command to delete a stored grave
+        LiteralArgumentBuilder<ServerCommandSource> delete = literal("delete").requires(s -> s.hasPermissionLevel(2))
             .then(argument("player", GameProfileArgumentType.gameProfile())
                     .then(argument("graveid", IntegerArgumentType.integer(1))
-                        .executes(ClearCommand::execute)
+                        .executes(DeleteCommand::execute)
+                        //optional
+                        .then(argument("showlist", BoolArgumentType.bool())
+                            .executes(DeleteCommand::execute)
+                        )
                     )
             );
 
@@ -145,7 +149,7 @@ public class Commands {
                 literal("graves")
                     .then(list)
                     .then(restore)
-                    .then(clear)
+                    .then(delete)
                     // Client config commands
                     .then(commonConfigCommands)
                     // Server config commands

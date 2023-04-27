@@ -86,21 +86,23 @@
 
   "command.restore.grave-restored": "Your grave has been restored.",
   "command.restore.grave-restored-by": "Your grave has been restored to you by %s.",
-  "command.restore.restored-players-grave": "You have restored %s's grave to them.",
+  "command.restore.restored-players-grave": "You have restored %s's grave.",
   "command.restore.restored-players-grave-to": "You have restored %s's grave to %s.",
   "command.restore.received-players-grave": "You have received %s's grave.",
   "command.restore.received-players-grave-by": "You have received %s's grave from %s.",
   "command.restore.restored.tooltip": "Grave Owner: %s\nDimension: %s\nCoordinates: %dx %dy %dz\nCreated: %s\nGrave ID: %d\nRestored By: %s",
+
+  "command.delete.deleted-grave": "You have deleted grave %d from storage for %s.",
 
   "command.list.no-graves": "%s has no graves.",
   "command.list.no-graves-on-page": "Page %d doesn't exist for player %s.",
   "command.list.header": "Graves for %s:",
   "command.list.entry.tooltip": "Dimension: %s\nCreated: %s\nRecovered: %s",
   "command.list.entry.tooltip.click-to-teleport": "\nClick to teleport to this grave.",
-  "command.list.entry.restore-button": " [R]",
+  "command.list.entry.restore-button": "[R]",
   "command.list.entry.restore-button.tooltip": "Click to recover grave %d.",
   "command.list.entry.delete-button": "[D]",
-  "command.list.entry.delete-button.tooltip": "Click to delete this grave from storage.",
+  "command.list.entry.delete-button.tooltip": "Click to delete grave %d from storage.",
 
   "utility.pagination.current-page.tooltip": "You are on this page.",
   "utility.pagination.page-id.tooltip": "Go to page %d.",

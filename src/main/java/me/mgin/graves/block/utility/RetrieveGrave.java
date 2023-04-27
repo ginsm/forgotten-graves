@@ -1,5 +1,6 @@
 package me.mgin.graves.block.utility;
 
+import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.GraveBlocks;
@@ -136,7 +137,8 @@ public class RetrieveGrave {
         }
 
         // Mark as retrieved in global state
-        PlayerState playerState = ServerState.getPlayerState(player.getServer(), player.getUuid());
+        GameProfile owner = graveEntity.getGraveOwner(); // Needed as the owner might not be the one retrieving
+        PlayerState playerState = ServerState.getPlayerState(player.getServer(), owner.getId());
 
         for (int i = 0; i < playerState.graves.size(); i++) {
             NbtCompound grave = (NbtCompound) playerState.graves.get(i);

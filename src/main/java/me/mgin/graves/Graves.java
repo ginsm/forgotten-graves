@@ -7,6 +7,7 @@ import me.mgin.graves.command.Commands;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.event.Events;
 import me.mgin.graves.inventory.BackSlot;
+import me.mgin.graves.inventory.Inventorio;
 import me.mgin.graves.inventory.Trinkets;
 import me.mgin.graves.inventory.Vanilla;
 import me.mgin.graves.item.Items;
@@ -47,7 +48,7 @@ public class Graves implements ModInitializer {
         addInventory("vanilla", Vanilla.class);
         addInventory("backslot", BackSlot.class);
         addInventory("trinkets", Trinkets.class);
-        addInventory("inventorio", null); // not updated yet
+        addInventory("inventorio", Inventorio.class);
 
         inventories.addAll(FabricLoader.getInstance().getEntrypoints(MOD_ID, InventoriesApi.class));
     }

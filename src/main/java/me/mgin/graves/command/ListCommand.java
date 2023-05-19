@@ -32,6 +32,7 @@ public class ListCommand {
         // Get arguments
         GameProfile player = getProfileArgument(context, "player", 3);
         int page = getIntegerArgument(context, "page", 4); // -1 if no page selected
+        GameProfile recipient = getProfileArgument(context, "recipient", 5);
 
         // Require the player argument when issued via console
         if (player == null && source.getPlayer() == null) {
@@ -50,11 +51,10 @@ public class ListCommand {
             }
         }
 
-
         // Determine which player's graves should be listed
         GameProfile target = player != null ? player : Objects.requireNonNull(source.getPlayer()).getGameProfile();
 
-        executeWithoutCommand(res, target, page, server, source.getPlayer());
+        executeWithoutCommand(res, target, recipient, page, server, source.getPlayer());
 
         return Command.SINGLE_SUCCESS;
     }
@@ -66,10 +66,10 @@ public class ListCommand {
      * @param target GameProfile
      * @param page int
      * @param server MinecraftServer
-     * @param issuer PlayerEntity
+     * @param issuer ServerPlayerEntity
      */
-    public static void executeWithoutCommand(Responder res, GameProfile target, int page, MinecraftServer server,
-                                             ServerPlayerEntity issuer) {
+    public static void executeWithoutCommand(Responder res, GameProfile target, GameProfile recipient, int page,
+                                             MinecraftServer server, ServerPlayerEntity issuer) {
         // Get server config
         GravesConfig config = GravesConfig.getConfig();
 
@@ -86,24 +86,34 @@ public class ListCommand {
         // Ensure that the page has graves on it before displaying
         if (startOfPage >= config.server.storedGravesAmount || startOfPage >= playerState.graves.size()) {
             res.sendInfo(page == 1 ?
-                    Text.translatable("command.list.no-graves", res.highlight(target.getName())) :
-                    Text.translatable("command.list" + ".no-graves-on-page", page, res.highlight(target.getName())),
+                    Text.translatable("command.list.error.no-graves", res.highlight(target.getName())) :
+                    Text.translatable("command.list.error.no-graves-on-page", page, res.highlight(target.getName())),
                 null);
             return;
         }
 
         // Send the grave list to the target
-        sendGraveList(res, target, issuer, page, startOfPage, endOfPage, playerState);
+        sendGraveList(res, target, issuer, recipient, page, startOfPage, endOfPage, playerState);
     }
 
-    private static void sendGraveList(Responder res, GameProfile target, ServerPlayerEntity player, int page,
+    /**
+     * @param res         Responder
+     * @param target      GameProfile
+     * @param issuer      ServerPlayerEntity
+     * @param recipient
+     * @param page        int
+     * @param startOfPage int
+     * @param endOfPage   int
+     * @param playerState PlayerState
+     */
+    private static void sendGraveList(Responder res, GameProfile target, ServerPlayerEntity issuer, GameProfile recipient, int page,
                                       int startOfPage, int endOfPage, PlayerState playerState) {
         int amountOfPages = (int) Math.ceil((double) playerState.graves.size() / 5);
 
         // Page header with spacer and separator
-        res.send(Text.literal(""), null);
+        res.send(res.dim(Text.literal("")), null);
         res.sendInfo(Text.translatable("command.list.header", res.highlight(target.getName())), null);
-        res.send(res.dim(Text.literal("──────────────")), null);
+        res.send(res.dim(Text.literal(" ")), null);
 
         // List graves for given page
         for (int i = startOfPage; i < playerState.graves.size(); i++) {
@@ -115,25 +125,29 @@ public class ListCommand {
 
             // Create the list item's message
             Text itemMessage = Text.literal("") // Helps prevent passing styles to other Text objects
-                .append(Text.literal(i + 1 + ". "))
-                .append(genListCommandEntry(res, grave, player, i));
+//                .append(Text.literal(i + 1 + ". "))
+                .append(genListCommandEntry(res, grave, issuer, recipient, target.getName(), i));
 
             res.sendInfo(itemMessage, null);
         }
 
-        // Separator
-        res.send(res.dim(Text.literal("──────────────")), null);
+        res.send(res.dim(Text.literal(" ")), null);
 
         // Send pagination (only applies to players issuing the command in game)
-        if (player != null) {
-            String name = player.getName().getString();
+        String rec = recipient != null ? recipient.getName() : target.getName();
+        if (issuer != null) {
             res.sendInfo(Interact.generatePagination(res, page, amountOfPages,
-                String.format("/graves list %s", name) + " %d"), null);
-            res.send(Text.literal(""), null);
+                String.format("/graves list %s", target.getName()) + " %d " + rec),
+                null
+            );
         }
+
+        res.send(res.dim(Text.literal("")), null);
     }
 
-    private static Text genListCommandEntry(Responder res, NbtCompound grave, ServerPlayerEntity player, int i) {
+    private static Text genListCommandEntry(Responder res, NbtCompound grave, ServerPlayerEntity issuer,
+                                            GameProfile recipient,
+                                            String target, int i) {
         // Get information on the grave
         String created = formatDate(grave.getLong("mstime"));
         String dimension = grave.getString("dimension");
@@ -175,13 +189,14 @@ public class ListCommand {
             }
 
             // Attach the op-only command buttons
+            String rec = recipient != null ? recipient.getName() : target;
+
             message = message.copy()
                 .append(Text.literal(" "))
                 .append(Interact.generateButton(res,
                     res.success(Text.translatable("command.list.entry.restore-button")),
-                    res.hint(Text.translatable("command.list.entry.restore-button.tooltip", i + 1)),
-                    String.format("/graves restore %s %d", target, i + 1) + (!retrieved ? String.format(" %s true",
-                        target) : "")
+                    res.hint(Text.translatable("command.list.entry.restore-button.tooltip", i + 1, rec)),
+                    String.format("/graves restore %s %d %s true", target, i + 1, rec)
                 ));
 
             message = message.copy()
@@ -189,7 +204,7 @@ public class ListCommand {
                 .append(Interact.generateButton(res,
                     res.error(Text.translatable("command.list.entry.delete-button")),
                     res.hint(Text.translatable("command.list.entry.delete-button.tooltip", i + 1)),
-                    String.format("/graves delete %s %d true", target, i + 1)
+                    String.format("/graves delete %s %d true %s", target, i + 1, rec)
                 ));
         }
 

@@ -22,6 +22,7 @@ public class DeleteCommand {
         GameProfile player = getProfileArgument(context, "player", 3);
         int graveId = getIntegerArgument(context, "graveid", 4);
         boolean showList = getBooleanArgument(context, "showlist", 5);
+        GameProfile recipient = getProfileArgument(context, "recipient", 6);
 
         // Handle an invalid player
         if (player == null) {
@@ -58,7 +59,7 @@ public class DeleteCommand {
             }
 
             // Run the List Command
-            ListCommand.executeWithoutCommand(res, player, page, server, context.getSource().getPlayer());
+            ListCommand.executeWithoutCommand(res, player, recipient, page, server, context.getSource().getPlayer());
         }
 
         return Command.SINGLE_SUCCESS;

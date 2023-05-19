@@ -127,6 +127,10 @@ public class Commands {
                 // optional
                 .then(argument("page", IntegerArgumentType.integer(1))
                     .executes(ListCommand::execute)
+                    // optional
+                    .then(argument("recipient", GameProfileArgumentType.gameProfile())
+                        .executes(ListCommand::execute)
+                    )
                 )
             );
 
@@ -135,9 +139,13 @@ public class Commands {
             .then(argument("player", GameProfileArgumentType.gameProfile())
                     .then(argument("graveid", IntegerArgumentType.integer(1))
                         .executes(DeleteCommand::execute)
-                        //optional
+                        // optional
                         .then(argument("showlist", BoolArgumentType.bool())
                             .executes(DeleteCommand::execute)
+                            // optional
+                            .then(argument("recipient", GameProfileArgumentType.gameProfile())
+                                .executes(DeleteCommand::execute)
+                            )
                         )
                     )
             );

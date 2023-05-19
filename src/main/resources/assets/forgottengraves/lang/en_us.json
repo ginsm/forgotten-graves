@@ -97,7 +97,7 @@
   "command.list.no-graves": "%s has no graves.",
   "command.list.no-graves-on-page": "Page %d doesn't exist for player %s.",
   "command.list.header": "Graves for %s:",
-  "command.list.entry.tooltip": "Dimension: %s\nCreated: %s\nRecovered: %s",
+  "command.list.entry.tooltip": "Dimension: %s\nGrave ID: %d\nCreated: %s\nRecovered: %s",
   "command.list.entry.tooltip.click-to-teleport": "\nClick to teleport to this grave.",
   "command.list.entry.restore-button": "[R]",
   "command.list.entry.restore-button.tooltip": "Click to recover grave %d.",

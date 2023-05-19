@@ -165,6 +165,7 @@ public class ListCommand {
         Text hoverContent = res.info(Text.translatable(
             "command.list.entry.tooltip",
             res.highlight(dimension),
+            res.highlight(i + 1),
             res.highlight(created),
             res.highlight(retrieved ? "Yes" : "No")
         ));

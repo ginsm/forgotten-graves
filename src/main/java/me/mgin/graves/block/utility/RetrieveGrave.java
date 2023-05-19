@@ -143,9 +143,14 @@ public class RetrieveGrave {
         for (int i = 0; i < playerState.graves.size(); i++) {
             NbtCompound grave = (NbtCompound) playerState.graves.get(i);
 
+            assert player.getServer() != null;
             if (grave.getLong("mstime") == graveEntity.getMstime()) {
+                // Set retrieved as true
                 grave.putBoolean("retrieved", true);
                 playerState.graves.set(i, grave);
+
+                // Mark server state dirty
+                ServerState.getServerState(player.getServer()).markDirty();
             }
         }
 

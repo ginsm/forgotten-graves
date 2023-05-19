@@ -37,6 +37,9 @@ public class DeleteCommand {
         if (playerState.graves.size() >= graveId) {
             // Removing 1 since IDs are one-based indexed for interface.
             playerState.graves.remove(graveId - 1);
+
+            // Mark server state dirty
+            ServerState.getServerState(server).markDirty();
             res.sendInfo(Text.translatable("command.delete.deleted-grave", graveId, player.getName()), null);
         } else {
             res.sendError(Text.translatable("command.generic.error.grave-doesnt-exist", name), null);

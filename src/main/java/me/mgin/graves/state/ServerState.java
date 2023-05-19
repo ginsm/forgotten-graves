@@ -80,11 +80,10 @@ public class ServerState extends PersistentState {
     public static void storePlayerGrave(PlayerEntity player, GraveBlockEntity graveEntity) {
         if (graveEntity == null || player == null) return;
 
+        MinecraftServer server = Objects.requireNonNull(graveEntity.getWorld()).getServer();
+
         // Get player state
-        PlayerState playerState = getPlayerState(
-            Objects.requireNonNull(graveEntity.getWorld()).getServer(),
-            player.getUuid()
-        );
+        PlayerState playerState = getPlayerState(server, player.getUuid());
 
         // Remove all graves and cancel execution if storing graves is disabled
         if (GravesConfig.getConfig().server.storedGravesAmount == 0) {
@@ -109,6 +108,9 @@ public class ServerState extends PersistentState {
 
         // Remove any old graves above the stored graves limit
         cleanupPlayerGraves(playerState);
+
+        // Mark dirty to commit server state
+        getServerState(server).markDirty();
     }
 
     private static void cleanupPlayerGraves(PlayerState playerState) {

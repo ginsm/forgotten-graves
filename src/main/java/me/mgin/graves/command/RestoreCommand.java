@@ -53,12 +53,11 @@ public class RestoreCommand {
         NbtCompound grave = (NbtCompound) playerState.graves.get(graveId - 1);
 
         // Get player entity and ensure they are online
-        PlayerEntity entity = server.getPlayerManager().getPlayer(
-            recipient != null ? recipient.getId() : player.getId()
-        );
+        GameProfile entityProfile = recipient != null ? recipient : player;
+        PlayerEntity entity = server.getPlayerManager().getPlayer(entityProfile.getId());
 
         if (entity == null) {
-            res.send(Text.translatable("command.generic.error.player-not-online"), null);
+            res.sendError(Text.translatable("command.generic.error.player-not-online", entityProfile.getName()), null);
             return Command.SINGLE_SUCCESS;
         }
 
@@ -75,7 +74,7 @@ public class RestoreCommand {
             Graves.MOD_ID,
             context.getSource().getName(),
             player.getName(),
-            entity.getGameProfile().getName(),
+            entity.getEntityName(),
             graveId
         );
 
@@ -92,7 +91,7 @@ public class RestoreCommand {
             }
 
             // Run the List Command
-            ListCommand.executeWithoutCommand(res, player, page, server, context.getSource().getPlayer());
+            ListCommand.executeWithoutCommand(res, player, entity.getGameProfile(), page, server, context.getSource().getPlayer());
         }
 
         return Command.SINGLE_SUCCESS;

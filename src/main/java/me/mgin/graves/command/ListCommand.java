@@ -174,8 +174,7 @@ public class ListCommand {
         Text message = Text.translatable("grave.coordinates", xText, yText, zText);
 
         // Add op-only functionality
-        if (player != null && player.hasPermissionLevel(4)) {
-            String name = player.getName().getString();
+        if (issuer != null && issuer.hasPermissionLevel(4)) {
             // Add a message about clicking to teleport if op
             if (!retrieved) {
                 // Tell player they can teleport to the grave
@@ -185,7 +184,8 @@ public class ListCommand {
 
                 // Attach the teleport command to the coordinate message
                 message = res.runOnClick(message,
-                    String.format("/execute as %s in %s run tp %d %d %d", name, dimension, pos.getX(), pos.getY(), pos.getZ())
+                    String.format("/execute as %s in %s run tp %d %d %d", issuer.getEntityName(), dimension,
+                        pos.getX(), pos.getY(), pos.getZ())
                 );
             }
 

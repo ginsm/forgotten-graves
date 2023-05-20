@@ -59,7 +59,7 @@
   "command.generic:error.not-yet-implemented": "[Graves] That command hasn't been implemented yet.",
   "command.generic:error.not-player": "[Graves] You must run this as a valid player.",
   "command.generic.error.specify-player": "[Graves] You must specify a valid player.",
-  "command.generic.error.player-not-online": "That player is not online.",
+  "command.generic.error.player-not-online": "%s is not online.",
   "command.generic.error.no-permission": "You are not permitted to run that command.",
   "command.generic.error.grave-doesnt-exist": "There is no grave with that ID for %s.",
   "command.generic.config.list:null": "[Graves] An error occurred while trying to print the config.",
@@ -94,13 +94,13 @@
 
   "command.delete.deleted-grave": "You have deleted grave %d from storage for %s.",
 
-  "command.list.no-graves": "%s has no graves.",
-  "command.list.no-graves-on-page": "Page %d doesn't exist for player %s.",
+  "command.list.error.no-graves": "%s has no graves.",
+  "command.list.error.no-graves-on-page": "Page %d doesn't exist for player %s.",
   "command.list.header": "Graves for %s:",
   "command.list.entry.tooltip": "Dimension: %s\nGrave ID: %d\nCreated: %s\nRecovered: %s",
   "command.list.entry.tooltip.click-to-teleport": "\nClick to teleport to this grave.",
   "command.list.entry.restore-button": "[R]",
-  "command.list.entry.restore-button.tooltip": "Click to recover grave %d.",
+  "command.list.entry.restore-button.tooltip": "Click to restore grave %d to %s.",
   "command.list.entry.delete-button": "[D]",
   "command.list.entry.delete-button.tooltip": "Click to delete grave %d from storage.",
 

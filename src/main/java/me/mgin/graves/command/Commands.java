@@ -104,6 +104,9 @@ public class Commands {
         LiteralArgumentBuilder<ServerCommandSource> serverConfigCommands = literal("config")
             .then(literal("sync").executes(C2SSyncConfigCommand::execute));
 
+        LiteralArgumentBuilder<ServerCommandSource> players = literal("players").requires(s -> s.hasPermissionLevel(2))
+            .executes(PlayersCommand::execute);
+
         LiteralArgumentBuilder<ServerCommandSource> restore = literal("restore").requires(s -> s.hasPermissionLevel(2))
             .then(argument("player", GameProfileArgumentType.gameProfile())
                 .then(argument("graveid", IntegerArgumentType.integer(1))
@@ -156,6 +159,7 @@ public class Commands {
             (dispatcher, dedicated, access) -> dispatcher.register(
                 literal("graves")
                     .then(list)
+                    .then(players)
                     .then(restore)
                     .then(delete)
                     // Client config commands

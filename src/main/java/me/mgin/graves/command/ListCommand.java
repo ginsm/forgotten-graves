@@ -133,14 +133,12 @@ public class ListCommand {
 
         res.send(res.dim(Text.literal(" ")), null);
 
-        // Send pagination (only applies to players issuing the command in game)
+        // Send pagination to issuer
         String rec = recipient != null ? recipient.getName() : target.getName();
-        if (issuer != null) {
-            res.sendInfo(Interact.generatePagination(res, page, amountOfPages,
-                String.format("/graves list %s", target.getName()) + " %d " + rec),
-                null
-            );
-        }
+        res.sendInfo(Interact.generatePagination(res, page, amountOfPages,
+            String.format("/graves list %s", target.getName()) + " %d " + rec),
+            null
+        );
 
         res.send(res.dim(Text.literal("")), null);
     }
@@ -171,7 +169,17 @@ public class ListCommand {
         ));
 
         // Generate the message
-        Text message = Text.translatable("grave.coordinates", xText, yText, zText);
+        Text message;
+
+        // Issuer is null when being issued by a non-player (server)
+        if (issuer == null) {
+            message = Text.literal("")
+                .append(res.info(String.format("%d. ", i)))
+                .append(Text.translatable("grave.coordinates", xText, yText, zText))
+                .append(retrieved ? Text.literal(" (✓)") : Text.literal(""));
+        } else {
+            message = Text.translatable("grave.coordinates", xText, yText, zText);
+        }
 
         // Add op-only functionality
         if (issuer != null && issuer.hasPermissionLevel(4)) {

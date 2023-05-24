@@ -20,19 +20,17 @@ public class Interact {
 
         // Pages will always start at 1
         for (int i = 1; i <= amountOfPages; i++) {
-            Text pageText = Text.literal(String.format("%d ", i));
-
             // Handles the currently displayed page
             if (page == i) {
                 pagination = pagination.copy().append(res.hoverText(
-                    res.info(pageText),
+                    res.info(String.format("[%d] ", i)),
                     Text.translatable("utility.pagination.current-page.tooltip")
                 ));
                 continue;
             }
 
             pagination = pagination.copy().append(generateButton(res,
-                res.highlight(pageText),
+                res.highlight(String.format("%d ", i)),
                 Text.translatable("utility.pagination.page-id.tooltip", i),
                 String.format(command, i)
             ));

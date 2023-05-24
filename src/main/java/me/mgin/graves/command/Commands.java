@@ -125,10 +125,10 @@ public class Commands {
         // Command to list graves
         LiteralArgumentBuilder<ServerCommandSource> list = literal("list")
             .executes(ListCommand::execute)
-            .then(argument("player", GameProfileArgumentType.gameProfile())
+            .then(argument("page", IntegerArgumentType.integer(1))
                 .executes(ListCommand::execute)
                 // optional
-                .then(argument("page", IntegerArgumentType.integer(1))
+                .then(argument("player", GameProfileArgumentType.gameProfile()).requires(Commands::isOperator)
                     .executes(ListCommand::execute)
                     // optional
                     .then(argument("recipient", GameProfileArgumentType.gameProfile())

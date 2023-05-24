@@ -32,8 +32,8 @@ public class ListCommand {
         Responder res = new Responder(context);
 
         // Get arguments
-        GameProfile player = getProfileArgument(context, "player", 3);
-        int page = getIntegerArgument(context, "page", 4); // -1 if no page selected
+        int page = getIntegerArgument(context, "page", 3); // -1 if no page selected
+        GameProfile player = getProfileArgument(context, "player", 4);
         GameProfile recipient = getProfileArgument(context, "recipient", 5);
 
         // Require the player argument when issued via console

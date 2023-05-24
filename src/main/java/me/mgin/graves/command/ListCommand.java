@@ -16,6 +16,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static me.mgin.graves.command.utility.ArgumentUtility.getIntegerArgument;
@@ -83,8 +85,21 @@ public class ListCommand {
         int endOfPage = page * 5;
         int startOfPage = endOfPage - 5;
 
+        // Determine what graves to show the player
+        Map<Integer, NbtCompound> graves = new HashMap<>();
+        for (int i = 0; i < playerState.graves.size(); i++) {
+            NbtCompound grave = playerState.graves.getCompound(i);
+
+            // Do not show non-OP players their recovered graves.
+            if (issuer != null && !issuer.hasPermissionLevel(4)) {
+                if (grave.getBoolean("retrieved")) continue;
+            }
+
+            graves.put(i, grave);
+        }
+
         // Ensure that the page has graves on it before displaying
-        if (startOfPage >= config.server.storedGravesAmount || startOfPage >= playerState.graves.size()) {
+        if (startOfPage >= config.server.storedGravesAmount || startOfPage >= graves.size()) {
             res.sendInfo(page == 1 ?
                     Text.translatable("command.list.error.no-graves", res.highlight(target.getName())) :
                     Text.translatable("command.list.error.no-graves-on-page", page, res.highlight(target.getName())),
@@ -93,45 +108,58 @@ public class ListCommand {
         }
 
         // Send the grave list to the target
-        sendGraveList(res, target, issuer, recipient, page, startOfPage, endOfPage, playerState);
+        sendGraveList(res, target, issuer, recipient, page, startOfPage, endOfPage, graves);
     }
 
     /**
      * @param res         Responder
      * @param target      GameProfile
      * @param issuer      ServerPlayerEntity
-     * @param recipient
+     * @param recipient   GameProfile
      * @param page        int
      * @param startOfPage int
      * @param endOfPage   int
-     * @param playerState PlayerState
+     * @param graves {@code Map<Integer, NbtCompound>}
      */
     private static void sendGraveList(Responder res, GameProfile target, ServerPlayerEntity issuer, GameProfile recipient, int page,
-                                      int startOfPage, int endOfPage, PlayerState playerState) {
-        int amountOfPages = (int) Math.ceil((double) playerState.graves.size() / 5);
+                                      int startOfPage, int endOfPage, Map<Integer, NbtCompound> graves) {
+        int amountOfPages = (int) Math.ceil((double) graves.size() / 5);
 
-        // Page header with spacer and separator
-        res.send(res.dim(Text.literal("")), null);
+        // Seperator (no prefix)
+        if (issuer != null) res.send(Text.literal(""), null);
+
+        // Page header
         res.sendInfo(Text.translatable("command.list.header", res.highlight(target.getName())), null);
-        res.send(res.dim(Text.literal(" ")), null);
 
-        // List graves for given page
-        for (int i = startOfPage; i < playerState.graves.size(); i++) {
-            // Exit prematurely if page limit has been reached
-            if (i == endOfPage) break;
+        // Separator (prefix)
+        if (issuer != null) res.send(Text.literal(" "), null);
 
-            // Graves are nbt compounds
-            NbtCompound grave = (NbtCompound) playerState.graves.get(i);
+        // List graves for given the page
+        int index = 0; // Needed to keep track of where program is inside the graves map (for pagination purposes).
 
-            // Create the list item's message
+        for (Map.Entry<Integer, NbtCompound> entry : graves.entrySet()) {
+            // The index has to be incremented before the start of page check otherwise it'd never increment.
+            // It could occur after the end of page check, but I figured keeping pagination together was better
+            // visually.
+            index++;
+
+            // Handle pagination checks
+            if (index - 1 == endOfPage) break;
+            if (startOfPage > index - 1) continue;
+
+            // Get the key (grave id) and grave NBT
+            int i = entry.getKey();
+            NbtCompound grave = entry.getValue();
+
+            // Send the list entry to the issuer
             Text itemMessage = Text.literal("") // Helps prevent passing styles to other Text objects
-//                .append(Text.literal(i + 1 + ". "))
                 .append(genListCommandEntry(res, grave, issuer, recipient, target.getName(), i));
 
             res.sendInfo(itemMessage, null);
         }
 
-        res.send(res.dim(Text.literal(" ")), null);
+        // Separator (prefix)
+        if (issuer != null) res.send(Text.literal(" "), null);
 
         // Send pagination to issuer
         String rec = recipient != null ? recipient.getName() : target.getName();
@@ -140,7 +168,8 @@ public class ListCommand {
             null
         );
 
-        res.send(res.dim(Text.literal("")), null);
+        // Separator (no prefix)
+        if (issuer != null) res.send(Text.literal(""), null);
     }
 
     private static Text genListCommandEntry(Responder res, NbtCompound grave, ServerPlayerEntity issuer,

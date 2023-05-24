@@ -19,7 +19,7 @@ public class Commands {
      */
     public static void registerServerCommands() {
         // Server commands
-        LiteralArgumentBuilder<ServerCommandSource> serverCommands = literal("server").requires(s -> s.hasPermissionLevel(2));
+        LiteralArgumentBuilder<ServerCommandSource> serverCommands = literal("server").requires(Commands::isOperator);
 
         // Set Config Commands (Both server and client)
         LiteralArgumentBuilder<ServerCommandSource> setConfigCommands = literal("set")
@@ -42,7 +42,7 @@ public class Commands {
             .then(literal("floatInLava")
                 .then(argument("floatInLava", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
             )
-            .then(literal("graveRobbing").requires(s -> s.hasPermissionLevel(2))
+            .then(literal("graveRobbing").requires(Commands::isOperator)
                 .then(argument("graveRobbing", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
             )
             // Integer Args
@@ -52,7 +52,7 @@ public class Commands {
             .then(literal("decayModifier")
                 .then(argument("decayModifier", IntegerArgumentType.integer(0, 100)).executes(SetConfigCommand::execute))
             )
-            .then(literal("OPOverrideLevel").requires(s -> s.hasPermissionLevel(2))
+            .then(literal("OPOverrideLevel").requires(Commands::isOperator)
                 .then(argument("OPOverrideLevel", IntegerArgumentType.integer(-1, 4)).executes(SetConfigCommand::execute))
             )
             // Enum Args
@@ -75,7 +75,7 @@ public class Commands {
                 )
             )
             // Client Options
-            .then(literal("clientOptions").requires(s -> s.hasPermissionLevel(2))
+            .then(literal("clientOptions").requires(Commands::isOperator)
                 .then(literal("add")
                     .then(argument("clientOptions:add", StringArgumentType.string())
                         .suggests(ConfigOptions.suggest(
@@ -104,10 +104,10 @@ public class Commands {
         LiteralArgumentBuilder<ServerCommandSource> serverConfigCommands = literal("config")
             .then(literal("sync").executes(C2SSyncConfigCommand::execute));
 
-        LiteralArgumentBuilder<ServerCommandSource> players = literal("players").requires(s -> s.hasPermissionLevel(2))
+        LiteralArgumentBuilder<ServerCommandSource> players = literal("players").requires(Commands::isOperator)
             .executes(PlayersCommand::execute);
 
-        LiteralArgumentBuilder<ServerCommandSource> restore = literal("restore").requires(s -> s.hasPermissionLevel(2))
+        LiteralArgumentBuilder<ServerCommandSource> restore = literal("restore").requires(Commands::isOperator)
             .then(argument("player", GameProfileArgumentType.gameProfile())
                 .then(argument("graveid", IntegerArgumentType.integer(1))
                     .executes(RestoreCommand::execute)
@@ -138,7 +138,7 @@ public class Commands {
             );
 
         // Command to delete a stored grave
-        LiteralArgumentBuilder<ServerCommandSource> delete = literal("delete").requires(s -> s.hasPermissionLevel(2))
+        LiteralArgumentBuilder<ServerCommandSource> delete = literal("delete").requires(Commands::isOperator)
             .then(argument("player", GameProfileArgumentType.gameProfile())
                     .then(argument("graveid", IntegerArgumentType.integer(1))
                         .executes(DeleteCommand::execute)
@@ -171,5 +171,9 @@ public class Commands {
                     )
             )
         );
+    }
+    
+    private static boolean isOperator(ServerCommandSource source) {
+        return source.hasPermissionLevel(2);
     }
 }

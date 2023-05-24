@@ -134,7 +134,7 @@ public class RestoreCommand {
 
         // Handle a player giving another player someone else's grave
         if (!player.equals(entityProfile) && !entityProfile.equals(sourceProfile)) {
-            // Alert the player that they were given another player's grave and by who
+            // Alert the player that they were given another player's grave
             res.sendInfo(res.hoverText(
                 Text.translatable("command.restore.received-players-grave-by", player.getName(), source.getName()),
                 hoverContent
@@ -142,8 +142,10 @@ public class RestoreCommand {
 
             // Alert the issuer of success
             if (sourceIsPlayer) {
-                res.sendInfo(Text.translatable("command.restore.restored-players-grave-to", player.getName(),
-                    entityProfile.getName()),null);
+                res.sendInfo(res.hoverText(
+                    Text.translatable("command.restore.restored-players-grave-to", player.getName(), entityProfile.getName()),
+                    hoverContent
+                ), null);
             }
 
             return;
@@ -152,7 +154,7 @@ public class RestoreCommand {
         // Handle giving yourself someone else's grave
         if (entityProfile.equals(sourceProfile) && !entityProfile.equals(player)) {
             res.sendInfo(res.hoverText(
-                Text.translatable("command.restore.received-players-grave", entityProfile.getName()),
+                Text.translatable("command.restore.received-players-grave", player.getName()),
                 hoverContent
             ), entity);
         }

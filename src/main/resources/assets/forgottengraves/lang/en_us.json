@@ -85,14 +85,14 @@
   "command.server.config.list": "[Graves] Here's the server config: %s",
 
   "command.restore.grave-restored": "Your grave has been restored.",
-  "command.restore.grave-restored-by": "Your grave has been restored to you by %s.",
+  "command.restore.grave-restored-by": "Your grave has been restored by %s.",
   "command.restore.restored-players-grave": "You have restored %s's grave.",
   "command.restore.restored-players-grave-to": "You have restored %s's grave to %s.",
   "command.restore.received-players-grave": "You have received %s's grave.",
   "command.restore.received-players-grave-by": "You have received %s's grave from %s.",
   "command.restore.restored.tooltip": "Grave Owner: %s\nDimension: %s\nCoordinates: %dx %dy %dz\nCreated: %s\nGrave ID: %d\nRestored By: %s",
 
-  "command.delete.deleted-grave": "You have deleted grave %d from storage for %s.",
+  "command.delete.deleted-grave": "You have deleted grave %d for %s.",
 
   "command.list.error.no-graves": "%s has no graves.",
   "command.list.error.no-graves-on-page": "Page %d doesn't exist for player %s.",

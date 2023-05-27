@@ -127,7 +127,10 @@ public class RestoreCommand {
 
             // Alert the issuer of success
             if (sourceIsPlayer) {
-                res.sendInfo(Text.translatable("command.restore.restored-players-grave", source.getName()),null);
+                res.sendInfo(res.hoverText(
+                    Text.translatable("command.restore.restored-players-grave", entityProfile.getName()),
+                    hoverContent
+                ), null);
             }
             return;
         }

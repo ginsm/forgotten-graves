@@ -164,7 +164,7 @@ public class ListCommand {
         // Send pagination to issuer
         String rec = recipient != null ? recipient.getName() : target.getName();
         res.sendInfo(Interact.generatePagination(res, page, amountOfPages,
-            String.format("/graves list %s", target.getName()) + " %d " + rec),
+            "/graves list %d " + String.format("%s %s", target.getName(), rec)),
             null
         );
 

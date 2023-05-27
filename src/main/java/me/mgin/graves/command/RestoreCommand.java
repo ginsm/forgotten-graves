@@ -102,10 +102,10 @@ public class RestoreCommand {
         // Get the entity profile for easy comparison against player
         GameProfile entityProfile = entity.getGameProfile();
         GameProfile sourceProfile = null;
-        boolean sourceIsPlayer = source.getPlayer() != null;
+        boolean sourceIsPlayerEntity = source.getPlayer() != null;
 
         // Get the source profile, if the source is a player.
-        if (sourceIsPlayer) {
+        if (sourceIsPlayerEntity) {
             sourceProfile = source.getPlayer().getGameProfile();
         }
 
@@ -126,7 +126,7 @@ public class RestoreCommand {
             ), entity);
 
             // Alert the issuer of success
-            if (sourceIsPlayer) {
+            if (sourceIsPlayerEntity) {
                 res.sendInfo(res.hoverText(
                     Text.translatable("command.restore.restored-players-grave", entityProfile.getName()),
                     hoverContent
@@ -144,7 +144,7 @@ public class RestoreCommand {
             ), entity);
 
             // Alert the issuer of success
-            if (sourceIsPlayer) {
+            if (sourceIsPlayerEntity) {
                 res.sendInfo(res.hoverText(
                     Text.translatable("command.restore.restored-players-grave-to", player.getName(), entityProfile.getName()),
                     hoverContent

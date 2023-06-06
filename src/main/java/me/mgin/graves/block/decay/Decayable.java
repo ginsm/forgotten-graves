@@ -92,6 +92,9 @@ public interface Decayable<T extends Enum<T>> {
             GraveBlockEntity newGraveEntity = new GraveBlockEntity(pos, state);
             GameProfile owner = graveEntity.getGraveOwner();
 
+            // Transfer old grave entity's data to the new one
+            newGraveEntity.readNbt(graveEntity.toNbt());
+
             // Decay inventotries (if enabled) and store them
             for (InventoriesApi api : Graves.inventories) {
                 String id = api.getID();
@@ -102,13 +105,6 @@ public interface Decayable<T extends Enum<T>> {
 
                 newGraveEntity.setInventory(id, itemsDecay ? decayItems(inventory, owner) : inventory);
             }
-
-            // Transfer previous data
-            newGraveEntity.setGraveOwner(owner);
-            newGraveEntity.setCustomName(graveEntity.getCustomName());
-            newGraveEntity.setXp(graveEntity.getXp());
-            newGraveEntity.setNoDecay(graveEntity.getNoDecay());
-            newGraveEntity.setGraveSkull(graveEntity.getGraveSkull());
 
             world.addBlockEntity(newGraveEntity);
         }

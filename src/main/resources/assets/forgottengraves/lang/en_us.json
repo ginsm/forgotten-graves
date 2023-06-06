@@ -4,9 +4,6 @@
   "block.forgottengraves.grave_weathered": "Weathered Grave",
   "block.forgottengraves.grave_forgotten": "Forgotten Grave",
 
-  "event.death:send-player-coordinates": "[Graves] Grave spawned at %dx %dy %dz.",
-  "event.use.itemDecay:error.noDecayEnabled": "[Graves] This grave has been waxed, preventing it from decaying.",
-
   "text.autoconfig.forgottengraves.title": "Forgotten Graves Settings",
 
   "text.autoconfig.forgottengraves.option.main": "Main Settings",
@@ -43,13 +40,28 @@
   "text.autoconfig.forgottengraves.option.server.graveRobbing.@PrefixText": "Note: These settings cannot be handled by the client.",
   "text.autoconfig.forgottengraves.option.server.graveRobbing": "Grave Robbing",
   "text.autoconfig.forgottengraves.option.server.graveRobbing.@Tooltip": "Should players be able to rob other players' graves?",
+  "text.autoconfig.forgottengraves.option.server.storedGravesAmount": "Stored Graves Amount",
+  "text.autoconfig.forgottengraves.option.server.storedGravesAmount.@Tooltip": "How many graves should be stored?",
   "text.autoconfig.forgottengraves.option.server.OPOverrideLevel": "OP Override Level",
   "text.autoconfig.forgottengraves.option.server.OPOverrideLevel.@Tooltip": "Minimum OP level to override grave protection?",
   "text.autoconfig.forgottengraves.option.server.clientOptions": "Client Options",
   "text.autoconfig.forgottengraves.option.server.clientOptions.@Tooltip": "What options should be handled by the client?",
 
+  "event.death:send-player-coordinates": "[Graves] Grave spawned at %dx %dy %dz.",
+  "event.use.itemDecay:error.noDecayEnabled": "[Graves] This grave has been waxed, preventing it from decaying.",
+
+  "grave.coordinates": "%dx %dy %dz",
+
+  "forgottengraves.normal": "Forgotten Graves",
+  "forgottengraves.small": "[G] ",
+  "error.prefix": "Error: ",
+
   "command.generic:error.not-yet-implemented": "[Graves] That command hasn't been implemented yet.",
   "command.generic:error.not-player": "[Graves] You must run this as a valid player.",
+  "command.generic.error.specify-player": "[Graves] You must specify a valid player.",
+  "command.generic.error.player-not-online": "%s is not online.",
+  "command.generic.error.no-permission": "You are not permitted to run that command.",
+  "command.generic.error.grave-doesnt-exist": "There is no grave with that ID for %s.",
   "command.generic.config.list:null": "[Graves] An error occurred while trying to print the config.",
 
   "command.config.reset:success": "[Graves] Your config has been reset.",
@@ -64,11 +76,38 @@
   "command.config.set:error.nothing-changed-client-options:add": "is already present",
   "command.config.set:error.nothing-changed-client-options:remove": "doesn't exist",
   "command.config.reload:success": "[Graves] Your config has been reloaded.",
+  "command.config.list": "[Graves] Here's your config: %s",
 
   "command.server.config.sync:error.unable-to-update": "[Graves] The server config could not be updated.",
   "command.server.config.sync:success": "[Graves] The server config has been updated.",
   "command.server.config.reload:success": "[Graves] The server config has been reloaded.",
   "command.server.config.reset:success": "[Graves] The server config has been reset.",
   "command.server.config.list": "[Graves] Here's the server config: %s",
-  "command.client.config.list": "[Graves] Here's your config: %s"
+
+  "command.restore.grave-restored": "Your grave has been restored.",
+  "command.restore.grave-restored-by": "Your grave has been restored by %s.",
+  "command.restore.restored-players-grave": "You have restored %s's grave.",
+  "command.restore.restored-players-grave-to": "You have restored %s's grave to %s.",
+  "command.restore.received-players-grave": "You have received %s's grave.",
+  "command.restore.received-players-grave-by": "You have received %s's grave from %s.",
+  "command.restore.restored.tooltip": "Grave Owner: %s\nDimension: %s\nCoordinates: %dx %dy %dz\nCreated: %s\nGrave ID: %d\nRestored By: %s",
+
+  "command.delete.deleted-grave": "You have deleted grave %d for %s.",
+
+  "command.list.error.no-graves": "%s has no graves.",
+  "command.list.error.no-graves-on-page": "Page %d doesn't exist for player %s.",
+  "command.list.header": "Graves for %s:",
+  "command.list.entry.tooltip": "Dimension: %s\nGrave ID: %d\nCreated: %s\nRecovered: %s",
+  "command.list.entry.tooltip.click-to-teleport": "\nClick to teleport to this grave.",
+  "command.list.entry.restore-button": "[R]",
+  "command.list.entry.restore-button.tooltip": "Click to restore grave %d to %s.",
+  "command.list.entry.delete-button": "[D]",
+  "command.list.entry.delete-button.tooltip": "Click to delete grave %d from storage.",
+
+  "command.players.beginning": "Here are players with graves: ",
+  "command.players.information": "%s (%d), ",
+
+  "utility.pagination.current-page.tooltip": "You are on this page.",
+  "utility.pagination.page-id.tooltip": "Go to page %d.",
+  "utility.pagination.prefix": "Page: "
 }

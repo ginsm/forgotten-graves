@@ -1,14 +1,14 @@
 package me.mgin.graves.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.mgin.graves.config.enums.GraveDropType;
 import me.mgin.graves.config.enums.GraveExpStoreType;
 import me.mgin.graves.config.enums.GraveRetrievalType;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Config(name = "forgottengraves")
 public class GravesConfig extends ConfigHelpers implements ConfigData {
@@ -80,6 +80,10 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         @ConfigEntry.Gui.PrefixText
         @ConfigEntry.Gui.Tooltip
         public boolean graveRobbing = false;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 40)
+        public int storedGravesAmount = 15;
 
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.BoundedDiscrete(min = -1, max = 4)

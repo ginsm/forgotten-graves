@@ -42,6 +42,8 @@
   "text.autoconfig.forgottengraves.option.server.graveRobbing.@Tooltip": "Should players be able to rob other players' graves?",
   "text.autoconfig.forgottengraves.option.server.storedGravesAmount": "Stored Graves Amount",
   "text.autoconfig.forgottengraves.option.server.storedGravesAmount.@Tooltip": "How many graves should be stored?",
+  "text.autoconfig.forgottengraves.option.server.destructiveDeleteCommand": "Destructive Delete",
+  "text.autoconfig.forgottengraves.option.server.destructiveDeleteCommand.@Tooltip": "Should the delete command destroy unclaimed graves?",
   "text.autoconfig.forgottengraves.option.server.OPOverrideLevel": "OP Override Level",
   "text.autoconfig.forgottengraves.option.server.OPOverrideLevel.@Tooltip": "Minimum OP level to override grave protection?",
   "text.autoconfig.forgottengraves.option.server.clientOptions": "Client Options",

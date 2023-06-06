@@ -45,6 +45,9 @@ public class Commands {
             .then(literal("graveRobbing").requires(Commands::isOperator)
                 .then(argument("graveRobbing", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
             )
+            .then(literal("destructiveDeleteCommand").requires(Commands::isOperator)
+                .then(argument("destructiveDeleteCommand", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
+            )
             // Integer Args
             .then(literal("maxCustomXPLevel")
                 .then(argument("maxCustomXPLevel", IntegerArgumentType.integer(0)).executes(SetConfigCommand::execute))
@@ -54,6 +57,9 @@ public class Commands {
             )
             .then(literal("OPOverrideLevel").requires(Commands::isOperator)
                 .then(argument("OPOverrideLevel", IntegerArgumentType.integer(-1, 4)).executes(SetConfigCommand::execute))
+            )
+            .then(literal("storedGravesAmount").requires(Commands::isOperator)
+                .then(argument("storedGravesAmount", IntegerArgumentType.integer(0, 40)).executes(SetConfigCommand::execute))
             )
             // Enum Args
             .then(literal("retrievalType")

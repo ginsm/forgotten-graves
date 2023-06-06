@@ -86,6 +86,9 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         public int storedGravesAmount = 15;
 
         @ConfigEntry.Gui.Tooltip
+        public boolean destructiveDeleteCommand = false;
+
+        @ConfigEntry.Gui.Tooltip
         @ConfigEntry.BoundedDiscrete(min = -1, max = 4)
         public int OPOverrideLevel = 4;
 

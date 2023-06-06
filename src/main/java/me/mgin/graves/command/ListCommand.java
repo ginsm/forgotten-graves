@@ -163,9 +163,9 @@ public class ListCommand {
 
         // Send pagination to issuer
         String recipientName = recipient != null ? recipient.getName() : target.getName();
-        String paginationCommand = issuer != null && issuer.hasPermissionLevel(0) ?
-            "/graves list %d" :
-            "/graves list %d " + String.format("%s %s", target.getName(), recipientName);
+        String paginationCommand = issuer != null && issuer.hasPermissionLevel(4) ?
+            "/graves list %d " + String.format("%s %s", target.getName(), recipientName) :
+            "/graves list %d";
 
         res.sendInfo(
             Interact.generatePagination(res, page, amountOfPages, paginationCommand),

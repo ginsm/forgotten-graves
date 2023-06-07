@@ -107,7 +107,7 @@
   "command.list.entry.delete-button.tooltip": "Click to delete grave %d from storage.",
 
   "command.players.beginning": "Here are players with graves: ",
-  "command.players.information": "%s (%d), ",
+  "command.players.information": "%s (%d) ",
 
   "utility.pagination.current-page.tooltip": "You are on this page.",
   "utility.pagination.page-id.tooltip": "Go to page %d.",

@@ -1,4 +1,4 @@
-name: Publish on Github, Curseforge & Modrinth
+name: Publish on Curseforge & Modrinth
 
 on: [ workflow_dispatch ]
 
@@ -38,8 +38,8 @@ jobs:
       - name: Build
         run: ./gradlew clean build
 
-      - name: Publish (CurseForge/Modrinth/Github)
-        uses: Kir-Antipov/mc-publish@v3.2
+      - name: Publish (CurseForge/Modrinth)
+        uses: Kir-Antipov/mc-publish@v3.3
         with:
           curseforge-id: 550480
           curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
@@ -47,8 +47,7 @@ jobs:
           modrinth-id: FrZIkosK
           modrinth-token: "${{env.MODRINTH_TOKEN}}"
 
-          files-primary: build/libs/!(*-@(dev|sources|javadoc)).jar
-          files-secondary: ""
+          files: build/libs/!(*-@(dev|sources|javadoc)).jar
 
           name: "${{env.RELEASE_NAME}}"
           version: "${{env.VERSION}}"

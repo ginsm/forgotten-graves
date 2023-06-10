@@ -2,10 +2,11 @@ package me.mgin.graves.block.utility;
 
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
-import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.api.InventoriesApi;
+import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.state.ServerState;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -21,6 +22,7 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -211,11 +213,17 @@ public class PlaceGrave {
         graveEntity.setXp(experience);
         resetPlayerExperience(player);
 
+        // Set grave spawn time
+        graveEntity.setMstime((new Date()).getTime());
+
         // Spawn break particles
         block.onBreak(world, pos, state, player);
 
         // Add the block entity to the world
         world.addBlockEntity(graveEntity);
+
+        // Store the grave data in persistent server state (used for restore command)
+        ServerState.storePlayerGrave(player, graveEntity);
 
         // Alert user if graveCoordinates is enabled
         GravesConfig config = GravesConfig.resolveConfig("graveCoordinates", player.getGameProfile());
@@ -228,8 +236,8 @@ public class PlaceGrave {
         }
 
         // For the logs :)
-        System.out.println("[Graves] Grave spawned at: " + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + " for" +
-            " player " + player.getName().getString() + ".");
+        System.out.printf("[%s] Grave spawned at: %dx %dy %dz for player %s.\n", Graves.MOD_ID, pos.getX(), pos.getY(),
+            pos.getZ(), player.getName().getString());
     }
 
     /**

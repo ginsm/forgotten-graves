@@ -42,6 +42,8 @@ public class ConfigOptions {
         // ServerSettings
         add("graveRobbing");
         add("OPOverrideLevel");
+        add("storedGravesAmount");
+        add("destructiveDeleteCommand");
         add("clientOptions");
     }};
 

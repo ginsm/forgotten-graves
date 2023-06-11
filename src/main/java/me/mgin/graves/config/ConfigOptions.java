@@ -1,100 +1,53 @@
 package me.mgin.graves.config;
 
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import me.mgin.graves.config.enums.GraveDropType;
-import me.mgin.graves.config.enums.GraveExpStoreType;
-import me.mgin.graves.config.enums.GraveRetrievalType;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ConfigOptions {
-    static public Set<String> all = new HashSet<>();
+    // Houses all the config option information
+    static public List<String> subclass = new ArrayList<>();
+    static public List<String> all = new ArrayList<>();
+    static public Map<String, List<String>> options = new HashMap<>();
+    static public Map<String, List<String>> enums = new HashMap<>();
 
-    static public Set<String> subclass = new HashSet<>() {{
-        add("main");
-        add("itemDecay");
-        add("server");
-        add("floating");
-    }};
+    /**
+     * Generates lists containing the subclass names, field names for each subclass, and enum field names.
+     */
+    public static void generateConfigOptions() {
+        // Get subclasses
+        for (Class<?> clazz : GravesConfig.class.getClasses()) {
+            String name = clazz.getSimpleName();
+            List<String> fieldNames = new ArrayList<>();
 
-    static public Set<String> main = new HashSet<>() {{
-        // MainSettings
-        add("graves");
-        add("graveCoordinates");
-        add("retrievalType");
-        add("dropType");
-        add("expStorageType");
-        add("maxCustomXPLevel");
-    }};
+            for (Field field : clazz.getDeclaredFields()) {
+                // Check if field is an enum
+                Type type = field.getGenericType();
+                if (type instanceof Class && ((Class<?>)type).isEnum()) {
+                    // Store enum name and values (in string format)
+                    enums.put(field.getName(),
+                        Arrays.stream(((Class<?>) type).getEnumConstants()).map(Object::toString).toList()
+                    );
+                }
 
-    static public Set<String> itemDecay = new HashSet<>() {{
-        // ItemDecaySettings
-        add("decayModifier");
-        add("decayBreaksItems");
-    }};
+                // Add field name to list
+                fieldNames.add(field.getName());
+            }
 
-    static public Set<String> server = new HashSet<>() {{
-        // ServerSettings
-        add("graveRobbing");
-        add("OPOverrideLevel");
-        add("storedGravesAmount");
-        add("destructiveDeleteCommand");
-        add("clientOptions");
-    }};
+            // Add subclass name to list
+            subclass.add(name);
 
-    static public Set<String> floating = new HashSet<>() {{
-        // FloatingSettings
-        add("floatInAir");
-        add("floatInWater");
-        add("floatInLava");
-    }};
-
-    // Create a HashSet of all valid options.
-    static {
-        all.addAll(main);
-        all.addAll(itemDecay);
-        all.addAll(floating);
-        all.addAll(server);
-    }
-
-    static public Set<String> enums = new HashSet<>() {{
-        add("dropType");
-        add("retrievalType");
-        add("expStorageType");
-    }};
-
-    // Enum options
-    static public Set<String> dropType = Stream.of(GraveDropType.values()).map(Enum::name).collect(Collectors.toSet());
-    static public Set<String> retrievalType = Stream.of(GraveRetrievalType.values()).map(Enum::name).collect(Collectors.toSet());
-    static public Set<String> expStorageType = Stream.of(GraveExpStoreType.values()).map(Enum::name).collect(Collectors.toSet());
-
-    public static Set<String> getSubclass(String subclass) {
-        return switch (subclass) {
-            case "main" -> main;
-            case "itemDecay" -> itemDecay;
-            case "server" -> server;
-            case "floating" -> floating;
-            default -> throw new IllegalStateException("Unexpected value: " + subclass);
-        };
-    }
-
+            // Add the field names to options and all lists
+            options.put(clazz.getSimpleName(), fieldNames);
+            all.addAll(fieldNames);
         }
-
-    public static boolean validEnumValue(String option, String value) {
-        return switch (option) {
-            case "dropType" -> dropType.contains(value);
-            case "retrievalType" -> retrievalType.contains(value);
-            case "expStorageType" -> expStorageType.contains(value);
-            default -> throw new IllegalStateException("Unexpected value for '" + option + "': " + value);
-        };
     }
 
-    public static SuggestionProvider<ServerCommandSource> suggest(Set<String> suggestionList) {
+    public static SuggestionProvider<ServerCommandSource> suggest(List<String> suggestionList) {
         return (context, builder) -> {
             String option = context.getNodes().get(context.getNodes().size() - 1).getNode().getName();
             String[] input = context.getInput().split(" ");

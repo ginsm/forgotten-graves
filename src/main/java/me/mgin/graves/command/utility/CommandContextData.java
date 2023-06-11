@@ -76,7 +76,7 @@ public class CommandContextData {
         if (result.VAL == null) return result;
 
         // Deserialize enum values properly
-        if (ConfigOptions.enums.contains(result.OPTION)) {
+        if (ConfigOptions.enums.containsKey(result.OPTION)) {
             result.VAL = determineEnumValue((String) result.VAL, result.OPTION);
             return result;
         }
@@ -141,7 +141,7 @@ public class CommandContextData {
             case "literal" -> input[input.length - 1];
             case "string" -> {
                 String value = context.getArgument(option, String.class);
-                if (ConfigOptions.enums.contains(option)) yield determineEnumValue(value, option);
+                if (ConfigOptions.enums.containsKey(option)) yield determineEnumValue(value, option);
                 yield value;
             }
             default -> throw new IllegalStateException("Unexpected value: " + type);
@@ -156,7 +156,7 @@ public class CommandContextData {
      * @return Enum.?
      */
     static private Enum<?> determineEnumValue(String value, String option) {
-        if (!ConfigOptions.validEnumValue(option, value)) return null;
+        if (!ConfigOptions.enums.get(option).contains(value)) return null;
         return switch (option) {
             case "retrievalType" -> GraveRetrievalType.valueOf(value);
             case "dropType" -> GraveDropType.valueOf(value);
@@ -164,5 +164,4 @@ public class CommandContextData {
             default -> throw new IllegalStateException("Unexpected value for '" + option + "': " + value);
         };
     }
-
 }

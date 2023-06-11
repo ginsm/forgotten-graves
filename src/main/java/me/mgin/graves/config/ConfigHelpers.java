@@ -95,7 +95,7 @@ public class ConfigHelpers {
 
     static private Field determineSubClass(String option) throws NoSuchFieldException {
         for (String subclass : ConfigOptions.subclass) {
-            if (ConfigOptions.getSubclass(subclass).contains(option))
+            if (ConfigOptions.options.get(subclass).contains(option))
                 return GravesConfig.class.getDeclaredField(subclass);
         }
         return null;

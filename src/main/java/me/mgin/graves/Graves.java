@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.command.Commands;
+import me.mgin.graves.config.ConfigOptions;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.event.Events;
 import me.mgin.graves.inventory.BackSlot;
@@ -19,9 +20,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Graves implements ModInitializer {
 
@@ -35,6 +34,7 @@ public class Graves implements ModInitializer {
     public void onInitialize() {
         // Register Config
         AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);
+        ConfigOptions.generateConfigOptions();
 
         // Graves Registry
         GraveBlocks.registerServerBlocks(MOD_ID, BRAND_BLOCK);

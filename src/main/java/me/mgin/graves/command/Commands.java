@@ -6,6 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import me.mgin.graves.command.config.*;
 import me.mgin.graves.config.ConfigOptions;
+import me.mgin.graves.util.ArrayUtil;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.GameProfileArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
@@ -85,7 +86,9 @@ public class Commands {
                 .then(literal("add")
                     .then(argument("clientOptions:add", StringArgumentType.string())
                         .suggests(ConfigOptions.suggest(
-                            ConfigOptions.buildSet(ConfigOptions.main, ConfigOptions.itemDecay, ConfigOptions.floating)
+                            ArrayUtil.merge(ConfigOptions.options.get("MainSettings"),
+                                ConfigOptions.options.get("ItemDecaySettings"),
+                                ConfigOptions.options.get("FloatingSettings"))
                         ))
                         .executes(SetConfigCommand::execute)
                     )
@@ -93,7 +96,9 @@ public class Commands {
                 .then(literal("remove")
                     .then(argument("clientOptions:remove", StringArgumentType.string())
                         .suggests(ConfigOptions.suggest(
-                            ConfigOptions.buildSet(ConfigOptions.main, ConfigOptions.itemDecay, ConfigOptions.floating)
+                            ArrayUtil.merge(ConfigOptions.options.get("MainSettings"),
+                                ConfigOptions.options.get("ItemDecaySettings"),
+                                ConfigOptions.options.get("FloatingSettings"))
                         ))
                         .executes(SetConfigCommand::execute)
                     )

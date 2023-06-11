@@ -83,14 +83,7 @@ public class ConfigOptions {
         };
     }
 
-    @SafeVarargs
-    public static Set<String> buildSet(Set<String>... sets) {
-        Set<String> result = new HashSet<>();
-        for (Set<String> set : sets) {
-            result.addAll(set);
         }
-        return result;
-    }
 
     public static boolean validEnumValue(String option, String value) {
         return switch (option) {

@@ -50,8 +50,11 @@ public class Commands {
                 .then(argument("destructiveDeleteCommand", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
             )
             // Integer Args
-            .then(literal("maxCustomXPLevel")
-                .then(argument("maxCustomXPLevel", IntegerArgumentType.integer(0)).executes(SetConfigCommand::execute))
+            .then(literal("levelCap")
+                .then(argument("levelCap", IntegerArgumentType.integer(-1)).executes(SetConfigCommand::execute))
+            )
+            .then(literal("percentage")
+                .then(argument("percentage", IntegerArgumentType.integer(0, 100)).executes(SetConfigCommand::execute))
             )
             .then(literal("decayModifier")
                 .then(argument("decayModifier", IntegerArgumentType.integer(0, 100)).executes(SetConfigCommand::execute))

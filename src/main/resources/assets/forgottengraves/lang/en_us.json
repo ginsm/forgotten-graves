@@ -17,10 +17,14 @@
   "text.autoconfig.forgottengraves.option.main.retrievalType.@Tooltip": "How are the items retrieved?",
   "text.autoconfig.forgottengraves.option.main.dropType": "Grave Drop Type",
   "text.autoconfig.forgottengraves.option.main.dropType.@Tooltip": "What happens to the items when they're retrieved?",
-  "text.autoconfig.forgottengraves.option.main.expStorageType": "XP Storage Type",
-  "text.autoconfig.forgottengraves.option.main.expStorageType.@Tooltip": "How should the graves store XP?",
-  "text.autoconfig.forgottengraves.option.main.maxCustomXPLevel": "Max Custom XP Level",
-  "text.autoconfig.forgottengraves.option.main.maxCustomXPLevel.@Tooltip": "(Custom XP) What's the max amount of levels that you want stored?",
+
+  "text.autoconfig.forgottengraves.option.experience": "Experience Settings",
+  "text.autoconfig.forgottengraves.option.experience.expStorageType": "XP Storage Type",
+  "text.autoconfig.forgottengraves.option.experience.expStorageType.@Tooltip": "How should the graves store XP?",
+  "text.autoconfig.forgottengraves.option.experience.levelCap": "Level Cap",
+  "text.autoconfig.forgottengraves.option.experience.levelCap.@Tooltip": "What's the max amount of levels that you want stored?",
+  "text.autoconfig.forgottengraves.option.experience.percentage": "Percentage",
+  "text.autoconfig.forgottengraves.option.experience.percentage.@Tooltip": "What percentage of the player's experience should be stored?",
 
   "text.autoconfig.forgottengraves.option.itemDecay": "Item Decay Settings",
   "text.autoconfig.forgottengraves.option.itemDecay.decayModifier": "Item Decay Modifier",

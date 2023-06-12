@@ -17,17 +17,20 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
     public MainSettings main = new MainSettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
-    public FloatingSettings floating = new FloatingSettings();
+    public ExperienceSettings experience = new ExperienceSettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
     public ItemDecaySettings itemDecay = new ItemDecaySettings();
+
+    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+    public FloatingSettings floating = new FloatingSettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
     public ServerSettings server = new ServerSettings();
 
     @Override
     public void validatePostLoad() {
-        main.maxCustomXPLevel = Math.max(main.maxCustomXPLevel, 0);
+        experience.levelCap = Math.max(experience.levelCap, -1);
         itemDecay.decayModifier = Math.max(Math.min(itemDecay.decayModifier, 100), 0);
         server.OPOverrideLevel = Math.max(Math.min(server.OPOverrideLevel, 4), -1);
     }
@@ -46,13 +49,6 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
         public GraveDropType dropType = GraveDropType.INVENTORY;
-
-        @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
-        public GraveExpStoreType expStorageType = GraveExpStoreType.ALL;
-
-        @ConfigEntry.Gui.Tooltip
-        public int maxCustomXPLevel = 30;
     }
 
 
@@ -74,6 +70,19 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         public boolean decayBreaksItems = false;
+    }
+
+    public static class ExperienceSettings {
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+        public GraveExpStoreType expStorageType = GraveExpStoreType.ALL;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
+        public int percentage = 100;
+
+        @ConfigEntry.Gui.Tooltip
+        public int levelCap = -1;
     }
 
     public static class ServerSettings {

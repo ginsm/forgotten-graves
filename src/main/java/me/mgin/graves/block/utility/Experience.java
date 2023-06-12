@@ -8,29 +8,42 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class Experience {
     public static int calculatePlayerExperience(PlayerEntity player) {
-        int level = player.experienceLevel;
-        float progress = player.experienceProgress;
         GameProfile profile = player.getGameProfile();
+        float progress = player.experienceProgress;
+        int level = player.experienceLevel;
 
-        GraveExpStoreType expStorageType = GravesConfig.resolveConfig("expStorageType", profile).main.expStorageType;
-        int maxCustomXPLevel = GravesConfig.resolveConfig("maxCustomXPLevel", profile).main.maxCustomXPLevel;
+        // Config settings
+        GraveExpStoreType type = GravesConfig.resolveConfig("expStorageType", profile).experience.expStorageType;
+        int levelCap = GravesConfig.resolveConfig("levelCap", profile).experience.levelCap;
+        int percentage = GravesConfig.resolveConfig("percentage", profile).experience.percentage;
 
-        switch (expStorageType) {
-            case ALL -> {
-                return calculateTotalExperience(level, progress);
+        // Determine experience points based on configured type
+        int experience;
+        switch (type) {
+            case VANILLA -> {
+                experience = calculateVanillaExperience(level);
             }
-            case CUSTOM -> {
-                // Enforce a minimum threshold (0).
-                int maxLevel = Math.max(maxCustomXPLevel, 0);
-                return calculateTotalExperience(
-                    Math.min(level, maxLevel),
-                    maxLevel > level ? progress : 0
-                );
+            case ALL -> {
+                experience = calculateTotalExperience(level, progress);
             }
             default -> {
-                return calculateDefaultExperience(level);
+                experience = 0;
             }
         }
+
+        // Adjust experience based on set percentage
+        float adjustedExperience = experience * ((float) percentage / 100);
+
+        // Return amount, enforcing level cap.
+        return levelCap > -1 ?
+            Math.min(calculateLevelExperience(levelCap), Math.round(adjustedExperience)) :
+            Math.round(adjustedExperience);
+    }
+
+    // This leverages the default death experience equation found here:
+    // https://minecraft.fandom.com/wiki/Experience#Sources
+    public static int calculateVanillaExperience(int level) {
+        return 7 * level;
     }
 
     public static int calculateTotalExperience(int level, float progress) {
@@ -39,14 +52,14 @@ public class Experience {
         return levelExperience + progressExperience;
     }
 
-    // This leverages the default death experience equation found here:
-    // https://minecraft.fandom.com/wiki/Experience#Sources
-    public static int calculateDefaultExperience(int level) {
-        return Math.min(7 * level, 100);
-    }
-
     // This leverages the "total experience" equations found here:
     // https://minecraft.fandom.com/wiki/Experience#Leveling_up
+
+    /**
+     * Calculates how many points
+     * @param level int
+     * @return int
+     */
     private static int calculateLevelExperience(int level) {
         int levelSquared = level * level;
         int levelExperience = 0;
@@ -61,8 +74,16 @@ public class Experience {
         return levelExperience;
     }
 
-    // This leverages the "experience required" equation found here:
-    // https://minecraft.fandom.com/wiki/Experience#Leveling_up
+    /**
+     * <p>
+     *     Calculates how many points the given progress. This leverages the
+     *     "experience required" equation found <a href="https://minecraft.fandom.com/wiki/Experience#Leveling_up">here</a>.
+     * </p>
+     *
+     * @param level int
+     * @param progress float
+     * @return int
+     */
     private static int calculateProgressExperience(int level, float progress) {
         float progressExperience = 0;
 

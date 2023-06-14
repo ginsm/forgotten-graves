@@ -4,7 +4,6 @@ import me.mgin.graves.block.decay.DecayingGrave.BlockDecay;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -31,7 +30,7 @@ public class GraveBlocks {
     };
 
     private static GraveBlockBase createGrave(BlockDecay blockDecay) {
-        return new GraveBlockBase(blockDecay, FabricBlockSettings.of(Material.ORGANIC_PRODUCT).strength(0.8f, 3600000.0F));
+        return new GraveBlockBase(blockDecay, FabricBlockSettings.create().strength(0.8f, 3600000.0F));
     }
 
     /**

@@ -151,7 +151,7 @@ public class ConfigSetter {
             }
 
             // Alert the source
-            source.sendFeedback(response, true);
+            source.sendFeedback(() -> response, true);
         }
     }
 }

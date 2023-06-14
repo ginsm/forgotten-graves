@@ -51,7 +51,7 @@ public class ResetConfigCommand {
         if (source.getEntity() instanceof ServerPlayerEntity player) {
             if (sendCommandFeedback) player.sendMessage(text);
         } else {
-            if (sendCommandFeedback) source.sendFeedback(text, true);
+            if (sendCommandFeedback) source.sendFeedback(() -> text, true);
         }
     }
 

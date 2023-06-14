@@ -56,7 +56,8 @@ public class Responder {
         }
 
         // Dispatch message
-        context.getSource().sendFeedback(response, false);
+        Text finalResponse = response;
+        context.getSource().sendFeedback(() -> finalResponse, false);
     }
 
     /**

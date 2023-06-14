@@ -34,6 +34,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             return;
         }
 
-        PlaceGrave.place(this.world, this.getPos(), player);
+        PlaceGrave.place(this.getWorld(), this.getPos(), player);
     }
 }

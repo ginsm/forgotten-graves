@@ -16,6 +16,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.event.GameEvent;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class Trinkets implements InventoriesApi {

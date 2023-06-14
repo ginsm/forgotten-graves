@@ -52,7 +52,7 @@ public class ListConfigCommand {
             if (source.getEntity() instanceof ServerPlayerEntity player) {
                 player.sendMessage(text);
             } else {
-                source.sendFeedback(text, true);
+                source.sendFeedback(() -> text, true);
             }
         } catch (CommandSyntaxException e) {
             throw new RuntimeException(e);

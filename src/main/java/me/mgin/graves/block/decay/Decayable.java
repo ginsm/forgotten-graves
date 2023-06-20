@@ -25,9 +25,13 @@ public interface Decayable<T extends Enum<T>> {
     float getDecayChanceMultiplier();
 
     default void tickDecay(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        float f = 0.05688889F;
-        if (random.nextFloat() < f) {
-            this.tryDecay(state, world, pos, random);
+        GravesConfig config = GravesConfig.getConfig();
+
+        if (config.decay.decayEnabled) {
+            float f = 0.05688889F;
+            if (random.nextFloat() < f) {
+                this.tryDecay(state, world, pos, random);
+            }
         }
     }
 

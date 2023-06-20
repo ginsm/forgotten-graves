@@ -89,9 +89,10 @@ public class Commands {
                 .then(literal("add")
                     .then(argument("clientOptions:add", StringArgumentType.string())
                         .suggests(ConfigOptions.suggest(
-                            ArrayUtil.merge(ConfigOptions.options.get("MainSettings"),
-                                ConfigOptions.options.get("ItemDecaySettings"),
-                                ConfigOptions.options.get("FloatingSettings"))
+                            ArrayUtil.merge(
+                                ConfigOptions.options.get("MainSettings"),
+                                ConfigOptions.options.get("FloatingSettings")
+                            )
                         ))
                         .executes(SetConfigCommand::execute)
                     )
@@ -99,9 +100,10 @@ public class Commands {
                 .then(literal("remove")
                     .then(argument("clientOptions:remove", StringArgumentType.string())
                         .suggests(ConfigOptions.suggest(
-                            ArrayUtil.merge(ConfigOptions.options.get("MainSettings"),
-                                ConfigOptions.options.get("ItemDecaySettings"),
-                                ConfigOptions.options.get("FloatingSettings"))
+                            ArrayUtil.merge(
+                                ConfigOptions.options.get("MainSettings"),
+                                ConfigOptions.options.get("FloatingSettings")
+                            )
                         ))
                         .executes(SetConfigCommand::execute)
                     )

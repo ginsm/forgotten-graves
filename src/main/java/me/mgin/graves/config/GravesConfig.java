@@ -3,6 +3,7 @@ package me.mgin.graves.config;
 import me.mgin.graves.config.enums.GraveDropType;
 import me.mgin.graves.config.enums.GraveExpStoreType;
 import me.mgin.graves.config.enums.GraveRetrievalType;
+import me.mgin.graves.config.enums.PercentageType;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
@@ -80,6 +81,10 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
         public int percentage = 100;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+        public PercentageType percentageAffects = PercentageType.LEVELS;
 
         @ConfigEntry.Gui.Tooltip
         public int levelCap = -1;

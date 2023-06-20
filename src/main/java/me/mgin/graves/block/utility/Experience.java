@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 
 import me.mgin.graves.config.enums.GraveExpStoreType;
 import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.config.enums.PercentageType;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class Experience {
@@ -13,13 +14,18 @@ public class Experience {
         int level = player.experienceLevel;
 
         // Config settings
-        GraveExpStoreType type = GravesConfig.resolveConfig("expStorageType", profile).experience.expStorageType;
+        GraveExpStoreType storageType = GravesConfig.resolveConfig("expStorageType", profile).experience.expStorageType;
         int levelCap = GravesConfig.resolveConfig("levelCap", profile).experience.levelCap;
         int percentage = GravesConfig.resolveConfig("percentage", profile).experience.percentage;
+        PercentageType percentageAffects = GravesConfig.resolveConfig("percentageAffects", profile).experience.percentageAffects;
 
         // Determine experience points based on configured type
+        float percentageModifier = ((float) percentage / 100);
         int experience;
-        switch (type) {
+
+        if (percentageAffects == PercentageType.LEVELS) level = Math.round(level * percentageModifier);
+
+        switch (storageType) {
             case VANILLA -> {
                 experience = calculateVanillaExperience(level);
             }
@@ -32,12 +38,10 @@ public class Experience {
         }
 
         // Adjust experience based on set percentage
-        float adjustedExperience = experience * ((float) percentage / 100);
+        if (percentageAffects == PercentageType.POINTS) experience = Math.round(experience * percentageModifier);
 
         // Return amount, enforcing level cap.
-        return levelCap > -1 ?
-            Math.min(calculateLevelExperience(levelCap), Math.round(adjustedExperience)) :
-            Math.round(adjustedExperience);
+        return levelCap > -1 ? Math.min(calculateLevelExperience(levelCap), experience) : experience;
     }
 
     // This leverages the default death experience equation found here:

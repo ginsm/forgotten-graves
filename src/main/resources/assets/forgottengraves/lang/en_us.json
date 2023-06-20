@@ -28,12 +28,12 @@
   "text.autoconfig.forgottengraves.option.experience.levelCap": "Level Cap",
   "text.autoconfig.forgottengraves.option.experience.levelCap.@Tooltip": "What's the max amount of levels that you want stored?",
 
-  "text.autoconfig.forgottengraves.option.itemDecay": "Item Decay Settings",
-  "text.autoconfig.forgottengraves.option.itemDecay.decayModifier": "Item Decay Modifier",
-  "text.autoconfig.forgottengraves.option.itemDecay.decayModifier.@Tooltip": "How quickly should an item decay (0-100)?",
-  "text.autoconfig.forgottengraves.option.itemDecay.decayBreaksItems": "Decay Breaks Items",
-  "text.autoconfig.forgottengraves.option.itemDecay.decayBreaksItems.@Tooltip": "Should item decay ever completely break an item?",
+  "text.autoconfig.forgottengraves.option.decay": "Decay Settings",
   "text.autoconfig.forgottengraves.option.decay.decayEnabled": "Enable Decay",
+  "text.autoconfig.forgottengraves.option.decay.decayModifier": "Item Decay Modifier",
+  "text.autoconfig.forgottengraves.option.decay.decayModifier.@Tooltip": "How quickly should an item decay (0-100)?",
+  "text.autoconfig.forgottengraves.option.decay.decayBreaksItems": "Decay Breaks Items",
+  "text.autoconfig.forgottengraves.option.decay.decayBreaksItems.@Tooltip": "Should item decay ever completely break an item?",
 
   "text.autoconfig.forgottengraves.option.floating": "Floating Settings",
   "text.autoconfig.forgottengraves.option.floating.floatInAir": "Float in Air",

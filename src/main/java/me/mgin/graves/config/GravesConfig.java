@@ -21,7 +21,7 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
     public ExperienceSettings experience = new ExperienceSettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
-    public ItemDecaySettings itemDecay = new ItemDecaySettings();
+    public DecaySettings decay = new DecaySettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
     public FloatingSettings floating = new FloatingSettings();
@@ -32,7 +32,7 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
     @Override
     public void validatePostLoad() {
         experience.levelCap = Math.max(experience.levelCap, -1);
-        itemDecay.decayModifier = Math.max(Math.min(itemDecay.decayModifier, 100), 0);
+        decay.decayModifier = Math.max(Math.min(decay.decayModifier, 100), 0);
         server.OPOverrideLevel = Math.max(Math.min(server.OPOverrideLevel, 4), -1);
     }
 
@@ -64,7 +64,7 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         public boolean floatInLava = true;
     }
 
-    public static class ItemDecaySettings {
+    public static class DecaySettings {
         @ConfigEntry.Gui.Tooltip
         public boolean decayEnabled = true;
 

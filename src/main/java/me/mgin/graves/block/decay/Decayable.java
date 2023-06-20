@@ -44,8 +44,8 @@ public interface Decayable<T extends Enum<T>> {
     }
 
     static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items, GameProfile profile) {
-        float decayModifier = GravesConfig.resolveConfig("decayModifier", profile).itemDecay.decayModifier / 100f;
-        boolean decayBreaksItems = GravesConfig.resolveConfig("decayBreaksItems", profile).itemDecay.decayBreaksItems;
+        float decayModifier = GravesConfig.resolveConfig("decayModifier", profile).decay.decayModifier / 100f;
+        boolean decayBreaksItems = GravesConfig.resolveConfig("decayBreaksItems", profile).decay.decayBreaksItems;
 
         if (decayModifier == 0.0f)
             return items;

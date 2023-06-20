@@ -84,7 +84,7 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
-        public PercentageType percentageAffects = PercentageType.LEVELS;
+        public PercentageType percentageAffects = PercentageType.POINTS;
 
         @ConfigEntry.Gui.Tooltip
         public int levelCap = -1;

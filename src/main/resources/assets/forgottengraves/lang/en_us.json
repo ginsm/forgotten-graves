@@ -57,7 +57,7 @@
   "text.autoconfig.forgottengraves.option.server.clientOptions.@Tooltip": "What options should be handled by the client?",
 
   "event.death:send-player-coordinates": "[Graves] Grave spawned at %dx %dy %dz.",
-  "event.use.itemDecay:error.noDecayEnabled": "[Graves] This grave has been waxed, preventing it from decaying.",
+  "event.use.itemDecay:error.noDecayEnabled": "This grave has been waxed, preventing it from decaying.",
 
   "grave.coordinates": "%dx %dy %dz",
 

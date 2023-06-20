@@ -115,7 +115,7 @@ public class RetrieveGrave {
         // Resolve and handle the drop types
         GraveDropType dropType = GravesConfig.resolveConfig("dropType", player.getGameProfile()).main.dropType;
 
-        if (dropType == GraveDropType.INVENTORY) {
+        if (dropType == GraveDropType.EQUIP) {
             droppedItems = equipInventoryItems(player, graveEntity);
         } else if (dropType == GraveDropType.DROP) {
             droppedItems = getInventoryItems(graveEntity);

@@ -49,7 +49,7 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
-        public GraveDropType dropType = GraveDropType.INVENTORY;
+        public GraveDropType dropType = GraveDropType.EQUIP;
     }
 
 

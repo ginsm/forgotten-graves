@@ -1,5 +1,6 @@
 package me.mgin.graves.config;
 
+import me.mgin.graves.block.decay.DecayingGrave;
 import me.mgin.graves.config.enums.GraveDropType;
 import me.mgin.graves.config.enums.GraveExpStoreType;
 import me.mgin.graves.config.enums.GraveRetrievalType;
@@ -74,6 +75,10 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         public boolean decayBreaksItems = false;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+        public DecayingGrave.BlockDecay decayRobbing = DecayingGrave.BlockDecay.FRESH;
     }
 
     public static class ExperienceSettings {

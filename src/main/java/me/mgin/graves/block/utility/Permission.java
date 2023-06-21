@@ -1,5 +1,7 @@
 package me.mgin.graves.block.utility;
 
+import me.mgin.graves.block.GraveBlockBase;
+import me.mgin.graves.block.decay.DecayingGrave;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.enums.GraveRetrievalType;
 import me.mgin.graves.config.GravesConfig;
@@ -19,10 +21,22 @@ public class Permission {
      * @return boolean
      */
     static public boolean playerCanAttemptRetrieve(PlayerEntity player, GraveBlockEntity graveEntity) {
-        boolean graveRobbing = GravesConfig.getConfig().server.graveRobbing;
+        if (graveEntity.getGraveOwner() == null) return true;
 
-        return graveEntity.getGraveOwner() == null || graveEntity.isGraveOwner(player) || graveRobbing
-            || playerCanOverride(player);
+        // Config settings
+        GravesConfig config = GravesConfig.getConfig();
+        int decayRobbing = GravesConfig.getConfig().decay.decayRobbing.ordinal();
+
+        // Get the grave's current decay stage
+        int graveStageOrdinal = ((GraveBlockBase) graveEntity.getState().getBlock()).getDecayStage().ordinal();
+
+        // Conditionals
+        boolean isGraveOwner = graveEntity.isGraveOwner(player);
+        boolean canDecayRob = graveStageOrdinal >= decayRobbing;
+        boolean graveRobbing = config.server.graveRobbing;
+        boolean canOverride = playerCanOverride(player);
+
+        return isGraveOwner || canDecayRob && graveRobbing || canOverride;
     }
 
     /**

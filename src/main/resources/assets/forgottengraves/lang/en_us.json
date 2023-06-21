@@ -30,6 +30,7 @@
 
   "text.autoconfig.forgottengraves.option.decay": "Decay Settings",
   "text.autoconfig.forgottengraves.option.decay.decayEnabled": "Enable Decay",
+  "text.autoconfig.forgottengraves.option.decay.decayEnabled.@Tooltip": "Should graves decay over time?",
   "text.autoconfig.forgottengraves.option.decay.decayModifier": "Item Decay Modifier",
   "text.autoconfig.forgottengraves.option.decay.decayModifier.@Tooltip": "How quickly should an item decay (0-100)?",
   "text.autoconfig.forgottengraves.option.decay.decayBreaksItems": "Decay Breaks Items",

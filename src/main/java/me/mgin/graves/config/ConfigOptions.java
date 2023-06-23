@@ -19,30 +19,32 @@ public class ConfigOptions {
      * Generates lists containing the subclass names, field names for each subclass, and enum field names.
      */
     public static void generateConfigOptions() {
-        // Get subclasses
-        for (Class<?> clazz : GravesConfig.class.getClasses()) {
-            String name = clazz.getSimpleName();
+        // Get declared subclass names
+        for (Field field : GravesConfig.class.getDeclaredFields()) {
+            subclass.add(field.getName());
+
+            // Get field's class
+            Class<?> clazz = field.getType();
+
+            // Store fields
             List<String> fieldNames = new ArrayList<>();
 
-            for (Field field : clazz.getDeclaredFields()) {
+            for (Field subfield : clazz.getDeclaredFields()) {
                 // Check if field is an enum
-                Type type = field.getGenericType();
+                Type type = subfield.getGenericType();
                 if (type instanceof Class && ((Class<?>)type).isEnum()) {
                     // Store enum name and values (in string format)
-                    enums.put(field.getName(),
+                    enums.put(subfield.getName(),
                         Arrays.stream(((Class<?>) type).getEnumConstants()).map(Object::toString).toList()
                     );
                 }
 
                 // Add field name to list
-                fieldNames.add(field.getName());
+                fieldNames.add(subfield.getName());
             }
 
-            // Add subclass name to list
-            subclass.add(name);
-
             // Add the field names to options and all lists
-            options.put(clazz.getSimpleName(), fieldNames);
+            options.put(field.getName(), fieldNames);
             all.addAll(fieldNames);
         }
     }

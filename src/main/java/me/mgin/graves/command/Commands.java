@@ -90,8 +90,9 @@ public class Commands {
                     .then(argument("clientOptions:add", StringArgumentType.string())
                         .suggests(ConfigOptions.suggest(
                             ArrayUtil.merge(
-                                ConfigOptions.options.get("MainSettings"),
-                                ConfigOptions.options.get("FloatingSettings")
+                                ConfigOptions.options.get("main"),
+                                ConfigOptions.options.get("experience"),
+                                ConfigOptions.options.get("floating")
                             )
                         ))
                         .executes(SetConfigCommand::execute)
@@ -101,8 +102,9 @@ public class Commands {
                     .then(argument("clientOptions:remove", StringArgumentType.string())
                         .suggests(ConfigOptions.suggest(
                             ArrayUtil.merge(
-                                ConfigOptions.options.get("MainSettings"),
-                                ConfigOptions.options.get("FloatingSettings")
+                                ConfigOptions.options.get("main"),
+                                ConfigOptions.options.get("experience"),
+                                ConfigOptions.options.get("floating")
                             )
                         ))
                         .executes(SetConfigCommand::execute)

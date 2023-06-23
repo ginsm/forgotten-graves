@@ -53,7 +53,7 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         public GraveDropType dropType = GraveDropType.EQUIP;
 
         @ConfigEntry.Gui.Tooltip
-        public boolean shiftSwapsDropType = true;
+        public boolean sneakSwapsDropType = true;
     }
 
 

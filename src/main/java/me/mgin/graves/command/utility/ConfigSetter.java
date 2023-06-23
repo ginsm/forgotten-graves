@@ -2,9 +2,11 @@ package me.mgin.graves.command.utility;
 
 import me.mgin.graves.config.ConfigOptions;
 import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.util.Responder;
+import me.mgin.graves.util.ResponderTheme;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -72,8 +74,7 @@ public class ConfigSetter {
         config.setDynamicField(option, value);
         config.save();
 
-        if (data.SEND_COMMAND_FEEDBACK)
-            sendResponse(option.equals("clientOptions") ? "success-client-options" : "success", data);
+        sendResponse(option.equals("clientOptions") ? "success-client-options" : "success", data);
     }
 
     /**
@@ -127,31 +128,37 @@ public class ConfigSetter {
 
         // Resolve response text
         Text response = switch (Objects.requireNonNull(slug)) {
-            case "success" -> Text.translatable(text, option, val, onServer).formatted(Formatting.GREEN);
-            case "success-client-options" -> Text.translatable(text, val, action, onServer).formatted(Formatting.GREEN);
-            case "error.invalid-enum-value" -> Text.translatable(text, option).formatted(Formatting.RED);
-            case "error.invalid-config-option" -> Text.translatable(text, val).formatted(Formatting.RED);
-            case "error.nothing-changed-client-options" ->
-                Text.translatable(text, val, action).formatted(Formatting.RED);
+            case "success" -> Text.translatable(text, option, val, onServer);
+            case "success-client-options" -> Text.translatable(text, val, action, onServer);
+            case "error.invalid-enum-value" -> Text.translatable(text, option);
+            case "error.invalid-config-option" -> Text.translatable(text, val);
+            case "error.nothing-changed-client-options" -> Text.translatable(text, val, action);
             default -> Text.literal(slug);
         };
 
-        // Issue the response to the client, if present
-        if (this.client != null && this.client.player != null) {
-            this.client.player.sendMessage(response);
-            return;
+        // This runs when modifying the server config
+        if (source != null) {
+            Responder res = new Responder(source.getPlayer(), source.getServer());
+            res.send(slug.contains("error") ? res.error(response) : res.success(response), null);
         }
 
-        // Issue the response to the respective source, if present
-        if (this.source != null) {
-            // Source is a player
-            if (source.getEntity() instanceof ServerPlayerEntity player) {
-                player.sendMessage(response);
-                return;
-            }
+        // This runs when modifying the client config
+        if (this.client != null && this.client.player != null) {
+            // Hardcoding all of this for now; it's being a brat when trying to use Responder as-is.
+            Text prefix = ResponderTheme.style(Text.translatable("forgottengraves.small"), "prefix").copy()
+                .styled(style -> style.withHoverEvent(new HoverEvent(
+                    HoverEvent.Action.SHOW_TEXT,
+                    Text.translatable("forgottengraves.normal").formatted(Formatting.YELLOW)
+                )));
 
-            // Alert the source
-            source.sendFeedback(response, true);
+            Text res = Text.literal("")
+                .append(prefix)
+                .formatted(Formatting.RESET)
+                .append(response);
+
+            this.client.player.sendMessage(
+                ResponderTheme.style(res, slug.contains("error") ? "error" : "success")
+            );
         }
     }
 }

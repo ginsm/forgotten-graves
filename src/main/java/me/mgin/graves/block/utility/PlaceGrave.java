@@ -7,6 +7,7 @@ import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.state.ServerState;
+import me.mgin.graves.util.Responder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -228,9 +229,16 @@ public class PlaceGrave {
         GravesConfig config = GravesConfig.resolveConfig("graveCoordinates", player.getGameProfile());
 
         if (config.main.graveCoordinates) {
-            player.sendMessage(
-                Text.translatable("event.death:send-player-coordinates", pos.getX(), pos.getY(), pos.getZ()),
-                false
+            Responder res = new Responder(player, player.getServer());
+            String dimension = String.valueOf(world.getDimensionKey().getValue());
+
+            res.sendInfo(
+                Text.translatable("event.death:send-player-coordinates",
+                    res.dimension(pos.getX(), dimension),
+                    res.dimension(pos.getY(), dimension),
+                    res.dimension(pos.getZ(), dimension)
+                ),
+                null
             );
         }
 

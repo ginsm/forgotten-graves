@@ -5,12 +5,12 @@ import com.mojang.brigadier.context.CommandContext;
 import me.mgin.graves.command.utility.CommandContextData;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.networking.config.ConfigNetworking;
+import me.mgin.graves.util.Responder;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 
 public class ResetConfigCommand {
     /**
@@ -21,11 +21,13 @@ public class ResetConfigCommand {
      */
     public static int execute(CommandContext<ServerCommandSource> context) {
         CommandContextData data = new CommandContextData(context);
+        ServerCommandSource source = context.getSource();
+        Responder res = new Responder(source.getPlayer(), source.getServer());
 
         if (data.IS_SERVER) {
-            executeOnServer(context, data);
+            executeOnServer(res);
         } else {
-            executeOnClient(context, data);
+            executeOnClient(context, res);
         }
 
         return Command.SINGLE_SUCCESS;
@@ -34,44 +36,31 @@ public class ResetConfigCommand {
     /**
      * Resets the server config based on the passed data.
      *
-     * @param context CommandContext.ServerCommandSource
-     * @param data    CommandContextData
+     * @param res Responder
      */
-    public static void executeOnServer(CommandContext<ServerCommandSource> context, CommandContextData data) {
-        ServerCommandSource source = context.getSource();
-        boolean sendCommandFeedback = data.SEND_COMMAND_FEEDBACK;
-
+    public static void executeOnServer(Responder res) {
         // Reset the config
         GravesConfig.setConfig(new GravesConfig());
         GravesConfig.getConfig().save();
 
-        // Alert the user
-        Text text = Text.translatable("command.server.config.reset:success").formatted(Formatting.GREEN);
-
-        if (source.getEntity() instanceof ServerPlayerEntity player) {
-            if (sendCommandFeedback) player.sendMessage(text);
-        } else {
-            if (sendCommandFeedback) source.sendFeedback(text, true);
-        }
+        res.sendSuccess(Text.translatable("command.server.config.reset:success"), null);
     }
 
     /**
      * Resets the client config based on the passed data.
      *
      * @param context CommandContext.ServerCommandSource
-     * @param data    CommandContextData
+     * @param res Responder
      */
-    public static void executeOnClient(CommandContext<ServerCommandSource> context, CommandContextData data) {
+    public static void executeOnClient(CommandContext<ServerCommandSource> context, Responder res) {
         ServerCommandSource source = context.getSource();
-        boolean sendCommandFeedback = data.SEND_COMMAND_FEEDBACK;
+        ServerPlayerEntity player = source.getPlayer();
 
-        if (source.getEntity() instanceof ServerPlayerEntity player) {
+        if (player != null) {
             ServerPlayNetworking.send(player, ConfigNetworking.RESET_CONFIG_S2C, PacketByteBufs.create());
-
-            if (sendCommandFeedback)
-                player.sendMessage(Text.translatable("command.config.reset:success").formatted(Formatting.GREEN));
+            res.sendSuccess(Text.translatable("command.config.reset:success"), null);
         } else {
-            source.sendError(Text.translatable("command.generic:error.not-player"));
+            res.sendError(Text.translatable("command.generic:error.not-player"), null);
         }
     }
 }

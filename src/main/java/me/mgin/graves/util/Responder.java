@@ -1,32 +1,25 @@
 package me.mgin.graves.util;
 
-import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
-
-import java.util.Objects;
 
 public class Responder {
-    ServerPlayerEntity player;
+    PlayerEntity player;
     MinecraftServer server;
     boolean sendCommandFeedback;
 
     /**
      * Creates a new Responder class.
      *
-     * @param player ServerPlayerEntity
+     * @param player PlayerEntity
      * @param server MinecraftServer
      */
-    public Responder(ServerPlayerEntity player, MinecraftServer server) {
+    public Responder(PlayerEntity player, MinecraftServer server) {
         this.player = player;
         this.server = server;
         this.sendCommandFeedback = sendCommandFeedback(server);
@@ -40,6 +33,7 @@ public class Responder {
      * @param target PlayerEntity
      */
     public void send(Text message, PlayerEntity target) {
+
         // Do not send message if command feedback  is disabled
         if (!sendCommandFeedback) return;
 
@@ -209,7 +203,7 @@ public class Responder {
         return message.copy().styled(style -> style.withHoverEvent(new HoverEvent(
             HoverEvent.Action.SHOW_TEXT, content
         )));
-    };
+    }
 
     public Text runOnClick(Text message, String command) {
         return message.copy().styled(style -> style.withClickEvent(new ClickEvent(

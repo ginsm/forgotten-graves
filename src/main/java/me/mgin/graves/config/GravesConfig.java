@@ -65,22 +65,6 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         public boolean floatInLava = true;
     }
 
-    public static class DecaySettings {
-        @ConfigEntry.Gui.Tooltip
-        public boolean decayEnabled = true;
-
-        @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
-        public int decayModifier = 60;
-
-        @ConfigEntry.Gui.Tooltip
-        public boolean decayBreaksItems = false;
-
-        @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
-        public DecayingGrave.BlockDecay decayRobbing = DecayingGrave.BlockDecay.FRESH;
-    }
-
     public static class ExperienceSettings {
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
@@ -96,6 +80,22 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         public int levelCap = -1;
+    }
+
+    public static class DecaySettings {
+        @ConfigEntry.Gui.Tooltip
+        public boolean decayEnabled = true;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
+        public int decayModifier = 60;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean decayBreaksItems = false;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+        public DecayingGrave.BlockDecay decayRobbing = DecayingGrave.BlockDecay.FRESH;
     }
 
     public static class ServerSettings {

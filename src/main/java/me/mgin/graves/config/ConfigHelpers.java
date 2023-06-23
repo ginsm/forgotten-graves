@@ -63,7 +63,7 @@ public class ConfigHelpers {
      * @param profile GameProfile
      * @return GravesConfig
      */
-    public static GravesConfig resolveConfig(String option, GameProfile profile) {
+    public static GravesConfig resolve(String option, GameProfile profile) {
         GravesConfig config = GravesConfig.getConfig();
 
         if (config.server.clientOptions.contains(option)) {

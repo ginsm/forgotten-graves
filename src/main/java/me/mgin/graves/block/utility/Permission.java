@@ -1,7 +1,6 @@
 package me.mgin.graves.block.utility;
 
 import me.mgin.graves.block.GraveBlockBase;
-import me.mgin.graves.block.decay.DecayingGrave;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.enums.GraveRetrievalType;
 import me.mgin.graves.config.GravesConfig;
@@ -66,7 +65,7 @@ public class Permission {
      * @return boolean
      */
     static public boolean playerCanBreakGrave(PlayerEntity player, GraveBlockEntity graveEntity) {
-        GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType",
+        GraveRetrievalType retrievalType = GravesConfig.resolve("retrievalType",
             player.getGameProfile()).main.retrievalType;
 
         if (playerCanAttemptRetrieve(player, graveEntity))
@@ -90,7 +89,7 @@ public class Permission {
      * @return boolean
      */
     static public boolean playerCanUseGrave(PlayerEntity player, GraveBlockEntity graveEntity) {
-        GraveRetrievalType retrievalType = GravesConfig.resolveConfig("retrievalType",
+        GraveRetrievalType retrievalType = GravesConfig.resolve("retrievalType",
             player.getGameProfile()).main.retrievalType;
 
         if (playerCanAttemptRetrieve(player, graveEntity))

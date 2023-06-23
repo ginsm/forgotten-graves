@@ -113,7 +113,7 @@ public class RetrieveGrave {
         DefaultedList<ItemStack> droppedItems = DefaultedList.of();
 
         // Resolve and handle the drop types
-        GraveDropType dropType = GravesConfig.resolveConfig("dropType", player.getGameProfile()).main.dropType;
+        GraveDropType dropType = GravesConfig.resolve("dropType", player.getGameProfile()).main.dropType;
 
         if (dropType == GraveDropType.EQUIP) {
             droppedItems = equipInventoryItems(player, graveEntity);

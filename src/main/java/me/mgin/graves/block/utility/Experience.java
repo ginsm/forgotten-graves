@@ -14,10 +14,10 @@ public class Experience {
         int level = player.experienceLevel;
 
         // Config settings
-        GraveExpStoreType storageType = GravesConfig.resolveConfig("expStorageType", profile).experience.expStorageType;
-        int levelCap = GravesConfig.resolveConfig("levelCap", profile).experience.levelCap;
-        int percentage = GravesConfig.resolveConfig("percentage", profile).experience.percentage;
-        PercentageType percentageAffects = GravesConfig.resolveConfig("percentageAffects", profile).experience.percentageAffects;
+        GraveExpStoreType storageType = GravesConfig.resolve("expStorageType", profile).experience.expStorageType;
+        int levelCap = GravesConfig.resolve("levelCap", profile).experience.levelCap;
+        int percentage = GravesConfig.resolve("percentage", profile).experience.percentage;
+        PercentageType percentageAffects = GravesConfig.resolve("percentageAffects", profile).experience.percentageAffects;
 
         // Determine experience points based on configured type
         float percentageModifier = ((float) percentage / 100);

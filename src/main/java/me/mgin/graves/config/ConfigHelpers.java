@@ -56,25 +56,33 @@ public class ConfigHelpers {
     }
 
     /**
-     * Resolves whether the option is being handled by the client or server and
-     * returns the appropriate GravesConfig instance.
+     * Resolves the value of the passed option; respects client option handling.
      *
      * @param option String
      * @param profile GameProfile
-     * @return GravesConfig
+     * @return T
      */
-    public static GravesConfig resolve(String option, GameProfile profile) {
+    public static <T> T resolve(String option, GameProfile profile) {
         GravesConfig config = GravesConfig.getConfig();
 
+        // Switches to the client config if applicable
         if (config.server.clientOptions.contains(option)) {
-            GravesConfig clientConfig = Graves.clientConfigs.get(profile);
-
-            if (clientConfig != null) {
-                return clientConfig;
-            }
+            config = Graves.clientConfigs.get(profile);
         }
 
-        return config;
+        try {
+            Field subclass = determineSubClass(option);
+            if (subclass != null) {
+                Field field = subclass.getType().getDeclaredField(option);
+                Object result = field.get(subclass.get(config));
+                return (T) result;
+            }
+        } catch (NullPointerException | NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Worse case, throw an error.
+        throw new RuntimeException("Something went wrong trying to access " + option);
     }
 
     /**
@@ -85,9 +93,9 @@ public class ConfigHelpers {
      */
     public void setDynamicField(String option, Object value) {
         try {
-            Field target = determineSubClass(option);
-            Field field = Objects.requireNonNull(target).getType().getDeclaredField(option);
-            field.set(target.get(this), value);
+            Field subclass = determineSubClass(option);
+            Field field = Objects.requireNonNull(subclass).getType().getDeclaredField(option);
+            field.set(subclass.get(this), value);
         } catch (NullPointerException | NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }

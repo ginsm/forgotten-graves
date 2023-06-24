@@ -1,5 +1,5 @@
 package me.mgin.graves.config.enums;
 
-public enum PercentageType {
+public enum ExperienceType {
     LEVELS, POINTS
 }

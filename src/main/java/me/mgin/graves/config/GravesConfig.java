@@ -4,7 +4,7 @@ import me.mgin.graves.block.decay.DecayingGrave;
 import me.mgin.graves.config.enums.GraveDropType;
 import me.mgin.graves.config.enums.GraveExpStoreType;
 import me.mgin.graves.config.enums.GraveRetrievalType;
-import me.mgin.graves.config.enums.PercentageType;
+import me.mgin.graves.config.enums.ExperienceType;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
@@ -32,7 +32,7 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
     @Override
     public void validatePostLoad() {
-        experience.levelCap = Math.max(experience.levelCap, -1);
+        experience.cap = Math.max(experience.cap, -1);
         decay.decayModifier = Math.max(Math.min(decay.decayModifier, 100), 0);
         server.OPOverrideLevel = Math.max(Math.min(server.OPOverrideLevel, 4), -1);
     }
@@ -79,10 +79,14 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
-        public PercentageType percentageAffects = PercentageType.POINTS;
+        public ExperienceType percentageType = ExperienceType.POINTS;
 
         @ConfigEntry.Gui.Tooltip
-        public int levelCap = -1;
+        public int cap = -1;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+        public ExperienceType capType = ExperienceType.LEVELS;
     }
 
     public static class DecaySettings {

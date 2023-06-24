@@ -1,10 +1,9 @@
 package me.mgin.graves.block.utility;
 
 import com.mojang.authlib.GameProfile;
-
-import me.mgin.graves.config.enums.GraveExpStoreType;
 import me.mgin.graves.config.GravesConfig;
-import me.mgin.graves.config.enums.PercentageType;
+import me.mgin.graves.config.enums.GraveExpStoreType;
+import me.mgin.graves.config.enums.ExperienceType;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class Experience {
@@ -14,16 +13,19 @@ public class Experience {
         int level = player.experienceLevel;
 
         // Config settings
-        GraveExpStoreType storageType = GravesConfig.resolve("expStorageType", profile).experience.expStorageType;
-        int levelCap = GravesConfig.resolve("levelCap", profile).experience.levelCap;
-        int percentage = GravesConfig.resolve("percentage", profile).experience.percentage;
-        PercentageType percentageAffects = GravesConfig.resolve("percentageAffects", profile).experience.percentageAffects;
+        GraveExpStoreType storageType = GravesConfig.resolve("expStorageType", profile);
+        ExperienceType percentageType = GravesConfig.resolve("percentageType", profile);
+        ExperienceType capType = GravesConfig.resolve("capType", profile);
+        int cap = GravesConfig.resolve("cap", profile);
+        int percentage = GravesConfig.resolve("percentage", profile);
+
+
 
         // Determine experience points based on configured type
         float percentageModifier = ((float) percentage / 100);
         int experience;
 
-        if (percentageAffects == PercentageType.LEVELS) level = Math.round(level * percentageModifier);
+        if (percentageType == ExperienceType.LEVELS) level = Math.round(level * percentageModifier);
 
         switch (storageType) {
             case VANILLA -> {
@@ -38,10 +40,10 @@ public class Experience {
         }
 
         // Adjust experience based on set percentage
-        if (percentageAffects == PercentageType.POINTS) experience = Math.round(experience * percentageModifier);
+        if (percentageType == ExperienceType.POINTS) experience = Math.round(experience * percentageModifier);
 
         // Return amount, enforcing level cap.
-        return levelCap > -1 ? Math.min(calculateLevelExperience(levelCap), experience) : experience;
+        return cap > -1 ? Math.min(calculateLevelExperience(cap), experience) : experience;
     }
 
     // This leverages the default death experience equation found here:

@@ -65,8 +65,7 @@ public class Permission {
      * @return boolean
      */
     static public boolean playerCanBreakGrave(PlayerEntity player, GraveBlockEntity graveEntity) {
-        GraveRetrievalType retrievalType = GravesConfig.resolve("retrievalType",
-            player.getGameProfile()).main.retrievalType;
+        GraveRetrievalType retrievalType = GravesConfig.resolve("retrievalType", player.getGameProfile());
 
         if (playerCanAttemptRetrieve(player, graveEntity))
             return retrievalType == GraveRetrievalType.BREAK || retrievalType == GraveRetrievalType.BOTH;
@@ -89,8 +88,7 @@ public class Permission {
      * @return boolean
      */
     static public boolean playerCanUseGrave(PlayerEntity player, GraveBlockEntity graveEntity) {
-        GraveRetrievalType retrievalType = GravesConfig.resolve("retrievalType",
-            player.getGameProfile()).main.retrievalType;
+        GraveRetrievalType retrievalType = GravesConfig.resolve("retrievalType", player.getGameProfile());
 
         if (playerCanAttemptRetrieve(player, graveEntity))
             return retrievalType == GraveRetrievalType.USE || retrievalType == GraveRetrievalType.BOTH;

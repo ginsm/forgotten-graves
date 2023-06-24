@@ -98,9 +98,9 @@ public class PlaceGrave {
         Block block = world.getBlockState(pos).getBlock();
 
         return switch (block.getName().getString()) {
-            case "Air" -> !GravesConfig.resolve("floatInAir", profile).floating.floatInAir;
-            case "Water" -> !GravesConfig.resolve("floatInWater", profile).floating.floatInWater;
-            case "Lava" -> !GravesConfig.resolve("floatInLava", profile).floating.floatInLava;
+            case "Air" -> !((boolean) GravesConfig.resolve("floatInAir", profile));
+            case "Water" -> !((boolean) GravesConfig.resolve("floatInWater", profile));
+            case "Lava" -> !((boolean) GravesConfig.resolve("floatInLava", profile));
             default -> false;
         };
     }
@@ -226,9 +226,9 @@ public class PlaceGrave {
         ServerState.storePlayerGrave(player, graveEntity);
 
         // Alert user if graveCoordinates is enabled
-        GravesConfig config = GravesConfig.resolve("graveCoordinates", player.getGameProfile());
+        boolean graveCoordinates = GravesConfig.resolve("graveCoordinates", player.getGameProfile());
 
-        if (config.main.graveCoordinates) {
+        if (graveCoordinates) {
             Responder res = new Responder(player, player.getServer());
             String dimension = String.valueOf(world.getDimensionKey().getValue());
 

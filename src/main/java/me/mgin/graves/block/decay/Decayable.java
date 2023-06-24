@@ -1,9 +1,6 @@
 package me.mgin.graves.block.decay;
 
 import com.mojang.authlib.GameProfile;
-
-import java.util.Optional;
-
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
@@ -18,6 +15,8 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+
+import java.util.Optional;
 
 public interface Decayable<T extends Enum<T>> {
     Optional<BlockState> getDecayResultState(BlockState state);
@@ -44,10 +43,13 @@ public interface Decayable<T extends Enum<T>> {
     }
 
     static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items, GameProfile profile) {
-        float decayModifier = GravesConfig.resolve("decayModifier", profile).decay.decayModifier / 100f;
-        boolean decayBreaksItems = GravesConfig.resolve("decayBreaksItems", profile).decay.decayBreaksItems;
+        int decayModifier = GravesConfig.resolve("decayModifier", profile);
+        boolean decayBreaksItems = GravesConfig.resolve("decayBreaksItems", profile);
 
-        if (decayModifier == 0.0f)
+        // Convert decayModifier to a percentage
+        float modifier = decayModifier / 100f;
+
+        if (modifier == 0.0f)
             return items;
 
         for (int i = 0; i < items.size(); i++) {
@@ -66,7 +68,7 @@ public interface Decayable<T extends Enum<T>> {
                     currentItemDecay = 1f / (float) maxDamage;
                 }
 
-                float decayPercent = decayModifier * currentItemDecay;
+                float decayPercent = modifier * currentItemDecay;
                 float unbreakingModifier = ((100f / (unbreaking + 1f)) / 100f);
                 float decayChance = 0.35f * unbreakingModifier;
 

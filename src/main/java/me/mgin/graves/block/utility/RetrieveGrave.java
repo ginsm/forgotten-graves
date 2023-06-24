@@ -114,8 +114,8 @@ public class RetrieveGrave {
 
         // Resolve and handle the drop types
         GameProfile profile = player.getGameProfile();
-        GraveDropType dropType = GravesConfig.resolve("dropType", profile).main.dropType;
-        boolean shiftSwapsDropType = GravesConfig.resolve("sneakSwapsDropType", profile).main.sneakSwapsDropType;
+        GraveDropType dropType = GravesConfig.resolve("dropType", profile);
+        boolean shiftSwapsDropType = GravesConfig.resolve("sneakSwapsDropType", profile);
 
         // Swap drop type if holding shift
         if (shiftSwapsDropType && player.isSneaking()) {

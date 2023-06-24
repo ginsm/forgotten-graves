@@ -34,14 +34,14 @@ public class Commands {
             .then(literal("decayBreaksItems")
                 .then(argument("decayBreaksItems", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
             )
-            .then(literal("floatInAir")
-                .then(argument("floatInAir", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
+            .then(literal("sinkInAir")
+                .then(argument("sinkInAir", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
             )
-            .then(literal("floatInWater")
-                .then(argument("floatInWater", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
+            .then(literal("sinkInWater")
+                .then(argument("sinkInWater", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
             )
-            .then(literal("floatInLava")
-                .then(argument("floatInLava", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
+            .then(literal("sinkInLava")
+                .then(argument("sinkInLava", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
             )
             .then(literal("graveRobbing").requires(Commands::isOperator)
                 .then(argument("graveRobbing", BoolArgumentType.bool()).executes(SetConfigCommand::execute))
@@ -92,7 +92,7 @@ public class Commands {
                             ArrayUtil.merge(
                                 ConfigOptions.options.get("main"),
                                 ConfigOptions.options.get("experience"),
-                                ConfigOptions.options.get("floating")
+                                ConfigOptions.options.get("sink")
                             )
                         ))
                         .executes(SetConfigCommand::execute)
@@ -104,7 +104,7 @@ public class Commands {
                             ArrayUtil.merge(
                                 ConfigOptions.options.get("main"),
                                 ConfigOptions.options.get("experience"),
-                                ConfigOptions.options.get("floating")
+                                ConfigOptions.options.get("sink")
                             )
                         ))
                         .executes(SetConfigCommand::execute)

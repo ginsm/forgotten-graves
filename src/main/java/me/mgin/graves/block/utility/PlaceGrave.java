@@ -98,9 +98,9 @@ public class PlaceGrave {
         Block block = world.getBlockState(pos).getBlock();
 
         return switch (block.getName().getString()) {
-            case "Air" -> !((boolean) GravesConfig.resolve("floatInAir", profile));
-            case "Water" -> !((boolean) GravesConfig.resolve("floatInWater", profile));
-            case "Lava" -> !((boolean) GravesConfig.resolve("floatInLava", profile));
+            case "Air" -> (boolean) GravesConfig.resolve("sinkInAir", profile);
+            case "Water" -> (boolean) GravesConfig.resolve("sinkInWater", profile);
+            case "Lava" -> (boolean) GravesConfig.resolve("sinkInLava", profile);
             default -> false;
         };
     }

@@ -25,7 +25,7 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
     public DecaySettings decay = new DecaySettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
-    public FloatingSettings floating = new FloatingSettings();
+    public SinkSettings sink = new SinkSettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
     public ServerSettings server = new ServerSettings();
@@ -57,15 +57,15 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
     }
 
 
-    public static class FloatingSettings {
+    public static class SinkSettings {
         @ConfigEntry.Gui.Tooltip
-        public boolean floatInAir = false;
+        public boolean sinkInAir = true;
         
         @ConfigEntry.Gui.Tooltip
-        public boolean floatInWater = false;
+        public boolean sinkInWater = true;
 
         @ConfigEntry.Gui.Tooltip
-        public boolean floatInLava = true;
+        public boolean sinkInLava = false;
     }
 
     public static class ExperienceSettings {

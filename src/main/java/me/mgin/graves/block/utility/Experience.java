@@ -43,7 +43,8 @@ public class Experience {
         if (percentageType == ExperienceType.POINTS) experience = Math.round(experience * percentageModifier);
 
         // Return amount, enforcing level cap.
-        return cap > -1 ? Math.min(calculateLevelExperience(cap), experience) : experience;
+        int capValue = capType == ExperienceType.LEVELS ? calculateLevelExperience(cap) : cap;
+        return cap > -1 ? Math.min(capValue, experience) : experience;
     }
 
     // This leverages the default death experience equation found here:

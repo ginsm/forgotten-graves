@@ -25,7 +25,11 @@ public class Experience {
         float percentageModifier = ((float) percentage / 100);
         int experience;
 
-        if (percentageType == ExperienceType.LEVELS) level = Math.round(level * percentageModifier);
+        if (percentageType == ExperienceType.LEVELS) {
+            float levelAndProgress = (level + progress) * percentageModifier;
+            level = (int) levelAndProgress;
+            progress = levelAndProgress % 1;
+        }
 
         switch (storageType) {
             case VANILLA -> {

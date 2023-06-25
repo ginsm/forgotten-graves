@@ -101,12 +101,15 @@ public class Experience {
         if (level > 30)
             progressExperience = (9 * level - 158) * progress;
 
+        int result = Math.round(progressExperience);
+
         /*
          * The below conditional is in place to prevent an issue where Minecraft doesn't
          * quite reach the level it should.. i.e. 17 might become 16.999 and so forth. I
          * rather give 1 xp than have someone almost the level they were.
          */
-        int result = Math.round(progressExperience);
-        return level > 0 ? result + 1 : 0;
+        if (result == 0) result += 1;
+
+        return level > 0 ? result : 0;
     }
 }

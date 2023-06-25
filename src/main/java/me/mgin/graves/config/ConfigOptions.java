@@ -1,10 +1,14 @@
 package me.mgin.graves.config;
 
 import com.mojang.brigadier.suggestion.SuggestionProvider;
+import me.mgin.graves.block.decay.DecayingGrave;
+import me.mgin.graves.config.enums.ExperienceType;
+import me.mgin.graves.config.enums.GraveDropType;
+import me.mgin.graves.config.enums.GraveExpStoreType;
+import me.mgin.graves.config.enums.GraveRetrievalType;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -31,12 +35,14 @@ public class ConfigOptions {
 
             for (Field subfield : clazz.getDeclaredFields()) {
                 // Check if field is an enum
-                Type type = subfield.getGenericType();
-                if (type instanceof Class && ((Class<?>)type).isEnum()) {
-                    // Store enum name and values (in string format)
-                    enums.put(subfield.getName(),
-                        Arrays.stream(((Class<?>) type).getEnumConstants()).map(Object::toString).toList()
-                    );
+                if (subfield.getType().isEnum()) {
+                    // Creates a list of constants (and converts them to strings)
+                    List<String> constants = Arrays.stream(subfield.getType().getEnumConstants())
+                            .map(Object::toString)
+                            .toList();
+
+                    // Store enum name and constants
+                    enums.put(subfield.getName(), constants);
                 }
 
                 // Add field name to list
@@ -47,6 +53,26 @@ public class ConfigOptions {
             options.put(field.getName(), fieldNames);
             all.addAll(fieldNames);
         }
+    }
+
+    /**
+     * Converts string-based values into enum values (if contained in option enum).
+     *
+     * @param value  String
+     * @param option String
+     * @return {@code Enum<?>}
+     */
+    static public Enum<?> convertStringToEnum(String option, String value) {
+        if (!ConfigOptions.enums.get(option).contains(value)) return null;
+
+        return switch (option) {
+            case "retrievalType" -> GraveRetrievalType.valueOf(value);
+            case "dropType" -> GraveDropType.valueOf(value);
+            case "expStorageType" -> GraveExpStoreType.valueOf(value);
+            case "capType", "percentageType" -> ExperienceType.valueOf(value);
+            case "decayRobbing" -> DecayingGrave.BlockDecay.valueOf(value);
+            default -> throw new IllegalStateException("Unexpected value for '" + option + "': " + value);
+        };
     }
 
     public static SuggestionProvider<ServerCommandSource> suggest(List<String> suggestionList) {

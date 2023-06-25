@@ -22,10 +22,10 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
     public ExperienceSettings experience = new ExperienceSettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
-    public DecaySettings decay = new DecaySettings();
+    public SinkSettings sink = new SinkSettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
-    public SinkSettings sink = new SinkSettings();
+    public DecaySettings decay = new DecaySettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
     public ServerSettings server = new ServerSettings();
@@ -56,18 +56,6 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         public boolean sneakSwapsDropType = true;
     }
 
-
-    public static class SinkSettings {
-        @ConfigEntry.Gui.Tooltip
-        public boolean sinkInAir = true;
-        
-        @ConfigEntry.Gui.Tooltip
-        public boolean sinkInWater = true;
-
-        @ConfigEntry.Gui.Tooltip
-        public boolean sinkInLava = false;
-    }
-
     public static class ExperienceSettings {
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
@@ -89,7 +77,19 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         public ExperienceType capType = ExperienceType.LEVELS;
     }
 
+    public static class SinkSettings {
+        @ConfigEntry.Gui.Tooltip
+        public boolean sinkInAir = true;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean sinkInWater = true;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean sinkInLava = false;
+    }
+
     public static class DecaySettings {
+        @ConfigEntry.Gui.PrefixText
         @ConfigEntry.Gui.Tooltip
         public boolean decayEnabled = true;
 

@@ -43,11 +43,10 @@ public interface Decayable<T extends Enum<T>> {
     }
 
     static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items, GameProfile profile) {
-        int decayModifier = GravesConfig.resolve("decayModifier", profile);
-        boolean decayBreaksItems = GravesConfig.resolve("decayBreaksItems", profile);
+        GravesConfig config = GravesConfig.getConfig();
 
-        // Convert decayModifier to a percentage
-        float modifier = decayModifier / 100f;
+        float modifier = config.decay.decayModifier / 100f;
+        boolean decayBreaksItems = config.decay.decayBreaksItems;
 
         if (modifier == 0.0f)
             return items;

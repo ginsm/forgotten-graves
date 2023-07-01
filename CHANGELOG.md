@@ -1,5 +1,14 @@
-## 1.19.2-3.1.0
-**Added**
-- Graves are now backed up on the server, accessible even if the grave has already been claimed.
-- Added four new commands to interact with grave backups: `players`, `list`, `restore`, and `delete`. You can read about them [here](https://github.com/ginsm/forgotten-graves/wiki/Commands#grave-backup-commands).
-- Added two new config settings for grave backups: `storedGravesAmount` and `destructiveDeleteCommand`. You can read about them [here](https://github.com/ginsm/forgotten-graves/wiki/Config#stored-graves-amount).
+## 1.19.2-3.2.0
+### IMPORTANT
+This update largely revolves around sprucing up the config. As such, it would be a good idea to reconfigure the mod (especially for servers).
+
+### Added
+- More experience settings, see [here]() for the new settings.
+- More decay settings, see [here]() for the new settings.
+- New `shiftSwapsDropType` option (default `true`). This options allows you to briefly switch between `DROP` and `EQUIP` by sneaking while retrieving graves.
+
+### Updated
+- Floating settings have been renamed to sink settings; i.e. floatInWater is now sinkInWater.
+- `decayModifier` now defaults to `60`.
+- `dropType`'s `INVENTORY` value has been renamed to `EQUIP`.
+- Chat messages should now be formatted consistently.

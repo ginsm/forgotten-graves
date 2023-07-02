@@ -1,9 +1,6 @@
 package me.mgin.graves.block.decay;
 
 import com.mojang.authlib.GameProfile;
-
-import java.util.Optional;
-
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
@@ -19,15 +16,21 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
+import java.util.Optional;
+
 public interface Decayable<T extends Enum<T>> {
     Optional<BlockState> getDecayResultState(BlockState state);
 
     float getDecayChanceMultiplier();
 
     default void tickDecay(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        float f = 0.05688889F;
-        if (random.nextFloat() < f) {
-            this.tryDecay(state, world, pos, random);
+        GravesConfig config = GravesConfig.getConfig();
+
+        if (config.decay.decayEnabled) {
+            float f = 0.05688889F;
+            if (random.nextFloat() < f) {
+                this.tryDecay(state, world, pos, random);
+            }
         }
     }
 
@@ -40,10 +43,12 @@ public interface Decayable<T extends Enum<T>> {
     }
 
     static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items, GameProfile profile) {
-        float decayModifier = GravesConfig.resolveConfig("decayModifier", profile).itemDecay.decayModifier / 100f;
-        boolean decayBreaksItems = GravesConfig.resolveConfig("decayBreaksItems", profile).itemDecay.decayBreaksItems;
+        GravesConfig config = GravesConfig.getConfig();
 
-        if (decayModifier == 0.0f)
+        float modifier = config.decay.decayModifier / 100f;
+        boolean decayBreaksItems = config.decay.decayBreaksItems;
+
+        if (modifier == 0.0f)
             return items;
 
         for (int i = 0; i < items.size(); i++) {
@@ -62,7 +67,7 @@ public interface Decayable<T extends Enum<T>> {
                     currentItemDecay = 1f / (float) maxDamage;
                 }
 
-                float decayPercent = decayModifier * currentItemDecay;
+                float decayPercent = modifier * currentItemDecay;
                 float unbreakingModifier = ((100f / (unbreaking + 1f)) / 100f);
                 float decayChance = 0.35f * unbreakingModifier;
 

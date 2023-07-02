@@ -4,9 +4,6 @@ import com.google.gson.Gson;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ParsedCommandNode;
 import me.mgin.graves.config.ConfigOptions;
-import me.mgin.graves.config.enums.GraveDropType;
-import me.mgin.graves.config.enums.GraveExpStoreType;
-import me.mgin.graves.config.enums.GraveRetrievalType;
 import me.mgin.graves.util.ArrayUtil;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.world.GameRules;
@@ -15,12 +12,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static me.mgin.graves.config.ConfigOptions.convertStringToEnum;
+
 public class CommandContextData {
     public Object VAL;
     public String TYPE;
     public String OPTION;
     public String ACTION = null;
-    public boolean IS_SERVER = false;
+    public boolean IS_SERVER;
 
     public boolean SEND_COMMAND_FEEDBACK;
 
@@ -76,8 +75,8 @@ public class CommandContextData {
         if (result.VAL == null) return result;
 
         // Deserialize enum values properly
-        if (ConfigOptions.enums.contains(result.OPTION)) {
-            result.VAL = determineEnumValue((String) result.VAL, result.OPTION);
+        if (ConfigOptions.enums.containsKey(result.OPTION)) {
+            result.VAL = convertStringToEnum(result.OPTION, (String) result.VAL);
             return result;
         }
 
@@ -141,28 +140,10 @@ public class CommandContextData {
             case "literal" -> input[input.length - 1];
             case "string" -> {
                 String value = context.getArgument(option, String.class);
-                if (ConfigOptions.enums.contains(option)) yield determineEnumValue(value, option);
+                if (ConfigOptions.enums.containsKey(option)) yield convertStringToEnum(option, value);
                 yield value;
             }
             default -> throw new IllegalStateException("Unexpected value: " + type);
         };
     }
-
-    /**
-     * Converts string-based values into enum values (if contained in option enum).
-     *
-     * @param value  String
-     * @param option String
-     * @return Enum.?
-     */
-    static private Enum<?> determineEnumValue(String value, String option) {
-        if (!ConfigOptions.validEnumValue(option, value)) return null;
-        return switch (option) {
-            case "retrievalType" -> GraveRetrievalType.valueOf(value);
-            case "dropType" -> GraveDropType.valueOf(value);
-            case "expStorageType" -> GraveExpStoreType.valueOf(value);
-            default -> throw new IllegalStateException("Unexpected value for '" + option + "': " + value);
-        };
-    }
-
 }

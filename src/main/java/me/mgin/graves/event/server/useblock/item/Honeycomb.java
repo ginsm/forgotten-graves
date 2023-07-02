@@ -39,7 +39,7 @@ public class Honeycomb {
         if (!isHoneycombItem || !isMainHand || !canRetrieve || !canDecay) return false;
 
         // Deduct from stack and set no decay to true
-        player.getStackInHand(hand).decrement(1);
+        if (!player.isCreative()) player.getStackInHand(hand).decrement(1);
         entity.setNoDecay(1);
 
         // Polish

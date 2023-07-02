@@ -23,8 +23,9 @@ import static me.mgin.graves.util.DateFormatter.formatDate;
 
 public class RestoreCommand {
     static public int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        MinecraftServer server = context.getSource().getServer();
-        Responder res = new Responder(context);
+        ServerCommandSource source = context.getSource();
+        MinecraftServer server = source.getServer();
+        Responder res = new Responder(source.getPlayer(), server);
 
         // Get command arguments
         // graves restore <graveid> <player> <recipient>

@@ -1,8 +1,10 @@
 package me.mgin.graves.config;
 
+import me.mgin.graves.block.decay.DecayingGrave;
 import me.mgin.graves.config.enums.GraveDropType;
 import me.mgin.graves.config.enums.GraveExpStoreType;
 import me.mgin.graves.config.enums.GraveRetrievalType;
+import me.mgin.graves.config.enums.ExperienceType;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
@@ -17,18 +19,21 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
     public MainSettings main = new MainSettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
-    public FloatingSettings floating = new FloatingSettings();
+    public ExperienceSettings experience = new ExperienceSettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
-    public ItemDecaySettings itemDecay = new ItemDecaySettings();
+    public SinkSettings sink = new SinkSettings();
+
+    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+    public DecaySettings decay = new DecaySettings();
 
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
     public ServerSettings server = new ServerSettings();
 
     @Override
     public void validatePostLoad() {
-        main.maxCustomXPLevel = Math.max(main.maxCustomXPLevel, 0);
-        itemDecay.decayModifier = Math.max(Math.min(itemDecay.decayModifier, 100), 0);
+        experience.cap = Math.max(experience.cap, -1);
+        decay.decayModifier = Math.max(Math.min(decay.decayModifier, 100), 0);
         server.OPOverrideLevel = Math.max(Math.min(server.OPOverrideLevel, 4), -1);
     }
 
@@ -45,35 +50,59 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
-        public GraveDropType dropType = GraveDropType.INVENTORY;
+        public GraveDropType dropType = GraveDropType.EQUIP;
 
+        @ConfigEntry.Gui.Tooltip
+        public boolean sneakSwapsDropType = true;
+    }
+
+    public static class ExperienceSettings {
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
         public GraveExpStoreType expStorageType = GraveExpStoreType.ALL;
 
         @ConfigEntry.Gui.Tooltip
-        public int maxCustomXPLevel = 30;
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
+        public int percentage = 100;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+        public ExperienceType percentageType = ExperienceType.POINTS;
+
+        @ConfigEntry.Gui.Tooltip
+        public int cap = -1;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+        public ExperienceType capType = ExperienceType.LEVELS;
     }
 
-
-    public static class FloatingSettings {
+    public static class SinkSettings {
         @ConfigEntry.Gui.Tooltip
-        public boolean floatInAir = false;
-        
-        @ConfigEntry.Gui.Tooltip
-        public boolean floatInWater = false;
+        public boolean sinkInAir = true;
 
         @ConfigEntry.Gui.Tooltip
-        public boolean floatInLava = true;
+        public boolean sinkInWater = true;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean sinkInLava = false;
     }
 
-    public static class ItemDecaySettings {
+    public static class DecaySettings {
+        @ConfigEntry.Gui.PrefixText
+        @ConfigEntry.Gui.Tooltip
+        public boolean decayEnabled = true;
+
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
-        public int decayModifier = 0;
+        public int decayModifier = 60;
 
         @ConfigEntry.Gui.Tooltip
         public boolean decayBreaksItems = false;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+        public DecayingGrave.BlockDecay decayRobbing = DecayingGrave.BlockDecay.FRESH;
     }
 
     public static class ServerSettings {

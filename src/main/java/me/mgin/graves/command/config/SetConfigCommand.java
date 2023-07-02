@@ -5,6 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import me.mgin.graves.command.utility.CommandContextData;
 import me.mgin.graves.command.utility.ConfigSetter;
 import me.mgin.graves.networking.config.ConfigNetworking;
+import me.mgin.graves.util.Responder;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
@@ -51,15 +52,16 @@ public class SetConfigCommand {
      */
     private static void executeOnClient(CommandContext<ServerCommandSource> context, CommandContextData data) {
         ServerCommandSource source = context.getSource();
+        ServerPlayerEntity player = source.getPlayer();
 
-        if (source.getEntity() instanceof ServerPlayerEntity player) {
+        if (player != null) {
             // Generate a buf to send the command data to client
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeString(data.serialize());
-
             ServerPlayNetworking.send(player, ConfigNetworking.SET_CONFIG_S2C, buf);
         } else {
-            source.sendError(Text.translatable("command.generic:error.not-player"));
+            Responder res = new Responder(source.getPlayer(), source.getServer());
+            res.sendError(Text.translatable("command.generic:error.not-player"), null);
         }
     }
 }

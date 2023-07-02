@@ -22,7 +22,7 @@ public class TrinketDropHandler {
 
         if (entity instanceof PlayerEntity player) {
             // Check if graves is enabled -- if not, it'll skip to vanilla behavior.
-            boolean gravesEnabled = GravesConfig.resolveConfig("graves", player.getGameProfile()).main.graves;
+            boolean gravesEnabled = GravesConfig.resolve("graves", player.getGameProfile());
 
             // This causes Forgotten Graves to only handle two drop rules: DEFAULT and KEEP. Slots with a DropRule of
             // KEEP are kept on the player still. And slots with DEFAULT are handled like vanilla items.

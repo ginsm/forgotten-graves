@@ -40,7 +40,8 @@ public class DecayItem {
 
         if (isDecayItem && canRetrieve && isMainHand && !canDecay) {
             player.sendMessage(
-                Text.translatable("event.use.itemDecay:error.noDecayEnabled").formatted(Formatting.RED)
+                Text.translatable("event.use.itemDecay:error.noDecayEnabled").formatted(Formatting.RED),
+                true
             );
         }
 

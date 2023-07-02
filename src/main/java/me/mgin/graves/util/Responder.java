@@ -1,8 +1,7 @@
 package me.mgin.graves.util;
 
-import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
@@ -10,17 +9,20 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.GameRules;
 
 public class Responder {
-    CommandContext<ServerCommandSource> context;
+    PlayerEntity player;
+    MinecraftServer server;
     boolean sendCommandFeedback;
 
     /**
      * Creates a new Responder class.
      *
-     * @param context {@code CommandContext<ServerCommandSource>}
+     * @param player PlayerEntity
+     * @param server MinecraftServer
      */
-    public Responder(CommandContext<ServerCommandSource> context) {
-        this.context = context;
-        this.sendCommandFeedback = sendCommandFeedback();
+    public Responder(PlayerEntity player, MinecraftServer server) {
+        this.player = player;
+        this.server = server;
+        this.sendCommandFeedback = sendCommandFeedback(server);
     }
 
     /**
@@ -28,8 +30,10 @@ public class Responder {
      * and applying a prefix.
      *
      * @param message Text
+     * @param target PlayerEntity
      */
     public void send(Text message, PlayerEntity target) {
+
         // Do not send message if command feedback  is disabled
         if (!sendCommandFeedback) return;
 
@@ -50,19 +54,18 @@ public class Responder {
                 .append(message);
         }
 
-        if (target != null) {
-            target.sendMessage(response);
-            return;
-        }
+        // Resolve recipient of message
+        PlayerEntity recipient = target != null ? target : player;
 
-        // Dispatch message
-        context.getSource().sendFeedback(response, false);
+        if (recipient != null) recipient.sendMessage(response);
+        else server.sendMessage(response);
     }
 
     /**
      * Send the message with the error style.
      *
      * @param message Text
+     * @param target PlayerEntity
      */
     public void sendError(Text message, PlayerEntity target) {
         send(ResponderTheme.style(Text.translatable("error.prefix").append(message), "error"), target);
@@ -84,6 +87,7 @@ public class Responder {
      * Send the message with the success style.
      *
      * @param message Text
+     * @param target PlayerEntity
      */
     public void sendSuccess(Text message, PlayerEntity target) {
         send(ResponderTheme.style(message, "success"), target);
@@ -105,6 +109,7 @@ public class Responder {
      * Send the message with the info style.
      *
      * @param message Text
+     * @param target PlayerEntity
      */
     public void sendInfo(Text message, PlayerEntity target) {
         send(ResponderTheme.style(message, "info"), target);
@@ -198,7 +203,7 @@ public class Responder {
         return message.copy().styled(style -> style.withHoverEvent(new HoverEvent(
             HoverEvent.Action.SHOW_TEXT, content
         )));
-    };
+    }
 
     public Text runOnClick(Text message, String command) {
         return message.copy().styled(style -> style.withClickEvent(new ClickEvent(
@@ -208,19 +213,27 @@ public class Responder {
     }
 
     // Helpers
+
+    /**
+     * Converts passed value into a Text.literal.
+     *
+     * @param value Object
+     * @return Text
+     */
+    private Text genValueText(Object value) {
+        return value instanceof Text ? (Text) value : Text.literal(String.valueOf(value));
+    }
+
     /**
      * Determines whether commands should send feedback based on the
      * sendCommandFeedback gamerule.
      *
+     * @param server MinecraftServer
      * @return boolean
      */
-    public boolean sendCommandFeedback() {
-        return this.context.getSource().getWorld()
+    public static boolean sendCommandFeedback(MinecraftServer server) {
+        return server.getWorlds().iterator().next()
             .getGameRules()
             .getBoolean(GameRules.SEND_COMMAND_FEEDBACK);
-    }
-
-    private Text genValueText(Object value) {
-        return value instanceof Text ? (Text) value : Text.literal(String.valueOf(value));
     }
 }

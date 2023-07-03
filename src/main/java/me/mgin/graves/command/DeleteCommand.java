@@ -21,8 +21,9 @@ import static me.mgin.graves.command.utility.ArgumentUtility.*;
 
 public class DeleteCommand {
     static public int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        MinecraftServer server = context.getSource().getServer();
-        Responder res = new Responder(context);
+        ServerCommandSource source = context.getSource();
+        MinecraftServer server = source.getServer();
+        Responder res = new Responder(source.getPlayer(), server);
 
         // Get command arguments
         GameProfile player = getProfileArgument(context, "player", 3);
@@ -94,7 +95,7 @@ public class DeleteCommand {
             }
 
             // Run the List Command
-            ListCommand.executeWithoutCommand(res, player, recipient, page, server, context.getSource().getPlayer());
+            ListCommand.executeWithoutCommand(res, player, recipient, page, server, source.getPlayer());
         }
 
         return Command.SINGLE_SUCCESS;

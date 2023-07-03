@@ -1,107 +1,81 @@
 package me.mgin.graves.config;
 
 import com.mojang.brigadier.suggestion.SuggestionProvider;
+import me.mgin.graves.block.decay.DecayingGrave;
+import me.mgin.graves.config.enums.ExperienceType;
 import me.mgin.graves.config.enums.GraveDropType;
 import me.mgin.graves.config.enums.GraveExpStoreType;
 import me.mgin.graves.config.enums.GraveRetrievalType;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ConfigOptions {
-    static public Set<String> all = new HashSet<>();
+    // Houses all the config option information
+    static public List<String> subclass = new ArrayList<>();
+    static public List<String> all = new ArrayList<>();
+    static public Map<String, List<String>> options = new HashMap<>();
+    static public Map<String, List<String>> enums = new HashMap<>();
 
-    static public Set<String> subclass = new HashSet<>() {{
-        add("main");
-        add("itemDecay");
-        add("server");
-        add("floating");
-    }};
+    /**
+     * Generates lists containing the subclass names, field names for each subclass, and enum field names.
+     */
+    public static void generateConfigOptions() {
+        // Get declared subclass names
+        for (Field field : GravesConfig.class.getDeclaredFields()) {
+            subclass.add(field.getName());
 
-    static public Set<String> main = new HashSet<>() {{
-        // MainSettings
-        add("graves");
-        add("graveCoordinates");
-        add("retrievalType");
-        add("dropType");
-        add("expStorageType");
-        add("maxCustomXPLevel");
-    }};
+            // Get field's class
+            Class<?> clazz = field.getType();
 
-    static public Set<String> itemDecay = new HashSet<>() {{
-        // ItemDecaySettings
-        add("decayModifier");
-        add("decayBreaksItems");
-    }};
+            // Store fields
+            List<String> fieldNames = new ArrayList<>();
 
-    static public Set<String> server = new HashSet<>() {{
-        // ServerSettings
-        add("graveRobbing");
-        add("OPOverrideLevel");
-        add("storedGravesAmount");
-        add("destructiveDeleteCommand");
-        add("clientOptions");
-    }};
+            for (Field subfield : clazz.getDeclaredFields()) {
+                // Check if field is an enum
+                if (subfield.getType().isEnum()) {
+                    // Creates a list of constants (and converts them to strings)
+                    List<String> constants = Arrays.stream(subfield.getType().getEnumConstants())
+                            .map(Object::toString)
+                            .toList();
 
-    static public Set<String> floating = new HashSet<>() {{
-        // FloatingSettings
-        add("floatInAir");
-        add("floatInWater");
-        add("floatInLava");
-    }};
+                    // Store enum name and constants
+                    enums.put(subfield.getName(), constants);
+                }
 
-    // Create a HashSet of all valid options.
-    static {
-        all.addAll(main);
-        all.addAll(itemDecay);
-        all.addAll(floating);
-        all.addAll(server);
-    }
+                // Add field name to list
+                fieldNames.add(subfield.getName());
+            }
 
-    static public Set<String> enums = new HashSet<>() {{
-        add("dropType");
-        add("retrievalType");
-        add("expStorageType");
-    }};
-
-    // Enum options
-    static public Set<String> dropType = Stream.of(GraveDropType.values()).map(Enum::name).collect(Collectors.toSet());
-    static public Set<String> retrievalType = Stream.of(GraveRetrievalType.values()).map(Enum::name).collect(Collectors.toSet());
-    static public Set<String> expStorageType = Stream.of(GraveExpStoreType.values()).map(Enum::name).collect(Collectors.toSet());
-
-    public static Set<String> getSubclass(String subclass) {
-        return switch (subclass) {
-            case "main" -> main;
-            case "itemDecay" -> itemDecay;
-            case "server" -> server;
-            case "floating" -> floating;
-            default -> throw new IllegalStateException("Unexpected value: " + subclass);
-        };
-    }
-
-    @SafeVarargs
-    public static Set<String> buildSet(Set<String>... sets) {
-        Set<String> result = new HashSet<>();
-        for (Set<String> set : sets) {
-            result.addAll(set);
+            // Add the field names to options and all lists
+            options.put(field.getName(), fieldNames);
+            all.addAll(fieldNames);
         }
-        return result;
     }
 
-    public static boolean validEnumValue(String option, String value) {
+    /**
+     * Converts string-based values into enum values (if contained in option enum).
+     *
+     * @param value  String
+     * @param option String
+     * @return {@code Enum<?>}
+     */
+    static public Enum<?> convertStringToEnum(String option, String value) {
+        if (!ConfigOptions.enums.get(option).contains(value)) return null;
+
         return switch (option) {
-            case "dropType" -> dropType.contains(value);
-            case "retrievalType" -> retrievalType.contains(value);
-            case "expStorageType" -> expStorageType.contains(value);
+            case "retrievalType" -> GraveRetrievalType.valueOf(value);
+            case "dropType" -> GraveDropType.valueOf(value);
+            case "expStorageType" -> GraveExpStoreType.valueOf(value);
+            case "capType", "percentageType" -> ExperienceType.valueOf(value);
+            case "decayRobbing" -> DecayingGrave.BlockDecay.valueOf(value);
             default -> throw new IllegalStateException("Unexpected value for '" + option + "': " + value);
         };
     }
 
-    public static SuggestionProvider<ServerCommandSource> suggest(Set<String> suggestionList) {
+    public static SuggestionProvider<ServerCommandSource> suggest(List<String> suggestionList) {
         return (context, builder) -> {
             String option = context.getNodes().get(context.getNodes().size() - 1).getNode().getName();
             String[] input = context.getInput().split(" ");

@@ -113,9 +113,16 @@ public class RetrieveGrave {
         DefaultedList<ItemStack> droppedItems = DefaultedList.of();
 
         // Resolve and handle the drop types
-        GraveDropType dropType = GravesConfig.resolveConfig("dropType", player.getGameProfile()).main.dropType;
+        GameProfile profile = player.getGameProfile();
+        GraveDropType dropType = GravesConfig.resolve("dropType", profile);
+        boolean shiftSwapsDropType = GravesConfig.resolve("sneakSwapsDropType", profile);
 
-        if (dropType == GraveDropType.INVENTORY) {
+        // Swap drop type if holding shift
+        if (shiftSwapsDropType && player.isSneaking()) {
+            dropType = dropType == GraveDropType.DROP ? GraveDropType.EQUIP : GraveDropType.DROP;
+        }
+
+        if (dropType == GraveDropType.EQUIP) {
             droppedItems = equipInventoryItems(player, graveEntity);
         } else if (dropType == GraveDropType.DROP) {
             droppedItems = getInventoryItems(graveEntity);

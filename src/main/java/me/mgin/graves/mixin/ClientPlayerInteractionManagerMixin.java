@@ -69,7 +69,7 @@ public class ClientPlayerInteractionManagerMixin {
 
         GravesConfig serverConfig = GravesClient.SERVER_CONFIG;
 
-        if (ConfigOptions.server.contains(option)) {
+        if (ConfigOptions.options.get("server").contains(option)) {
             return serverConfig;
         }
 

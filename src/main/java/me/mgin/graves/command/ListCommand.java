@@ -27,9 +27,9 @@ import static me.mgin.graves.util.NbtHelper.readCoordinates;
 
 public class ListCommand {
     static public int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        MinecraftServer server = context.getSource().getServer();
         ServerCommandSource source = context.getSource();
-        Responder res = new Responder(context);
+        MinecraftServer server = source.getServer();
+        Responder res = new Responder(source.getPlayer(), server);
 
         // Get arguments
         int page = getIntegerArgument(context, "page", 3); // -1 if no page selected

@@ -23,9 +23,9 @@ public class PlayersCommand {
      */
     static public int execute(CommandContext<ServerCommandSource> context) {
         // Necessary context variables
-        MinecraftServer server = context.getSource().getServer();
         ServerCommandSource source = context.getSource();
-        Responder res = new Responder(context);
+        MinecraftServer server = source.getServer();
+        Responder res = new Responder(source.getPlayer(), server);
         ServerState serverState = ServerState.getServerState(server);
 
         // Ensure source has permission

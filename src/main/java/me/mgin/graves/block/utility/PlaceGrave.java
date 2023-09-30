@@ -53,13 +53,26 @@ public class PlaceGrave {
             pos = sinkDownwards(world, belowPos, pos.getY() - (minY + 7), player);
         }
 
-        // Try and find a new valid position
-        if (!canPlaceGrave(world, block, initialPos)) {
+        // Try and find a new valid, ideal position
+        if (!canPlaceGrave(world, block, initialPos) || !isLiquidOrAir(world, initialPos)) {
             pos = searchOutwards(world, pos, player);
         }
 
         // Place the grave
         spawnGrave(world, pos, player);
+    }
+
+    /**
+     *  Checks to see if the block is an liquid or air. This is useful to prevent breaking blocks that aren't
+     *  standard 1x1 collision blocks (fences, path blocks, etc).
+     *
+     * @param world World
+     * @param pos   BlockPos
+     * @return boolean
+     */
+    private static boolean isLiquidOrAir(World world, BlockPos pos) {
+        BlockState state = world.getBlockState(pos);
+        return state.isAir() || state.isLiquid();
     }
 
     /**
@@ -158,23 +171,38 @@ public class PlaceGrave {
      * @return BlockPos
      */
     private static BlockPos searchOutwards(World world, BlockPos pos, PlayerEntity player) {
+        // This is used to find an 'ideal' spot; an ideal spot is either liquid or air.
+        BlockPos firstNonIdeal = null;
+        boolean idealBlockFound = false;
+
         for (BlockPos newPos : BlockPos.iterateOutwards(pos, 10, 10, 10)) {
             Block block = world.getBlockState(newPos).getBlock();
 
             if (canPlaceGrave(world, block, newPos)) {
                 BlockPos belowPos = new BlockPos(newPos.getX(), newPos.getY() - 1, newPos.getZ());
 
+                // This always ends up with an ideal spot; simply return result of sinkDownwards
                 if (graveShouldSink(world, belowPos, player)) {
                     pos = sinkDownwards(world, belowPos, pos.getY() - (minY + 7), player);
                     break;
                 }
 
-                pos = newPos;
-                break;
+                // Ensure the position is an ideal spot, if so, set and break loop
+                idealBlockFound = isLiquidOrAir(world, newPos);
+                if (idealBlockFound) {
+                    pos = newPos;
+                    break;
+                }
+
+                // Assign the first non-ideal spot; this spot can still be placed but will end up breaking
+                // replacing another block. This is a fallback.
+                if (firstNonIdeal == null) {
+                    firstNonIdeal = newPos;
+                }
             }
         }
 
-        return pos;
+        return idealBlockFound ? pos : firstNonIdeal;
     }
 
     /**

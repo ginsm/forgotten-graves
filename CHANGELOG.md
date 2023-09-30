@@ -1,6 +1,9 @@
-## 1.20.1-3.2.1
+## 1.20.1-3.2.2
+
+### Updated
+- Cloth config's version has been updated to the latest version (v11.1.106).
+
+## 1.20.1-3.2.3
 
 ### Added
-- Added `ru_ru` and `es_mx` translations; please feel free to let me know about any mistakes.
-
-Thanks a bunch, mpustovoi, for the Russian translation! :)
+- The grave placement search algorithm has been improved to try and find more 'ideal' placement locations (i.e. in a liquid or air, rather than another block).

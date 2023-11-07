@@ -172,7 +172,7 @@ public class PlaceGrave {
      */
     private static BlockPos searchOutwards(World world, BlockPos pos, PlayerEntity player) {
         // This is used to find an 'ideal' spot; an ideal spot is either liquid or air.
-        BlockPos firstNonIdeal = null;
+        BlockPos firstNonIdeal = pos;
         boolean idealBlockFound = false;
 
         for (BlockPos newPos : BlockPos.iterateOutwards(pos, 10, 10, 10)) {

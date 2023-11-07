@@ -1,9 +1,4 @@
-## 1.20.1-3.2.2
+## 1.20.1-3.2.4
 
-### Updated
-- Cloth config's version has been updated to the latest version (v11.1.106).
-
-## 1.20.1-3.2.3
-
-### Added
-- The grave placement search algorithm has been improved to try and find more 'ideal' placement locations (i.e. in a liquid or air, rather than another block).
+### Fixed
+- Fixed a bug that caused the user to be kicked from the server when dying in the void ([#85](https://github.com/ginsm/forgotten-graves/issues/85)).

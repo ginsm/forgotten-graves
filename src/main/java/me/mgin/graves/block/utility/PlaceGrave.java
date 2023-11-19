@@ -43,7 +43,6 @@ public class PlaceGrave {
 
         BlockPos initialPos = new BlockPos((int) Math.floor(vecPos.x), (int) vecPos.y, (int) Math.floor(vecPos.z));
         BlockPos pos = enforceWorldBoundaries(world, initialPos);
-        Block block = world.getBlockState(pos).getBlock();
 
         // This is the position below the grave; used for sinking purposes
         BlockPos belowPos = new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ());
@@ -54,7 +53,7 @@ public class PlaceGrave {
         }
 
         // Try and find a new valid, ideal position
-        if (!canPlaceGrave(world, block, initialPos) || !isLiquidOrAir(world, initialPos)) {
+        if (!canPlaceGrave(world, initialPos) || !isLiquidOrAir(world, initialPos)) {
             pos = searchOutwards(world, pos, player);
         }
 
@@ -63,7 +62,7 @@ public class PlaceGrave {
     }
 
     /**
-     *  Checks to see if the block is an liquid or air. This is useful to prevent breaking blocks that aren't
+     *  Checks to see if the block is a liquid or air. This is useful to prevent breaking blocks that aren't
      *  standard 1x1 collision blocks (fences, path blocks, etc).
      *
      * @param world World
@@ -111,6 +110,9 @@ public class PlaceGrave {
         GameProfile profile = player.getGameProfile();
         Block block = world.getBlockState(pos).getBlock();
 
+        // Stop sinking if the position is neither a liquid nor air.
+        if (!isLiquidOrAir(world, pos)) return false;
+
         return switch (block.getName().getString()) {
             case "Air" -> (boolean) GravesConfig.resolve("sinkInAir", profile);
             case "Water" -> (boolean) GravesConfig.resolve("sinkInWater", profile);
@@ -144,11 +146,11 @@ public class PlaceGrave {
      * Determines whether the grave can spawn in the given position.
      *
      * @param world World
-     * @param block Block
      * @param pos   BlockPos
      * @return boolean
      */
-    private static boolean canPlaceGrave(World world, Block block, BlockPos pos) {
+    private static boolean canPlaceGrave(World world, BlockPos pos) {
+        Block block = world.getBlockState(pos).getBlock();
         BlockEntity blockEntity = world.getBlockEntity(pos);
 
         Set<Block> blackListedBlocks = new HashSet<>() {{
@@ -172,19 +174,17 @@ public class PlaceGrave {
      */
     private static BlockPos searchOutwards(World world, BlockPos pos, PlayerEntity player) {
         // This is used to find an 'ideal' spot; an ideal spot is either liquid or air.
-        BlockPos firstNonIdeal = pos;
+        BlockPos initialPos = pos;
+        BlockPos nonIdeal = pos;
         boolean idealBlockFound = false;
 
         for (BlockPos newPos : BlockPos.iterateOutwards(pos, 10, 10, 10)) {
-            Block block = world.getBlockState(newPos).getBlock();
-
-            if (canPlaceGrave(world, block, newPos)) {
+            if (canPlaceGrave(world, newPos)) {
                 BlockPos belowPos = new BlockPos(newPos.getX(), newPos.getY() - 1, newPos.getZ());
 
                 // This always ends up with an ideal spot; simply return result of sinkDownwards
                 if (graveShouldSink(world, belowPos, player)) {
-                    pos = sinkDownwards(world, belowPos, pos.getY() - (minY + 7), player);
-                    break;
+                    newPos = sinkDownwards(world, belowPos, pos.getY() - (minY + 7), player);
                 }
 
                 // Ensure the position is an ideal spot, if so, set and break loop
@@ -196,13 +196,16 @@ public class PlaceGrave {
 
                 // Assign the first non-ideal spot; this spot can still be placed but will end up breaking
                 // replacing another block. This is a fallback.
-                if (firstNonIdeal == null) {
-                    firstNonIdeal = newPos;
+                boolean nonIdealIsInitial = nonIdeal == initialPos;
+                boolean cantPlaceInitial = !canPlaceGrave(world, pos);
+                boolean canPlaceNewPos = canPlaceGrave(world, newPos);
+                if (nonIdealIsInitial && cantPlaceInitial && canPlaceNewPos) {
+                    nonIdeal = newPos;
                 }
             }
         }
 
-        return idealBlockFound ? pos : firstNonIdeal;
+        return idealBlockFound ? pos : nonIdeal;
     }
 
     /**

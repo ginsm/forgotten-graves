@@ -1,4 +1,4 @@
-## 1.20.1-3.2.4
+## 1.20.1-3.2.5
 
 ### Fixed
-- Fixed a bug that caused the user to be kicked from the server when dying in the void ([#85](https://github.com/ginsm/forgotten-graves/issues/85)).
+- Fixed a bug where some blocks were still being replaced (when better spawning areas were present).

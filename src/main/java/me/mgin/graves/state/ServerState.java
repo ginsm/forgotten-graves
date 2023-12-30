@@ -55,14 +55,19 @@ public class ServerState extends PersistentState {
         return nbt;
     }
 
+    private static final Type<ServerState> type = new Type<>(
+        ServerState::new,
+        ServerState::createFromNbt,
+        null
+    );
+
     public static ServerState getServerState(MinecraftServer server) {
         if (server == null) return null;
 
         PersistentStateManager persistentStateManager = Objects.requireNonNull(server.getWorld(World.OVERWORLD)).getPersistentStateManager();
 
         return persistentStateManager.getOrCreate(
-            ServerState::createFromNbt,
-            ServerState::new,
+            type,
             Graves.MOD_ID
         );
     }

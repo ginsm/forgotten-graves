@@ -44,7 +44,7 @@ public class Skull {
 
         NbtCompound initialItemNbt = stack.getNbt();
         BlockState state = entity.getState();
-        String skull;
+        NbtCompound skull;
 
         // If the nbt isn't null, get the custom skull texture; otherwise set to item string
         if (initialItemNbt != null) {
@@ -52,14 +52,16 @@ public class Skull {
             skull = itemNbt.getCompound("SkullOwner")
                 .getCompound("Properties")
                 .getList("textures", 10)
-                .getCompound(0)
-                .getString("Value");
+                .getCompound(0);
 
-            if (skull.equals("") || skull.equals(entity.getGraveSkull())) return false;
+            if (skull.isEmpty() || skull.equals(entity.getGraveSkull())) return false;
 
             entity.setGraveSkull(skull);
         } else {
-            entity.setGraveSkull(item.asItem().toString());
+            skull = new NbtCompound();
+            skull.putString("Value", item.asItem().toString());
+            skull.putString("Signature", "");
+            entity.setGraveSkull(skull);
         }
 
         // Required for client sync

@@ -26,7 +26,7 @@ public class GraveBlockEntity extends BlockEntity {
     private int xp;
     private int noDecay;
     private String customName;
-    private String graveSkull;
+    private NbtCompound graveSkull;
     private long mstime;
     private final Map<String, DefaultedList<ItemStack>> inventories = new HashMap<>() {
     };
@@ -35,7 +35,7 @@ public class GraveBlockEntity extends BlockEntity {
         super(GraveBlocks.GRAVE_BLOCK_ENTITY, pos, state);
         this.graveOwner = null;
         this.customName = "";
-        this.graveSkull = "";
+        this.graveSkull = null;
         this.xp = 0;
         this.noDecay = 0;
         this.mstime = 0;
@@ -205,7 +205,7 @@ public class GraveBlockEntity extends BlockEntity {
      *
      * @param graveSkull String
      */
-    public void setGraveSkull(String graveSkull) {
+    public void setGraveSkull(NbtCompound graveSkull) {
         this.graveSkull = graveSkull;
         this.markDirty();
     }
@@ -218,7 +218,7 @@ public class GraveBlockEntity extends BlockEntity {
      *
      * @return String (SkinURL | SkullType)
      */
-    public String getGraveSkull() {
+    public NbtCompound getGraveSkull() {
         return this.graveSkull;
     }
 
@@ -228,7 +228,10 @@ public class GraveBlockEntity extends BlockEntity {
      * @return boolean
      */
     public boolean hasGraveSkull() {
-        return !this.graveSkull.equals("");
+        if (this.graveSkull == null) {
+            return false;
+        }
+        return !this.graveSkull.isEmpty();
     }
 
     @Override
@@ -263,7 +266,7 @@ public class GraveBlockEntity extends BlockEntity {
             nbt.putString("CustomName", customName);
 
         if (graveSkull != null)
-            nbt.putString("GraveSkull", graveSkull);
+            nbt.put("GraveSkull", graveSkull);
     }
 
     @Override
@@ -298,7 +301,7 @@ public class GraveBlockEntity extends BlockEntity {
             this.customName = nbt.getString("CustomName");
 
         if (nbt.contains("GraveSkull"))
-            this.graveSkull = nbt.getString("GraveSkull");
+            this.graveSkull = (NbtCompound) nbt.get("GraveSkull");
 
         super.markDirty();
     }

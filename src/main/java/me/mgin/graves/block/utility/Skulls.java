@@ -18,7 +18,9 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.render.entity.model.SkullEntityModel;
+import net.minecraft.client.util.SkinTextures;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.nbt.NbtCompound;
 
 public class Skulls {
 
@@ -82,12 +84,15 @@ public class Skulls {
      * Generates a GameProfile with a random UUID and attaches a texture property to
      * it utilizing the given SkinURL.
      *
-     * @param skinURL - Base64 Skin URL
      * @return Custom GameProfile
      */
-    public static GameProfile getCustomSkullProfile(String skinURL) {
-        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-        profile.getProperties().put("textures", new Property("textures", skinURL));
+    public static GameProfile getCustomSkullProfile(NbtCompound skullNbt) {
+        GameProfile profile = new GameProfile(UUID.randomUUID(), "");
+
+        profile.getProperties().put("textures",
+            new Property("textures", skullNbt.getString("Value"), skullNbt.getString("Signature"))
+        );
+
         return profile;
     }
 
@@ -102,7 +107,7 @@ public class Skulls {
      * @param graveEntity GraveBlockEntity
      * @param modelLoader EntityModelLoader
      * @param blockAge int
-     * @param matrices MatrixStak
+     * @param matrices MatrixStack
      * @param light int
      * @param vertexConsumers VertexConsumerProvider
      */
@@ -112,44 +117,44 @@ public class Skulls {
         SkullWrapper skullData = null;
         float yaw = Float.max(10f, blockAge * 12f);
 
+        // Handle player-owned grave skulls
         if (graveEntity.getGraveOwner() != null) {
             profile = graveEntity.getGraveOwner();
             skullData = Skulls.skulls.get(blockAge >= 2 ? "skeleton_skull" : "player_head");
-        } else if (graveEntity.hasGraveSkull()) {
-            String graveSkull = graveEntity.getGraveSkull();
+        }
 
-            if (Skulls.skulls.containsKey(graveSkull)) {
-                skullData = Skulls.skulls.get(graveSkull);
-            } else {
-                profile = getCustomSkullProfile(graveSkull);
+        // Handle custom grave skulls
+        else if (graveEntity.hasGraveSkull()) {
+            NbtCompound graveSkull = graveEntity.getGraveSkull();
+            String graveSkullValue = graveSkull.getString("Value");
+
+            // Handle non-custom heads (like skele, wither skele, zombie, creeper, etc)
+            // This is set to the item name in Skull.java's handle method.
+            if (Skulls.skulls.containsKey(graveSkullValue)) {
+                skullData = Skulls.skulls.get(graveSkullValue);
+            }
+
+            // Handle custom heads (creates a custom profile)
+            else {
+                // FIXME - Creating the profile with the graveSkull texture fails here. Not sure why.
+                // profile = getCustomSkullProfile(graveSkull);
                 skullData = Skulls.skulls.get("player_head");
             }
         }
 
+        // Render the skull
         if (skullData != null) {
-            SkullBlockEntityRenderer.renderSkull(null, yaw, 0f, matrices, vertexConsumers, light,
-                getSkullModel(skullData.getModel(), modelLoader), getSkullLayer(skullData.getType(), profile));
+            SkullBlockEntityModel model = getSkullModel(skullData.model(), modelLoader);
+            RenderLayer layer = getSkullLayer(skullData.type(), profile);
+
+            SkullBlockEntityRenderer.renderSkull(
+                null, yaw, 0f, matrices, vertexConsumers, light, model, layer
+            );
         }
     }
 
     /**
      * Wrapper that lets you bundle the type and model for a given skull.
      */
-    public static class SkullWrapper {
-        public SkullWrapper(SkullBlock.SkullType type, EntityModelLayer model) {
-            this.type = type;
-            this.model = model;
-        }
-
-        private final SkullBlock.SkullType type;
-        private final EntityModelLayer model;
-
-        public SkullBlock.SkullType getType() {
-            return this.type;
-        }
-
-        public EntityModelLayer getModel() {
-            return this.model;
-        }
-    }
+    public record SkullWrapper(SkullBlock.SkullType type, EntityModelLayer model) { }
 }

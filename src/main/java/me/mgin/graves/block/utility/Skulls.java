@@ -21,6 +21,8 @@ import net.minecraft.client.render.entity.model.SkullEntityModel;
 import net.minecraft.client.util.SkinTextures;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
+import net.minecraft.util.Util;
 
 public class Skulls {
 
@@ -81,19 +83,13 @@ public class Skulls {
     }
 
     /**
-     * Generates a GameProfile with a random UUID and attaches a texture property to
-     * it utilizing the given SkinURL.
+     * Leverages Minecraft's NbtHelper to create a profile with the appropriate
+     * texture, signature, and owner.
      *
-     * @return Custom GameProfile
+     * @return GameProfile
      */
-    public static GameProfile getCustomSkullProfile(NbtCompound skullNbt) {
-        GameProfile profile = new GameProfile(UUID.randomUUID(), "");
-
-        profile.getProperties().put("textures",
-            new Property("textures", skullNbt.getString("Value"), skullNbt.getString("Signature"))
-        );
-
-        return profile;
+    public static GameProfile getCustomSkullProfile(NbtCompound graveSkull) {
+        return NbtHelper.toGameProfile(graveSkull);
     }
 
     /**
@@ -137,7 +133,7 @@ public class Skulls {
             // Handle custom heads (creates a custom profile)
             else {
                 // FIXME - Creating the profile with the graveSkull texture fails here. Not sure why.
-                // profile = getCustomSkullProfile(graveSkull);
+                profile = getCustomSkullProfile(graveSkull);
                 skullData = Skulls.skulls.get("player_head");
             }
         }

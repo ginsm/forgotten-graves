@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -49,10 +50,7 @@ public class Skull {
         // If the nbt isn't null, get the custom skull texture; otherwise set to item string
         if (initialItemNbt != null) {
             NbtCompound itemNbt = initialItemNbt.contains("tag") ? initialItemNbt.getCompound("tag") : initialItemNbt;
-            skull = itemNbt.getCompound("SkullOwner")
-                .getCompound("Properties")
-                .getList("textures", 10)
-                .getCompound(0);
+            skull = itemNbt.getCompound("SkullOwner");
 
             if (skull.isEmpty() || skull.equals(entity.getGraveSkull())) return false;
 

@@ -123,7 +123,7 @@ public class NbtHelper {
      * @return NbtCompound
      */
     public static NbtCompound upgradeOldGraves(NbtCompound nbt) {
-        if (nbt.getType("ItemCount") == 3)
+        if (nbt.getType("ItemCount") == NbtElement.INT_TYPE)
             nbt = upgradeInventories(nbt);
 
         if (nbt.contains("noAge"))
@@ -131,6 +131,9 @@ public class NbtHelper {
 
         if (nbt.getLong("mstime") == 0)
             nbt = upgradeMsTime(nbt);
+
+        if (nbt.contains("GraveSkull", NbtElement.STRING_TYPE))
+            nbt = removeOldCustomSkullTexture(nbt);
 
         return nbt;
     }
@@ -190,6 +193,11 @@ public class NbtHelper {
         nbt.put("Items", Inventories.writeNbt(new NbtCompound(), items, true));
         nbt.put("trinkets", Inventories.writeNbt(new NbtCompound(), trinkets, true));
 
+        return nbt;
+    }
+
+    private static NbtCompound removeOldCustomSkullTexture(NbtCompound nbt) {
+        nbt.remove("GraveSkull");
         return nbt;
     }
 }

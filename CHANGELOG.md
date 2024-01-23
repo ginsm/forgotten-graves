@@ -1,4 +1,4 @@
-## 1.20.1-3.2.5
+## 1.20.2-3.2.5
 
-### Fixed
-- Fixed a bug where some blocks were still being replaced (when better spawning areas were present).
+### Added
+- Ported mod to 1.20.2. No new changes (still v3.2.5 for mod).

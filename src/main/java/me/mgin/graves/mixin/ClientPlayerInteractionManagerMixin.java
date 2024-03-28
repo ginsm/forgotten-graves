@@ -31,13 +31,12 @@ public class ClientPlayerInteractionManagerMixin {
         method = "breakBlock",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/block/Block;onBreak(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/player/PlayerEntity;)V"
+            target = "Lnet/minecraft/block/Block;onBreak(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/player/PlayerEntity;)Lnet/minecraft/block/BlockState;"
         ),
         locals = LocalCapture.CAPTURE_FAILSOFT,
         cancellable = true
     )
-    private void breakBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir, World world, BlockState state,
-                            Block block) {
+    private void breakBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir, World world, BlockState blockState, Block block) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         
         if (blockEntity instanceof GraveBlockEntity graveEntity) {

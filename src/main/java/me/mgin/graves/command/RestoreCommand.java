@@ -75,7 +75,7 @@ public class RestoreCommand {
             Graves.MOD_ID,
             context.getSource().getName(),
             player.getName(),
-            entity.getEntityName(),
+            entity.getNameForScoreboard(),
             graveId
         );
 

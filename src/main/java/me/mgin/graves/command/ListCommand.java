@@ -225,7 +225,7 @@ public class ListCommand {
 
                 // Attach the teleport command to the coordinate message
                 message = res.runOnClick(message,
-                    String.format("/execute as %s in %s run tp %d %d %d", issuer.getEntityName(), dimension,
+                    String.format("/execute as %s in %s run tp %d %d %d", issuer.getNameForScoreboard(), dimension,
                         pos.getX(), pos.getY(), pos.getZ())
                 );
             }

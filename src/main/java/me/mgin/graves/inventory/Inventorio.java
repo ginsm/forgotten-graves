@@ -1,7 +1,7 @@
 package me.mgin.graves.inventory;
 
-import me.lizardofoz.inventorio.api.InventorioAPI;
-import me.lizardofoz.inventorio.player.PlayerInventoryAddon;
+import de.rubixdev.inventorio.api.InventorioAPI;
+import de.rubixdev.inventorio.player.PlayerInventoryAddon;
 import me.mgin.graves.api.InventoriesApi;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

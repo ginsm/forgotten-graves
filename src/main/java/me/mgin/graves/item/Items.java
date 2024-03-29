@@ -3,17 +3,20 @@ package me.mgin.graves.item;
 import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.GraveBlocks;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemGroups;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Items {
-
     /**
      * Registers all server-side items.
      *
@@ -21,12 +24,22 @@ public class Items {
      * @param BRAND_BLOCK String
      */
     public static void registerItems(String MOD_ID, String BRAND_BLOCK) {
+        ArrayList<Item> ITEMS = new ArrayList<>();
+
+        // Create and register block items
         for (Map.Entry<GraveBlockBase, String> grave : GraveBlocks.GRAVE_MAP.entrySet()) {
             BlockItem item = new BlockItem(grave.getKey(), new FabricItemSettings());
-
             Registry.register(Registries.ITEM, new Identifier(MOD_ID, BRAND_BLOCK + grave.getValue()), item);
-
-            ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(entries -> entries.add(item));
+            ITEMS.add(item);
         }
+
+        // Create new ItemGroup containing ITEMS
+        Identifier itemGroupID = new Identifier(MOD_ID, "grave-blocks");
+        Registry.register(Registries.ITEM_GROUP, itemGroupID, FabricItemGroup.builder()
+            .displayName(Text.translatable("itemGroup.forgottengraves.graves"))
+            .icon(() -> new ItemStack(GraveBlocks.GRAVE))
+            .entries((displayContext, entries) -> entries.addAll(ITEMS.stream().map(Item::getDefaultStack).toList()))
+            .build()
+        );
     }
 }

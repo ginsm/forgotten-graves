@@ -3,6 +3,7 @@
   "block.forgottengraves.grave_old": "Altes Grab",
   "block.forgottengraves.grave_weathered": "Verwittertes Grab",
   "block.forgottengraves.grave_forgotten": "Vergessenes Grab",
+  "itemGroup.forgottengraves.graves": "Grabblöcke",
 
   "text.autoconfig.forgottengraves.title": "Forgotten Graves Einstellungen",
 

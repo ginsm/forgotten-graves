@@ -1,4 +1,5 @@
-## 1.20.4-3.2.5
+## 1.20.4-3.2.6
 
 ### Added
-- Ported mod to 1.20.4. No new changes (still v3.2.5 for mod).
+- Add [GeneralMine](https://github.com/GeneralMine)'s `de_de` translation.
+- Add `itemGroup.forgottengraves.graves` translations for `de_de` and `ru_ru`.

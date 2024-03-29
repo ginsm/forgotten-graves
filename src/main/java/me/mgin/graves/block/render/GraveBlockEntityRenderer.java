@@ -1,5 +1,6 @@
 package me.mgin.graves.block.render;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.block.utility.Skulls;
@@ -10,6 +11,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory.Context;
 import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
@@ -76,8 +78,21 @@ public class GraveBlockEntityRenderer implements BlockEntityRenderer<GraveBlockE
             if (graveEntity.getGraveOwner() != null) {
                 text = graveEntity.getGraveOwner().getName();
             } else {
-                text = graveEntity.getCustomName().substring(9);
-                text = text.substring(0, text.length() - 2);
+                text = graveEntity.getCustomName();
+
+                // Handle stringified NBT
+                if (text.contains("\"text\":")) {
+                    try {
+                        text = StringNbtReader.parse(text).getString("text");
+                    } catch (CommandSyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                // Handle normal text
+                if (text.startsWith("\"") && text.endsWith(("\""))) {
+                    text = text.substring(1, text.length() - 1);
+                }
             }
 
             // Main Text

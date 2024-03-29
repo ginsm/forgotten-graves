@@ -3,6 +3,7 @@
   "block.forgottengraves.grave_old": "Tumba Vieja",
   "block.forgottengraves.grave_weathered": "Tumba Desgastada",
   "block.forgottengraves.grave_forgotten": "Tumba Olvidada",
+  "itemGroup.forgottengraves.graves": "Bloques de Tumbas",
 
   "text.autoconfig.forgottengraves.title": "Configuraciones de Tumbas Olvidadas",
 

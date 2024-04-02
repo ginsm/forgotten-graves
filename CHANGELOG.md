@@ -1,5 +1,4 @@
-## 1.20.4-3.2.6
+## 1.20.4-3.2.7
 
-### Added
-- Add [GeneralMine](https://github.com/GeneralMine)'s `de_de` translation.
-- Add `itemGroup.forgottengraves.graves` translations for `de_de` and `ru_ru`.
+### Fixed
+- Creeper and TNT explosions now affect the terrain again; graves are still immune to explosions.

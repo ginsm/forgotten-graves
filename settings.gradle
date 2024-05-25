@@ -19,7 +19,7 @@ plugins {
 stonecutter {
     shared {
         // these specify directories used in `versions`, as well as versions used in comments
-        versions "1.20.4"
+        versions "1.20.4", "1.20.3"
         vcsVersion "1.20.4"
     }
 

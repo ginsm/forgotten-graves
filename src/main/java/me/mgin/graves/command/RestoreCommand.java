@@ -5,6 +5,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.mgin.graves.Graves;
+import me.mgin.graves.abstraction.MinecraftAbstraction;
 import me.mgin.graves.block.utility.RetrieveGrave;
 import me.mgin.graves.state.PlayerState;
 import me.mgin.graves.state.ServerState;
@@ -14,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
@@ -55,7 +57,7 @@ public class RestoreCommand {
 
         // Get player entity and ensure they are online
         GameProfile entityProfile = recipient != null ? recipient : player;
-        PlayerEntity entity = server.getPlayerManager().getPlayer(entityProfile.getId());
+        ServerPlayerEntity entity = server.getPlayerManager().getPlayer(entityProfile.getId());
 
         if (entity == null) {
             res.sendError(Text.translatable("command.generic.error.player-not-online", entityProfile.getName()), null);
@@ -75,7 +77,7 @@ public class RestoreCommand {
             Graves.MOD_ID,
             context.getSource().getName(),
             player.getName(),
-            entity.getNameForScoreboard(),
+            MinecraftAbstraction.getIssuerName(entity),
             graveId
         );
 

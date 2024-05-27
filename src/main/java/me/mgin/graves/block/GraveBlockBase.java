@@ -4,7 +4,6 @@ package me.mgin.graves.block;
 import com.mojang.serialization.MapCodec;
 *//*?}*/
 import net.minecraft.block.HorizontalFacingBlock;
-import com.mojang.serialization.MapCodec;
 import me.mgin.graves.abstraction.MinecraftAbstraction;
 import me.mgin.graves.block.decay.DecayingGrave;
 import me.mgin.graves.block.entity.GraveBlockEntity;

@@ -2,10 +2,8 @@ package me.mgin.graves.block.utility;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.annotation.Nullable;
@@ -18,11 +16,9 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.render.entity.model.SkullEntityModel;
-import net.minecraft.client.util.SkinTextures;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
-import net.minecraft.util.Util;
 
 public class Skulls {
 
@@ -132,7 +128,6 @@ public class Skulls {
 
             // Handle custom heads (creates a custom profile)
             else {
-                // FIXME - Creating the profile with the graveSkull texture fails here. Not sure why.
                 profile = getCustomSkullProfile(graveSkull);
                 skullData = Skulls.skulls.get("player_head");
             }

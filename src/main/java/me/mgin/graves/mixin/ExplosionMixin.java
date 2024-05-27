@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-/*?}*/
+*//*?}*/
 
 @Mixin(Explosion.class)
 public class ExplosionMixin {

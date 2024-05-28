@@ -39,6 +39,10 @@ import net.minecraft.world.WorldAccess;
 public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntityProvider, DecayingGrave, Waterloggable {
     private final BlockDecay blockDecay;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+    public static final VoxelShape TOMBSTONE_NORTH = VoxelShapes.cuboid(0.0625f, 0f, 0f, 0.9375f, 1f, 0.0625f);
+    public static final VoxelShape TOMBSTONE_EAST = VoxelShapes.cuboid(0.9375f, 0f, 0.0625f, 1f, 1f, 0.9375f);
+    public static final VoxelShape TOMBSTONE_SOUTH = VoxelShapes.cuboid(0.0625f, 0f, 0.9375f, 0.9375f, 1f, 1f);
+    public static final VoxelShape TOMBSTONE_WEST = VoxelShapes.cuboid(0f, 0f, 0.0625f, 0.0625f, 1f, 0.9375f);
 
     public GraveBlockBase(BlockDecay blockDecay, Settings settings) {
         super(settings);
@@ -136,15 +140,29 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         world.spawnEntity(itemEntity);
     }
 
+    public VoxelShape getGraveShape(BlockState state) {
+        Direction facing = state.get(HorizontalFacingBlock.FACING);
+        VoxelShape dirt = VoxelShapes.cuboid(0.0625f, 0f, 0.0625f, 0.9375f, 0.0625f, 0.9375f);
+        VoxelShape tombstone = null;
+
+        switch (facing) {
+            case NORTH -> tombstone = TOMBSTONE_NORTH;
+            case EAST -> tombstone = TOMBSTONE_EAST;
+            case SOUTH -> tombstone = TOMBSTONE_SOUTH;
+            case WEST -> tombstone = TOMBSTONE_WEST;
+        }
+
+        return VoxelShapes.union(dirt, tombstone);
+    }
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ct) {
-        return VoxelShapes.cuboid(0.062f, 0f, 0f, 0.938f, 0.1875f, 0.938f);
+        return getGraveShape(state);
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return VoxelShapes.cuboid(0.062f, 0f, 0.062f, 0.938f, 0.02f, 0.938f);
+        return getGraveShape(state);
     }
 
     public PistonBehavior getPistonBehavior(BlockState state) {

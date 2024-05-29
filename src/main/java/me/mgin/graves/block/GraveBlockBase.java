@@ -110,18 +110,6 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         *//*?}*/
     }
 
-    public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
-        GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
-        ItemStack itemStack = this.getItemStack();
-
-        if (graveEntity.hasCustomName()) {
-            Text itemText = MinecraftAbstraction.textFromJson(graveEntity.getCustomName());
-            itemStack.setCustomName(itemText);
-        }
-
-        return itemStack;
-    }
-
     public void onBreakRetainName(World world, BlockPos pos, PlayerEntity player, GraveBlockEntity graveEntity) {
         Text itemText = MinecraftAbstraction.textFromJson(graveEntity.getCustomName());
 

@@ -11,7 +11,6 @@ import net.minecraft.text.Text;
  */
 public class MinecraftAbstraction {
     public static Text textFromJson(String json) {
-        System.out.println(json);
         /*? if >1.20.2 {*//*
         return Text.Serialization.fromJson(json);
         *//*?} else {*/

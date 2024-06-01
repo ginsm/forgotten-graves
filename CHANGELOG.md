@@ -1,5 +1,4 @@
-## 1.19.2-3.2.2
+## 1.19.2-3.2.2-hotfix-hotfix
 
-## Updated
-- The cloth config version has been updated to the latest (v8.3.103).
-- The accepted cloth config version is now 8.3.103 or greater (previously was only 8.2.88).
+## Hotfix
+- Graves no longer spawn when dissociating from a possession (such as RAT's Mischief spy rat or Requiem's Wandering Soul origin).

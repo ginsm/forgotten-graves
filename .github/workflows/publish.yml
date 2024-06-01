@@ -5,8 +5,8 @@ on: [ workflow_dispatch ]
 env:
   MINECRAFT_VERSION: 1.19.2
   JAVA_VERSION: 17
-  VERSION: 1.19.2-3.2.2
-  RELEASE_NAME: Forgotten Graves 1.19.2-3.2.2
+  VERSION: 1.19.2-3.2.2-hotfix
+  RELEASE_NAME: Forgotten Graves 1.19.2-3.2.2-hotfix
   MODRINTH_TOKEN: ${{ secrets.PUBLISH_MODRINTH_TOKEN }}
   CURSEFORGE_TOKEN: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
 

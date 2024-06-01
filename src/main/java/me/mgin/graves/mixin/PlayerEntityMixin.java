@@ -29,6 +29,10 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         PlayerEntity player = this.inventory.player;
         boolean forgottenGravesEnabled = GravesConfig.resolve("graves", player.getGameProfile());
 
+        // Do not drop the inventory or place a grave if the player is still alive.
+        // This is needed for possession mods like RAT's Mischief, Requiem (Origins), etc.
+        if (player.isAlive()) return;
+
         if (!forgottenGravesEnabled) {
             this.inventory.dropAll();
             return;

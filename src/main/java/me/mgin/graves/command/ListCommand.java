@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import me.mgin.graves.abstraction.MinecraftAbstraction;
 import me.mgin.graves.command.utility.Interact;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.state.PlayerState;
@@ -225,7 +226,8 @@ public class ListCommand {
 
                 // Attach the teleport command to the coordinate message
                 message = res.runOnClick(message,
-                    String.format("/execute as %s in %s run tp %d %d %d", issuer.getNameForScoreboard(), dimension,
+                    String.format("/execute as %s in %s run tp %d %d %d", MinecraftAbstraction.getIssuerName(issuer),
+                        dimension,
                         pos.getX(), pos.getY(), pos.getZ())
                 );
             }

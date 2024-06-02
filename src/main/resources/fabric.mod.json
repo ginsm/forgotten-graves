@@ -32,10 +32,10 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.15.0",
-    "fabric": ">=0.93.0+1.20.4",
-    "minecraft": "1.20.4",
-    "cloth-config": ">=13.0.112"
+    "fabricloader": ">=${loader_version}",
+    "fabric": ">=${fabric_version}",
+    "minecraft": "${minecraft_version}",
+    "cloth-config": ">=${cloth_config_version}"
   },
 
   "recommends": {

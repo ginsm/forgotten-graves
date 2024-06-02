@@ -1,4 +1,8 @@
-## 1.20.4-3.2.7
+## 3.2.8
 
-### Fixed
-- Creeper and TNT explosions now affect the terrain again; graves are still immune to explosions.
+## Added
+- The codebase now leverages [stonecutter-kt](https://github.com/kikugie/stonecutter-kt) to support multiple versions more efficiently.
+- The tombstone itself now has collision.
+
+## Fixed
+- Fixed an issue where dissociating from a possessed entity was spawning graves (e.g. RAT's Mischief Spy Rat or Requiem's Wandering Soul origin).

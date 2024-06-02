@@ -54,8 +54,13 @@ jobs:
       - name: Publish to Modrinth, CurseForge, etc.
         uses: Kir-Antipov/mc-publish@v3.3
         with:
+          name: Forgotten Graves ${{ env.MOD_VERSION }}+${{ matrix.game_version }}
+
           files: versions/${{ matrix.game_version }}/build/libs/!(*-@(dev|sources|javadoc)).jar
+          changelog-file: CHANGELOG.md
           version: ${{ env.MOD_VERSION }}+${{ matrix.game_version }}
+          version-type: release
+
           modrinth-id: ${{ env.MODRINTH_ID }}
           modrinth-token: ${{ env.MODRINTH_TOKEN }}
           curseforge-id: ${{ env.CURSEFORGE_ID }}

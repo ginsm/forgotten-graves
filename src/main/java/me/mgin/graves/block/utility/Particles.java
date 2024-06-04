@@ -2,15 +2,25 @@ package me.mgin.graves.block.utility;
 
 import java.util.Random;
 
+/*? if <1.20.5 {*//*
 import net.minecraft.particle.DefaultParticleType;
+*//*?} else {*/
+import net.minecraft.particle.ParticleEffect;
+/*?}*/
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
 
 public class Particles {
     private static final Random rng = new Random();
 
+    /*? if <1.20.5 {*//*
     static public void spawnAtBlock(World world, BlockPos pos, DefaultParticleType type, int amount,
                                     double maxVelocity) {
+    *//*?} else {*/
+    static public void spawnAtBlock(World world, BlockPos pos, ParticleEffect type, int amount,
+                                    double maxVelocity) {
+    /*?}*/
         for (int i = 0; i <= amount; i++) {
             double blockX = pos.getX() + rng.nextDouble();
             double blockY = pos.getY() + rng.nextDouble();
@@ -34,8 +44,13 @@ public class Particles {
      * @param maxVelocity double
      * @param maxStartHeight double
      */
+    /*? if <1.20.5 {*//*
     static public void spawnAtBlockBottom(World world, BlockPos pos, DefaultParticleType type, int amount,
                                           double maxVelocity, double maxStartHeight) {
+    *//*?} else {*/
+    static public void spawnAtBlockBottom(World world, BlockPos pos, ParticleEffect type, int amount,
+                                          double maxVelocity, double maxStartHeight) {
+    /*?}*/
         for (int i = 0; i <= amount; i++) {
             double blockX = pos.getX() + rng.nextDouble();
             double blockY = Math.min(pos.getY() + rng.nextDouble(), pos.getY() + maxStartHeight);

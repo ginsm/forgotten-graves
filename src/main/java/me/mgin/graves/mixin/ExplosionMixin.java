@@ -15,26 +15,26 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-/*? if >1.20.2 {*//*
+/*? if >1.20.2 {*/
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-*//*?}*/
+/*?}*/
 
 @Mixin(Explosion.class)
 public class ExplosionMixin {
     @Shadow @Final
     private World world;
 
-    /*? if >1.20.2 {*//*
+    /*? if >1.20.2 {*/
     @Shadow @Final
     private ObjectArrayList<BlockPos> affectedBlocks;
-    *//*?} else {*/
+    /*?} else {*//*
     @Unique
     private BlockPos lastPos;
-    /*?}*/
+    *//*?}*/
 
-    /*? if >1.20.2 {*//*
+    /*? if >1.20.2 {*/
     @Inject(method = "affectWorld", at = @At("HEAD"))
     private void removeGravesFromAffectedBlocks(boolean particles, CallbackInfo ci) {
         for (BlockPos blockPos : this.affectedBlocks) {
@@ -42,7 +42,7 @@ public class ExplosionMixin {
             if (blockEntity instanceof GraveBlockEntity) affectedBlocks.remove(blockPos);
         }
     }
-    *//*?} else {*/
+    /*?} else {*//*
     @ModifyVariable(method = "affectWorld", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
     private BlockPos modifyAffectedBlocks(BlockPos pos) {
         lastPos = pos;
@@ -62,5 +62,5 @@ public class ExplosionMixin {
 
         return state;
     }
-    /*?}*/
+    *//*?}*/
 }

@@ -1,8 +1,8 @@
 package me.mgin.graves.block;
 
-/*? if >1.20.2 {*//*
+/*? if >1.20.2 {*/
 import com.mojang.serialization.MapCodec;
-*//*?}*/
+/*?}*/
 import net.minecraft.block.HorizontalFacingBlock;
 import me.mgin.graves.abstraction.MinecraftAbstraction;
 import me.mgin.graves.block.decay.DecayingGrave;
@@ -81,18 +81,18 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
      * @return BlockState
      */
     @Override
-    /*? if >1.20.2 {*//*
+    /*? if >1.20.2 {*/
     public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-    *//*?} else {*/
+    /*?} else {*//*
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-    /*?}*/
+    *//*?}*/
         GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
-        /*? if >1.20.2 {*//*
+        /*? if >1.20.2 {*/
         if (world.isClient) return state;
-        *//*?} else {*/
+        /*?} else {*//*
         if (world.isClient) return;
-        /*?}*/
+        *//*?}*/
 
         if (Permission.playerCanBreakGrave(player, graveEntity)) {
             // This will be true if the grave had an owner
@@ -105,9 +105,9 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
 
         super.onBreak(world, pos, state, player);
         world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
-        /*? if >1.20.2 {*//*
+        /*? if >1.20.2 {*/
         return state;
-        *//*?}*/
+        /*?}*/
     }
 
     public void onBreakRetainName(World world, BlockPos pos, PlayerEntity player, GraveBlockEntity graveEntity) {
@@ -237,10 +237,10 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         DecayingGrave.super.tickDecay(state, world, pos, random);
     }
 
-    /*? if >1.20.2 {*//*
+    /*? if >1.20.2 {*/
     @Override
     protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
         return null;
     }
-    *//*?}*/
+    /*?}*/
 }

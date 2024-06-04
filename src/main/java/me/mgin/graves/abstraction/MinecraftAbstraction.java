@@ -12,27 +12,27 @@ import net.minecraft.text.Text;
  */
 public class MinecraftAbstraction {
     public static Text textFromJson(String json) {
-        /*? if >1.20.2 {*//*
+        /*? if >1.20.2 {*/
         return Text.Serialization.fromJson(json);
-        *//*?} else {*/
+        /*?} else {*//*
         return Text.Serializer.fromJson((json));
-        /*?}*/
+        *//*?}*/
     }
 
     public static String getIssuerName(ServerPlayerEntity issuer) {
-        /*? if >1.20.2 {*//*
+        /*? if >1.20.2 {*/
         return issuer.getNameForScoreboard();
-        *//*?} else {*/
+        /*?} else {*//*
         return issuer.getEntityName();
-        /*?}*/
+        *//*?}*/
     }
 
     public static Item.Settings getItemSettings() {
-        /*? if >=1.20.5 {*//*
+        /*? if >=1.20.5 {*/
         return new Item.Settings();
-        *//*?} else {*/
+        /*?} else {*//*
         return FabricAbstraction.getFabricItemSettings();
-        /*?}*/
+        *//*?}*/
     }
 
 }

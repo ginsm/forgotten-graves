@@ -1,9 +1,9 @@
 package me.mgin.graves.abstraction;
 
-/*? if <1.20.5 {*/
+/*? if <1.20.5 {*//*
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
-/*?}*/
+*//*?}*/
 
 
 /**
@@ -13,9 +13,9 @@ import net.minecraft.item.Item;
  * @see <a href="https://github.com/kikugie/stonecutter-kt">Stonecutter KT</a>
  */
 public class FabricAbstraction {
-    /*? if <1.20.5 {*/
+    /*? if <1.20.5 {*//*
     public static Item.Settings getFabricItemSettings() {
         return new FabricItemSettings();
     }
-    /*?}*/
+    *//*?}*/
 }

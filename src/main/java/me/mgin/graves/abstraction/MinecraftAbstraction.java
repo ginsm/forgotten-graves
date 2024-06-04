@@ -1,5 +1,6 @@
 package me.mgin.graves.abstraction;
 
+import net.minecraft.item.Item;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
@@ -23,6 +24,14 @@ public class MinecraftAbstraction {
         return issuer.getNameForScoreboard();
         *//*?} else {*/
         return issuer.getEntityName();
+        /*?}*/
+    }
+
+    public static Item.Settings getItemSettings() {
+        /*? if >=1.20.5 {*//*
+        return new Item.Settings();
+        *//*?} else {*/
+        return FabricAbstraction.getFabricItemSettings();
         /*?}*/
     }
 

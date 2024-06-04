@@ -1,8 +1,8 @@
 package me.mgin.graves.item;
 
+import me.mgin.graves.abstraction.MinecraftAbstraction;
 import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.GraveBlocks;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -27,7 +27,7 @@ public class Items {
 
         // Create and register block items
         for (Map.Entry<GraveBlockBase, String> grave : GraveBlocks.GRAVE_MAP.entrySet()) {
-            BlockItem item = new BlockItem(grave.getKey(), new FabricItemSettings());
+            BlockItem item = new BlockItem(grave.getKey(), MinecraftAbstraction.getItemSettings());
             Registry.register(Registries.ITEM, new Identifier(MOD_ID, BRAND_BLOCK + grave.getValue()), item);
             ITEMS.add(item);
         }

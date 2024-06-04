@@ -1,7 +1,10 @@
 package me.mgin.graves.abstraction;
 
+/*? if <1.20.5 {*/
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
+/*?}*/
+
 
 /**
  * This class contains method abstractions for Fabric. This is to be used in conjunction

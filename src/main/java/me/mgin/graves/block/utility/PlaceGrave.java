@@ -19,7 +19,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 
@@ -28,8 +27,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PlaceGrave {
-    private static int minY;
-
     /**
      * Attempts to spawn a grave at the given position; if the position is invalid or a sinkable block it will look
      * for a more suitable position
@@ -49,7 +46,7 @@ public class PlaceGrave {
 
         // Sink through functionality
         if (graveShouldSink(world, belowPos, player)) {
-            pos = sinkDownwards(world, belowPos, pos.getY() - (minY + 7), player);
+            pos = sinkDownwards(world, belowPos, player);
         }
 
         // Try and find a new valid, ideal position
@@ -82,8 +79,8 @@ public class PlaceGrave {
      * @return BlockPos
      */
     private static BlockPos enforceWorldBoundaries(World world, BlockPos pos) {
-        int maxY = world.getTopY() - 1;
-        minY = world.getDimension().minY();
+        int minY = world.getDimension().minY();
+        int maxY = world.getDimension().height() - Math.abs(minY);
 
         // Handle dying at or above the dimension's maximum Y height
         if (pos.getY() >= maxY) {
@@ -126,20 +123,23 @@ public class PlaceGrave {
      *
      * @param world  World
      * @param pos    BlockPos
-     * @param depth  int
      * @param player PlayerEntity
      * @return BlockPos
      */
-    private static BlockPos sinkDownwards(World world, BlockPos pos, int depth, PlayerEntity player) {
-        for (BlockPos newPos : BlockPos.iterateOutwards(pos.add(new Vec3i(0, -1, 0)), 0, depth, 0)) {
-            // Keep sinking until a suitable block is found
-            if (graveShouldSink(world, newPos, player)) continue;
+    private static BlockPos sinkDownwards(World world, BlockPos pos, PlayerEntity player) {
+        BlockPos finalPos = pos;
+        int depth = world.getDimension().minY() + 7;
 
-            // Move the position up one (where the grave will actually spawn)
-            return new BlockPos(newPos.getX(), newPos.getY() + 1, newPos.getZ());
+        for (int i = pos.getY(); i > depth; i--) {
+            BlockPos newPos = enforceWorldBoundaries(world, new BlockPos(pos.getX(), i, pos.getZ()));
+
+            if (!graveShouldSink(world, newPos, player)) {
+                finalPos = new BlockPos(pos.getX(), newPos.getY() + 1, pos.getZ());
+                break;
+            }
         }
 
-        return pos;
+        return finalPos;
     }
 
     /**
@@ -160,8 +160,13 @@ public class PlaceGrave {
         if (blockEntity != null) return false;
         if (blackListedBlocks.contains(block)) return false;
 
+        // Get dimension min/max Y
         DimensionType dimension = world.getDimension();
-        return !(pos.getY() < dimension.minY() || pos.getY() > world.getTopY());
+        int minY = dimension.minY();
+        int maxY = dimension.height() - Math.abs(minY);
+
+        // Ensure pos is within boundaries
+        return maxY > pos.getY() || pos.getY() > minY;
     }
 
     /**
@@ -182,9 +187,8 @@ public class PlaceGrave {
             if (canPlaceGrave(world, newPos)) {
                 BlockPos belowPos = new BlockPos(newPos.getX(), newPos.getY() - 1, newPos.getZ());
 
-                // This always ends up with an ideal spot; simply return result of sinkDownwards
                 if (graveShouldSink(world, belowPos, player)) {
-                    newPos = sinkDownwards(world, belowPos, pos.getY() - (minY + 7), player);
+                    newPos = sinkDownwards(world, belowPos, player);
                 }
 
                 // Ensure the position is an ideal spot, if so, set and break loop
@@ -194,8 +198,8 @@ public class PlaceGrave {
                     break;
                 }
 
-                // Assign the first non-ideal spot; this spot can still be placed but will end up breaking
-                // replacing another block. This is a fallback.
+                // Assign the first non-ideal spot; this spot can still be placed but might end up breaking
+                // or replacing another block. This is a fallback.
                 boolean nonIdealIsInitial = nonIdeal == initialPos;
                 boolean cantPlaceInitial = !canPlaceGrave(world, pos);
                 boolean canPlaceNewPos = canPlaceGrave(world, newPos);

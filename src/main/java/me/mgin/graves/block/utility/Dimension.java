@@ -37,6 +37,7 @@ class Dimension {
 
         // Handle dying below the dimension's minimum Y height
         if (this.minY >= pos.getY()) {
+            // Adds 6 to the minY as the overworld has 4-5 layers of bedrock
             pos = new BlockPos(pos.getX(), this.minY + 6, pos.getZ());
         }
 

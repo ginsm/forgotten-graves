@@ -20,7 +20,6 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -29,29 +28,29 @@ import java.util.Set;
 public class PlaceGrave {
     /**
      * Attempts to spawn a grave at the given position; if the position is invalid or a sinkable block it will look
-     * for a more suitable position
-     *
-     * @param world  world
-     * @param vecPos Vec3d
-     * @param player PlayerEntity
+     * for a more suitable position.
      */
     public static void place(World world, Vec3d vecPos, PlayerEntity player) {
         if (world.isClient()) return;
 
-        BlockPos initialPos = new BlockPos((int) Math.floor(vecPos.x), (int) vecPos.y, (int) Math.floor(vecPos.z));
-        BlockPos pos = enforceWorldBoundaries(world, initialPos);
+        // Get dimension boundaries
+        Dimension dimension = new Dimension(world);
 
-        // This is the position below the grave; used for sinking purposes
-        BlockPos belowPos = new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ());
+        // Convert Vec to BlockPos and enforce dimension boundaries
+        BlockPos pos = dimension.enforceBoundaries(new BlockPos(
+            (int) Math.floor(vecPos.x),
+            (int) Math.floor(vecPos.y),
+            (int) Math.floor(vecPos.z)
+        ));
 
-        // Sink through functionality
-        if (graveShouldSink(world, belowPos, player)) {
-            pos = sinkDownwards(world, belowPos, player);
+        // Sink functionality
+        if (graveShouldSink(world, pos, player)) {
+            pos = findLowestSpawnPos(world, dimension, pos, player);
         }
 
-        // Try and find a new valid, ideal position
-        if (!canPlaceGrave(world, initialPos) || !isLiquidOrAir(world, initialPos)) {
-            pos = searchOutwards(world, pos, player);
+        // Try and find a new valid, optimal position
+        if (!canPlaceGrave(world, dimension, pos) || !isLiquidOrAir(world, pos)) {
+            pos = findOptimalSpawnPos(world, dimension, pos, player);
         }
 
         // Place the grave
@@ -59,82 +58,19 @@ public class PlaceGrave {
     }
 
     /**
-     *  Checks to see if the block is a liquid or air. This is useful to prevent breaking blocks that aren't
-     *  standard 1x1 collision blocks (fences, path blocks, etc).
-     *
-     * @param world World
-     * @param pos   BlockPos
-     * @return boolean
+     * Iterates downwards until it finds a block that is not marked as sinkable or reaches the
+     * minimum Y level.
      */
-    private static boolean isLiquidOrAir(World world, BlockPos pos) {
-        BlockState state = world.getBlockState(pos);
-        return state.isAir() || state.isLiquid();
-    }
-
-    /**
-     * Ensures that graves only spawn inside the world boundaries.
-     *
-     * @param world World
-     * @param pos   BlockPos
-     * @return BlockPos
-     */
-    private static BlockPos enforceWorldBoundaries(World world, BlockPos pos) {
-        int minY = world.getDimension().minY();
-        int maxY = world.getDimension().height() - Math.abs(minY);
-
-        // Handle dying at or above the dimension's maximum Y height
-        if (pos.getY() >= maxY) {
-            pos = new BlockPos(pos.getX(), maxY - 1, pos.getZ());
-        }
-
-        // Handle dying below the dimension's minimum Y height
-        if (minY > pos.getY()) {
-            pos = new BlockPos(pos.getX(), minY + 7, pos.getZ());
-        }
-
-        return pos;
-    }
-
-    /**
-     * Determines whether a grave should sink through a given block; based on configuration.
-     *
-     * @param world  World
-     * @param pos    BlockPos
-     * @param player PlayerEntity
-     * @return boolean
-     */
-    public static boolean graveShouldSink(World world, BlockPos pos, PlayerEntity player) {
-        GameProfile profile = player.getGameProfile();
-        Block block = world.getBlockState(pos).getBlock();
-
-        // Stop sinking if the position is neither a liquid nor air.
-        if (!isLiquidOrAir(world, pos)) return false;
-
-        return switch (block.getName().getString()) {
-            case "Air" -> (boolean) GravesConfig.resolve("sinkInAir", profile);
-            case "Water" -> (boolean) GravesConfig.resolve("sinkInWater", profile);
-            case "Lava" -> (boolean) GravesConfig.resolve("sinkInLava", profile);
-            default -> false;
-        };
-    }
-
-    /**
-     * Iterates downwards until it finds a non-sinkable position to spawn the grave or reaches the minimum Y level.
-     *
-     * @param world  World
-     * @param pos    BlockPos
-     * @param player PlayerEntity
-     * @return BlockPos
-     */
-    private static BlockPos sinkDownwards(World world, BlockPos pos, PlayerEntity player) {
+    private static BlockPos findLowestSpawnPos(World world, Dimension dimension, BlockPos pos, PlayerEntity player) {
+        int depth = dimension.getMinY() + 6;
+        int start = pos.getY() - 1; // Starts at the block below the potential grave pos
         BlockPos finalPos = pos;
-        int depth = world.getDimension().minY() + 7;
 
-        for (int i = pos.getY(); i > depth; i--) {
-            BlockPos newPos = enforceWorldBoundaries(world, new BlockPos(pos.getX(), i, pos.getZ()));
+        for (int i = start; i > depth; i--) {
+            BlockPos newPos = new BlockPos(pos.getX(), i, pos.getZ());
 
             if (!graveShouldSink(world, newPos, player)) {
-                finalPos = new BlockPos(pos.getX(), newPos.getY() + 1, pos.getZ());
+                finalPos = newPos;
                 break;
             }
         }
@@ -143,89 +79,50 @@ public class PlaceGrave {
     }
 
     /**
-     * Determines whether the grave can spawn in the given position.
-     *
-     * @param world World
-     * @param pos   BlockPos
-     * @return boolean
+     * Iterates outwards until it finds an optimal position to spawn the grave; ensuring the grave sinks when necessary.
      */
-    private static boolean canPlaceGrave(World world, BlockPos pos) {
-        Block block = world.getBlockState(pos).getBlock();
-        BlockEntity blockEntity = world.getBlockEntity(pos);
-
-        Set<Block> blackListedBlocks = new HashSet<>() {{
-            add(Blocks.BEDROCK);
-        }};
-
-        if (blockEntity != null) return false;
-        if (blackListedBlocks.contains(block)) return false;
-
-        // Get dimension min/max Y
-        DimensionType dimension = world.getDimension();
-        int minY = dimension.minY();
-        int maxY = dimension.height() - Math.abs(minY);
-
-        // Ensure pos is within boundaries
-        return maxY > pos.getY() || pos.getY() > minY;
-    }
-
-    /**
-     * Iterates outwards until it finds a valid position to spawn the grave; ensuring the grave sinks when necessary.
-     *
-     * @param world  World
-     * @param pos    BlockPos
-     * @param player PlayerEntity
-     * @return BlockPos
-     */
-    private static BlockPos searchOutwards(World world, BlockPos pos, PlayerEntity player) {
-        // This is used to find an 'ideal' spot; an ideal spot is either liquid or air.
-        BlockPos initialPos = pos;
-        BlockPos nonIdeal = pos;
-        boolean idealBlockFound = false;
+    private static BlockPos findOptimalSpawnPos(World world, Dimension dimension, BlockPos pos, PlayerEntity player) {
+        BlockPos suboptimalPos = pos;
 
         for (BlockPos newPos : BlockPos.iterateOutwards(pos, 10, 10, 10)) {
-            if (canPlaceGrave(world, newPos)) {
-                BlockPos belowPos = new BlockPos(newPos.getX(), newPos.getY() - 1, newPos.getZ());
-
-                if (graveShouldSink(world, belowPos, player)) {
-                    newPos = sinkDownwards(world, belowPos, player);
+            if (canPlaceGrave(world, dimension, newPos)) {
+                // Sink the new position if needed
+                if (graveShouldSink(world, newPos, player)) {
+                    newPos = findLowestSpawnPos(world, dimension, newPos, player);
                 }
 
-                // Ensure the position is an ideal spot, if so, set and break loop
-                idealBlockFound = isLiquidOrAir(world, newPos);
-                if (idealBlockFound) {
-                    pos = newPos;
-                    break;
+                // Checks for the optimal spot; an optimal spot is considered either liquid or air.
+                if (isLiquidOrAir(world, newPos)) {
+                    return newPos;
                 }
 
-                // Assign the first non-ideal spot; this spot can still be placed but might end up breaking
-                // or replacing another block. This is a fallback.
-                boolean nonIdealIsInitial = nonIdeal == initialPos;
-                boolean cantPlaceInitial = !canPlaceGrave(world, pos);
-                boolean canPlaceNewPos = canPlaceGrave(world, newPos);
-                if (nonIdealIsInitial && cantPlaceInitial && canPlaceNewPos) {
-                    nonIdeal = newPos;
+                // Store the first suboptimal position; this spot can still be placed but might end up breaking
+                // or replacing another block. This is a fallback in case an optimal spot isn't found.
+                boolean suboptimalUnchanged = suboptimalPos == pos;
+                boolean cantPlaceInitial = !canPlaceGrave(world, dimension, pos);
+                boolean canPlaceNewPos = canPlaceGrave(world, dimension, newPos);
+                if (suboptimalUnchanged && cantPlaceInitial && canPlaceNewPos) {
+                    suboptimalPos = newPos;
                 }
             }
         }
 
-        return idealBlockFound ? pos : nonIdeal;
+        return suboptimalPos;
     }
 
     /**
      * Spawns a grave at the given BlockPos.
-     *
-     * @param world  World
-     * @param pos    BlockPos
-     * @param player PlayerEntity
      */
     public static void spawnGrave(World world, BlockPos pos, PlayerEntity player) {
-        // Get block and state of location
+        // Get block and state
         BlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
 
-        world.setBlockState(pos, GraveBlocks.GRAVE.getDefaultState().with(Properties.HORIZONTAL_FACING,
-            player.getHorizontalFacing()));
+        // Set block and rotational state
+        world.setBlockState(pos, GraveBlocks.GRAVE.getDefaultState().with(
+            Properties.HORIZONTAL_FACING,
+            player.getHorizontalFacing().getOpposite()
+        ));
 
         // Create new grave entity
         GraveBlockEntity graveEntity = new GraveBlockEntity(pos, world.getBlockState(pos));
@@ -285,12 +182,57 @@ public class PlaceGrave {
 
     /**
      * Resets the player's experience levels and progress to zero.
-     *
-     * @param player PlayerEntity
      */
     private static void resetPlayerExperience(PlayerEntity player) {
         player.totalExperience = 0;
         player.experienceProgress = 0;
         player.experienceLevel = 0;
+    }
+
+    /**
+     * Determines whether the grave can spawn in the given position.
+     */
+    private static boolean canPlaceGrave(World world, Dimension dimension, BlockPos pos) {
+        // Do not replace existing block entities
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity != null) return false;
+
+        // Do not replace blacklisted blocks
+        Set<Block> blacklist = new HashSet<>() {{
+            add(Blocks.BEDROCK);
+        }};
+
+        Block block = world.getBlockState(pos).getBlock();
+        if (blacklist.contains(block)) return false;
+
+        // Ensure pos is within boundaries
+        return dimension.inBounds(pos);
+    }
+
+    /**
+     * Determines whether a grave should sink through a given block; based on configuration.
+     */
+    public static boolean graveShouldSink(World world, BlockPos pos, PlayerEntity player) {
+        pos = pos.down(); // Used to check the block below the potential grave spot
+        GameProfile profile = player.getGameProfile();
+        Block block = world.getBlockState(pos).getBlock();
+
+        // Stop sinking if the position is neither a liquid nor air.
+        if (!isLiquidOrAir(world, pos)) return false;
+
+        return switch (block.getName().getString()) {
+            case "Air" -> (boolean) GravesConfig.resolve("sinkInAir", profile);
+            case "Water" -> (boolean) GravesConfig.resolve("sinkInWater", profile);
+            case "Lava" -> (boolean) GravesConfig.resolve("sinkInLava", profile);
+            default -> false;
+        };
+    }
+
+    /**
+     *  Checks to see if the block is a liquid or air.
+     */
+    private static boolean isLiquidOrAir(World world, BlockPos pos) {
+        BlockState state = world.getBlockState(pos);
+        return state.isAir() || state.isLiquid();
     }
 }

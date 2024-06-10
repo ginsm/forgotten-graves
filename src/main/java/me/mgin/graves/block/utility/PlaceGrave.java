@@ -62,17 +62,21 @@ public class PlaceGrave {
      * minimum Y level.
      */
     private static BlockPos findLowestSpawnPos(World world, Dimension dimension, BlockPos pos, PlayerEntity player) {
-        int depth = dimension.getMinY() + 6;
+        int depth = dimension.getMinY() + 1;
         int start = pos.getY() - 1; // Starts at the block below the potential grave pos
         BlockPos finalPos = pos;
 
-        for (int i = start; i > depth; i--) {
+        for (int i = start; i >= depth; i--) {
             BlockPos newPos = new BlockPos(pos.getX(), i, pos.getZ());
 
             if (!graveShouldSink(world, newPos, player)) {
                 finalPos = newPos;
                 break;
             }
+
+            // If no spot is found when reaching the lowest depth, simply set the
+            // spawn position to the max depth.
+            if (i == depth) finalPos = newPos;
         }
 
         return finalPos;

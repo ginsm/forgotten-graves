@@ -4,7 +4,7 @@ package me.mgin.graves.block;
 import com.mojang.serialization.MapCodec;
 *//*?}*/
 import net.minecraft.block.HorizontalFacingBlock;
-import me.mgin.graves.abstraction.MinecraftAbstraction;
+import me.mgin.graves.versioned.VersionedCode;
 import me.mgin.graves.block.decay.DecayingGrave;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.block.utility.Permission;
@@ -111,7 +111,7 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     }
 
     public void onBreakRetainName(World world, BlockPos pos, PlayerEntity player, GraveBlockEntity graveEntity) {
-        Text itemText = MinecraftAbstraction.textFromJson(graveEntity.getCustomName());
+        Text itemText = VersionedCode.textFromJson(graveEntity.getCustomName());
 
         // Create named item stack
         ItemStack itemStack = this.getItemStack();

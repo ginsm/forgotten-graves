@@ -51,7 +51,7 @@ public class ExplosionMixin {
 
     @ModifyVariable(method = "affectWorld", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
     private BlockState modifyAffectedBlocks(BlockState state) {
-        if (GraveBlocks.GRAVE_MAP.containsKey(state.getBlock())) {
+        if (GraveBlocks.GRAVE_SET.contains(state.getBlock())) {
             BlockEntity blockEntity = world.getBlockEntity(lastPos);
 
             if (blockEntity instanceof GraveBlockEntity graveEntity) {

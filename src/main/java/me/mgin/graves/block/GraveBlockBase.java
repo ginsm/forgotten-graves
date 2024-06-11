@@ -38,17 +38,25 @@ import net.minecraft.world.WorldAccess;
 
 public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntityProvider, DecayingGrave, Waterloggable {
     private final BlockDecay blockDecay;
+    public String translateKey = null;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
     public static final VoxelShape TOMBSTONE_NORTH = VoxelShapes.cuboid(0.0625f, 0f, 0f, 0.9375f, 1f, 0.0625f);
     public static final VoxelShape TOMBSTONE_EAST = VoxelShapes.cuboid(0.9375f, 0f, 0.0625f, 1f, 1f, 0.9375f);
     public static final VoxelShape TOMBSTONE_SOUTH = VoxelShapes.cuboid(0.0625f, 0f, 0.9375f, 0.9375f, 1f, 1f);
     public static final VoxelShape TOMBSTONE_WEST = VoxelShapes.cuboid(0f, 0f, 0.0625f, 0.0625f, 1f, 0.9375f);
 
-    public GraveBlockBase(BlockDecay blockDecay, Settings settings) {
+    public GraveBlockBase(BlockDecay blockDecay, Settings settings, String translationKey) {
         super(settings);
         setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false).with(Properties.HORIZONTAL_FACING,
             Direction.NORTH));
         this.blockDecay = blockDecay;
+        this.translateKey = translationKey;
+    }
+
+    @Override
+    public String getTranslationKey() {
+        if (this.translateKey != null) return this.translateKey;
+        return super.getTranslationKey();
     }
 
     @Override

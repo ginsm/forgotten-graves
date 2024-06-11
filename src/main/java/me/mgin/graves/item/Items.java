@@ -26,9 +26,9 @@ public class Items {
         ArrayList<Item> ITEMS = new ArrayList<>();
 
         // Create and register block items
-        for (Map.Entry<GraveBlockBase, String> grave : GraveBlocks.GRAVE_MAP.entrySet()) {
-            BlockItem item = new BlockItem(grave.getKey(), new FabricItemSettings());
-            Registry.register(Registries.ITEM, new Identifier(MOD_ID, BRAND_BLOCK + grave.getValue()), item);
+        for (GraveBlockBase grave : GraveBlocks.GRAVE_SET) {
+            BlockItem item = new BlockItem(grave, new FabricItemSettings());
+            Registry.register(Registries.ITEM, new Identifier(MOD_ID, grave.getTranslationKey()), item);
             ITEMS.add(item);
         }
 

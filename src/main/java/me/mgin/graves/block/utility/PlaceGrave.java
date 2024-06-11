@@ -7,10 +7,11 @@ import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.state.ServerState;
+import me.mgin.graves.tags.BlockTags;
 import me.mgin.graves.util.Responder;
+import me.mgin.graves.versioned.VersionedCode;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -22,8 +23,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 public class PlaceGrave {
     /**
@@ -49,7 +48,7 @@ public class PlaceGrave {
         }
 
         // Try and find a new valid, optimal position
-        if (!canPlaceGrave(world, dimension, pos) || !isLiquidOrAir(world, pos)) {
+        if (!canPlaceGrave(world, dimension, pos) || !isLiquidAirOrReplaceable(world, pos)) {
             pos = findOptimalSpawnPos(world, dimension, pos, player);
         }
 
@@ -96,7 +95,7 @@ public class PlaceGrave {
                 }
 
                 // Checks for the optimal spot; an optimal spot is considered either liquid or air.
-                if (isLiquidOrAir(world, newPos)) {
+                if (isLiquidAirOrReplaceable(world, newPos)) {
                     return newPos;
                 }
 
@@ -201,13 +200,9 @@ public class PlaceGrave {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity != null) return false;
 
-        // Do not replace blacklisted blocks
-        Set<Block> blacklist = new HashSet<>() {{
-            add(Blocks.BEDROCK);
-        }};
-
-        Block block = world.getBlockState(pos).getBlock();
-        if (blacklist.contains(block)) return false;
+        // Do not replace irreplaceable blocks
+        BlockState state = world.getBlockState(pos);
+        if (VersionedCode.TagContains(state, BlockTags.IRREPLACEABLE)) return false;
 
         // Ensure pos is within boundaries
         return dimension.inBounds(pos);
@@ -221,8 +216,8 @@ public class PlaceGrave {
         GameProfile profile = player.getGameProfile();
         Block block = world.getBlockState(pos).getBlock();
 
-        // Stop sinking if the position is neither a liquid nor air.
-        if (!isLiquidOrAir(world, pos)) return false;
+        // Stop sinking if the position is neither a liquid, air, or replaceable.
+        if (!isLiquidAirOrReplaceable(world, pos)) return false;
 
         return switch (block.getName().getString()) {
             case "Air" -> (boolean) GravesConfig.resolve("sinkInAir", profile);
@@ -233,10 +228,11 @@ public class PlaceGrave {
     }
 
     /**
-     *  Checks to see if the block is a liquid or air.
+     *  Checks to see if the block is a liquid, air, or replaceable (tag).
      */
-    private static boolean isLiquidOrAir(World world, BlockPos pos) {
+    private static boolean isLiquidAirOrReplaceable(World world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
-        return state.isAir() || state.isLiquid();
+        boolean canReplace = VersionedCode.TagContains(state, BlockTags.REPLACEABLE);
+        return state.isAir() || state.isLiquid() || canReplace;
     }
 }

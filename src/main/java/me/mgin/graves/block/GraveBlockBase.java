@@ -3,6 +3,7 @@ package me.mgin.graves.block;
 /*? if >1.20.2 {*//*
 import com.mojang.serialization.MapCodec;
 *//*?}*/
+import me.mgin.graves.item.Items;
 import net.minecraft.block.HorizontalFacingBlock;
 import me.mgin.graves.versioned.VersionedCode;
 import me.mgin.graves.block.decay.DecayingGrave;
@@ -35,9 +36,11 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.explosion.Explosion;
 
 public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntityProvider, DecayingGrave, Waterloggable {
     private final BlockDecay blockDecay;
+    public boolean brokenByPlayer = false;
     public String translateKey = null;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
     public static final VoxelShape TOMBSTONE_NORTH = VoxelShapes.cuboid(0.0625f, 0f, 0f, 0.9375f, 1f, 0.0625f);
@@ -53,6 +56,11 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         this.translateKey = translationKey;
     }
 
+    /**
+     * Used when registering grave items and blocks.
+     * @see Items
+     * @see GraveBlocks
+     */
     @Override
     public String getTranslationKey() {
         if (this.translateKey != null) return this.translateKey;
@@ -64,9 +72,37 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         stateManager.add(Properties.HORIZONTAL_FACING).add(Properties.WATERLOGGED);
     }
 
+    /**
+     * Prevents a grave item dropping when dying to explosions.
+     */
+    @Override
+    public boolean shouldDropItemsOnExplosion(Explosion explosion) {
+        return false;
+    }
+
+    /**
+     * Respawns the grave unless they were retrieved via {@link GraveBlockBase#onUse} or {@link GraveBlockBase#onBreak}.
+     */
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (this.brokenByPlayer) {
+            this.brokenByPlayer = false;
+            super.onStateReplaced(state, world, pos, newState, moved);
+        } else {
+            if (state.hasBlockEntity()) {
+                world.setBlockState(pos, state);
+                world.addBlockEntity(world.getBlockEntity(pos));
+            }
+        }
+    }
+
+    /**
+     * Allows for player owned grave retrieval via right click.
+     */
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
                               BlockHitResult hit) {
+        this.brokenByPlayer = true;
         GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
         if (world.isClient) return ActionResult.PASS;
@@ -80,13 +116,7 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
 
     /**
      * Either retrieves a player owned grave, drops a named grave, or defaults
-     * to vanilla behavior.
-     *
-     * @param world  World
-     * @param pos    BlockPos
-     * @param state  BlockState
-     * @param player PlayerEntity
-     * @return BlockState
+     * to vanilla behavior when breaking a grave.
      */
     @Override
     /*? if >1.20.2 {*//*
@@ -94,6 +124,7 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     *//*?} else {*/
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
     /*?}*/
+        this.brokenByPlayer = true;
         GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
         /*? if >1.20.2 {*//*
@@ -159,10 +190,6 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return getGraveShape(state);
-    }
-
-    public PistonBehavior getPistonBehavior(BlockState state) {
-        return PistonBehavior.IGNORE;
     }
 
     @Override

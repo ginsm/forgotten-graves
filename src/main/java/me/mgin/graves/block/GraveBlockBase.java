@@ -134,6 +134,7 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     *//*?} else {*/
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
     /*?}*/
+        this.setBrokenByPlayer(true);
         GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
         /*? if >1.20.2 {*//*

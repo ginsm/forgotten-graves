@@ -5,9 +5,9 @@ import net.minecraft.block.Block;
 import net.minecraft.registry.tag.TagKey;
 
 public class BlockTags {
-    public static final TagKey<Block> REPLACEABLE =
-        VersionedCode.createCustomTag("replaceable");
-    public static final TagKey<Block> IRREPLACEABLE = 
-        VersionedCode.createCustomTag("irreplaceable");
+    public static final TagKey<Block> REPLACE =
+        VersionedCode.createCustomTag("replace");
+    public static final TagKey<Block> DO_NOT_REPLACE =
+        VersionedCode.createCustomTag("do_not_replace");
 
 }

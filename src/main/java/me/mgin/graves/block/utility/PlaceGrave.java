@@ -202,7 +202,7 @@ public class PlaceGrave {
 
         // Do not replace irreplaceable blocks
         BlockState state = world.getBlockState(pos);
-        if (VersionedCode.TagContains(state, BlockTags.IRREPLACEABLE)) return false;
+        if (VersionedCode.TagContains(state, BlockTags.DO_NOT_REPLACE)) return false;
 
         // Ensure pos is within boundaries
         return dimension.inBounds(pos);
@@ -232,7 +232,7 @@ public class PlaceGrave {
      */
     private static boolean isLiquidAirOrReplaceable(World world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
-        boolean canReplace = VersionedCode.TagContains(state, BlockTags.REPLACEABLE);
+        boolean canReplace = VersionedCode.TagContains(state, BlockTags.REPLACE);
         return state.isAir() || state.isLiquid() || canReplace;
     }
 }

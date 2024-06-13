@@ -87,7 +87,7 @@ public class PlaceGrave {
     private static BlockPos findOptimalSpawnPos(World world, Dimension dimension, BlockPos pos, PlayerEntity player) {
         BlockPos suboptimalPos = pos;
 
-        for (BlockPos newPos : BlockPos.iterateOutwards(pos, 5, 80, 5)) {
+        for (BlockPos newPos : BlockPos.iterateOutwards(pos, 8, 80, 8)) {
             if (canPlaceGrave(world, dimension, newPos)) {
                 // Sink the new position if needed
                 if (graveShouldSink(world, newPos, player)) {

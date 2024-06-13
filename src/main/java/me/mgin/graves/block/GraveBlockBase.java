@@ -3,6 +3,7 @@ package me.mgin.graves.block;
 /*? if >1.20.2 {*//*
 import com.mojang.serialization.MapCodec;
 *//*?}*/
+import me.mgin.graves.command.DeleteCommand;
 import me.mgin.graves.item.Items;
 import net.minecraft.block.HorizontalFacingBlock;
 import me.mgin.graves.versioned.VersionedCode;
@@ -12,7 +13,6 @@ import me.mgin.graves.block.utility.Permission;
 import me.mgin.graves.block.utility.RetrieveGrave;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -37,6 +37,8 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.explosion.Explosion;
+
+import static me.mgin.graves.block.GraveBlocks.GRAVE_SET;
 
 public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntityProvider, DecayingGrave, Waterloggable {
     private final BlockDecay blockDecay;
@@ -81,12 +83,17 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     }
 
     /**
-     * Respawns the grave unless they were retrieved via {@link GraveBlockBase#onUse} or {@link GraveBlockBase#onBreak}.
+     * Respawns the grave unless they were retrieved via {@link RetrieveGrave#retrieve} or deleted via
+     * {@link DeleteCommand#execute}.
      */
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        // Do nothing if the grave is simply decaying
+        if (GRAVE_SET.contains(newState.getBlock())) return;
+
+        // Do nothing if the player broke the grave
         if (this.brokenByPlayer) {
-            this.brokenByPlayer = false;
+            this.setBrokenByPlayer(false);
             super.onStateReplaced(state, world, pos, newState, moved);
         } else {
             if (state.hasBlockEntity()) {
@@ -96,13 +103,16 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         }
     }
 
+    public void setBrokenByPlayer(boolean status) {
+        this.brokenByPlayer = status;
+    }
+
     /**
      * Allows for player owned grave retrieval via right click.
      */
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
                               BlockHitResult hit) {
-        this.brokenByPlayer = true;
         GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
         if (world.isClient) return ActionResult.PASS;
@@ -124,7 +134,6 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     *//*?} else {*/
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
     /*?}*/
-        this.brokenByPlayer = true;
         GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
         /*? if >1.20.2 {*//*

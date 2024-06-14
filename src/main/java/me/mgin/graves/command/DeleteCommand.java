@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.state.PlayerState;
@@ -72,6 +73,11 @@ public class DeleteCommand {
                         if (world.getBlockEntity(gravePos) instanceof GraveBlockEntity graveEntity) {
                             // Verify grave is identical to the stored grave
                             if (graveEntity.getMstime() == grave.getLong("mstime")) {
+                                // This needs to be set in order to actually remove the grave from the world
+                                GraveBlockBase graveBlock = (GraveBlockBase) world.getBlockState(gravePos).getBlock();
+                                graveBlock.setBrokenByPlayer(true);
+
+                                // Remove the grave
                                 world.removeBlock(gravePos, false);
                             }
                         }

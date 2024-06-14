@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:grass",
+    "minecraft:tall_grass",
+    "minecraft:seagrass",
+    "minecraft:fern",
+    "minecraft:large_fern",
+    "minecraft:torch",
+    "#minecraft:flowers",
+    "#minecraft:saplings",
+    "minecraft:brown_mushroom",
+    "minecraft:red_mushroom",
+    "minecraft:crimson_fungus",
+    "minecraft:crimson_roots",
+    "minecraft:warped_fungus",
+    "minecraft:warped_roots",
+    "minecraft:nether_sprouts",
+    "minecraft:dead_bush",
+    "minecraft:lily_pad",
+    "#minecraft:coral_plants",
+    "minecraft:sculk_vein",
+    "minecraft:cobweb",
+    "minecraft:sugar_cane",
+    "minecraft:bamboo"
+  ]
+}

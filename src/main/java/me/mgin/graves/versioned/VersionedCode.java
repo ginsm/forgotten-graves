@@ -10,9 +10,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-/*? if <1.20.5 {*/
+/*? if <1.20.5 {*//*
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-/*?}*/
+*//*?}*/
 
 /**
  * This class contains abstractions that are used in conjunction with stonecutter-kt
@@ -22,27 +22,27 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
  */
 public class VersionedCode {
     public static Item.Settings getItemSettings() {
-        /*? if >=1.20.5 {*//*
+        /*? if >=1.20.5 {*/
         return new Item.Settings();
-        *//*?} else {*/
+        /*?} else {*//*
         return new FabricItemSettings();
-        /*?}*/
+        *//*?}*/
     }
 
     public static Text textFromJson(String json) {
-        /*? if >1.20.2 {*//*
+        /*? if >1.20.2 {*/
         return Text.Serialization.fromJson(json);
-        *//*?} else {*/
+        /*?} else {*//*
         return Text.Serializer.fromJson((json));
-        /*?}*/
+        *//*?}*/
     }
 
     public static String getIssuerName(ServerPlayerEntity issuer) {
-        /*? if >1.20.2 {*//*
+        /*? if >1.20.2 {*/
         return issuer.getNameForScoreboard();
-        *//*?} else {*/
+        /*?} else {*//*
         return issuer.getEntityName();
-        /*?}*/
+        *//*?}*/
     }
 
     public static TagKey<Block> createCustomTag(String name) {

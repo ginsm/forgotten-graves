@@ -3,11 +3,16 @@ package me.mgin.graves.versioned;
 import me.mgin.graves.Graves;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+
+/*? if <1.20.5 {*/
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+/*?}*/
 
 /**
  * This class contains abstractions that are used in conjunction with stonecutter-kt
@@ -16,6 +21,14 @@ import net.minecraft.util.Identifier;
  * @see <a href="https://github.com/kikugie/stonecutter-kt">Stonecutter KT</a>
  */
 public class VersionedCode {
+    public static Item.Settings getItemSettings() {
+        /*? if >=1.20.5 {*//*
+        return new Item.Settings();
+        *//*?} else {*/
+        return new FabricItemSettings();
+        /*?}*/
+    }
+
     public static Text textFromJson(String json) {
         /*? if >1.20.2 {*//*
         return Text.Serialization.fromJson(json);

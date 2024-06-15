@@ -32,7 +32,7 @@ public class ExplosionMixin {
     /*? if >=1.20 {*/
     @Shadow @Final
     private ObjectArrayList<BlockPos> affectedBlocks;
-    *//*?} else {*//*
+    /*?} else {*//*
     @Unique
     private BlockPos lastPos;
     *//*?}*/
@@ -45,7 +45,7 @@ public class ExplosionMixin {
             if (blockEntity instanceof GraveBlockEntity) affectedBlocks.remove(blockPos);
         }
     }
-    *//*?} else {*//*
+    /*?} else {*//*
     @ModifyVariable(method = "affectWorld", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
     private BlockPos modifyAffectedBlocks(BlockPos pos) {
         lastPos = pos;

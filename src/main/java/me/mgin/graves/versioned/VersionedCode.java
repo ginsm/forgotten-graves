@@ -1,5 +1,7 @@
 package me.mgin.graves.versioned;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import me.mgin.graves.Graves;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -29,12 +31,9 @@ public class VersionedCode {
         *//*?}*/
     }
 
-    public static Text textFromJson(String json) {
-        /*? if >1.20.2 {*/
-        return Text.Serialization.fromJson(json);
-        /*?} else {*//*
-        return Text.Serializer.fromJson((json));
-        *//*?}*/
+    public static Text getCustomGraveNameFromJson(String data) {
+        JsonObject json = JsonParser.parseString(data).getAsJsonObject();
+        return Text.literal(json.get("text").getAsString());
     }
 
     public static String getIssuerName(ServerPlayerEntity issuer) {

@@ -95,8 +95,21 @@ java {
     // if it is present.
     // If you remove this line, sources will not be generated.
     withSourcesJar()
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+
+    // Used to discern which java version is required; I could use a simple ternary but this
+    // should allow for easily adding new java/minecraft versions.
+    def javaVersionSupport = [
+            (JavaVersion.VERSION_17): ['1.20', '1.20.1', '1.20.2', '1.20.3', '1.20.4'],
+            (JavaVersion.VERSION_21): ['1.20.5']
+    ]
+
+    // Get java version from javaVersionSupport based on current stonecutter version
+    var javaVersion = javaVersionSupport.find { javaVersion, gameVersions ->
+        gameVersions.contains(stonecutter.current.version)
+    }?.key
+
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
 }
 
 jar {

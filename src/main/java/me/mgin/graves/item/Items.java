@@ -3,7 +3,6 @@ package me.mgin.graves.item;
 import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.versioned.VersionedCode;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;

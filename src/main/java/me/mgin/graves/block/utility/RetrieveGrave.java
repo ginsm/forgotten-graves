@@ -3,6 +3,7 @@ package me.mgin.graves.block.utility;
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.InventoriesApi;
+import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
@@ -140,6 +141,11 @@ public class RetrieveGrave {
 
         // Remove block if it exists
         if (world.getBlockEntity(pos) instanceof GraveBlockEntity && destroyGrave) {
+            // This needs to be set in order to actually remove the grave from the world
+            GraveBlockBase graveBlock = (GraveBlockBase) world.getBlockState(pos).getBlock();
+            graveBlock.setBrokenByPlayer(true);
+
+            // Remove the grave
             world.removeBlock(pos, false);
         }
 

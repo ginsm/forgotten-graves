@@ -1,8 +1,8 @@
 {
-  "block.forgottengraves.grave": "Могила",
-  "block.forgottengraves.grave_old": "Старая могила",
-  "block.forgottengraves.grave_weathered": "Выветренная могила",
-  "block.forgottengraves.grave_forgotten": "Забытая могила",
+  "grave": "Могила",
+  "grave_old": "Старая могила",
+  "grave_weathered": "Выветренная могила",
+  "grave_forgotten": "Забытая могила",
   "itemGroup.forgottengraves.graves": "Могильные блоки",
 
   "text.autoconfig.forgottengraves.title": "Настройки забытых могил",

@@ -9,28 +9,32 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GraveBlocks {
     public static BlockEntityType<GraveBlockEntity> GRAVE_BLOCK_ENTITY;
 
-    public static final GraveBlockBase GRAVE = createGrave(BlockDecay.FRESH);
-    public static final GraveBlockBase GRAVE_OLD = createGrave(BlockDecay.OLD);
-    public static final GraveBlockBase GRAVE_WEATHERED = createGrave(BlockDecay.WEATHERED);
-    public static final GraveBlockBase GRAVE_FORGOTTEN = createGrave(BlockDecay.FORGOTTEN);
+    public static final GraveBlockBase GRAVE = createGrave(BlockDecay.FRESH, "grave");
+    public static final GraveBlockBase GRAVE_OLD = createGrave(BlockDecay.OLD, "grave_old");
+    public static final GraveBlockBase GRAVE_WEATHERED = createGrave(BlockDecay.WEATHERED, "grave_weathered");
+    public static final GraveBlockBase GRAVE_FORGOTTEN = createGrave(BlockDecay.FORGOTTEN, "grave_forgotten");
 
-    public static final Map<GraveBlockBase, String> GRAVE_MAP = new HashMap<>() {
-        {
-            put(GraveBlocks.GRAVE, "");
-            put(GraveBlocks.GRAVE_OLD, "_old");
-            put(GraveBlocks.GRAVE_WEATHERED, "_weathered");
-            put(GraveBlocks.GRAVE_FORGOTTEN, "_forgotten");
-        }
-    };
+    public static final Set<GraveBlockBase> GRAVE_SET = new HashSet<>();
 
-    private static GraveBlockBase createGrave(BlockDecay blockDecay) {
-        return new GraveBlockBase(blockDecay, FabricBlockSettings.create().strength(0.8f, 3600000.0F));
+    static {
+        GRAVE_SET.add(GRAVE);
+        GRAVE_SET.add(GRAVE_OLD);
+        GRAVE_SET.add(GRAVE_WEATHERED);
+        GRAVE_SET.add(GRAVE_FORGOTTEN);
+    }
+
+    private static GraveBlockBase createGrave(BlockDecay blockDecay, String translationKey) {
+        return new GraveBlockBase(
+            blockDecay,
+            FabricBlockSettings.create().strength(0.8f, 3600000.0F),
+            translationKey
+        );
     }
 
     /**
@@ -40,8 +44,8 @@ public class GraveBlocks {
      * @param BRAND_BLOCK String
      */
     public static void registerServerBlocks(String MOD_ID, String BRAND_BLOCK) {
-        for (Map.Entry<GraveBlockBase, String> grave : GraveBlocks.GRAVE_MAP.entrySet()) {
-            Registry.register(Registries.BLOCK, new Identifier(MOD_ID, BRAND_BLOCK + grave.getValue()), grave.getKey());
+        for (GraveBlockBase grave : GraveBlocks.GRAVE_SET) {
+            Registry.register(Registries.BLOCK, new Identifier(MOD_ID, grave.getTranslationKey()), grave);
         }
 
         BlockEntityType<GraveBlockEntity> blockEntityType = FabricBlockEntityTypeBuilder.create(GraveBlockEntity::new,

@@ -5,7 +5,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.mgin.graves.Graves;
-import me.mgin.graves.abstraction.MinecraftAbstraction;
+import me.mgin.graves.versioned.VersionedCode;
 import me.mgin.graves.block.utility.RetrieveGrave;
 import me.mgin.graves.state.PlayerState;
 import me.mgin.graves.state.ServerState;
@@ -77,7 +77,7 @@ public class RestoreCommand {
             Graves.MOD_ID,
             context.getSource().getName(),
             player.getName(),
-            MinecraftAbstraction.getIssuerName(entity),
+            VersionedCode.getIssuerName(entity),
             graveId
         );
 

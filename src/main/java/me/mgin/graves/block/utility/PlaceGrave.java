@@ -217,8 +217,11 @@ public class PlaceGrave {
         BlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
 
-        // Sink if the block is found in SINK_THROUGH tag.
-        if (VersionedCode.TagContains(state, BlockTags.SINK_THROUGH)) return true;
+        // Sink if the block is found in the SINK_THROUGH or REPLACE tag.
+        if (VersionedCode.TagContains(state, BlockTags.SINK_THROUGH) ||
+            VersionedCode.TagContains(state, BlockTags.REPLACE)) {
+            return true;
+        }
 
         // Stop sinking if the position is neither a liquid, air, or replaceable.
         if (!isLiquidAirOrReplaceable(world, pos)) return false;

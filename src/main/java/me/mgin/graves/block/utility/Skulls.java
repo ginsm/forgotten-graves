@@ -37,14 +37,18 @@ public class Skulls {
         {
             put("wither_skeleton_skull",
                 new SkullWrapper(SkullBlock.Type.WITHER_SKELETON, EntityModelLayers.WITHER_SKELETON_SKULL));
-
-            put("skeleton_skull", new SkullWrapper(SkullBlock.Type.SKELETON, EntityModelLayers.SKELETON_SKULL));
-
-            put("player_head", new SkullWrapper(SkullBlock.Type.PLAYER, EntityModelLayers.PLAYER_HEAD));
-
-            put("zombie_head", new SkullWrapper(SkullBlock.Type.ZOMBIE, EntityModelLayers.ZOMBIE_HEAD));
-
-            put("creeper_head", new SkullWrapper(SkullBlock.Type.CREEPER, EntityModelLayers.CREEPER_HEAD));
+            put("skeleton_skull",
+                new SkullWrapper(SkullBlock.Type.SKELETON, EntityModelLayers.SKELETON_SKULL));
+            put("player_head",
+                new SkullWrapper(SkullBlock.Type.PLAYER, EntityModelLayers.PLAYER_HEAD));
+            put("zombie_head",
+                new SkullWrapper(SkullBlock.Type.ZOMBIE, EntityModelLayers.ZOMBIE_HEAD));
+            put("creeper_head",
+                new SkullWrapper(SkullBlock.Type.CREEPER, EntityModelLayers.CREEPER_HEAD));
+            /*? if >=1.20 {*/
+            put("piglin_head",
+                new SkullWrapper(SkullBlock.Type.PIGLIN, EntityModelLayers.PIGLIN_HEAD));
+            /*?}*/
 
             // tentative
             // put("dragon_head", new SkullWrapper(

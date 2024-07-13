@@ -17,6 +17,9 @@ import net.minecraft.util.Identifier;
  */
 public class VersionedCode {
     public static Text textFromJson(String json) {
+        // Handle cases where the json is in fact not json
+        if (!json.startsWith("{")) return Text.literal(json);
+
         /*? if >1.20.2 {*//*
         return Text.Serialization.fromJson(json);
         *//*?} else {*/

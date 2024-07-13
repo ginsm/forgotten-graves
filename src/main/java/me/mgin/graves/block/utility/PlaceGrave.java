@@ -219,7 +219,7 @@ public class PlaceGrave {
 
         // Sink if the block is found in the SINK_THROUGH or REPLACE tag.
         if (VersionedCode.TagContains(state, BlockTags.SINK_THROUGH) ||
-            VersionedCode.TagContains(state, BlockTags.REPLACE)) {
+            VersionedCode.TagContains(state, BlockTags.REPLACEABLE)) {
             return true;
         }
 
@@ -239,7 +239,7 @@ public class PlaceGrave {
      */
     private static boolean isLiquidAirOrReplaceable(World world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
-        boolean canReplace = VersionedCode.TagContains(state, BlockTags.REPLACE);
+        boolean canReplace = VersionedCode.TagContains(state, BlockTags.REPLACEABLE);
         return state.isAir() || state.isLiquid() || canReplace;
     }
 }

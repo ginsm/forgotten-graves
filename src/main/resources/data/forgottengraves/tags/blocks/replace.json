@@ -4,6 +4,7 @@
     "minecraft:grass",
     "minecraft:tall_grass",
     "minecraft:seagrass",
+    "minecraft:tall_seagrass",
     "minecraft:fern",
     "minecraft:large_fern",
     "minecraft:torch",
@@ -22,6 +23,7 @@
     "minecraft:sculk_vein",
     "minecraft:cobweb",
     "minecraft:sugar_cane",
-    "minecraft:bamboo"
+    "minecraft:bamboo",
+    "minecraft:kelp_plant"
   ]
 }

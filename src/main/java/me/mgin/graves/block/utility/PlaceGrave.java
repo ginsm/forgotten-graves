@@ -214,7 +214,11 @@ public class PlaceGrave {
     public static boolean graveShouldSink(World world, BlockPos pos, PlayerEntity player) {
         pos = pos.down(); // Used to check the block below the potential grave spot
         GameProfile profile = player.getGameProfile();
-        Block block = world.getBlockState(pos).getBlock();
+        BlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+
+        // Sink if the block is found in SINK_IN tag.
+        if (VersionedCode.TagContains(state, BlockTags.SINK_IN)) return true;
 
         // Stop sinking if the position is neither a liquid, air, or replaceable.
         if (!isLiquidAirOrReplaceable(world, pos)) return false;

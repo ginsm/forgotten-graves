@@ -9,7 +9,6 @@ public class BlockTags {
         VersionedCode.createCustomTag("replace");
     public static final TagKey<Block> DO_NOT_REPLACE =
         VersionedCode.createCustomTag("do_not_replace");
-
     public static final TagKey<Block> SINK_THROUGH =
         VersionedCode.createCustomTag(("sink_through"));
 

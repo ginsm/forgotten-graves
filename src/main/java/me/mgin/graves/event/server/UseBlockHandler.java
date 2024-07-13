@@ -4,10 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import me.mgin.graves.block.entity.GraveBlockEntity;
-import me.mgin.graves.event.server.useblock.item.Honeycomb;
-import me.mgin.graves.event.server.useblock.item.Shovel;
-import me.mgin.graves.event.server.useblock.item.Skull;
-import me.mgin.graves.event.server.useblock.item.DecayItem;
+import me.mgin.graves.event.server.useblock.item.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -36,6 +33,11 @@ public class UseBlockHandler {
         if (blockEntity instanceof GraveBlockEntity graveEntity) {
             ItemStack itemStack = player.getStackInHand(hand);
             Item item = itemStack.getItem();
+
+            // Rename grave with name tags
+            if (NameTag.handle(player, world, hand, pos, item, graveEntity)) {
+                return ActionResult.SUCCESS;
+            }
 
             // Prevent Decay
             if (Honeycomb.handle(player, world, hand, pos, item, graveEntity)) {

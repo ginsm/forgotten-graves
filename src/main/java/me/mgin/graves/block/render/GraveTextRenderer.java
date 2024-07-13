@@ -16,8 +16,9 @@ public class GraveTextRenderer {
     private final TextRenderer textRenderer;
     private static final int MAX_CHAR_PER_LINE = 15;
     private static final float MAX_TEXT_WIDTH = 65.0f; // The maximum width allowed for the text
+    private static final int MAX_LINES = 6; // The  maximum amount of lines
     public static final float TEXT_SCALE = 0.012f;
-    public static final float TEXT_HEIGHT = 0.7f;
+    public static float TEXT_HEIGHT = 0.7f;
 
     public GraveTextRenderer(TextRenderer textRenderer) {
         this.textRenderer = textRenderer;
@@ -81,22 +82,48 @@ public class GraveTextRenderer {
         StringBuilder line = new StringBuilder();
         int lineLength = 0;
 
-        for (String word : text.split(" ")) {
-            if (lineLength + word.length() > MAX_CHAR_PER_LINE) {
-                lines.add(line.toString());
-                line = new StringBuilder();
-                lineLength = 0;
-            }
-            if (lineLength > 0) {
-                line.append(" ");
-                lineLength++;
-            }
-            line.append(word);
-            lineLength += word.length();
-        }
+        // Split text by newline characters, accounting for double escaping
+        String[] splitText = text.split("\\\\n");
 
-        if (lineLength > 0) {
-            lines.add(line.toString());
+        for (String segment : splitText) {
+            if (segment.isEmpty()) {
+                if (lines.size() < MAX_LINES) {
+                    lines.add(""); // Handle consecutive newlines by adding an empty line
+                }
+            } else {
+                String[] words = segment.split(" ");
+                for (String word : words) {
+                    if (lineLength + word.length() > MAX_CHAR_PER_LINE) {
+                        if (lines.size() < MAX_LINES - 1) {
+                            lines.add(line.toString());
+                            line = new StringBuilder();
+                            lineLength = 0;
+                        } else {
+                            line.append("...");
+                            lines.add(line.toString());
+                            return lines;
+                        }
+                    }
+                    if (lineLength > 0) {
+                        line.append(" ");
+                        lineLength++;
+                    }
+                    line.append(word);
+                    lineLength += word.length();
+                }
+
+                // Add the current line after handling each segment
+                if (lineLength > 0) {
+                    if (lines.size() < MAX_LINES - 1) {
+                        lines.add(line.toString());
+                    } else {
+                        lines.add("...");
+                        return lines;
+                    }
+                    line = new StringBuilder();
+                    lineLength = 0;
+                }
+            }
         }
 
         return lines;
@@ -121,7 +148,7 @@ public class GraveTextRenderer {
         matrices.push();
 
         // Rotate the text based on direction and set scale
-        rotateText(direction, matrices);
+        rotateText(direction, matrices, lines);
         matrices.scale(scale, -scale, scale);
 
         // Draw each line
@@ -137,25 +164,27 @@ public class GraveTextRenderer {
         matrices.pop();
     }
 
-    private void rotateText(Direction direction, MatrixStack matrices) {
+    private void rotateText(Direction direction, MatrixStack matrices, List<String> lines) {
+        float textHeight = TEXT_HEIGHT + (lines.size() * .025f);
+
         switch (direction) {
             case NORTH:
-                matrices.translate(0.5, TEXT_HEIGHT, 0.0626);
+                matrices.translate(0.5, textHeight, 0.0626);
                 break;
             case EAST:
                 // 90 deg (Y)
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotation(4.71239f));
-                matrices.translate(0.5f, TEXT_HEIGHT, -0.9374f);
+                matrices.translate(0.5f, textHeight, -0.9374f);
                 break;
             case SOUTH:
                 // 180 deg (Y)
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotation(3.14159265f));
-                matrices.translate(-0.5, TEXT_HEIGHT, -0.9374f);
+                matrices.translate(-0.5, textHeight, -0.9374f);
                 break;
             case WEST:
                 // 270 deg (Y)
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotation(1.57079633f));
-                matrices.translate(-0.5f, TEXT_HEIGHT, 0.0626f);
+                matrices.translate(-0.5f, textHeight, 0.0626f);
                 break;
             case UP, DOWN:
                 break;

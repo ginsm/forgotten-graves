@@ -95,7 +95,7 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
-        public int decayModifier = 60;
+        public int decayModifier = 50;
 
         @ConfigEntry.Gui.Tooltip
         public boolean decayBreaksItems = false;

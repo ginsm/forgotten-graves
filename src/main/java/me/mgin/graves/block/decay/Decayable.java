@@ -42,41 +42,62 @@ public interface Decayable<T extends Enum<T>> {
         }
     }
 
-    static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items, GameProfile profile) {
-        GravesConfig config = GravesConfig.getConfig();
+    /**
+     * Calculates the decay rate for an item based on its current health percentage, using an S-curve.
+     *
+     * @param healthPercent The percentage of health the item has remaining.
+     * @param min The minimum decay percent.
+     * @param max The maximum decay percent.
+     * @return The amount the item should decay (percentage-wise). Multiply the item's durability to the result of this.
+     */
+    static float calculateItemDecayPercent(float healthPercent, float min, float max) {
+        float steepness = 8.0f; // Control the steepness of the curve
+        float midpoint = 0.5f; // Midpoint of the curve
+        // Utilizes a logistic function for the curve
+        float decayPercent = max - (float) (1 / (1 + Math.exp(-steepness * (healthPercent - midpoint))));
+        return min + (max - min) * decayPercent;
+    }
 
+    static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items) {
+        GravesConfig config = GravesConfig.getConfig();
         float modifier = config.decay.decayModifier / 100f;
         boolean decayBreaksItems = config.decay.decayBreaksItems;
 
-        if (modifier == 0.0f)
-            return items;
+        // Do not decay items if the modifier is 0.
+        if (modifier == 0.00f) return items;
 
         for (int i = 0; i < items.size(); i++) {
             ItemStack item = items.get(i);
             int maxDamage = item.getMaxDamage();
             int damage = item.getDamage();
+            Random random = Random.create();
 
-            // item has durability
+            // Only decay items with a maxDamage.
             if (maxDamage > 0) {
-                Random random = Random.create();
-                float unbreaking = (float) EnchantmentHelper.getLevel(Enchantments.UNBREAKING, item);
+                // Gets the decay percentage based on the item's remaining health.
+                float itemHealthPercent = 1 - ((float) damage / (float) maxDamage);
+                float decayPercent = calculateItemDecayPercent(itemHealthPercent, 0f, modifier);
 
-                float currentItemDecay = (float) damage / (float) maxDamage;
-
-                if (currentItemDecay == 0.0f) {
-                    currentItemDecay = 1f / (float) maxDamage;
+                // Adds randomness, ranging between -0.02f and 0.02f.
+                float randomness = (random.nextFloat() - 0.5f) * 0.04f;
+                if (decayPercent + randomness >= 0.0f) { // Prevents going into the negatives and healing the item.
+                    decayPercent += randomness;
                 }
 
-                float decayPercent = modifier * currentItemDecay;
+                // Unbreaking reduces the chance of an item decaying.
+                float unbreaking = (float) EnchantmentHelper.getLevel(Enchantments.UNBREAKING, item);
                 float unbreakingModifier = ((100f / (unbreaking + 1f)) / 100f);
+
+                // Attempt to decay the item.
                 float decayChance = 0.35f * unbreakingModifier;
-
                 if (decayChance >= random.nextFloat()) {
-                    int remainingDamage = maxDamage - damage;
-                    int decay = (int) Math.ceil((float) remainingDamage * decayPercent);
+                    int remainingDurability = maxDamage - damage;
+                    float decay = (float) remainingDurability * decayPercent;
 
-                    if (remainingDamage - decay > 0) {
-                        item.setDamage(damage + decay);
+                    // Ensure the item hasn't broken, otherwise either remove the item (decayBreaksItems) or set it
+                    // to one health.
+                    if (remainingDurability - decay >= 1.0f) {
+                        item.setDamage((int) Math.ceil(damage + decay));
                     } else if (decayBreaksItems) {
                         items.set(i, ItemStack.EMPTY);
                     } else {
@@ -85,6 +106,7 @@ public interface Decayable<T extends Enum<T>> {
                 }
             }
         }
+
         return items;
     }
 
@@ -94,24 +116,15 @@ public interface Decayable<T extends Enum<T>> {
         if (blockEntity instanceof GraveBlockEntity graveEntity) {
             world.setBlockState(pos, state);
 
-            GraveBlockEntity newGraveEntity = new GraveBlockEntity(pos, state);
-            GameProfile owner = graveEntity.getGraveOwner();
-
-            // Transfer old grave entity's data to the new one
-            newGraveEntity.readNbt(graveEntity.toNbt());
-
-            // Decay inventotries (if enabled) and store them
+            // Decay inventories (if enabled) and store them.
             for (InventoriesApi api : Graves.inventories) {
                 String id = api.getID();
                 DefaultedList<ItemStack> inventory = graveEntity.getInventory(id);
-
-                if (inventory == null)
-                    continue;
-
-                newGraveEntity.setInventory(id, itemsDecay ? decayItems(inventory, owner) : inventory);
+                if (inventory == null)  continue;
+                graveEntity.setInventory(id, itemsDecay ? decayItems(inventory) : inventory);
             }
 
-            world.addBlockEntity(newGraveEntity);
+            world.addBlockEntity(graveEntity);
         }
     }
 }

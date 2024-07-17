@@ -67,9 +67,9 @@ public class GraveTextRenderer {
                 }
             }
 
-            // Quoted Names
+            // Strings with escaped quotes
             if (customName.startsWith("\"") && customName.endsWith(("\""))) {
-                return customName.substring(1, customName.length() - 1);
+                return customName.replace("\"", "");
             }
         }
 

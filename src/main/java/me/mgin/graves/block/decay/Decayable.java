@@ -54,8 +54,8 @@ public interface Decayable<T extends Enum<T>> {
         float steepness = 8.0f; // Control the steepness of the curve
         float midpoint = 0.5f; // Midpoint of the curve
         // Utilizes a logistic function for the curve
-        float decayPercent = max - (float) (1 / (1 + Math.exp(-steepness * (healthPercent - midpoint))));
-        return min + (max - min) * decayPercent;
+        float decayPercent = (float) (1 / (1 + Math.exp(-steepness * (healthPercent - midpoint))));
+        return max - (min + (max - min) * decayPercent);
     }
 
     static DefaultedList<ItemStack> decayItems(DefaultedList<ItemStack> items) {

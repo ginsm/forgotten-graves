@@ -247,7 +247,11 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
 
         String customName = itemStack.getOrCreateSubNbt("display").getString("Name");
         graveEntity.setCustomName(
+            /*? if >1.20.2 {*//*
             customName.replace("\\\\n", "\\n") // Handle custom names with newline characters
+            *//*?} else {*/
+            customName
+            /*?}*/
         );
     }
 

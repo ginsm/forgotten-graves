@@ -9,13 +9,11 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.tag.ItemTags;
 
-/*? if >1.20.2 {*//*
+/*? if >1.20.1 {*//*
 import net.minecraft.data.server.recipe.RecipeExporter;
 *//*?} else {*/
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 /*?}*/
-
-import java.util.function.Consumer;
 
 public class GraveRecipeGenerator extends FabricRecipeProvider {
     public GraveRecipeGenerator(FabricDataOutput output) {
@@ -23,7 +21,7 @@ public class GraveRecipeGenerator extends FabricRecipeProvider {
     }
 
     @Override
-    /*? if >1.20.2 {*//*
+    /*? if >1.20.1 {*//*
     public void generate(RecipeExporter exporter) {
     *//*?} else {*/
     public void generate(Consumer<RecipeJsonProvider> exporter) {

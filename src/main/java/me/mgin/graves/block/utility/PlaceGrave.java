@@ -7,7 +7,7 @@ import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.state.ServerState;
-import me.mgin.graves.tags.BlockTags;
+import me.mgin.graves.tags.GraveBlockTags;
 import me.mgin.graves.util.Responder;
 import me.mgin.graves.versioned.VersionedCode;
 import net.minecraft.block.Block;
@@ -202,7 +202,7 @@ public class PlaceGrave {
 
         // Do not replace irreplaceable blocks
         BlockState state = world.getBlockState(pos);
-        if (VersionedCode.TagContains(state, BlockTags.DO_NOT_REPLACE)) return false;
+        if (VersionedCode.TagContains(state, GraveBlockTags.DO_NOT_REPLACE)) return false;
 
         // Ensure pos is within boundaries
         return dimension.inBounds(pos);
@@ -217,9 +217,8 @@ public class PlaceGrave {
         BlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
 
-        // Sink if the block is found in the SINK_THROUGH or REPLACE tag.
-        if (VersionedCode.TagContains(state, BlockTags.SINK_THROUGH) ||
-            VersionedCode.TagContains(state, BlockTags.REPLACEABLE)) {
+        // Sink if the block is found in the SINK_THROUGH tag.
+        if (VersionedCode.TagContains(state, GraveBlockTags.SINK_THROUGH)) {
             return true;
         }
 
@@ -239,7 +238,7 @@ public class PlaceGrave {
      */
     private static boolean isLiquidAirOrReplaceable(World world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
-        boolean canReplace = VersionedCode.TagContains(state, BlockTags.REPLACEABLE);
+        boolean canReplace = VersionedCode.TagContains(state, GraveBlockTags.REPLACEABLE);
         return state.isAir() || state.isLiquid() || canReplace;
     }
 }

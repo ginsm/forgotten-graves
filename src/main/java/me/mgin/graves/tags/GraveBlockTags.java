@@ -4,7 +4,7 @@ import me.mgin.graves.versioned.VersionedCode;
 import net.minecraft.block.Block;
 import net.minecraft.registry.tag.TagKey;
 
-public class BlockTags {
+public class GraveBlockTags {
     public static final TagKey<Block> REPLACEABLE =
         VersionedCode.createCustomTag("replaceable");
     public static final TagKey<Block> DO_NOT_REPLACE =

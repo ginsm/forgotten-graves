@@ -1,0 +1,61 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#minecraft:flowers",
+      "required": false
+    },
+    {
+      "id": "#minecraft:saplings",
+      "required": false
+    },
+    {
+      "id": "#minecraft:coral_plants",
+      "required": false
+    },
+    {
+      "id": "#minecraft:cave_vines",
+      "required": false
+    },
+    {
+      "id": "#minecraft:crops",
+      "required": false
+    },
+    "minecraft:tall_grass",
+    "minecraft:seagrass",
+    "minecraft:tall_seagrass",
+    "minecraft:fern",
+    "minecraft:large_fern",
+    "minecraft:torch",
+    "minecraft:brown_mushroom",
+    "minecraft:red_mushroom",
+    "minecraft:crimson_fungus",
+    "minecraft:crimson_roots",
+    "minecraft:warped_fungus",
+    "minecraft:warped_roots",
+    "minecraft:hanging_roots",
+    "minecraft:nether_sprouts",
+    "minecraft:nether_wart",
+    "minecraft:dead_bush",
+    "minecraft:lily_pad",
+    "minecraft:sculk_vein",
+    "minecraft:cobweb",
+    "minecraft:sugar_cane",
+    "minecraft:bamboo",
+    "minecraft:kelp",
+    "minecraft:kelp_plant",
+    "minecraft:weeping_vines",
+    "minecraft:twisting_vines",
+    "minecraft:vine",
+    "minecraft:snow",
+    "minecraft:fire",
+    "minecraft:soul_fire",
+    "minecraft:glow_lichen",
+    "minecraft:sweet_berry_bush",
+    "minecraft:big_dripleaf",
+    "minecraft:big_dripleaf_stem",
+    "minecraft:small_dripleaf",
+    "minecraft:bubble_column",
+    "minecraft:short_grass"
+  ]
+}

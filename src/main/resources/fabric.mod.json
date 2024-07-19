@@ -17,15 +17,10 @@
 
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "me.mgin.graves.Graves"
-    ],
+    "main": [ "me.mgin.graves.Graves" ],
+    "client": [ "me.mgin.graves.client.GravesClient" ],
     "modmenu": [ "me.mgin.graves.GravesModMenuIntegration" ],
-    "client": [
-      {
-        "value": "me.mgin.graves.client.GravesClient"
-      }
-    ]
+    "fabric-datagen": [ "me.mgin.graves.GraveDataGenerator" ]
   },
   "mixins": [
     "graves.mixins.json"

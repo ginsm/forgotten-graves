@@ -46,8 +46,8 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     public String translateKey = null;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
-    // This gets rotated by rotateShape so only one definition is needed
-    public static final VoxelShape GRAVE_SHAPE_NORTH = VoxelShapes.union(
+    // This gets rotated by rotateShape so only one definition is needed (this is the NORTH definition technically).
+    public static final VoxelShape GRAVE_SHAPE = VoxelShapes.union(
         // Tombstone, starts with the top part of the tombstone and works its way down
         VoxelShapes.cuboid(0.1875f, 0.9375f, 0f, 0.8125f, 1f, 0.0625f), // Top part of tombstone
         VoxelShapes.cuboid(0.125f, 0.8125f, 0f, 0.875f, 0.9375f, 0.0625f), // Middle part of tombstone
@@ -68,8 +68,8 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     }
 
     // Rotates the outline/collision shape based on direction
-    private static VoxelShape rotateShape(Direction to, VoxelShape shape) {
-        VoxelShape[] buffer = new VoxelShape[]{shape, VoxelShapes.empty()};
+    private static VoxelShape rotateShape(Direction to) {
+        VoxelShape[] buffer = new VoxelShape[]{GraveBlockBase.GRAVE_SHAPE, VoxelShapes.empty()};
 
         int times = (to.getHorizontal() - Direction.NORTH.getHorizontal() + 4) % 4;
         for (int i = 0; i < times; i++) {
@@ -209,10 +209,10 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
 
         return switch (facing) {
             case DOWN, UP -> null; // It can't face down or up anyway.
-            case NORTH -> GRAVE_SHAPE_NORTH;
-            case EAST -> rotateShape(Direction.EAST, GRAVE_SHAPE_NORTH);
-            case SOUTH -> rotateShape(Direction.SOUTH, GRAVE_SHAPE_NORTH);
-            case WEST -> rotateShape(Direction.WEST, GRAVE_SHAPE_NORTH);
+            case NORTH -> rotateShape(Direction.NORTH);
+            case EAST -> rotateShape(Direction.EAST);
+            case SOUTH -> rotateShape(Direction.SOUTH);
+            case WEST -> rotateShape(Direction.WEST);
         };
     }
 

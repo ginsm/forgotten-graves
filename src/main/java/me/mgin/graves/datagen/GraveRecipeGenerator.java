@@ -13,6 +13,7 @@ import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.data.server.recipe.RecipeExporter;
 *//*?} else {*/
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
+import java.util.function.Consumer;
 /*?}*/
 
 public class GraveRecipeGenerator extends FabricRecipeProvider {

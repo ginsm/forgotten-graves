@@ -65,9 +65,10 @@ public class ConfigHelpers {
     public static <T> T resolve(String option, GameProfile profile) {
         GravesConfig config = GravesConfig.getConfig();
 
-        // Switches to the client config if applicable
-        if (config.server.clientOptions.contains(option)) {
-            config = Graves.clientConfigs.get(profile);
+        // Switches to the client config if applicable.
+        if (config.server.clientOptions.contains(option) && Graves.clientConfigs.containsKey(profile)) {
+            GravesConfig clientConfig = Graves.clientConfigs.get(profile);
+            if (clientConfig != null) config = clientConfig;
         }
 
         try {

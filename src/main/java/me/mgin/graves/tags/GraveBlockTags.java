@@ -6,10 +6,10 @@ import net.minecraft.registry.tag.TagKey;
 
 public class GraveBlockTags {
     public static final TagKey<Block> REPLACEABLE =
-        VersionedCode.createCustomTag("replaceable");
+        VersionedCode.Tags.createCustomBlockTag("replaceable");
     public static final TagKey<Block> DO_NOT_REPLACE =
-        VersionedCode.createCustomTag("do_not_replace");
+        VersionedCode.Tags.createCustomBlockTag("do_not_replace");
     public static final TagKey<Block> SINK_THROUGH =
-        VersionedCode.createCustomTag(("sink_through"));
+        VersionedCode.Tags.createCustomBlockTag(("sink_through"));
 
 }

@@ -3,6 +3,8 @@ package me.mgin.graves.versioned;
 import me.mgin.graves.Graves;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -37,12 +39,25 @@ public class VersionedCode {
         /*?}*/
     }
 
-    public static TagKey<Block> createCustomTag(String name) {
-        return TagKey.of(RegistryKeys.BLOCK, new Identifier(Graves.MOD_ID,name));
+    public static class Tags {
+        // Block Tag Methods
+        public static TagKey<Block> createCustomBlockTag(String name) {
+            return TagKey.of(RegistryKeys.BLOCK, new Identifier(Graves.MOD_ID, name));
+        }
+
+        public static boolean blockTagContains(BlockState state, TagKey<Block> tag) {
+            return state.isIn(tag);
+        }
+
+        // Item Tag Methods
+        public static TagKey<Item> createCustomItemTag(String name) {
+            return TagKey.of(RegistryKeys.ITEM, new Identifier(Graves.MOD_ID, name));
+        }
+
+        public static boolean itemTagContains(ItemStack stack, TagKey<Item> tag) {
+            return stack.isIn(tag);
+        }
     }
 
-    public static boolean TagContains(BlockState state, TagKey<Block> tag) {
-        return state.isIn(tag);
-    }
 
 }

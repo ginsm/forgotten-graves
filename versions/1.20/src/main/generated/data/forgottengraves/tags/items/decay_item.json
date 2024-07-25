@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:vine",
+    "minecraft:twisting_vines",
+    "minecraft:weeping_vines",
+    "minecraft:brown_mushroom",
+    "minecraft:red_mushroom"
+  ]
+}

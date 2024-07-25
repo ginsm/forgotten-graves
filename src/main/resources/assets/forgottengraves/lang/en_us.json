@@ -67,6 +67,7 @@
   "event.use.itemDecay:error.noDecayEnabled": "This grave has been waxed, preventing it from decaying.",
 
   "grave.coordinates": "%dx %dy %dz",
+  "grave.died-on": "%s died on %s",
 
   "forgottengraves.normal": "Forgotten Graves",
   "forgottengraves.small": "[G] ",

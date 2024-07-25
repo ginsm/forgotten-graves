@@ -3,9 +3,11 @@ package me.mgin.graves.event;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketEnums;
 import dev.emi.trinkets.api.event.TrinketDropCallback;
+import me.mgin.graves.event.server.AttackBlockHandler;
 import me.mgin.graves.event.server.PlayerBlockBreakHandler;
 import me.mgin.graves.event.server.TrinketDropHandler;
 import me.mgin.graves.event.server.UseBlockHandler;
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.loader.api.FabricLoader;
@@ -22,6 +24,9 @@ public class Events {
      * Registers all generic server-side event handlers.
      */
     public static void registerServerEvents() {
+        // Handle player attacking grave
+        AttackBlockCallback.EVENT.register(AttackBlockHandler::handle);
+
         // Handle player using grave
         UseBlockCallback.EVENT.register(UseBlockHandler::handleEvent);
 

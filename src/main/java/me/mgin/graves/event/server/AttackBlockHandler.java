@@ -17,6 +17,9 @@ import java.util.Date;
 
 public class AttackBlockHandler {
     public static ActionResult handle(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction direction) {
+        // Do not send server date
+        if (!world.isClient()) return ActionResult.PASS;
+
         BlockEntity blockEntity = world.getBlockEntity(pos);
 
         if (blockEntity instanceof GraveBlockEntity graveEntity) {

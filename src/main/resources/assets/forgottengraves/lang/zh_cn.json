@@ -1,8 +1,8 @@
 {
-  "grave": "坟墓",
-  "grave_old": "旧坟墓",
-  "grave_weathered": "饱经风霜的坟墓",
-  "grave_forgotten": "被遗忘的坟墓",
+  "block.forgottengraves.grave": "坟墓",
+  "block.forgottengraves.grave_old": "旧坟墓",
+  "block.forgottengraves.grave_weathered": "饱经风霜的坟墓",
+  "block.forgottengraves.grave_forgotten": "被遗忘的坟墓",
   "itemGroup.forgottengraves.graves": "坟墓方块",
 
   "text.autoconfig.forgottengraves.title": "被遗忘的坟墓设置",
@@ -67,6 +67,7 @@
   "event.use.itemDecay:error.noDecayEnabled": "这座坟墓已经上过蜡，防止腐烂。",
 
   "grave.coordinates": "%dx %dy %dz",
+  "grave.died-on": "%s 于 %s 去世",
 
   "forgottengraves.normal": "被遗忘的坟墓",
   "forgottengraves.small": "[G] ",

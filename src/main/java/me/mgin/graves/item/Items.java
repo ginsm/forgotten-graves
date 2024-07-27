@@ -13,7 +13,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Items {
     /**
@@ -28,7 +27,7 @@ public class Items {
         // Create and register block items
         for (GraveBlockBase grave : GraveBlocks.GRAVE_SET) {
             BlockItem item = new BlockItem(grave, new FabricItemSettings());
-            Registry.register(Registries.ITEM, new Identifier(MOD_ID, grave.getTranslationKey()), item);
+            Registry.register(Registries.ITEM, new Identifier(MOD_ID, grave.getBlockID()), item);
             ITEMS.add(item);
         }
 

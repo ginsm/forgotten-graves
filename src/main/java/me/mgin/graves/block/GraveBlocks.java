@@ -29,11 +29,11 @@ public class GraveBlocks {
         GRAVE_SET.add(GRAVE_FORGOTTEN);
     }
 
-    private static GraveBlockBase createGrave(BlockDecay blockDecay, String translationKey) {
+    private static GraveBlockBase createGrave(BlockDecay blockDecay, String blockID) {
         return new GraveBlockBase(
             blockDecay,
             FabricBlockSettings.create().strength(0.8f, 3600000.0F),
-            translationKey
+            blockID
         );
     }
 
@@ -45,7 +45,7 @@ public class GraveBlocks {
      */
     public static void registerServerBlocks(String MOD_ID, String BRAND_BLOCK) {
         for (GraveBlockBase grave : GraveBlocks.GRAVE_SET) {
-            Registry.register(Registries.BLOCK, new Identifier(MOD_ID, grave.getTranslationKey()), grave);
+            Registry.register(Registries.BLOCK, new Identifier(MOD_ID, grave.getBlockID()), grave);
         }
 
         BlockEntityType<GraveBlockEntity> blockEntityType = FabricBlockEntityTypeBuilder.create(GraveBlockEntity::new,

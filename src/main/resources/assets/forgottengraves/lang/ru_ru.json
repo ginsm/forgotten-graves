@@ -1,8 +1,8 @@
 {
-  "grave": "Могила",
-  "grave_old": "Старая могила",
-  "grave_weathered": "Выветренная могила",
-  "grave_forgotten": "Забытая могила",
+  "block.forgottengraves.grave": "Могила",
+  "block.forgottengraves.grave_old": "Старая могила",
+  "block.forgottengraves.grave_weathered": "Выветренная могила",
+  "block.forgottengraves.grave_forgotten": "Забытая могила",
   "itemGroup.forgottengraves.graves": "Могильные блоки",
 
   "text.autoconfig.forgottengraves.title": "Настройки забытых могил",
@@ -67,6 +67,7 @@
   "event.use.itemDecay:error.noDecayEnabled": "Эта могила уже является вощёной и защищена от разложения.",
 
   "grave.coordinates": "XYZ: %d %d %d",
+  "grave.died-on": "%s умер %s",
 
   "forgottengraves.normal": "Забытые могилы",
   "forgottengraves.small": "[G] ",

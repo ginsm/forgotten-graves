@@ -1,8 +1,8 @@
 {
-  "grave": "Tumba",
-  "grave_old": "Tumba Vieja",
-  "grave_weathered": "Tumba Desgastada",
-  "grave_forgotten": "Tumba Olvidada",
+  "block.forgottengraves.grave": "Tumba",
+  "block.forgottengraves.grave_old": "Tumba Vieja",
+  "block.forgottengraves.grave_weathered": "Tumba Desgastada",
+  "block.forgottengraves.grave_forgotten": "Tumba Olvidada",
   "itemGroup.forgottengraves.graves": "Bloques de Tumbas",
 
   "text.autoconfig.forgottengraves.title": "Configuraciones de Tumbas Olvidadas",
@@ -66,7 +66,8 @@
   "event.death:send-player-coordinates": "Tumba generada en %dx %dy %dz.",
   "event.use.itemDecay:error.noDecayEnabled": "Esta tumba ha sido encerada, evitando que se pudra.",
 
-  "coordinates.grave": "%dx %dy %dz",
+  "grave.coordinates": "%dx %dy %dz",
+  "grave.died-on": "%s murió el %s",
 
   "forgottengraves.normal": "Tumbas Olvidadas",
   "forgottengraves.small": "[T] ",

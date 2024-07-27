@@ -43,7 +43,7 @@ import static me.mgin.graves.block.GraveBlocks.GRAVE_SET;
 public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntityProvider, DecayingGrave, Waterloggable {
     private final BlockDecay blockDecay;
     public boolean brokenByPlayer = false;
-    public String translateKey = null;
+    public String blockID;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
     // This gets rotated by rotateShape so only one definition is needed (this is the NORTH definition technically).
@@ -59,15 +59,26 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         VoxelShapes.cuboid(0.3125f, 0f, 0.875f, 0.6875f, 0.0625f, 0.9375f) // furthest
     );
 
-    public GraveBlockBase(BlockDecay blockDecay, Settings settings, String translationKey) {
+    public GraveBlockBase(BlockDecay blockDecay, Settings settings, String blockID) {
         super(settings);
         setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false).with(Properties.HORIZONTAL_FACING,
             Direction.NORTH));
         this.blockDecay = blockDecay;
-        this.translateKey = translationKey;
+        this.blockID = blockID;
     }
 
-    // Rotates the outline/collision shape based on direction
+    /**
+     * Used when registering grave items and blocks.
+     * @see Items
+     * @see GraveBlocks
+     */
+    public String getBlockID() {
+        return this.blockID;
+    }
+
+    /**
+     * Rotates the outline/collision shape based on direction
+     */
     private static VoxelShape rotateShape(Direction to) {
         VoxelShape[] buffer = new VoxelShape[]{GraveBlockBase.GRAVE_SHAPE, VoxelShapes.empty()};
 
@@ -85,16 +96,6 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         return buffer[0];
     }
 
-    /**
-     * Used when registering grave items and blocks.
-     * @see Items
-     * @see GraveBlocks
-     */
-    @Override
-    public String getTranslationKey() {
-        if (this.translateKey != null) return this.translateKey;
-        return super.getTranslationKey();
-    }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {

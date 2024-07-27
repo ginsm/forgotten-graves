@@ -1,8 +1,8 @@
 {
-  "grave": "Grave",
-  "grave_old": "Old Grave",
-  "grave_weathered": "Weathered Grave",
-  "grave_forgotten": "Forgotten Grave",
+  "block.forgottengraves.grave": "Grave",
+  "block.forgottengraves.grave_old": "Old Grave",
+  "block.forgottengraves.grave_weathered": "Weathered Grave",
+  "block.forgottengraves.grave_forgotten": "Forgotten Grave",
   "itemGroup.forgottengraves.graves": "Grave Blocks",
 
   "text.autoconfig.forgottengraves.title": "Forgotten Graves Settings",

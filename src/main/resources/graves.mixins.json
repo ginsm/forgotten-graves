@@ -6,7 +6,8 @@
   "mixins": [
     "BlockBreakingKineticBlockEntityMixin",
     "ExplosionMixin",
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "SetBlockCommandMixin"
   ],
   "client": [
     "ClientPlayerInteractionManagerMixin"

@@ -5,11 +5,11 @@
   "block.forgottengraves.grave_forgotten": "Забытая могила",
   "itemGroup.forgottengraves.graves": "Могильные блоки",
 
-  "text.autoconfig.forgottengraves.title": "Настройки забытых могил",
+  "text.autoconfig.forgottengraves.title": "Настройки «Забытых могил»",
 
   "text.autoconfig.forgottengraves.option.main": "Основные настройки",
-  "text.autoconfig.forgottengraves.option.main.graves": "Включить могилы",
-  "text.autoconfig.forgottengraves.option.main.graves.@Tooltip": "Включить мод \"Забытые могилы\"?",
+  "text.autoconfig.forgottengraves.option.main.graves": "Включить создание могил",
+  "text.autoconfig.forgottengraves.option.main.graves.@Tooltip": "Включить мод «Забытые могилы»?",
   "text.autoconfig.forgottengraves.option.main.graveCoordinates": "Координаты в чате",
   "text.autoconfig.forgottengraves.option.main.graveCoordinates.@Tooltip": "Следует ли отправлять координаты могилы в чат?",
   "text.autoconfig.forgottengraves.option.main.retrievalType": "Тип извлечения",
@@ -50,7 +50,7 @@
   "text.autoconfig.forgottengraves.option.decay.decayRobbing": "Разложение для ограбления",
   "text.autoconfig.forgottengraves.option.decay.decayRobbing.@Tooltip": "На какой стадии разложения игроки должны иметь возможность грабить могилы?",
 
-  "text.autoconfig.forgottengraves.option.server": "Настройки сервера",
+  "text.autoconfig.forgottengraves.option.server": "Серверные настройки",
   "text.autoconfig.forgottengraves.option.server.graveRobbing.@PrefixText": "Эти настройки не могут быть обработаны клиентом.",
   "text.autoconfig.forgottengraves.option.server.graveRobbing": "Ограбление могил",
   "text.autoconfig.forgottengraves.option.server.graveRobbing.@Tooltip": "Должны ли игроки иметь возможность грабить могилы других игроков?",
@@ -66,11 +66,11 @@
   "event.death:send-player-coordinates": "Могила создана в XYZ: %d %d %d.",
   "event.use.itemDecay:error.noDecayEnabled": "Эта могила уже является вощёной и защищена от разложения.",
 
-  "grave.coordinates": "XYZ: %d %d %d",
-  "grave.died-on": "%s умер %s",
+  "grave.coordinates": "XYZ: %d %d %d",,
+  "grave.died-on": "%s умер на %s",
 
   "forgottengraves.normal": "Забытые могилы",
-  "forgottengraves.small": "[G] ",
+  "forgottengraves.small": "[ЗМ] ",
   "error.prefix": "Ошибка: ",
 
   "command.generic:error.not-yet-implemented": "Эта команда еще не была реализована.",
@@ -114,9 +114,9 @@
   "command.list.header": "Могилы для %s:",
   "command.list.entry.tooltip": "Измерение: %s\nИдентификатор: %d\nСоздана: %s\nВосстановлена: %s",
   "command.list.entry.tooltip.click-to-teleport": "\nНажмите, чтобы телепортироваться к этой могиле.",
-  "command.list.entry.restore-button": "[R]",
+  "command.list.entry.restore-button": "[В]",
   "command.list.entry.restore-button.tooltip": "Нажмите, чтобы восстановить могилу %d для %s.",
-  "command.list.entry.delete-button": "[D]",
+  "command.list.entry.delete-button": "[У]",
   "command.list.entry.delete-button.tooltip": "Нажмите, чтобы удалить могилу %d из хранилища.",
 
   "command.players.beginning": "Игроки с могилами: ",

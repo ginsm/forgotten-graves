@@ -65,6 +65,9 @@ public class Permission {
      * @return boolean
      */
     static public boolean playerCanBreakGrave(PlayerEntity player, GraveBlockEntity graveEntity) {
+        // Players can always break unowned graves
+        if (graveEntity.getGraveOwner() == null) return true;
+
         GraveRetrievalType retrievalType = GravesConfig.resolve("retrievalType", player.getGameProfile());
 
         if (playerCanAttemptRetrieve(player, graveEntity))

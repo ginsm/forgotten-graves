@@ -69,11 +69,11 @@ public class GraveBlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         addBlock(Blocks.BIG_DRIPLEAF_STEM, replaceable, sinkThrough);
         addBlock(Blocks.SMALL_DRIPLEAF, replaceable, sinkThrough);
         addBlock(Blocks.BUBBLE_COLUMN, replaceable, sinkThrough);
-        /*? if >1.20.2 {*//*
-        addBlock(Blocks.SHORT_GRASS, replaceable, sinkThrough);
-        *//*?} else {*/
+        //? if >1.20.2 {
+        /*addBlock(Blocks.SHORT_GRASS, replaceable, sinkThrough);
+        *///?} else {
         addBlock(Blocks.GRASS, replaceable, sinkThrough);
-        /*?}*/
+        //?}
     }
 
     @SafeVarargs

@@ -78,9 +78,9 @@ public class Skull {
             add("player_head");
             add("zombie_head");
             add("creeper_head");
-            /*? if >=1.20 {*/
+            //? if >=1.20 {
             add("piglin_head");
-            /*?}*/
+            //?}
         }
     };
 }

@@ -134,10 +134,10 @@ public class GraveSkullRenderer {
                 new SkullWrapper(SkullBlock.Type.ZOMBIE, EntityModelLayers.ZOMBIE_HEAD));
             put("creeper_head",
                 new SkullWrapper(SkullBlock.Type.CREEPER, EntityModelLayers.CREEPER_HEAD));
-            /*? if >=1.20 {*/
+            //? if >=1.20 {
             put("piglin_head",
                 new SkullWrapper(SkullBlock.Type.PIGLIN, EntityModelLayers.PIGLIN_HEAD));
-            /*?}*/
+            //?}
         }
     };
 

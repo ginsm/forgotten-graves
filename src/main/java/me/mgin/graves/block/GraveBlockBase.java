@@ -13,6 +13,7 @@ import me.mgin.graves.block.utility.Permission;
 import me.mgin.graves.block.utility.RetrieveGrave;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -188,11 +189,17 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     }
 
     public void onBreakRetainName(World world, BlockPos pos, PlayerEntity player, GraveBlockEntity graveEntity) {
-        Text itemText = VersionedCode.textFromJson(graveEntity.getCustomName());
+        Text itemText = VersionedCode.getCustomNameFromJson(graveEntity.getCustomName());
 
         // Create named item stack
         ItemStack itemStack = this.getItemStack();
-        itemStack.setCustomName(itemText);
+
+        //? if >=1.20.5 {
+        itemStack.set(DataComponentTypes.CUSTOM_NAME, itemText);
+        //?} else {
+        /*itemStack.setCustomName(itemText);
+        *///?}
+
         ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5,
             (double) pos.getZ() + 0.5, itemStack);
         itemEntity.setToDefaultPickupDelay();

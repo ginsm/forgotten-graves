@@ -1,5 +1,7 @@
 package me.mgin.graves.versioned;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import me.mgin.graves.Graves;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -22,17 +24,14 @@ import net.minecraft.util.Identifier;
  * @see <a href="https://github.com/kikugie/stonecutter-kt">Stonecutter KT</a>
  */
 public class VersionedCode {
-    public static Text textFromJson(String json) {
+    public static Text getCustomNameFromJson(String str) {
         // Handle cases where the json is in fact not json but a plain string
-        if (!json.startsWith("{")) {
-            return Text.literal(json.replace("\"", ""));
+        if (!str.startsWith("{")) {
+            return Text.literal(str.replace("\"", ""));
         }
 
-        //? if >1.20.2 {
-        return Text.Serialization.fromJson(json);
-        //?} else {
-        /*return Text.Serializer.fromJson((json));
-        *///?}
+        JsonObject json = JsonParser.parseString(str).getAsJsonObject();
+        return Text.literal(json.get("text").getAsString());
     }
 
     public static Item.Settings getItemSettings() {

@@ -1,8 +1,8 @@
 package me.mgin.graves.block;
 
 //? if >1.20.2 {
-/*import com.mojang.serialization.MapCodec;
-*///?}
+import com.mojang.serialization.MapCodec;
+//?}
 import me.mgin.graves.command.DeleteCommand;
 import me.mgin.graves.item.Items;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -158,18 +158,18 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
      */
     @Override
     //? if >1.20.2 {
-    /*public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-    *///?} else {
-    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-    //?}
+    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+    //?} else {
+    /*public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+    *///?}
         this.setBrokenByPlayer(true);
         GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
         //? if >1.20.2 {
-        /*if (world.isClient) return state;
-        *///?} else {
-        if (world.isClient) return;
-        //?}
+        if (world.isClient) return state;
+        //?} else {
+        /*if (world.isClient) return;
+        *///?}
 
         if (Permission.playerCanBreakGrave(player, graveEntity)) {
             // This will be true if the grave had an owner
@@ -183,8 +183,8 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         super.onBreak(world, pos, state, player);
         world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
         //? if >1.20.2 {
-        /*return state;
-        *///?}
+        return state;
+        //?}
     }
 
     public void onBreakRetainName(World world, BlockPos pos, PlayerEntity player, GraveBlockEntity graveEntity) {
@@ -249,11 +249,11 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         String customName = itemStack.getOrCreateSubNbt("display").getString("Name");
         graveEntity.setCustomName(
             //? if >1.20.2 {
-            /*// Handle custom names with newline characters
+            // Handle custom names with newline characters
             customName.replace("\\\\n", "\\n")
-            *///?} else {
-            customName
-            //?}
+            //?} else {
+            /*customName
+            *///?}
         );
     }
 
@@ -316,9 +316,9 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     }
 
     //? if >1.20.2 {
-    /*@Override
+    @Override
     protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
         return null;
     }
-    *///?}
+    //?}
 }

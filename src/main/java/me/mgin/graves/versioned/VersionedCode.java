@@ -25,18 +25,18 @@ public class VersionedCode {
         }
 
         //? if >1.20.2 {
-        /*return Text.Serialization.fromJson(json);
-        *///?} else {
-        return Text.Serializer.fromJson((json));
-        //?}
+        return Text.Serialization.fromJson(json);
+        //?} else {
+        /*return Text.Serializer.fromJson((json));
+        *///?}
     }
 
     public static String getIssuerName(ServerPlayerEntity issuer) {
         //? if >1.20.2 {
-        /*return issuer.getNameForScoreboard();
-        *///?} else {
-        return issuer.getEntityName();
-        //?}
+        return issuer.getNameForScoreboard();
+        //?} else {
+        /*return issuer.getEntityName();
+        *///?}
     }
 
     public static class Tags {

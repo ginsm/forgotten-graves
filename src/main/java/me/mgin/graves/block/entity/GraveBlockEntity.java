@@ -13,12 +13,17 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+
+//? if >=1.20.5 {
+import net.minecraft.registry.RegistryWrapper;
+//?}
 
 public class GraveBlockEntity extends BlockEntity {
     private GameProfile graveOwner;
@@ -235,8 +240,16 @@ public class GraveBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
+    //? if >=1.20.5 {
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+    //?} else {
+    /*protected void writeNbt(NbtCompound nbt) {
+    *///?}
+        //? if >=1.20.5 {
+        super.writeNbt(nbt, registryLookup);
+        //?} else {
+        /*super.writeNbt(nbt);
+        *///?}
 
         for (InventoriesApi api : Graves.inventories) {
             String id = api.getID();
@@ -270,10 +283,17 @@ public class GraveBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
+    //? if >=1.20.5 {
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+    //?} else {
+    /*public void readNbt(NbtCompound nbt) {*/
+    //?}
         // Needed for backwards compatibility
         nbt = NbtHelper.upgradeOldGraves(nbt);
-        super.readNbt(nbt);
+        //? if >=1.20.5 {
+        super.readNbt(nbt, registryLookup);
+        //?} else {
+        /*super.readNbt(nbt);*/
 
         // Store loaded inventories
         for (InventoriesApi api : Graves.inventories) {
@@ -311,20 +331,27 @@ public class GraveBlockEntity extends BlockEntity {
      *
      * @return NbtCompound
      */
-    public NbtCompound toNbt() {
+    public NbtCompound toNbt(RegistryWrapper.WrapperLookup registryLookup) {
         NbtCompound tag = new NbtCompound();
-        this.writeNbt(tag);
+        this.writeNbt(tag, registryLookup);
         return tag;
     }
 
     @Nullable
     @Override
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this, (BlockEntity b) -> this.toNbt());
+        return BlockEntityUpdateS2CPacket.create(this,
+            (BlockEntity b, DynamicRegistryManager manager) -> this.toNbt(manager));
     }
 
     @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return this.toNbt();
+    public NbtCompound toInitialChunkDataNbt(
+        //? if >=1.20.5 {
+        RegistryWrapper.WrapperLookup registryLookup
+        //?}
+    ) {
+        return this.toNbt(registryLookup);
     }
+
+
 }

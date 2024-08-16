@@ -13,6 +13,7 @@ import me.mgin.graves.block.utility.Permission;
 import me.mgin.graves.block.utility.RetrieveGrave;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.component.ComponentHolder;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -140,11 +141,19 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
      * Allows for player owned grave retrieval via right click.
      */
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
-                              BlockHitResult hit) {
+    //? if >=1.20.5 {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+    //?} else {
+    /*public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
+                              BlockHitResult hit) {*/
+    //?}
         GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
         if (world.isClient) return ActionResult.PASS;
+
+        //? if >=1.20.5 {
+        Hand hand = player.getActiveHand();
+        //?}
 
         if (hand != Hand.OFF_HAND)
             if (player.getStackInHand(hand).isEmpty() && Permission.playerCanUseGrave(player, graveEntity))
@@ -248,12 +257,17 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
 
-        if (!(blockEntity instanceof GraveBlockEntity graveEntity) || !itemStack.hasCustomName()) {
+        //? if >=1.20.5 {
+        String customName = itemStack.get(DataComponentTypes.CUSTOM_NAME).getLiteralString();
+        //?} else {
+        /*String customName = itemStack.getOrCreateSubNbt("display").getString("Name");*/
+        //?}
+
+        if (!(blockEntity instanceof GraveBlockEntity graveEntity) || customName == null) {
             super.onPlaced(world, pos, state, placer, itemStack);
             return;
         }
 
-        String customName = itemStack.getOrCreateSubNbt("display").getString("Name");
         graveEntity.setCustomName(
             //? if >1.20.2 {
             // Handle custom names with newline characters

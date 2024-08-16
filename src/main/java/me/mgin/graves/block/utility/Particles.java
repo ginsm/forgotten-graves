@@ -8,8 +8,8 @@ import net.minecraft.world.World;
 //? if >=1.20.5 {
 import net.minecraft.particle.ParticleEffect;
 //?} else {
-/*import net.minecraft.particle.DefaultParticleType;*/
-//?}
+/*import net.minecraft.particle.DefaultParticleType;
+*///?}
 
 public class Particles {
     private static final Random rng = new Random();

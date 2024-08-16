@@ -21,8 +21,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.block.Blocks;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import me.mgin.graves.block.GraveBlocks;*/
-//?}
+import me.mgin.graves.block.GraveBlocks;
+*///?}
 
 @Mixin(Explosion.class)
 public class ExplosionMixin {

@@ -11,6 +11,7 @@ import me.mgin.graves.state.PlayerState;
 import me.mgin.graves.state.ServerState;
 import me.mgin.graves.util.NbtHelper;
 import me.mgin.graves.util.Responder;
+import me.mgin.graves.versioned.VersionedCode;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
@@ -65,7 +66,7 @@ public class DeleteCommand {
 
                     // Search for the world the grave is located
                     for (ServerWorld world : server.getWorlds()) {
-                        String dimension = String.valueOf(world.getDimensionKey().getValue());
+                        String dimension = VersionedCode.Worlds.getDimension(world);
 
                         if (!dimension.equals(storedDimension)) continue;
 

@@ -12,6 +12,7 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
 
 //? if <1.20.5 {
 /*import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -70,5 +71,14 @@ public class VersionedCode {
         }
     }
 
+    public static class Worlds {
+        public static String getDimension(World world) {
+            //? if >1.20.5 {
+            return world.getDimensionEntry().getIdAsString();
+            //?} else {
+            /*return String.valueOf(world.getDimensionKey().getValue());
+            *///?}
+        }
+    }
 
 }

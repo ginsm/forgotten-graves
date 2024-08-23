@@ -166,7 +166,7 @@ public class PlaceGrave {
 
         if (graveCoordinates) {
             Responder res = new Responder(player, player.getServer());
-            String dimension = String.valueOf(world.getDimensionKey().getValue());
+            String dimension = VersionedCode.Worlds.getDimension(world);
 
             res.sendInfo(
                 Text.translatable("event.death:send-player-coordinates",

@@ -3,6 +3,7 @@ package me.mgin.graves.state;
 import me.mgin.graves.Graves;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.versioned.VersionedCode;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -124,7 +125,7 @@ public class ServerState extends PersistentState {
         graveNbt.putInt("z", gravePos.getZ());
 
         // Store the grave's dimension in nbt
-        graveNbt.putString("dimension", String.valueOf(graveEntity.getWorld().getDimensionKey().getValue()));
+        graveNbt.putString("dimension", VersionedCode.Worlds.getDimension(graveEntity.getWorld()));
 
         // Store the grave nbt in the global state
         playerState.graves.add(graveNbt);

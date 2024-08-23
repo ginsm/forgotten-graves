@@ -10,6 +10,7 @@ import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.config.enums.GraveDropType;
 import me.mgin.graves.state.PlayerState;
 import me.mgin.graves.state.ServerState;
+import me.mgin.graves.versioned.VersionedCode;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -68,7 +69,7 @@ public class RetrieveGrave {
 
         // Iterate over dimensions to locate dimension where the grave can be found
         for (ServerWorld world : Objects.requireNonNull(player.getServer()).getWorlds()) {
-            String dimensionKey = String.valueOf(world.getDimensionKey().getValue());
+            String dimensionKey = VersionedCode.Worlds.getDimension(world);
             String storedDimensionKey = graveEntityTag.getString("dimension");
             GraveBlockEntity graveEntity = null;
             boolean destroyGrave = true;

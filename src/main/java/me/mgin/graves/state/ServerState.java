@@ -6,6 +6,7 @@ import me.mgin.graves.config.GravesConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.PersistentState;
@@ -19,7 +20,11 @@ import java.util.UUID;
 public class ServerState extends PersistentState {
     public HashMap<UUID, PlayerState> players = new HashMap<>();
 
-    public static ServerState createFromNbt(NbtCompound tag) {
+    //? if >1.20.5 {
+    public static ServerState createFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+    //?} else {
+    /*public static ServerState createFromNbt(NbtCompound tag) {
+    *///?}
         ServerState serverState = new ServerState();
 
         // Extract every player's data from the provided tag
@@ -39,7 +44,11 @@ public class ServerState extends PersistentState {
     }
 
     @Override
-    public NbtCompound writeNbt(NbtCompound nbt) {
+    //? if >1.20.5 {
+        public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+    //?} else {
+    /*public NbtCompound writeNbt(NbtCompound nbt) {
+    *///?}
         // Store each player's data in a single nbt tag
         NbtCompound playersNbt = new NbtCompound();
 
@@ -84,9 +93,7 @@ public class ServerState extends PersistentState {
         ServerState serverState = getServerState(server);
 
         // Get or create player state by UUID
-        PlayerState playerState = serverState.players.computeIfAbsent(uuid, id -> new PlayerState());
-
-        return playerState;
+        return serverState.players.computeIfAbsent(uuid, id -> new PlayerState());
     }
 
     public static void storePlayerGrave(PlayerEntity player, GraveBlockEntity graveEntity) {
@@ -104,7 +111,11 @@ public class ServerState extends PersistentState {
         }
 
         // Convert GraveBlockEntity into nbt
-        NbtCompound graveNbt = graveEntity.toNbt();
+        NbtCompound graveNbt = graveEntity.toNbt(
+            //? if >1.20.5 {
+            player.getWorld().getRegistryManager()
+            //?}
+        );
 
         // Store the grave's position in nbt
         BlockPos gravePos = graveEntity.getPos();

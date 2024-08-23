@@ -293,7 +293,8 @@ public class GraveBlockEntity extends BlockEntity {
         //? if >=1.20.5 {
         super.readNbt(nbt, registryLookup);
         //?} else {
-        /*super.readNbt(nbt);*/
+        /*super.readNbt(nbt);
+        *///?}
 
         // Store loaded inventories
         for (InventoriesApi api : Graves.inventories) {
@@ -331,7 +332,11 @@ public class GraveBlockEntity extends BlockEntity {
      *
      * @return NbtCompound
      */
+    //? if >1.20.5 {
     public NbtCompound toNbt(RegistryWrapper.WrapperLookup registryLookup) {
+    //?} else {
+    /*public NbtCompound toNbt() {
+    *///?}
         NbtCompound tag = new NbtCompound();
         this.writeNbt(tag, registryLookup);
         return tag;
@@ -341,15 +346,20 @@ public class GraveBlockEntity extends BlockEntity {
     @Override
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
         return BlockEntityUpdateS2CPacket.create(this,
-            (BlockEntity b, DynamicRegistryManager manager) -> this.toNbt(manager));
+            //? if >1.20.5 {
+            (BlockEntity b, DynamicRegistryManager manager) -> this.toNbt(manager)
+            //?} else {
+            /*(BlockEntity b) -> this.toNbt()
+            *///?}
+        );
     }
 
     @Override
-    public NbtCompound toInitialChunkDataNbt(
-        //? if >=1.20.5 {
-        RegistryWrapper.WrapperLookup registryLookup
-        //?}
-    ) {
+    //? if >=1.20.5 {
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
+    //?} else {
+    /*public NbtCompound toInitialChunkDataNbt() {
+    *///?}
         return this.toNbt(registryLookup);
     }
 

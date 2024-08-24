@@ -66,7 +66,7 @@
   "event.death:send-player-coordinates": "Могила создана в XYZ: %d %d %d.",
   "event.use.itemDecay:error.noDecayEnabled": "Эта могила уже является вощёной и защищена от разложения.",
 
-  "grave.coordinates": "XYZ: %d %d %d",,
+  "grave.coordinates": "XYZ: %d %d %d",
   "grave.died-on": "%s умер на %s",
 
   "forgottengraves.normal": "Забытые могилы",

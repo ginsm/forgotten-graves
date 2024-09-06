@@ -256,12 +256,7 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
-
-        //? if >=1.20.5 {
-        String customName = itemStack.get(DataComponentTypes.CUSTOM_NAME).getLiteralString();
-        //?} else {
-        /*String customName = itemStack.getOrCreateSubNbt("display").getString("Name");*/
-        //?}
+        String customName = VersionedCode.ItemStacks.getCustomName(itemStack);
 
         if (!(blockEntity instanceof GraveBlockEntity graveEntity) || customName == null) {
             super.onPlaced(world, pos, state, placer, itemStack);

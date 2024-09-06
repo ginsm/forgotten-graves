@@ -16,7 +16,9 @@ import net.minecraft.world.World;
 
 //? if <1.20.5 {
 /*import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-*///?}
+*///?} else {
+import net.minecraft.component.DataComponentTypes;
+//?}
 
 /**
  * This class contains abstractions that are used in conjunction with stonecutter-kt
@@ -39,7 +41,7 @@ public class VersionedCode {
         //? if >=1.20.5 {
         return new Item.Settings();
         //?} else {
-        /*return FabricAbstraction.getFabricItemSettings();
+        /*return new FabricItemSettings();
         *///?}
     }
 
@@ -80,5 +82,16 @@ public class VersionedCode {
             *///?}
         }
     }
+
+    public static class ItemStacks {
+        public static String getCustomName(ItemStack stack) {
+            //? if >=1.20.5 {
+            return stack.get(DataComponentTypes.CUSTOM_NAME).getLiteralString();
+            //?} else {
+            /*return stack.getOrCreateSubNbt("display").getString("Name");*/
+            //?}
+        }
+    }
+
 
 }

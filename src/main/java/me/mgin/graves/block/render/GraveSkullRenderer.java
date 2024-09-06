@@ -16,12 +16,17 @@ import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.render.entity.model.SkullEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtHelper;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
 
 import java.util.HashMap;
 import java.util.Map;
+
+//? if >1.20.5 {
+import net.minecraft.component.type.ProfileComponent;
+//?} else {
+/*import net.minecraft.nbt.NbtHelper;
+*///?}
 
 public class GraveSkullRenderer {
     private final EntityModelLoader skullRenderer;
@@ -154,7 +159,13 @@ public class GraveSkullRenderer {
      * Generate a RenderLayer for the given SkullType.
      */
     public static RenderLayer getSkullLayer(SkullBlock.SkullType skullType, @Nullable GameProfile profile) {
-        return SkullBlockEntityRenderer.getRenderLayer(skullType, profile);
+        return SkullBlockEntityRenderer.getRenderLayer(skullType,
+            //? if >1.20.5 {
+            new ProfileComponent(profile)
+            //?} else {
+            /*profile
+            *///?}
+        );
     }
 
     /**

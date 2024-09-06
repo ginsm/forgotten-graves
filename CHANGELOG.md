@@ -2,5 +2,5 @@
 
 Supports Minecraft versions: `1.20-1.20.4`
 
-## Updated
-- Updated Stonecutter to version `0.4.4`.
+## Fixed
+- [mpustovoi fixed an issue with the `ru_ru` translation](https://github.com/ginsm/forgotten-graves/pull/103).

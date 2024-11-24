@@ -10,6 +10,8 @@
   "text.autoconfig.forgottengraves.option.main": "Main Settings",
   "text.autoconfig.forgottengraves.option.main.graves": "Enable Graves",
   "text.autoconfig.forgottengraves.option.main.graves.@Tooltip": "Enable the Forgotten Graves mod?",
+  "text.autoconfig.forgottengraves.option.main.disableInPvP": "Disable in PvP",
+  "text.autoconfig.forgottengraves.option.main.disableInPvP.@Tooltip": "Should graves not spawn when killed by another player?",
   "text.autoconfig.forgottengraves.option.main.graveCoordinates": "Chat Coordinates",
   "text.autoconfig.forgottengraves.option.main.graveCoordinates.@Tooltip": "Should the coords of the grave be sent in chat?",
   "text.autoconfig.forgottengraves.option.main.retrievalType": "Retrieval Type",

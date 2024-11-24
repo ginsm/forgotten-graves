@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,12 +31,17 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         boolean forgottenGravesEnabled = GravesConfig.resolve("graves", player.getGameProfile());
         boolean playerCanPlaceBlocks = player.canModifyAt(player.getWorld(), player.getBlockPos());
 
+        // Determines whether the grave should spawn when killed by a player.
+        boolean disabledInPvP = GravesConfig.resolve("disableInPvP", player.getGameProfile());
+        boolean killedByPlayer = player.getLastAttacker() instanceof PlayerEntity;
+
         // Do not drop the inventory or place a grave if the player is still alive.
         // This is needed for possession mods like RAT's Mischief, Requiem (Origins), etc.
         if (player.isAlive()) return;
 
         // Do not place graves if its disabled or the player can't place/break blocks in the area
-        if (!forgottenGravesEnabled || !playerCanPlaceBlocks) {
+        // or when disabledInPvP is true and the player is killed in PvP.
+        if (!forgottenGravesEnabled || !playerCanPlaceBlocks || (disabledInPvP && killedByPlayer)) {
             this.inventory.dropAll();
             return;
         }

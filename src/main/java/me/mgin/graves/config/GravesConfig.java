@@ -42,6 +42,9 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         public boolean graves = true;
 
         @ConfigEntry.Gui.Tooltip
+        public boolean disableInPvP = false;
+
+        @ConfigEntry.Gui.Tooltip
         public boolean graveCoordinates = true;
 
         @ConfigEntry.Gui.Tooltip

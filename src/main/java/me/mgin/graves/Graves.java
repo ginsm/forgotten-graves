@@ -6,6 +6,7 @@ import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.command.Commands;
 import me.mgin.graves.config.ConfigOptions;
 import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.effects.GraveEffects;
 import me.mgin.graves.event.Events;
 import me.mgin.graves.inventory.BackSlot;
 import me.mgin.graves.inventory.Inventorio;
@@ -41,6 +42,7 @@ public class Graves implements ModInitializer {
         Items.registerItems(MOD_ID, BRAND_BLOCK);
         Commands.registerServerCommands();
         Events.registerServerEvents();
+        GraveEffects.register(MOD_ID);
         ConfigNetworking.registerC2SPackets();
         ConfigNetworkingEvents.registerServerEvents();
 

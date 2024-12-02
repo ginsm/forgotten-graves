@@ -124,6 +124,8 @@
   "command.players.beginning": "Here are players with graves: ",
   "command.players.information": "%s (%d) ",
 
+  "effect.forgottengraves.disablegraves": "Grave Disabled",
+
   "utility.pagination.current-page.tooltip": "You are on this page.",
   "utility.pagination.page-id.tooltip": "Go to page %d.",
   "utility.pagination.prefix": "Page: "

@@ -28,8 +28,8 @@ public class GraveBlockEntity extends BlockEntity {
     private String customName;
     private NbtCompound graveSkull;
     private long mstime;
-    private final Map<String, DefaultedList<ItemStack>> inventories = new HashMap<>() {
-    };
+    private final Map<String, Integer> timers = new HashMap<>();
+    private final Map<String, DefaultedList<ItemStack>> inventories = new HashMap<>();
 
     public GraveBlockEntity(BlockPos pos, BlockState state) {
         super(GraveBlocks.GRAVE_BLOCK_ENTITY, pos, state);
@@ -176,6 +176,20 @@ public class GraveBlockEntity extends BlockEntity {
         return mstime;
     }
 
+    public int getTimer(String key) {
+        return this.timers.getOrDefault(key, 0);
+    }
+
+    public void incrementTimer(String key, int amount) {
+        this.timers.put(key, getTimer(key) + amount);
+        this.markDirty();
+    }
+
+    public void resetTimer(String key) {
+        this.timers.put(key, 0);
+        this.markDirty();
+    }
+
     /**
      * Set whether the grave should age or not.
      * <p>
@@ -259,6 +273,13 @@ public class GraveBlockEntity extends BlockEntity {
         nbt.putInt("noDecay", noDecay);
         nbt.putLong("mstime", mstime);
 
+        // Used for tracking time spent at each stage and expiration
+        NbtCompound timersNbt = new NbtCompound();
+        for (Map.Entry<String, Integer> entry : timers.entrySet()) {
+            timersNbt.putInt(entry.getKey(), entry.getValue());
+        }
+        nbt.put("timers", timersNbt);
+
         if (graveOwner != null)
             nbt.put("GraveOwner", NbtHelper.writeGameProfile(new NbtCompound(), graveOwner));
 
@@ -293,6 +314,13 @@ public class GraveBlockEntity extends BlockEntity {
         this.xp = nbt.getInt("XP");
         this.noDecay = nbt.getInt("noDecay");
         this.mstime = nbt.getLong("mstime");
+
+        // Used for tracking time spent at each stage and expiration
+        timers.clear();
+        NbtCompound timersNbt = nbt.getCompound("timers");
+        for (String key : timersNbt.getKeys()) {
+            timers.put(key, timersNbt.getInt(key));
+        }
 
         if (nbt.contains("GraveOwner"))
             this.graveOwner = NbtHelper.toGameProfile(nbt.getCompound("GraveOwner"));

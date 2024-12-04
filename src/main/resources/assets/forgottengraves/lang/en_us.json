@@ -58,6 +58,10 @@
   "text.autoconfig.forgottengraves.option.decay.oldGraveDecayChance.@Tooltip": "What is the chance an old graves decays (percentage)?",
   "text.autoconfig.forgottengraves.option.decay.weatheredGraveDecayChance": "Weathered Grave Decay Chance",
   "text.autoconfig.forgottengraves.option.decay.weatheredGraveDecayChance.@Tooltip": "What is the chance a weathered grave decays (percentage)?",
+  "text.autoconfig.forgottengraves.option.decay.minStageTimeSeconds": "Minimum Time in Each Stage",
+  "text.autoconfig.forgottengraves.option.decay.minStageTimeSeconds.@Tooltip": "What's the minimum amount of time to spend in each stage (seconds)?",
+  "text.autoconfig.forgottengraves.option.decay.maxStageTimeSeconds": "Maximum Time in Each Stage",
+  "text.autoconfig.forgottengraves.option.decay.maxStageTimeSeconds.@Tooltip": "What's the maximum amount of time to spend in each stage (seconds)?",
 
   "text.autoconfig.forgottengraves.option.server": "Server Settings",
   "text.autoconfig.forgottengraves.option.server.graveRobbing.@PrefixText": "These settings cannot be handled by the client.",

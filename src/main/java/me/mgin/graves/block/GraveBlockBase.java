@@ -3,7 +3,9 @@ package me.mgin.graves.block;
 //? if >1.20.2 {
 /*import com.mojang.serialization.MapCodec;
 *///?}
+import me.mgin.graves.block.decay.DecayStateManager;
 import me.mgin.graves.command.DeleteCommand;
+import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.item.Items;
 import net.minecraft.block.HorizontalFacingBlock;
 import me.mgin.graves.versioned.VersionedCode;
@@ -40,11 +42,13 @@ import net.minecraft.world.explosion.Explosion;
 
 import static me.mgin.graves.block.GraveBlocks.GRAVE_SET;
 
+@SuppressWarnings("ALL")
 public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntityProvider, DecayingGrave, Waterloggable {
     private final BlockDecay blockDecay;
     public boolean brokenByPlayer = false;
     public String blockID;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+    private boolean countingSeconds = false;
 
     // This gets rotated by rotateShape so only one definition is needed (this is the NORTH definition technically).
     public static final VoxelShape GRAVE_SHAPE = VoxelShapes.union(
@@ -281,8 +285,58 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
 
     // Decay
     @Override
+    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+        if (!world.isClient) {
+            // Schedule initial tick for counter
+            world.scheduleBlockTick(pos, this, 20);
+        }
+    }
+
+    @Override
+    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        super.scheduledTick(state, world, pos, random);
+
+        if (!world.isClient()) {
+            GraveBlockEntity entity = (GraveBlockEntity) world.getBlockEntity(pos);
+            GravesConfig config = GravesConfig.getConfig();
+            boolean inFinalStage = this.getDecayStage() == BlockDecay.FORGOTTEN;
+            boolean decaying = config.decay.decayEnabled || entity.getNoDecay() == 0;
+
+            // This is needed to make old graves start ticking; if countingSeconds is false when the old grave
+            // gets a random tick, it'll schedule ticks.
+            if (!this.countingSeconds) this.countingSeconds = true;
+
+            if (decaying && !inFinalStage) {
+                entity.incrementTimer("decay", 1);
+
+                int secondsInStage = entity.getTimer("decay");
+                int maxStageTimeSeconds = config.decay.maxStageTimeSeconds;
+
+                // If the maxStageTimeSeconds is 0 then maxStageTimeSeconds is effectively disabled.
+                if (maxStageTimeSeconds > 0 && secondsInStage >= maxStageTimeSeconds) {
+                    DecayStateManager.increaseDecayState(world, pos);
+                }
+            }
+
+            // Reschedule the next tick
+            world.scheduleBlockTick(pos, this, 20);
+        }
+    }
+
+    @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        this.tickDecay(state, world, pos, random);
+        if (!world.isClient && !this.countingSeconds) {
+            // Schedule initial tick for counter if it's not already running
+            world.scheduleBlockTick(pos, this, 20);
+        }
+
+        GraveBlockEntity entity = (GraveBlockEntity) world.getBlockEntity(pos);
+        int secondsInStage = entity.getTimer("decay");
+        int minStageTimeSeconds = GravesConfig.getConfig().decay.minStageTimeSeconds;
+
+        if (secondsInStage >= minStageTimeSeconds) {
+            this.tickDecay(state, world, pos, random);
+        }
     }
 
     @Override

@@ -120,6 +120,12 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.BoundedDiscrete(min = 0, max = 25)
         public int weatheredGraveDecayChance = 16;
+
+        @ConfigEntry.Gui.Tooltip
+        public int minStageTimeSeconds = 0;
+
+        @ConfigEntry.Gui.Tooltip
+        public int maxStageTimeSeconds = 300;
     }
 
     public static class ServerSettings {

@@ -7,6 +7,7 @@
 
   "text.autoconfig.forgottengraves.title": "Forgotten Graves Settings",
 
+  "text.autoconfig.forgottengraves.category.main": "Main Settings",
   "text.autoconfig.forgottengraves.option.main": "Main Settings",
   "text.autoconfig.forgottengraves.option.main.graves": "Enable Graves",
   "text.autoconfig.forgottengraves.option.main.graves.@Tooltip": "Enable the Forgotten Graves mod?",
@@ -21,6 +22,7 @@
   "text.autoconfig.forgottengraves.option.main.sneakSwapsDropType": "Sneak Swaps Drop Type",
   "text.autoconfig.forgottengraves.option.main.sneakSwapsDropType.@Tooltip": "Should sneaking switch between drop types?",
 
+  "text.autoconfig.forgottengraves.category.experience": "Experience Settings",
   "text.autoconfig.forgottengraves.option.experience": "Experience Settings",
   "text.autoconfig.forgottengraves.option.experience.expStorageType": "Storage Type",
   "text.autoconfig.forgottengraves.option.experience.expStorageType.@Tooltip": "How should the graves store XP?",
@@ -33,6 +35,7 @@
   "text.autoconfig.forgottengraves.option.experience.capType": "Experience Cap Type",
   "text.autoconfig.forgottengraves.option.experience.capType.@Tooltip": "What type of experience should be capped?",
 
+  "text.autoconfig.forgottengraves.category.spawning": "Spawning Settings",
   "text.autoconfig.forgottengraves.option.sink": "Sink Settings",
   "text.autoconfig.forgottengraves.option.sink.sinkInAir": "Sink in Air",
   "text.autoconfig.forgottengraves.option.sink.sinkInAir.@Tooltip": "Should graves sink in air?",
@@ -41,11 +44,12 @@
   "text.autoconfig.forgottengraves.option.sink.sinkInLava": "Sink in Lava",
   "text.autoconfig.forgottengraves.option.sink.sinkInLava.@Tooltip": "Should graves sink in lava?",
 
+  "text.autoconfig.forgottengraves.category.decay": "Decay Settings",
   "text.autoconfig.forgottengraves.option.decay": "Decay Settings",
   "text.autoconfig.forgottengraves.option.decay.decayEnabled.@PrefixText": "These settings cannot be handled by the client.",
   "text.autoconfig.forgottengraves.option.decay.decayEnabled": "Enable Decay",
   "text.autoconfig.forgottengraves.option.decay.decayEnabled.@Tooltip": "Should graves decay over time?",
-  "text.autoconfig.forgottengraves.option.decay.decayModifier": "Item Decay Modifier",
+  "text.autoconfig.forgottengraves.option.decay.decayModifier": "Item Decay Speed",
   "text.autoconfig.forgottengraves.option.decay.decayModifier.@Tooltip": "How quickly should an item decay (0-100)?",
   "text.autoconfig.forgottengraves.option.decay.decayBreaksItems": "Decay Breaks Items",
   "text.autoconfig.forgottengraves.option.decay.decayBreaksItems.@Tooltip": "Should decay ever completely break an item?",
@@ -63,6 +67,7 @@
   "text.autoconfig.forgottengraves.option.decay.maxStageTimeSeconds": "Maximum Time in Each Stage",
   "text.autoconfig.forgottengraves.option.decay.maxStageTimeSeconds.@Tooltip": "What's the maximum amount of time to spend in each stage (seconds)?",
 
+  "text.autoconfig.forgottengraves.category.server": "Server Settings",
   "text.autoconfig.forgottengraves.option.server": "Server Settings",
   "text.autoconfig.forgottengraves.option.server.graveRobbing.@PrefixText": "These settings cannot be handled by the client.",
   "text.autoconfig.forgottengraves.option.server.graveRobbing": "Grave Robbing",
@@ -135,7 +140,7 @@
   "command.players.beginning": "Here are players with graves: ",
   "command.players.information": "%s (%d) ",
 
-  "effect.forgottengraves.disablegraves": "Grave Disabled",
+  "effect.forgottengraves.disablegraves": "Graves Disabled",
 
   "utility.pagination.current-page.tooltip": "You are on this page.",
   "utility.pagination.page-id.tooltip": "Go to page %d.",

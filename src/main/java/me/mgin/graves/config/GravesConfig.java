@@ -15,19 +15,24 @@ import java.util.List;
 @Config(name = "forgottengraves")
 public class GravesConfig extends ConfigHelpers implements ConfigData {
 
-    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+    @ConfigEntry.Category("main")
+    @ConfigEntry.Gui.TransitiveObject
     public MainSettings main = new MainSettings();
 
-    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+    @ConfigEntry.Category("experience")
+    @ConfigEntry.Gui.TransitiveObject
     public ExperienceSettings experience = new ExperienceSettings();
 
-    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+    @ConfigEntry.Category("spawning")
+    @ConfigEntry.Gui.TransitiveObject
     public SinkSettings sink = new SinkSettings();
 
-    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+    @ConfigEntry.Category("decay")
+    @ConfigEntry.Gui.TransitiveObject
     public DecaySettings decay = new DecaySettings();
 
-    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+    @ConfigEntry.Category("server")
+    @ConfigEntry.Gui.TransitiveObject
     public ServerSettings server = new ServerSettings();
 
     @Override

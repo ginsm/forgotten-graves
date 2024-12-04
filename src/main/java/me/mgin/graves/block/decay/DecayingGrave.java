@@ -44,10 +44,6 @@ public interface DecayingGrave extends Decayable<DecayingGrave.BlockDecay> {
         return getIncreasedDecayBlock(state.getBlock()).map((block) -> block.getStateWithProperties(state));
     }
 
-    default float getDecayChanceMultiplier() {
-        return this.getDecayStage() == BlockDecay.FRESH ? 0.75F : 1.0F;
-    }
-
     enum BlockDecay {
         FRESH, OLD, WEATHERED, FORGOTTEN;
 

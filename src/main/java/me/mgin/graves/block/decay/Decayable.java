@@ -1,8 +1,8 @@
 package me.mgin.graves.block.decay;
 
-import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.InventoriesApi;
+import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import net.minecraft.block.BlockState;
@@ -21,14 +21,12 @@ import java.util.Optional;
 public interface Decayable<T extends Enum<T>> {
     Optional<BlockState> getDecayResultState(BlockState state);
 
-    float getDecayChanceMultiplier();
-
     default void tickDecay(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         GravesConfig config = GravesConfig.getConfig();
 
         if (config.decay.decayEnabled) {
-            float f = 0.05688889F;
-            if (random.nextFloat() < f) {
+            float decayChance = (float) getStageDecayChance(state, config) / 100;
+            if (decayChance >= random.nextFloat()) {
                 this.tryDecay(state, world, pos, random);
             }
         }
@@ -37,9 +35,14 @@ public interface Decayable<T extends Enum<T>> {
     T getDecayStage();
 
     default void tryDecay(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if (this.getDecayChanceMultiplier() > random.nextFloat()) {
-            this.getDecayResultState(state).ifPresent((statex) -> setDecayState(world, pos, statex, true));
-        }
+        this.getDecayResultState(state).ifPresent((statex) -> setDecayState(world, pos, statex, true));
+    }
+
+    static int getStageDecayChance(BlockState state, GravesConfig config) {
+        if (state.getBlock() == GraveBlocks.GRAVE) return config.decay.freshGraveDecayChance;
+        if (state.getBlock() == GraveBlocks.GRAVE_OLD) return config.decay.oldGraveDecayChance;
+        if (state.getBlock() == GraveBlocks.GRAVE_WEATHERED) return config.decay.weatheredGraveDecayChance;
+        return 5;
     }
 
     /**

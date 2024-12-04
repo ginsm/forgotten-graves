@@ -106,6 +106,20 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
         public DecayingGrave.BlockDecay decayRobbing = DecayingGrave.BlockDecay.FRESH;
+
+        @ConfigEntry.Gui.PrefixText
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 25)
+        public int freshGraveDecayChance = 5;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 25)
+        public int oldGraveDecayChance = 12;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 25)
+        public int weatheredGraveDecayChance = 16;
     }
 
     public static class ServerSettings {

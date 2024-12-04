@@ -51,6 +51,13 @@
   "text.autoconfig.forgottengraves.option.decay.decayBreaksItems.@Tooltip": "Should decay ever completely break an item?",
   "text.autoconfig.forgottengraves.option.decay.decayRobbing": "Decay Robbing",
   "text.autoconfig.forgottengraves.option.decay.decayRobbing.@Tooltip": "What decay stage should players be able to rob graves?",
+  "text.autoconfig.forgottengraves.option.decay.freshGraveDecayChance.@PrefixText": "These settings control the amount of time graves spend in each stage.",
+  "text.autoconfig.forgottengraves.option.decay.freshGraveDecayChance": "Fresh Grave Decay Chance",
+  "text.autoconfig.forgottengraves.option.decay.freshGraveDecayChance.@Tooltip": "What is the chance a fresh grave decays (percentage)?",
+  "text.autoconfig.forgottengraves.option.decay.oldGraveDecayChance": "Old Grave Decay Chance",
+  "text.autoconfig.forgottengraves.option.decay.oldGraveDecayChance.@Tooltip": "What is the chance an old graves decays (percentage)?",
+  "text.autoconfig.forgottengraves.option.decay.weatheredGraveDecayChance": "Weathered Grave Decay Chance",
+  "text.autoconfig.forgottengraves.option.decay.weatheredGraveDecayChance.@Tooltip": "What is the chance a weathered grave decays (percentage)?",
 
   "text.autoconfig.forgottengraves.option.server": "Server Settings",
   "text.autoconfig.forgottengraves.option.server.graveRobbing.@PrefixText": "These settings cannot be handled by the client.",

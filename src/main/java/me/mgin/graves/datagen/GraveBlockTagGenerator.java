@@ -28,6 +28,9 @@ public class GraveBlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         // replaceable
         addBlock(Blocks.POWDER_SNOW, replaceable);
 
+        // sinkThrough
+        addBlock(Blocks.TORCH, sinkThrough);
+
         // replaceable + sinkThrough
         addBlockTag(BlockTags.FLOWERS, replaceable, sinkThrough);
         addBlockTag(BlockTags.SAPLINGS, replaceable, sinkThrough);
@@ -39,7 +42,6 @@ public class GraveBlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         addBlock(Blocks.TALL_SEAGRASS, replaceable, sinkThrough);
         addBlock(Blocks.FERN, replaceable, sinkThrough);
         addBlock(Blocks.LARGE_FERN, replaceable, sinkThrough);
-        addBlock(Blocks.TORCH, replaceable, sinkThrough);
         addBlock(Blocks.BROWN_MUSHROOM, replaceable, sinkThrough);
         addBlock(Blocks.RED_MUSHROOM, replaceable, sinkThrough);
         addBlock(Blocks.CRIMSON_FUNGUS, replaceable, sinkThrough);

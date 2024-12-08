@@ -6,3 +6,9 @@ stonecutter.registerChiseled tasks.register("chiseledBuild", stonecutter.chisele
 
     ofTask "build"
 }
+
+stonecutter.registerChiseled tasks.register("chiseledDataGen", stonecutter.chiseled) {
+    setGroup "build"
+
+    ofTask "runDatagen"
+}

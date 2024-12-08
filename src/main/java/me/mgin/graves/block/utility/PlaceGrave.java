@@ -239,6 +239,7 @@ public class PlaceGrave {
     private static boolean isLiquidAirOrReplaceable(World world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
         boolean canReplace = VersionedCode.Tags.blockTagContains(state, GraveBlockTags.REPLACEABLE);
-        return state.isAir() || state.isLiquid() || canReplace;
+        boolean inDoNotReplace = VersionedCode.Tags.blockTagContains(state, GraveBlockTags.DO_NOT_REPLACE);
+        return state.isAir() || state.isLiquid() || !inDoNotReplace && canReplace;
     }
 }

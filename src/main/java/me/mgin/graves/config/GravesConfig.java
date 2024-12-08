@@ -94,6 +94,12 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         public boolean sinkInLava = false;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean sinkThroughBlocks = true;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean replaceBlocks = true;
     }
 
     public static class DecaySettings {

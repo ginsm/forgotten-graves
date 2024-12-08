@@ -43,6 +43,10 @@
   "text.autoconfig.forgottengraves.option.sink.sinkInWater.@Tooltip": "Should graves sink in water?",
   "text.autoconfig.forgottengraves.option.sink.sinkInLava": "Sink in Lava",
   "text.autoconfig.forgottengraves.option.sink.sinkInLava.@Tooltip": "Should graves sink in lava?",
+  "text.autoconfig.forgottengraves.option.sink.sinkThroughBlocks": "Sink Through Blocks",
+  "text.autoconfig.forgottengraves.option.sink.sinkThroughBlocks.@Tooltip": "Should graves sink through blocks found in the sink_through tag?",
+  "text.autoconfig.forgottengraves.option.sink.replaceBlocks": "Replace Blocks",
+  "text.autoconfig.forgottengraves.option.sink.replaceBlocks.@Tooltip": "Should graves replace blocks found in the replaceable tag?",
 
   "text.autoconfig.forgottengraves.category.decay": "Decay Settings",
   "text.autoconfig.forgottengraves.option.decay": "Decay Settings",

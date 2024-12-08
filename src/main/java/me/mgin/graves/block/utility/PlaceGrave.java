@@ -218,7 +218,8 @@ public class PlaceGrave {
         Block block = state.getBlock();
 
         // Sink if the block is found in the SINK_THROUGH tag.
-        if (VersionedCode.Tags.blockTagContains(state, GraveBlockTags.SINK_THROUGH)) {
+        boolean sinkThroughBlocks = GravesConfig.getConfig().sink.sinkThroughBlocks;
+        if (sinkThroughBlocks && VersionedCode.Tags.blockTagContains(state, GraveBlockTags.SINK_THROUGH)) {
             return true;
         }
 
@@ -238,8 +239,9 @@ public class PlaceGrave {
      */
     private static boolean isLiquidAirOrReplaceable(World world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
+        boolean replaceBlocks = GravesConfig.getConfig().sink.replaceBlocks;
         boolean canReplace = VersionedCode.Tags.blockTagContains(state, GraveBlockTags.REPLACEABLE);
-        boolean inDoNotReplace = VersionedCode.Tags.blockTagContains(state, GraveBlockTags.DO_NOT_REPLACE);
-        return state.isAir() || state.isLiquid() || !inDoNotReplace && canReplace;
+        boolean doNotReplace = VersionedCode.Tags.blockTagContains(state, GraveBlockTags.DO_NOT_REPLACE);
+        return state.isAir() || state.isLiquid() || replaceBlocks && !doNotReplace && canReplace;
     }
 }

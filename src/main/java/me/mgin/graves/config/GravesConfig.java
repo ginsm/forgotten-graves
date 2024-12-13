@@ -37,8 +37,17 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
     @Override
     public void validatePostLoad() {
+        experience.percentage = Math.max(Math.min(experience.percentage, 100), 0);
         experience.cap = Math.max(experience.cap, -1);
+
         decay.decayModifier = Math.max(Math.min(decay.decayModifier, 100), 0);
+        decay.freshGraveDecayChance = Math.max(Math.min(decay.freshGraveDecayChance, 50), 0);
+        decay.oldGraveDecayChance = Math.max(Math.min(decay.oldGraveDecayChance, 50), 0);
+        decay.weatheredGraveDecayChance = Math.max(Math.min(decay.weatheredGraveDecayChance, 50), 0);
+        decay.minStageTimeSeconds = Math.max(Math.min(decay.minStageTimeSeconds, decay.maxStageTimeSeconds), 0);
+        decay.maxStageTimeSeconds = Math.max(decay.maxStageTimeSeconds, 0);
+
+        server.storedGravesAmount = Math.max(Math.min(server.storedGravesAmount, 40), 0);
         server.OPOverrideLevel = Math.max(Math.min(server.OPOverrideLevel, 4), -1);
     }
 
@@ -121,19 +130,19 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         @ConfigEntry.Gui.PrefixText
 
         @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.BoundedDiscrete(min = 0, max = 25)
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 50)
         public int freshGraveDecayChance = 5;
 
         @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.BoundedDiscrete(min = 0, max = 25)
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 50)
         public int oldGraveDecayChance = 12;
 
         @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.BoundedDiscrete(min = 0, max = 25)
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 50)
         public int weatheredGraveDecayChance = 16;
 
         @ConfigEntry.Gui.Tooltip
-        public int minStageTimeSeconds = 0;
+        public int minStageTimeSeconds = 30;
 
         @ConfigEntry.Gui.Tooltip
         public int maxStageTimeSeconds = 300;

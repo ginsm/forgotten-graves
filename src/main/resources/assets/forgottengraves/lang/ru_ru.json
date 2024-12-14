@@ -5,11 +5,14 @@
   "block.forgottengraves.grave_forgotten": "Забытая могила",
   "itemGroup.forgottengraves.graves": "Могильные блоки",
 
-  "text.autoconfig.forgottengraves.title": "Настройки «Забытых могил»",
+  "text.autoconfig.forgottengraves.title": "Настройки «Забытых Могил»",
 
+  "text.autoconfig.forgottengraves.category.main": "Основные настройки",
   "text.autoconfig.forgottengraves.option.main": "Основные настройки",
   "text.autoconfig.forgottengraves.option.main.graves": "Включить создание могил",
-  "text.autoconfig.forgottengraves.option.main.graves.@Tooltip": "Включить мод «Забытые могилы»?",
+  "text.autoconfig.forgottengraves.option.main.graves.@Tooltip": "Включить мод «Забытые Могилы»?",
+  "text.autoconfig.forgottengraves.option.main.disableInPvP": "Отключить в PvP",
+  "text.autoconfig.forgottengraves.option.main.disableInPvP.@Tooltip": "Следует ли отключить появление могил при убийстве игрока другим игроком?",
   "text.autoconfig.forgottengraves.option.main.graveCoordinates": "Координаты в чате",
   "text.autoconfig.forgottengraves.option.main.graveCoordinates.@Tooltip": "Следует ли отправлять координаты могилы в чат?",
   "text.autoconfig.forgottengraves.option.main.retrievalType": "Тип извлечения",
@@ -19,8 +22,9 @@
   "text.autoconfig.forgottengraves.option.main.sneakSwapsDropType": "Приседание инвертирует тип выпадения",
   "text.autoconfig.forgottengraves.option.main.sneakSwapsDropType.@Tooltip": "Следует ли приседанию переключаться между типами выпадения?",
 
-  "text.autoconfig.forgottengraves.option.experience": "Настройки интерфейса",
-  "text.autoconfig.forgottengraves.option.experience.expStorageType": "Тип хранилища",
+  "text.autoconfig.forgottengraves.category.experience": "Настройки опыта",
+  "text.autoconfig.forgottengraves.option.experience": "Настройки опыта",
+  "text.autoconfig.forgottengraves.option.experience.expStorageType": "Тип хранения",
   "text.autoconfig.forgottengraves.option.experience.expStorageType.@Tooltip": "Как могилы должны хранить опыт?",
   "text.autoconfig.forgottengraves.option.experience.percentage": "Процент",
   "text.autoconfig.forgottengraves.option.experience.percentage.@Tooltip": "Какой процент следует сохранить?",
@@ -31,14 +35,20 @@
   "text.autoconfig.forgottengraves.option.experience.capType": "Тип ограничения по опыту",
   "text.autoconfig.forgottengraves.option.experience.capType.@Tooltip": "Какой тип опыта должен быть ограничен?",
 
+  "text.autoconfig.forgottengraves.category.spawning": "Настройки появления",
   "text.autoconfig.forgottengraves.option.sink": "Настройки погружения",
-  "text.autoconfig.forgottengraves.option.sink.sinkInAir": "Падение в воздухе",
-  "text.autoconfig.forgottengraves.option.sink.sinkInAir.@Tooltip": "Должны ли могилы генерироваться на земле при смерти в воздухе?",
+  "text.autoconfig.forgottengraves.option.sink.sinkInAir": "Погружение в воздухе",
+  "text.autoconfig.forgottengraves.option.sink.sinkInAir.@Tooltip": "Должны ли могилы опускаться за землю при смерти в воздухе?",
   "text.autoconfig.forgottengraves.option.sink.sinkInWater": "Погружение в воде",
-  "text.autoconfig.forgottengraves.option.sink.sinkInWater.@Tooltip": "Должны ли могилы генерироваться на дне водоёма при смерти в воде?",
+  "text.autoconfig.forgottengraves.option.sink.sinkInWater.@Tooltip": "Должны ли могилы опускаться на дно при смерти в воде?",
   "text.autoconfig.forgottengraves.option.sink.sinkInLava": "Погружение в лаве",
-  "text.autoconfig.forgottengraves.option.sink.sinkInLava.@Tooltip": "Должны ли могилы генерироваться на дне лавы при смерти в лаве?",
+  "text.autoconfig.forgottengraves.option.sink.sinkInLava.@Tooltip": "Должны ли могилы опускаться на дно при смерти в лаве?",
+  "text.autoconfig.forgottengraves.option.sink.sinkThroughBlocks": "Погружаться сквозь блоки",
+  "text.autoconfig.forgottengraves.option.sink.sinkThroughBlocks.@Tooltip": "Должны ли могилы проходить через блоки, найденные в теге sink_through?",
+  "text.autoconfig.forgottengraves.option.sink.replaceBlocks": "Заменять блоки",
+  "text.autoconfig.forgottengraves.option.sink.replaceBlocks.@Tooltip": "Должны ли могилы заменять блоки, указанные в теге replaceable?",
 
+  "text.autoconfig.forgottengraves.category.decay": "Настройки разложения",
   "text.autoconfig.forgottengraves.option.decay": "Настройки разложения",
   "text.autoconfig.forgottengraves.option.decay.decayEnabled.@PrefixText": "Эти настройки не могут быть обработаны клиентом.",
   "text.autoconfig.forgottengraves.option.decay.decayEnabled": "Включить разложение",
@@ -49,7 +59,19 @@
   "text.autoconfig.forgottengraves.option.decay.decayBreaksItems.@Tooltip": "Должно ли расложение полностью сломать предмет?",
   "text.autoconfig.forgottengraves.option.decay.decayRobbing": "Разложение для ограбления",
   "text.autoconfig.forgottengraves.option.decay.decayRobbing.@Tooltip": "На какой стадии разложения игроки должны иметь возможность грабить могилы?",
+  "text.autoconfig.forgottengraves.option.decay.freshGraveDecayChance.@PrefixText": "Эти настройки определяют количество времени, которое могилы проводят на каждой стадии.",
+  "text.autoconfig.forgottengraves.option.decay.freshGraveDecayChance": "Вероятность разложения свежей могилы",
+  "text.autoconfig.forgottengraves.option.decay.freshGraveDecayChance.@Tooltip": "Какова вероятность того, что свежая могила разложится (в процентах)?",
+  "text.autoconfig.forgottengraves.option.decay.oldGraveDecayChance": "Вероятность разложения старой могилы",
+  "text.autoconfig.forgottengraves.option.decay.oldGraveDecayChance.@Tooltip": "Какова вероятность того, что старая могила разложится (в процентах)?",
+  "text.autoconfig.forgottengraves.option.decay.weatheredGraveDecayChance": "Вероятность разложения выветренной могилы",
+  "text.autoconfig.forgottengraves.option.decay.weatheredGraveDecayChance.@Tooltip": "Какова вероятность того, что выветренная могила разложится (в процентах)?",
+  "text.autoconfig.forgottengraves.option.decay.minStageTimeSeconds": "Минимальное время на каждой стадии",
+  "text.autoconfig.forgottengraves.option.decay.minStageTimeSeconds.@Tooltip": "Каково минимальное время, которое могилы должны провести на каждой стадии (в секундах)?",
+  "text.autoconfig.forgottengraves.option.decay.maxStageTimeSeconds": "Максимальное время на каждой стадии",
+  "text.autoconfig.forgottengraves.option.decay.maxStageTimeSeconds.@Tooltip": "Каково максимальное время, которое могилы должны провести на каждой стадии (в секундах)?",
 
+  "text.autoconfig.forgottengraves.category.server": "Серверные настройки",
   "text.autoconfig.forgottengraves.option.server": "Серверные настройки",
   "text.autoconfig.forgottengraves.option.server.graveRobbing.@PrefixText": "Эти настройки не могут быть обработаны клиентом.",
   "text.autoconfig.forgottengraves.option.server.graveRobbing": "Ограбление могил",
@@ -63,13 +85,13 @@
   "text.autoconfig.forgottengraves.option.server.clientOptions": "Параметры клиента",
   "text.autoconfig.forgottengraves.option.server.clientOptions.@Tooltip": "Какие опции должны быть обработаны клиентом?",
 
-  "event.death:send-player-coordinates": "Могила создана в XYZ: %d %d %d.",
-  "event.use.itemDecay:error.noDecayEnabled": "Эта могила уже является вощёной и защищена от разложения.",
+  "event.death:send-player-coordinates": "Могила создана в XYZ: %d, %d, %d.",
+  "event.use.itemDecay:error.noDecayEnabled": "Эта могила уже покрыта воском и защищена от разложения.",
 
-  "grave.coordinates": "XYZ: %d %d %d",
+  "grave.coordinates": "XYZ: %d, %d, %d",
   "grave.died-on": "%s умер на %s",
 
-  "forgottengraves.normal": "Забытые могилы",
+  "forgottengraves.normal": "Забытые Могилы",
   "forgottengraves.small": "[ЗМ] ",
   "error.prefix": "Ошибка: ",
 
@@ -105,7 +127,7 @@
   "command.restore.restored-players-grave-to": "Вы восстановили могилу %s для %s.",
   "command.restore.received-players-grave": "Вы получили могилу %s.",
   "command.restore.received-players-grave-by": "Вы получили могилу %s от %s.",
-  "command.restore.restored.tooltip": "Владелец могилы: %s\nИзмерение: %s\nXYZ: %d %d %d\nСоздана: %s\nИдентификатор: %d\nВосстановлена: %s",
+  "command.restore.restored.tooltip": "Владелец могилы: %s\nИзмерение: %s\nXYZ: %d, %d, %d\nСоздана: %s\nИдентификатор: %d\nВосстановлена: %s",
 
   "command.delete.deleted-grave": "Вы удалили могилу %d для %s.",
 
@@ -121,6 +143,9 @@
 
   "command.players.beginning": "Игроки с могилами: ",
   "command.players.information": "%s (%d) ",
+
+  "effect.forgottengraves.disablegraves": "Могилы отключены",
+  "effect.forgottengraves.disablegraves.description": "Отключает появление могилы при смерти.",
 
   "utility.pagination.current-page.tooltip": "Вы находитесь на этой странице.",
   "utility.pagination.page-id.tooltip": "Перейти на страницу %d.",

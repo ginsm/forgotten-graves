@@ -145,6 +145,7 @@
   "command.players.information": "%s (%d) ",
 
   "effect.forgottengraves.disablegraves": "Graves Disabled",
+  "effect.forgottengraves.disablegraves.description": "Disables the grave spawning upon death.",
 
   "utility.pagination.current-page.tooltip": "You are on this page.",
   "utility.pagination.page-id.tooltip": "Go to page %d.",

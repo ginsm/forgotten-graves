@@ -5,6 +5,32 @@
 		"2": "minecraft:block/dirt_path_top",
 		"particle": "minecraft:block/dirt_path_top"
 	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [ 65, -225, 0 ],
+			"translation": [ 0, 2, 2.25 ],
+			"scale": [ 0.45, 0.45, 0.45 ]
+		},
+		"firstperson_righthand": {
+			"rotation": [ 0, -225, 0 ],
+			"translation": [ 0, 3.2, 0],
+			"scale": [ 0.6, 0.6, 0.6 ]
+		},
+		"fixed": {
+			"rotation": [ 270, 0, 0 ],
+			"translation": [ 0, 0, -8],
+			"scale": [ 1, 1, 1 ]
+		},
+		"gui": {
+			"rotation": [ 30, 160, 0 ],
+			"scale":[ 0.5325, 0.5325, 0.5325]
+		},
+		"ground": {
+			"rotation": [ 0, 0, 0 ],
+			"translation": [ 0, 4, 0],
+			"scale":[ 0.4, 0.4, 0.4 ]
+		}
+	},
 	"elements": [
 		{
 			"name": "dirt",

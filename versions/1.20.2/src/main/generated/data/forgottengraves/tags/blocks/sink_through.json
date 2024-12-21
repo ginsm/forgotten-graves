@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "minecraft:torch",
     {
       "id": "#minecraft:flowers",
       "required": false

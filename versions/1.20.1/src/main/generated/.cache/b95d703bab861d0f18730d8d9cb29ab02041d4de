@@ -1,0 +1,11 @@
+// 1.20.1	2024-12-20T20:04:54.0829703	Forgotten Graves/Model Definitions
+666c8a993bc28f1aef02d3d40c568984afbbc03d assets\forgottengraves\blockstates\grave_weathered.json
+10043f55b1e4b80edc80c1052272177c0612efca assets\forgottengraves\blockstates\grave_old.json
+3ed0b9f4a5cd3f5d1724da08776b2cbc085cbfc6 assets\forgottengraves\models\item\grave_old.json
+c7aea5db39a75d9ea6c3a8aee8cd2c63bc8161b4 assets\forgottengraves\models\item\grave_forgotten.json
+92ea240fa891d3669533dff88a39d0d03d606735 assets\forgottengraves\blockstates\grave.json
+58adfe6568f88358f5949378257580ad12df46e9 assets\forgottengraves\blockstates\grave_expired.json
+dbbfebb7da97340f68f28f9306881dbbd36a6c68 assets\forgottengraves\models\item\grave_expired.json
+30e18a1620629123c5dc625489ceeded3804d682 assets\forgottengraves\models\item\grave_weathered.json
+9286b4369bda68b63e61f3c13c9c0b90fca88e9a assets\forgottengraves\models\item\grave.json
+7dba35c28b629176b72f3daa06a1e9221942fbb6 assets\forgottengraves\blockstates\grave_forgotten.json

@@ -13,6 +13,7 @@ public class GraveDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(GraveBlockTagGenerator::new);
         pack.addProvider(GraveRecipeGenerator::new);
         pack.addProvider(GraveItemTagGenerator::new);
+        pack.addProvider(GraveModelGenerator::new);
     }
 
 }

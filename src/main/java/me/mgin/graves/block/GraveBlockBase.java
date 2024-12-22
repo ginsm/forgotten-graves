@@ -300,7 +300,7 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
             GraveBlockEntity entity = (GraveBlockEntity) world.getBlockEntity(pos);
             GravesConfig config = GravesConfig.getConfig();
             boolean inFinalStage = this.getDecayStage() == BlockDecay.FORGOTTEN;
-            boolean decaying = config.decay.decayEnabled || entity.getNoDecay() == 0;
+            boolean decaying = config.decay.decayEnabled && entity.getNoDecay() == 0;
 
             // This is needed to make old graves start ticking; if countingSeconds is false when the old grave
             // gets a random tick, it'll schedule ticks.

@@ -94,7 +94,11 @@ public class Trinkets implements InventoriesApi {
                 continue;
             }
 
-            equipItem(stack, player, i);
+            // Attempt to equip item, otherwise add to unequipped inventory.
+            boolean equipped = equipItem(stack, player, i);
+            if (!equipped) {
+                unequipped.add(stack);
+            }
         }
 
         return unequipped;
@@ -121,12 +125,14 @@ public class Trinkets implements InventoriesApi {
      * Equips an item based on a given index; this is meant to be used with
      * setInventory. The index is based on each TrinketSlot -- not group.
      *
-     * @param stack ItemStack
+     * @param stack  ItemStack
      * @param player PlayerEntity
-     * @param index int
+     * @param index  int
+     * @return
      */
-    public static void equipItem(ItemStack stack, PlayerEntity player, int index) {
+    public static boolean equipItem(ItemStack stack, PlayerEntity player, int index) {
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
+        boolean equipped = false;
 
         if (component.isPresent()) {
             int currentSlot = 0;
@@ -147,6 +153,7 @@ public class Trinkets implements InventoriesApi {
                                 }
 
                                 stack.setCount(0);
+                                equipped = true;
                             }
                         }
                         currentSlot += 1;
@@ -154,5 +161,7 @@ public class Trinkets implements InventoriesApi {
                 }
             }
         }
+
+        return equipped;
     }
 }

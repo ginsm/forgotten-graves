@@ -3,10 +3,9 @@
 Supports Minecraft versions: `1.20-1.20.4`
 
 ## Added
-- 
 - Added support for the [Forgotten Graves Redefined](https://www.curseforge.com/minecraft/texture-packs/forgotten-graves-redefined) resource pack. Here are some of the things that now happen:
-  - Player names and custom text show up on the models properly.
-  - The collision and outline shape change to match the custom models.
+  - Player names and custom text shows up on the models properly.
+  - The outline shape changes to match the custom models.
   - The player skull shifts slightly away from the tombstone.
 
 ## Fixed

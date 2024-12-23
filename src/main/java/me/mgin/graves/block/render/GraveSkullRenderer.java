@@ -3,6 +3,7 @@ package me.mgin.graves.block.render;
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.block.render.packs.ResourcePack;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.annotation.Nullable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SkullBlock;
@@ -50,24 +51,26 @@ public class GraveSkullRenderer {
     }
 
     private void rotateSkull(Direction direction, MatrixStack matrices, int decayStage) {
+        ResourcePack pack = ResourcePackChecker.getActivePack();
+
         switch (direction) {
             case NORTH:
                 // 180 deg (Y)
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotation(3.14159265f));
-                matrices.translate(-1.2, 0.25 - (decayStage * 0.03), -0.99);
+                matrices.translate(-1.2, 0.25 - (decayStage * 0.03), -0.99 + pack.getSkullOffset());
                 break;
             case SOUTH:
-                matrices.translate(0.15, 0.25 - (decayStage * 0.03), 0.34);
+                matrices.translate(0.15, 0.25 - (decayStage * 0.03), 0.34 + pack.getSkullOffset());
                 break;
             case EAST:
                 // 90 deg (Y)
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotation(1.57079633f));
-                matrices.translate(-1.2, 0.25 - (decayStage * 0.03), 0.34);
+                matrices.translate(-1.2, 0.25 - (decayStage * 0.03), 0.34 + pack.getSkullOffset());
                 break;
             case WEST:
                 // 270 deg (Y)
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotation(4.71239f));
-                matrices.translate(0.15, 0.25 - (decayStage * 0.03), -0.99);
+                matrices.translate(0.15, 0.25 - (decayStage * 0.03), -0.99 + pack.getSkullOffset());
                 break;
             case UP:
             case DOWN:

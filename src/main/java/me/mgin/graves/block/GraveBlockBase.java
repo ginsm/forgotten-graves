@@ -34,7 +34,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -49,19 +48,6 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     public String blockID;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
     private boolean countingSeconds = false;
-
-    // This gets rotated by rotateShape so only one definition is needed (this is the NORTH definition technically).
-    public static final VoxelShape GRAVE_SHAPE = VoxelShapes.union(
-        // Tombstone, starts with the top part of the tombstone and works its way down
-        VoxelShapes.cuboid(0.1875f, 0.9375f, 0f, 0.8125f, 1f, 0.0625f), // Top part of tombstone
-        VoxelShapes.cuboid(0.125f, 0.8125f, 0f, 0.875f, 0.9375f, 0.0625f), // Middle part of tombstone
-        VoxelShapes.cuboid(0.0625f, 0f, 0f, 0.9375f, 0.8125f, 0.0625f), // Bottom part of tombstone
-        // Dirt collision box, starts from the part nearest to the tombstone and ends with the furthest point
-        VoxelShapes.cuboid(0.0625f, 0f, 0.0625f, 0.9375f, 0.0625f, 0.75f), // nearest
-        VoxelShapes.cuboid(0.125f, 0f, 0.75f, 0.875f, 0.0625f, 0.8125f),
-        VoxelShapes.cuboid(0.1875f, 0f, 0.8125f, 0.8125f, 0.0625f, 0.875f),
-        VoxelShapes.cuboid(0.3125f, 0f, 0.875f, 0.6875f, 0.0625f, 0.9375f) // furthest
-    );
 
     public GraveBlockBase(BlockDecay blockDecay, Settings settings, String blockID) {
         super(settings);
@@ -79,27 +65,6 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
     public String getBlockID() {
         return this.blockID;
     }
-
-    /**
-     * Rotates the outline/collision shape based on direction
-     */
-    private static VoxelShape rotateShape(Direction to) {
-        VoxelShape[] buffer = new VoxelShape[]{GraveBlockBase.GRAVE_SHAPE, VoxelShapes.empty()};
-
-        int times = (to.getHorizontal() - Direction.NORTH.getHorizontal() + 4) % 4;
-        for (int i = 0; i < times; i++) {
-            buffer[0].forEachBox((minX, minY, minZ, maxX, maxY, maxZ) -> {
-                buffer[1] = VoxelShapes.union(buffer[1], VoxelShapes.cuboid(
-                    1 - maxZ, minY, minX,
-                    1 - minZ, maxY, maxX));
-            });
-            buffer[0] = buffer[1];
-            buffer[1] = VoxelShapes.empty();
-        }
-
-        return buffer[0];
-    }
-
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {
@@ -209,26 +174,14 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         world.spawnEntity(itemEntity);
     }
 
-    public VoxelShape getGraveShape(BlockState state) {
-        Direction facing = state.get(HorizontalFacingBlock.FACING);
-
-        return switch (facing) {
-            case DOWN, UP -> null; // It can't face down or up anyway.
-            case NORTH -> rotateShape(Direction.NORTH);
-            case EAST -> rotateShape(Direction.EAST);
-            case SOUTH -> rotateShape(Direction.SOUTH);
-            case WEST -> rotateShape(Direction.WEST);
-        };
-    }
-
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ct) {
-        return getGraveShape(state);
+        return GraveBlockShapes.getGraveShape(state, getBlockID());
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return getGraveShape(state);
+        return GraveBlockShapes.getGraveShape(state, getBlockID());
     }
 
     @Override

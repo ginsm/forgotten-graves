@@ -2,6 +2,7 @@ package me.mgin.graves.client;
 
 import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.render.GraveBlockEntityRenderer;
+import me.mgin.graves.block.render.ResourcePackChecker;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.networking.config.ConfigNetworking;
 import me.mgin.graves.networking.config.event.ConfigNetworkingEvents;
@@ -16,5 +17,6 @@ public class GravesClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(GraveBlocks.GRAVE_BLOCK_ENTITY, GraveBlockEntityRenderer::new);
         ConfigNetworkingEvents.registerClientEvents();
         ConfigNetworking.registerS2CPackets();
+        ResourcePackChecker.initialize(); // Allows supporting custom models from resource packs
     }
 }

@@ -2,6 +2,8 @@ package me.mgin.graves.block.render.text;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.mgin.graves.block.entity.GraveBlockEntity;
+import me.mgin.graves.block.render.ResourcePackChecker;
+import me.mgin.graves.block.render.packs.TextPositions;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -18,10 +20,9 @@ import java.util.Map;
 public class GraveTextRenderer {
     private final TextRenderer textRenderer;
     private static final int MAX_CHAR_PER_LINE = 15;
-    private static final float MAX_TEXT_WIDTH = 65.0f; // The maximum width allowed for the text
     private static final int MAX_LINES = 6; // The  maximum amount of lines
     public static final float TEXT_SCALE = 0.012f;
-    public static float TEXT_HEIGHT = 0.7f;
+    public TextPositions textPositions;
 
     private final Map<String, List<Text>> cachedLinesMap = new HashMap<>();
     private final Map<String, Float> cachedScaleMap = new HashMap<>();
@@ -44,12 +45,15 @@ public class GraveTextRenderer {
 
         // Update cache if necessary
         if (!cachedLinesMap.containsKey(cacheKey)) {
+            // Assign text positions to active pack's positions
+            this.textPositions = ResourcePackChecker.getActivePack().getTextPositions();
+
             // Wrap the text
             List<String> lines = wrapText(text);
 
             // Get the scale and cache it (excludes color codes)
             float maxLineWidth = getMaxLineWidth(lines);
-            scale = Math.min(TEXT_SCALE, MAX_TEXT_WIDTH / maxLineWidth * TEXT_SCALE);
+            scale = Math.min(TEXT_SCALE, textPositions.TEXT_WIDTH / maxLineWidth * TEXT_SCALE);
 
             // Format the lines
             GraveTextFormatter formatter = new GraveTextFormatter();
@@ -102,7 +106,7 @@ public class GraveTextRenderer {
             }
         }
 
-        // Default to just returning the custom name
+        // DefaultPack to just returning the custom name
         return customName;
     }
 
@@ -202,7 +206,7 @@ public class GraveTextRenderer {
         for (Text line : formattedLines) {
             float xOffset = -textRenderer.getWidth(line) / 2.0f;
             textRenderer.draw(line, xOffset, yOffset, 0xFFFFFF, false, matrices.peek().getPositionMatrix(),
-                vertexConsumers, net.minecraft.client.font.TextRenderer.TextLayerType.NORMAL, 0, light);
+                vertexConsumers, TextRenderer.TextLayerType.NORMAL, 0, light);
             yOffset += 10;
         }
 
@@ -211,26 +215,29 @@ public class GraveTextRenderer {
 
 
     private void rotateText(Direction direction, MatrixStack matrices, List<Text> lines) {
-        float textHeight = TEXT_HEIGHT + (lines.size() * .025f);
+        // The text height ranges from 0f-1f, but to make it consistent I've decided to go with all ints for the
+        // text height, width, depth.
+        float textHeight = ((float) textPositions.TEXT_HEIGHT / 100) + (lines.size() * .025f);
+        float textDepth = textPositions.TEXT_DEPTH * 0.0626f; // Text depth is in 1/16ths, ranging from 1-6.
 
         switch (direction) {
             case NORTH:
-                matrices.translate(0.5, textHeight, 0.0626);
+                matrices.translate(0.5, textHeight, textDepth);
                 break;
             case EAST:
                 // 90 deg (Y)
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotation(4.71239f));
-                matrices.translate(0.5f, textHeight, -0.9374f);
+                matrices.translate(0.5f, textHeight, -1f + textDepth);
                 break;
             case SOUTH:
                 // 180 deg (Y)
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotation(3.14159265f));
-                matrices.translate(-0.5, textHeight, -0.9374f);
+                matrices.translate(-0.5, textHeight, -1f + textDepth);
                 break;
             case WEST:
                 // 270 deg (Y)
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotation(1.57079633f));
-                matrices.translate(-0.5f, textHeight, 0.0626f);
+                matrices.translate(-0.5f, textHeight, textDepth);
                 break;
             case UP, DOWN:
                 break;

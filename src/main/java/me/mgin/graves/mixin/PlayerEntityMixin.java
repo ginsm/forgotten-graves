@@ -44,7 +44,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         boolean hasDisableGravesEffect = player.hasStatusEffect(GraveEffects.DISABLE_GRAVES_EFFECT);
 
         // Read above comments for each conditional
-        if (forgottenGravesEnabled || playerCanPlaceBlocks || !(disabledInPvP && killedByPlayer) || !hasDisableGravesEffect) {
+        if (forgottenGravesEnabled && playerCanPlaceBlocks && !(disabledInPvP && killedByPlayer) && !hasDisableGravesEffect) {
             PlaceGrave.place(this.getWorld(), this.getPos(), player);
         }
 

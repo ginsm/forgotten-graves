@@ -17,6 +17,8 @@
   "text.autoconfig.forgottengraves.option.main.graveCoordinates.@Tooltip": "Should the coords of the grave be sent in chat?",
   "text.autoconfig.forgottengraves.option.main.retrievalType": "Retrieval Type",
   "text.autoconfig.forgottengraves.option.main.retrievalType.@Tooltip": "How are the items retrieved?",
+  "text.autoconfig.forgottengraves.option.main.mergeOrder": "Inventory Merge Order",
+  "text.autoconfig.forgottengraves.option.main.mergeOrder.@Tooltip": "When retrieving graves, which inventory should be used as the main one?",
   "text.autoconfig.forgottengraves.option.main.dropType": "Drop Type",
   "text.autoconfig.forgottengraves.option.main.dropType.@Tooltip": "What happens to the items when they're retrieved?",
   "text.autoconfig.forgottengraves.option.main.sneakSwapsDropType": "Sneak Swaps Drop Type",

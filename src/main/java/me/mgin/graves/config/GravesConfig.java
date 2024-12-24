@@ -1,10 +1,7 @@
 package me.mgin.graves.config;
 
 import me.mgin.graves.block.decay.DecayingGrave;
-import me.mgin.graves.config.enums.GraveDropType;
-import me.mgin.graves.config.enums.GraveExpStoreType;
-import me.mgin.graves.config.enums.GraveRetrievalType;
-import me.mgin.graves.config.enums.ExperienceType;
+import me.mgin.graves.config.enums.*;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
@@ -64,6 +61,10 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
         public GraveRetrievalType retrievalType = GraveRetrievalType.BOTH;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+        public GraveMergeOrder mergeOrder = GraveMergeOrder.GRAVE;
 
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)

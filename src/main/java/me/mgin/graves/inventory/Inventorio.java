@@ -37,13 +37,18 @@ public class Inventorio implements InventoriesApi {
     public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory,
                                                  PlayerEntity player) {
         PlayerInventoryAddon inventorioInv = InventorioAPI.getInventoryAddon(player);
+        DefaultedList<ItemStack> unequipped = DefaultedList.of();
 
         for (int i = 0; i < inventory.size(); i++) {
-            inventorioInv.setStack(i, inventory.get(i));
+            if (inventorioInv.getStack(i).isEmpty()) {
+                inventorioInv.setStack(i, inventory.get(i));
+            } else {
+                unequipped.add(inventory.get(i));
+            }
         }
 
         // return an empty list
-        return DefaultedList.of();
+        return unequipped;
     }
 
     @Override

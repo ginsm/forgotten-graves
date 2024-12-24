@@ -6,6 +6,7 @@ import me.mgin.graves.api.InventoriesApi;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.util.collection.DefaultedList;
@@ -36,6 +37,7 @@ public class Vanilla implements InventoriesApi {
     @Override
     public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity player) {
         DefaultedList<ItemStack> unequipped = DefaultedList.of();
+        PlayerInventory playerInventory = player.getInventory();
 
         // Equip armor pieces
         List<ItemStack> armor = inventory.subList(36, 40);
@@ -53,12 +55,20 @@ public class Vanilla implements InventoriesApi {
             }
 
             EquipmentSlot slot = MobEntity.getPreferredEquipmentSlot(armorItem);
-            player.equipStack(slot, armorItem);
+            if (player.getEquippedStack(slot).isEmpty()) {
+                player.equipStack(slot, armorItem);
+            } else {
+                unequipped.add(armorItem);
+            }
         }
 
-        // Equip off hand item
+        // Equip offhand item
         ItemStack offHandItem = inventory.get(40);
-        player.equipStack(EquipmentSlot.OFFHAND, offHandItem);
+        if (player.getEquippedStack(EquipmentSlot.OFFHAND).isEmpty()) {
+            player.equipStack(EquipmentSlot.OFFHAND, offHandItem);
+        } else {
+            unequipped.add(offHandItem);
+        }
 
         // Restore inventory in position
         List<ItemStack> mainInventory = inventory.subList(0, 36);
@@ -71,7 +81,11 @@ public class Vanilla implements InventoriesApi {
                 continue;
             }
 
-            player.getInventory().setStack(i, stack);
+            if (playerInventory.main.get(i).isEmpty()) {
+                player.getInventory().setStack(i, stack);
+            } else {
+                unequipped.add(stack);
+            }
         }
 
         return unequipped;

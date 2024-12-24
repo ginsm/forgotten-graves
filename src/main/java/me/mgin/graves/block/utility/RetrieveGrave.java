@@ -8,6 +8,7 @@ import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.config.enums.GraveDropType;
+import me.mgin.graves.config.enums.GraveMergeOrder;
 import me.mgin.graves.state.PlayerState;
 import me.mgin.graves.state.ServerState;
 import net.minecraft.block.entity.BlockEntity;
@@ -179,29 +180,29 @@ public class RetrieveGrave {
      */
     static public DefaultedList<ItemStack> getInventoryItems(GraveBlockEntity graveEntity) {
         // Keeps track of items to be dropped
-        DefaultedList<ItemStack> droppedItems = DefaultedList.of();
+        DefaultedList<ItemStack> items = DefaultedList.of();
 
-        // Add loaded inventories to droppedItems list
+        // Add loaded inventories to items list
         for (InventoriesApi api : Graves.inventories) {
             DefaultedList<ItemStack> modInventory = graveEntity.getInventory(api.getID());
 
             if (modInventory != null)
-                droppedItems.addAll(modInventory);
+                items.addAll(modInventory);
         }
 
-        // Add any unloaded inventories to droppedItems list
+        // Add any unloaded inventories to items list
         for (String modID : Graves.unloadedInventories) {
             DefaultedList<ItemStack> modInventory = graveEntity.getInventory(modID);
 
             if (modInventory != null)
-                droppedItems.addAll(modInventory);
+                items.addAll(modInventory);
         }
 
-        return droppedItems;
+        return items;
     }
 
     /**
-     * Handles the "INVENTORY" drop type by looping through the different inventories and attempting
+     * Handles the "EQUIP" drop type by looping through the different inventories and attempting
      * to equip them; returning a list of any items that could not be equipped.
      *
      * @param player PlayerEntity
@@ -209,34 +210,39 @@ public class RetrieveGrave {
      * @return {@code DefaultedList<ItemStack>}
      */
     static public DefaultedList<ItemStack> equipInventoryItems(PlayerEntity player, GraveBlockEntity graveEntity) {
-        // Keeps track of items to be dropped
-        DefaultedList<ItemStack> droppedItems = DefaultedList.of();
-
-        // Store old inventories as one big inventory
-        DefaultedList<ItemStack> oldInventory = DefaultedList.of();
+        GraveMergeOrder mergeOrder = GravesConfig.resolve("mergeOrder", player.getGameProfile());
+        DefaultedList<ItemStack> overflow = DefaultedList.of();
 
         for (InventoriesApi api : Graves.inventories) {
-            DefaultedList<ItemStack> inventory = api.getInventory(player);
+            DefaultedList<ItemStack> graveInventory = graveEntity.getInventory(api.getID());
+            DefaultedList<ItemStack> playerInventory = api.getInventory(player);
 
-            // Skip empty inventories
-            if (inventory == null) continue;
-
-            oldInventory.addAll(inventory);
-            api.clearInventory(player);
-        }
-
-        // Equip inventories
-        for (InventoriesApi api : Graves.inventories) {
-            DefaultedList<ItemStack> inventory = graveEntity.getInventory(api.getID());
-
-            if (inventory == null)
-                continue;
-
-            if (api.getInventorySize(player) == inventory.size()) {
-                DefaultedList<ItemStack> unequippedItems = api.setInventory(inventory, player);
-                droppedItems.addAll(unequippedItems);
+            if (mergeOrder == GraveMergeOrder.CURRENT) {
+                // Attempt to equip the grave inventory
+                if (graveInventory != null) {
+                    if (api.getInventorySize(player) == graveInventory.size()) {
+                        overflow.addAll(api.setInventory(graveInventory, player));
+                    } else {
+                        overflow.addAll(graveInventory);
+                    }
+                }
             } else {
-                droppedItems.addAll(inventory);
+                // Clear the inventory of the player
+                api.clearInventory(player);
+
+                // Restore the grave inventory to the player
+                if (graveInventory != null) {
+                    if (api.getInventorySize(player) == graveInventory.size()) {
+                        overflow.addAll(api.setInventory(graveInventory, player));
+                    } else {
+                        overflow.addAll(graveInventory);
+                    }
+                }
+
+                // Attempt to equip the player inventory
+                if (playerInventory != null) {
+                    overflow.addAll(api.setInventory(playerInventory, player));
+                }
             }
         }
 
@@ -244,25 +250,16 @@ public class RetrieveGrave {
         for (String modID : Graves.unloadedInventories) {
             DefaultedList<ItemStack> inventory = graveEntity.getInventory(modID);
             if (inventory != null)
-                droppedItems.addAll(inventory);
+                overflow.addAll(inventory);
         }
-
-        // Preserve previous inventory
-        droppedItems.addAll(oldInventory);
 
         // Remove any empty or air slots from extraItems
-        droppedItems.removeIf(item -> item == ItemStack.EMPTY || item.getItem() == Items.AIR);
+        overflow.removeIf(ItemStack::isEmpty);
 
-        // Move extra items to open slots
-        DefaultedList<Integer> openSlots = Inventory.getInventoryOpenSlots(player.getInventory().main);
+        // NOTE - This method mutates the overflow list, it will contain items unable to be merged afterwards
+        // Attempt to merge the two inventories (with stack consolidation)
+        Inventory.mergeInventories(overflow, player.getInventory().main);
 
-        for (Integer openSlot : openSlots) {
-            if (droppedItems.size() > 0) {
-                player.getInventory().setStack(openSlot, droppedItems.get(0));
-                droppedItems.remove(0);
-            }
-        }
-
-        return droppedItems;
+        return overflow;
     }
 }

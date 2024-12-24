@@ -24,7 +24,8 @@ public class GraveResourcePackManager implements SimpleResourceReloadListener<Vo
 
     public static void initialize() {
         // Forgotten Graves Redefined
-        resourcePacks.put("file/Forgotten Graves Redefined.zip", new RedefinedPack());
+        GraveResourcePack redefined = new RedefinedPack();
+        resourcePacks.put("file/Forgotten Graves Redefined.zip", redefined);
 
         // Register this listener to handle resource reload events
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new GraveResourcePackManager());

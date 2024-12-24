@@ -1,7 +1,6 @@
 package me.mgin.graves.block;
 
 import me.mgin.graves.block.render.GraveResourcePackManager;
-import me.mgin.graves.block.render.packs.DefaultPack;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.util.math.Direction;
@@ -14,7 +13,7 @@ public class GraveBlockShapes {
         VoxelShape shape;
 
         if (useDefault) {
-            shape = new DefaultPack().getGraveShape(blockID);
+            shape = GraveResourcePackManager.defaultPack.getGraveShape(blockID);
         } else {
             shape = GraveResourcePackManager.getActivePack().getGraveShape(blockID);
         }

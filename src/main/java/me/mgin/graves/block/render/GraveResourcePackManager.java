@@ -19,13 +19,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class GraveResourcePackManager implements SimpleResourceReloadListener<Void> {
-    public static GraveResourcePack activePack = new DefaultPack();
+    public static GraveResourcePack defaultPack = new DefaultPack();
+    public static GraveResourcePack redefinedPack = new RedefinedPack();
+    public static GraveResourcePack activePack = defaultPack;
     public static Map<String, GraveResourcePack> resourcePacks = new HashMap<>();
 
     public static void initialize() {
         // Forgotten Graves Redefined
-        GraveResourcePack redefined = new RedefinedPack();
-        resourcePacks.put("file/Forgotten Graves Redefined.zip", redefined);
+        resourcePacks.put("file/Forgotten Graves Redefined.zip", redefinedPack);
 
         // Register this listener to handle resource reload events
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new GraveResourcePackManager());
@@ -41,7 +42,7 @@ public class GraveResourcePackManager implements SimpleResourceReloadListener<Vo
 
     @Override
     public CompletableFuture<Void> load(ResourceManager manager, Profiler profiler, Executor executor) {
-        activePack = new DefaultPack();
+        activePack = defaultPack;
 
         return CompletableFuture.runAsync(() -> {
             MinecraftClient.getInstance().getResourceManager().streamResourcePacks().forEach((pack) -> {

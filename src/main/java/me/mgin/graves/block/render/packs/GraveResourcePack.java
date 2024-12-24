@@ -3,12 +3,7 @@ package me.mgin.graves.block.render.packs;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public interface ResourcePack {
-    public String ID = null;
-    public List<String> files = new ArrayList<>();
+public interface GraveResourcePack {
     public final VoxelShape GRAVE_SHAPE = VoxelShapes.fullCube();
     public final VoxelShape GRAVE_SHAPE_OLD = GRAVE_SHAPE;
     public final VoxelShape GRAVE_SHAPE_WEATHERED = GRAVE_SHAPE;
@@ -17,14 +12,6 @@ public interface ResourcePack {
     public float SKULL_OFFSET = 0;
 
     public TextPositions getTextPositions();
-
-    public default String getID() {
-        return this.ID;
-    };
-
-    public default List<String> getFiles() {
-        return this.files;
-    };
 
     public default VoxelShape getGraveShape(String blockID) {
         return switch (blockID) {

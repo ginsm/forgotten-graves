@@ -3,7 +3,7 @@ package me.mgin.graves.block.render;
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.entity.GraveBlockEntity;
-import me.mgin.graves.block.render.packs.ResourcePack;
+import me.mgin.graves.block.render.packs.GraveResourcePack;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.annotation.Nullable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SkullBlock;
@@ -51,7 +51,7 @@ public class GraveSkullRenderer {
     }
 
     private void rotateSkull(Direction direction, MatrixStack matrices, int decayStage) {
-        ResourcePack pack = ResourcePackChecker.getActivePack();
+        GraveResourcePack pack = GraveResourcePackManager.getActivePack();
 
         switch (direction) {
             case NORTH:

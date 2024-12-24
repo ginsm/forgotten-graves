@@ -176,12 +176,12 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ct) {
-        return GraveBlockShapes.getGraveShape(state, getBlockID());
+        return GraveBlockShapes.getGraveShape(state, getBlockID(), false);
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return GraveBlockShapes.getGraveShape(state, getBlockID());
+        return GraveBlockShapes.getGraveShape(state, getBlockID(), true);
     }
 
     @Override

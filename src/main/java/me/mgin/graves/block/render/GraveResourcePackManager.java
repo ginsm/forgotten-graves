@@ -3,7 +3,7 @@ package me.mgin.graves.block.render;
 import me.mgin.graves.Graves;
 import me.mgin.graves.block.render.packs.DefaultPack;
 import me.mgin.graves.block.render.packs.RedefinedPack;
-import me.mgin.graves.block.render.packs.ResourcePack;
+import me.mgin.graves.block.render.packs.GraveResourcePack;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleResourceReloadListener;
 import net.minecraft.client.MinecraftClient;
@@ -13,16 +13,21 @@ import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-public class ResourcePackChecker implements SimpleResourceReloadListener<Void> {
-    public static ResourcePack activePack = new DefaultPack();
+public class GraveResourcePackManager implements SimpleResourceReloadListener<Void> {
+    public static GraveResourcePack activePack = new DefaultPack();
+    public static Map<String, GraveResourcePack> resourcePacks = new HashMap<>();
 
     public static void initialize() {
+        // Forgotten Graves Redefined
+        resourcePacks.put("file/Forgotten Graves Redefined.zip", new RedefinedPack());
+
         // Register this listener to handle resource reload events
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new ResourcePackChecker());
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new GraveResourcePackManager());
     }
 
     // ResourceReloadListener methods
@@ -36,8 +41,14 @@ public class ResourcePackChecker implements SimpleResourceReloadListener<Void> {
     @Override
     public CompletableFuture<Void> load(ResourceManager manager, Profiler profiler, Executor executor) {
         activePack = new DefaultPack();
+
         return CompletableFuture.runAsync(() -> {
-            updateResourcePackStatus(new RedefinedPack());
+            MinecraftClient.getInstance().getResourceManager().streamResourcePacks().forEach((pack) -> {
+                String filePath = pack.getName();
+                if (resourcePacks.containsKey(filePath)) {
+                    activePack = resourcePacks.get(filePath);
+                }
+            });
         }, executor);
     }
 
@@ -51,30 +62,7 @@ public class ResourcePackChecker implements SimpleResourceReloadListener<Void> {
         return new Identifier(Graves.MOD_ID, "resource_pack_checker");
     }
 
-
-    /**
-     * Updates the active pack with the last active pack.
-     *
-     * @param pack - Class representing a resource pack.
-     */
-    public void updateResourcePackStatus(ResourcePack pack) {
-        List<String> files = pack.getFiles();
-        if (files.isEmpty() || files.stream().allMatch(ResourcePackChecker::isResourcePackFilePresent)) {
-            activePack = pack;
-        }
-    }
-
-    /**
-     * Checks the resource manager for the given file path.
-     *
-     * @param filePath - The path to a file within the resource pack.
-     * @return A boolean representing the existence of the resource.
-     */
-    private static boolean isResourcePackFilePresent(String filePath) {
-        return MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(Graves.MOD_ID, filePath)).isPresent();
-    }
-
-    public static ResourcePack getActivePack() {
+    public static GraveResourcePack getActivePack() {
         return activePack;
     }
 }

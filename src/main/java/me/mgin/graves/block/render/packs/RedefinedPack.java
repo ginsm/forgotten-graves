@@ -3,24 +3,7 @@ package me.mgin.graves.block.render.packs;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class RedefinedPack implements ResourcePack {
-    public String ID = "forgotten-graves-redefined";
-    public List<String> files = new ArrayList<>();
-
-    public RedefinedPack() {
-        // These are files that the ResourcePackChecker will use to determine if
-        // the pack is active or not;
-        this.files.add("textures/block/dead_mossy_gravestone.png");
-        this.files.add("textures/block/less_mossy_cobblestone.png");
-        this.files.add("textures/block/less_mossy_gravestone.png");
-        this.files.add("textures/block/mossy_gravestone.png");
-        this.files.add("textures/block/mycelium_rooted_dirt.png");
-        this.files.add("textures/block/podzol_old.png");
-    }
-
+public class RedefinedPack implements GraveResourcePack {
     static float bit = 0.0625f; // useful for creating grave shapes
     public final VoxelShape GRAVE_SHAPE = VoxelShapes.union(
         // Tombstone
@@ -59,16 +42,6 @@ public class RedefinedPack implements ResourcePack {
     public TextPositions getTextPositions() {
         return new TextPositions(70, 3, 52);
     }
-
-    @Override
-    public String getID() {
-        return this.ID;
-    };
-
-    @Override
-    public List<String> getFiles() {
-        return this.files;
-    };
 
     @Override
     public VoxelShape getGraveShape(String blockID) {

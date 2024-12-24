@@ -1,6 +1,7 @@
 package me.mgin.graves.block;
 
-import me.mgin.graves.block.render.ResourcePackChecker;
+import me.mgin.graves.block.render.GraveResourcePackManager;
+import me.mgin.graves.block.render.packs.DefaultPack;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.util.math.Direction;
@@ -8,9 +9,15 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 
 public class GraveBlockShapes {
-    public static VoxelShape getGraveShape(BlockState state, String blockID) {
+    public static VoxelShape getGraveShape(BlockState state, String blockID, boolean useDefault) {
         Direction facing = state.get(HorizontalFacingBlock.FACING);
-        VoxelShape shape = ResourcePackChecker.getActivePack().getGraveShape(blockID);
+        VoxelShape shape;
+
+        if (useDefault) {
+            shape = new DefaultPack().getGraveShape(blockID);
+        } else {
+            shape = GraveResourcePackManager.getActivePack().getGraveShape(blockID);
+        }
 
         return switch (facing) {
             case DOWN, UP -> null; // It can't face down or up anyway.

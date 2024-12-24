@@ -3,13 +3,7 @@ package me.mgin.graves.block.render.packs;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class DefaultPack implements ResourcePack {
-    public String ID = "forgotten-graves-default";
-    public List<String> files = new ArrayList<>();
-
+public class DefaultPack implements GraveResourcePack {
     static float bit = 0.0625f; // useful for creating grave shapes
     public final VoxelShape GRAVE_SHAPE = VoxelShapes.union(
         // Tombstone (top down)
@@ -43,14 +37,6 @@ public class DefaultPack implements ResourcePack {
     public TextPositions getTextPositions() {
         return new TextPositions();
     }
-
-    public String getID() {
-        return this.ID;
-    };
-
-    public List<String> getFiles() {
-        return this.files;
-    };
 
     public VoxelShape getGraveShape(String blockID) {
         return switch (blockID) {

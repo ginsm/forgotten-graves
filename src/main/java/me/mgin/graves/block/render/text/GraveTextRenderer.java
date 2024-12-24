@@ -2,7 +2,7 @@ package me.mgin.graves.block.render.text;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.mgin.graves.block.entity.GraveBlockEntity;
-import me.mgin.graves.block.render.ResourcePackChecker;
+import me.mgin.graves.block.render.GraveResourcePackManager;
 import me.mgin.graves.block.render.packs.TextPositions;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -46,7 +46,7 @@ public class GraveTextRenderer {
         // Update cache if necessary
         if (!cachedLinesMap.containsKey(cacheKey)) {
             // Assign text positions to active pack's positions
-            this.textPositions = ResourcePackChecker.getActivePack().getTextPositions();
+            this.textPositions = GraveResourcePackManager.getActivePack().getTextPositions();
 
             // Wrap the text
             List<String> lines = wrapText(text);

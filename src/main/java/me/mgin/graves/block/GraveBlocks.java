@@ -19,6 +19,7 @@ public class GraveBlocks {
     public static final GraveBlockBase GRAVE_OLD = createGrave(BlockDecay.OLD, "grave_old");
     public static final GraveBlockBase GRAVE_WEATHERED = createGrave(BlockDecay.WEATHERED, "grave_weathered");
     public static final GraveBlockBase GRAVE_FORGOTTEN = createGrave(BlockDecay.FORGOTTEN, "grave_forgotten");
+    public static final GraveBlockBase GRAVE_EXPIRED = createGrave(BlockDecay.EXPIRED, "grave_expired");
 
     public static final Set<GraveBlockBase> GRAVE_SET = new HashSet<>();
 
@@ -27,6 +28,7 @@ public class GraveBlocks {
         GRAVE_SET.add(GRAVE_OLD);
         GRAVE_SET.add(GRAVE_WEATHERED);
         GRAVE_SET.add(GRAVE_FORGOTTEN);
+        GRAVE_SET.add(GRAVE_EXPIRED);
     }
 
     private static GraveBlockBase createGrave(BlockDecay blockDecay, String blockID) {
@@ -49,7 +51,8 @@ public class GraveBlocks {
         }
 
         BlockEntityType<GraveBlockEntity> blockEntityType = FabricBlockEntityTypeBuilder.create(GraveBlockEntity::new,
-                GraveBlocks.GRAVE, GraveBlocks.GRAVE_OLD, GraveBlocks.GRAVE_WEATHERED, GraveBlocks.GRAVE_FORGOTTEN)
+                GraveBlocks.GRAVE, GraveBlocks.GRAVE_OLD, GraveBlocks.GRAVE_WEATHERED, GraveBlocks.GRAVE_FORGOTTEN,
+                GraveBlocks.GRAVE_EXPIRED)
             .build(null);
 
         GraveBlocks.GRAVE_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, MOD_ID + ":" + BRAND_BLOCK,

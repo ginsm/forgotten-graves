@@ -45,7 +45,7 @@ public interface DecayingGrave extends Decayable<DecayingGrave.BlockDecay> {
     }
 
     enum BlockDecay {
-        FRESH, OLD, WEATHERED, FORGOTTEN;
+        FRESH, OLD, WEATHERED, FORGOTTEN, EXPIRED;
 
         BlockDecay() {
         }

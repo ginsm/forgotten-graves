@@ -308,6 +308,7 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
             case OLD -> GraveBlocks.GRAVE_OLD;
             case WEATHERED -> GraveBlocks.GRAVE_WEATHERED;
             case FORGOTTEN -> GraveBlocks.GRAVE_FORGOTTEN;
+            case EXPIRED -> GraveBlocks.GRAVE_EXPIRED;
         };
     }
 

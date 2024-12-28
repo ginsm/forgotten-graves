@@ -179,8 +179,8 @@ public class PlaceGrave {
         }
 
         // For the logs :)
-        System.out.printf("[%s] Grave spawned at: %dx %dy %dz for player %s.\n", Graves.MOD_ID, pos.getX(), pos.getY(),
-            pos.getZ(), player.getName().getString());
+        System.out.printf("[%s] Grave spawned at %dx %dy %dz for player %s in %s.\n", Graves.MOD_ID, pos.getX(),
+            pos.getY(), pos.getZ(), player.getName().getString(), world.getDimensionKey().getValue());
     }
 
     /**

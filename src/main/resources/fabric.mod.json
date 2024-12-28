@@ -20,7 +20,8 @@
     "main": [ "me.mgin.graves.Graves" ],
     "client": [ "me.mgin.graves.client.GravesClient" ],
     "modmenu": [ "me.mgin.graves.GravesModMenuIntegration" ],
-    "fabric-datagen": [ "me.mgin.graves.GraveDataGenerator" ]
+    "fabric-datagen": [ "me.mgin.graves.GraveDataGenerator" ],
+    "fabric-gametest": [ "me.mgin.graves.gametest.GraveTest" ]
   },
   "mixins": [
     "graves.mixins.json"

@@ -1,0 +1,3423 @@
+{
+    size: [21, 8, 5],
+    entities: [],
+    blocks: [
+        {
+            pos: [1, 0, 1],
+            state: 0
+        },
+        {
+            pos: [1, 0, 2],
+            state: 0
+        },
+        {
+            pos: [1, 0, 3],
+            state: 0
+        },
+        {
+            pos: [2, 0, 1],
+            state: 0
+        },
+        {
+            pos: [2, 0, 2],
+            state: 0
+        },
+        {
+            pos: [2, 0, 3],
+            state: 0
+        },
+        {
+            pos: [3, 0, 1],
+            state: 0
+        },
+        {
+            pos: [3, 0, 2],
+            state: 0
+        },
+        {
+            pos: [3, 0, 3],
+            state: 0
+        },
+        {
+            pos: [9, 0, 1],
+            state: 0
+        },
+        {
+            pos: [9, 0, 2],
+            state: 0
+        },
+        {
+            pos: [9, 0, 3],
+            state: 0
+        },
+        {
+            pos: [10, 0, 1],
+            state: 0
+        },
+        {
+            pos: [10, 0, 2],
+            state: 0
+        },
+        {
+            pos: [10, 0, 3],
+            state: 0
+        },
+        {
+            pos: [11, 0, 1],
+            state: 0
+        },
+        {
+            pos: [11, 0, 2],
+            state: 0
+        },
+        {
+            pos: [11, 0, 3],
+            state: 0
+        },
+        {
+            pos: [13, 0, 1],
+            state: 0
+        },
+        {
+            pos: [13, 0, 2],
+            state: 0
+        },
+        {
+            pos: [13, 0, 3],
+            state: 0
+        },
+        {
+            pos: [14, 0, 1],
+            state: 0
+        },
+        {
+            pos: [14, 0, 2],
+            state: 0
+        },
+        {
+            pos: [14, 0, 3],
+            state: 0
+        },
+        {
+            pos: [15, 0, 1],
+            state: 0
+        },
+        {
+            pos: [15, 0, 2],
+            state: 0
+        },
+        {
+            pos: [15, 0, 3],
+            state: 0
+        },
+        {
+            pos: [17, 0, 1],
+            state: 1
+        },
+        {
+            pos: [17, 0, 2],
+            state: 1
+        },
+        {
+            pos: [17, 0, 3],
+            state: 1
+        },
+        {
+            pos: [18, 0, 1],
+            state: 1
+        },
+        {
+            pos: [18, 0, 2],
+            state: 1
+        },
+        {
+            pos: [18, 0, 3],
+            state: 1
+        },
+        {
+            pos: [19, 0, 1],
+            state: 1
+        },
+        {
+            pos: [19, 0, 2],
+            state: 1
+        },
+        {
+            pos: [19, 0, 3],
+            state: 1
+        },
+        {
+            pos: [0, 1, 1],
+            state: 0
+        },
+        {
+            pos: [0, 1, 2],
+            state: 0
+        },
+        {
+            pos: [0, 1, 3],
+            state: 0
+        },
+        {
+            pos: [1, 1, 0],
+            state: 0
+        },
+        {
+            pos: [1, 1, 4],
+            state: 0
+        },
+        {
+            pos: [2, 1, 0],
+            state: 0
+        },
+        {
+            pos: [2, 1, 4],
+            state: 0
+        },
+        {
+            pos: [3, 1, 0],
+            state: 0
+        },
+        {
+            pos: [3, 1, 4],
+            state: 0
+        },
+        {
+            pos: [4, 1, 1],
+            state: 0
+        },
+        {
+            pos: [4, 1, 2],
+            state: 0
+        },
+        {
+            pos: [4, 1, 3],
+            state: 0
+        },
+        {
+            pos: [5, 1, 0],
+            state: 0
+        },
+        {
+            pos: [5, 1, 4],
+            state: 0
+        },
+        {
+            pos: [6, 1, 0],
+            state: 0
+        },
+        {
+            pos: [6, 1, 4],
+            state: 0
+        },
+        {
+            pos: [7, 1, 0],
+            state: 0
+        },
+        {
+            pos: [7, 1, 4],
+            state: 0
+        },
+        {
+            pos: [8, 1, 1],
+            state: 0
+        },
+        {
+            pos: [8, 1, 2],
+            state: 0
+        },
+        {
+            pos: [8, 1, 3],
+            state: 0
+        },
+        {
+            pos: [9, 1, 0],
+            state: 0
+        },
+        {
+            pos: [9, 1, 4],
+            state: 0
+        },
+        {
+            pos: [10, 1, 0],
+            state: 0
+        },
+        {
+            pos: [10, 1, 4],
+            state: 0
+        },
+        {
+            pos: [11, 1, 0],
+            state: 0
+        },
+        {
+            pos: [11, 1, 4],
+            state: 0
+        },
+        {
+            pos: [12, 1, 1],
+            state: 0
+        },
+        {
+            pos: [12, 1, 2],
+            state: 0
+        },
+        {
+            pos: [12, 1, 3],
+            state: 0
+        },
+        {
+            pos: [13, 1, 0],
+            state: 0
+        },
+        {
+            pos: [13, 1, 1],
+            state: 2
+        },
+        {
+            pos: [13, 1, 2],
+            state: 2
+        },
+        {
+            pos: [13, 1, 3],
+            state: 2
+        },
+        {
+            pos: [13, 1, 4],
+            state: 0
+        },
+        {
+            pos: [14, 1, 0],
+            state: 0
+        },
+        {
+            pos: [14, 1, 1],
+            state: 2
+        },
+        {
+            pos: [14, 1, 2],
+            state: 2
+        },
+        {
+            pos: [14, 1, 3],
+            state: 2
+        },
+        {
+            pos: [14, 1, 4],
+            state: 0
+        },
+        {
+            pos: [15, 1, 0],
+            state: 0
+        },
+        {
+            pos: [15, 1, 1],
+            state: 2
+        },
+        {
+            pos: [15, 1, 2],
+            state: 2
+        },
+        {
+            pos: [15, 1, 3],
+            state: 2
+        },
+        {
+            pos: [15, 1, 4],
+            state: 0
+        },
+        {
+            pos: [16, 1, 1],
+            state: 0
+        },
+        {
+            pos: [16, 1, 2],
+            state: 0
+        },
+        {
+            pos: [16, 1, 3],
+            state: 0
+        },
+        {
+            pos: [17, 1, 0],
+            state: 0
+        },
+        {
+            pos: [17, 1, 4],
+            state: 0
+        },
+        {
+            pos: [18, 1, 0],
+            state: 0
+        },
+        {
+            pos: [18, 1, 4],
+            state: 0
+        },
+        {
+            pos: [19, 1, 0],
+            state: 0
+        },
+        {
+            pos: [19, 1, 4],
+            state: 0
+        },
+        {
+            pos: [20, 1, 1],
+            state: 0
+        },
+        {
+            pos: [20, 1, 2],
+            state: 0
+        },
+        {
+            pos: [20, 1, 3],
+            state: 0
+        },
+        {
+            pos: [0, 2, 1],
+            state: 0
+        },
+        {
+            pos: [0, 2, 2],
+            state: 0
+        },
+        {
+            pos: [0, 2, 3],
+            state: 0
+        },
+        {
+            pos: [1, 2, 0],
+            state: 0
+        },
+        {
+            pos: [1, 2, 4],
+            state: 0
+        },
+        {
+            pos: [2, 2, 0],
+            state: 0
+        },
+        {
+            pos: [2, 2, 4],
+            state: 0
+        },
+        {
+            pos: [3, 2, 0],
+            state: 0
+        },
+        {
+            pos: [3, 2, 4],
+            state: 0
+        },
+        {
+            pos: [4, 2, 1],
+            state: 0
+        },
+        {
+            pos: [4, 2, 2],
+            state: 0
+        },
+        {
+            pos: [4, 2, 3],
+            state: 0
+        },
+        {
+            pos: [5, 2, 0],
+            state: 0
+        },
+        {
+            pos: [5, 2, 4],
+            state: 0
+        },
+        {
+            pos: [6, 2, 0],
+            state: 0
+        },
+        {
+            pos: [6, 2, 4],
+            state: 0
+        },
+        {
+            pos: [7, 2, 0],
+            state: 0
+        },
+        {
+            pos: [7, 2, 4],
+            state: 0
+        },
+        {
+            pos: [8, 2, 1],
+            state: 0
+        },
+        {
+            pos: [8, 2, 2],
+            state: 0
+        },
+        {
+            pos: [8, 2, 3],
+            state: 0
+        },
+        {
+            pos: [9, 2, 0],
+            state: 0
+        },
+        {
+            pos: [9, 2, 4],
+            state: 0
+        },
+        {
+            pos: [10, 2, 0],
+            state: 0
+        },
+        {
+            pos: [10, 2, 4],
+            state: 0
+        },
+        {
+            pos: [11, 2, 0],
+            state: 0
+        },
+        {
+            pos: [11, 2, 4],
+            state: 0
+        },
+        {
+            pos: [12, 2, 1],
+            state: 0
+        },
+        {
+            pos: [12, 2, 2],
+            state: 0
+        },
+        {
+            pos: [12, 2, 3],
+            state: 0
+        },
+        {
+            pos: [13, 2, 0],
+            state: 0
+        },
+        {
+            pos: [13, 2, 1],
+            state: 2
+        },
+        {
+            pos: [13, 2, 2],
+            state: 2
+        },
+        {
+            pos: [13, 2, 3],
+            state: 2
+        },
+        {
+            pos: [13, 2, 4],
+            state: 0
+        },
+        {
+            pos: [14, 2, 0],
+            state: 0
+        },
+        {
+            pos: [14, 2, 1],
+            state: 2
+        },
+        {
+            pos: [14, 2, 2],
+            state: 2
+        },
+        {
+            pos: [14, 2, 3],
+            state: 2
+        },
+        {
+            pos: [14, 2, 4],
+            state: 0
+        },
+        {
+            pos: [15, 2, 0],
+            state: 0
+        },
+        {
+            pos: [15, 2, 1],
+            state: 2
+        },
+        {
+            pos: [15, 2, 2],
+            state: 2
+        },
+        {
+            pos: [15, 2, 3],
+            state: 2
+        },
+        {
+            pos: [15, 2, 4],
+            state: 0
+        },
+        {
+            pos: [16, 2, 1],
+            state: 0
+        },
+        {
+            pos: [16, 2, 2],
+            state: 0
+        },
+        {
+            pos: [16, 2, 3],
+            state: 0
+        },
+        {
+            pos: [17, 2, 0],
+            state: 0
+        },
+        {
+            pos: [17, 2, 4],
+            state: 0
+        },
+        {
+            pos: [18, 2, 0],
+            state: 0
+        },
+        {
+            pos: [18, 2, 4],
+            state: 0
+        },
+        {
+            pos: [19, 2, 0],
+            state: 0
+        },
+        {
+            pos: [19, 2, 4],
+            state: 0
+        },
+        {
+            pos: [20, 2, 1],
+            state: 0
+        },
+        {
+            pos: [20, 2, 2],
+            state: 0
+        },
+        {
+            pos: [20, 2, 3],
+            state: 0
+        },
+        {
+            pos: [0, 3, 1],
+            state: 0
+        },
+        {
+            pos: [0, 3, 2],
+            state: 0
+        },
+        {
+            pos: [0, 3, 3],
+            state: 0
+        },
+        {
+            pos: [1, 3, 0],
+            state: 0
+        },
+        {
+            pos: [1, 3, 4],
+            state: 0
+        },
+        {
+            pos: [2, 3, 0],
+            state: 0
+        },
+        {
+            pos: [2, 3, 4],
+            state: 0
+        },
+        {
+            pos: [3, 3, 0],
+            state: 0
+        },
+        {
+            pos: [3, 3, 4],
+            state: 0
+        },
+        {
+            pos: [4, 3, 1],
+            state: 0
+        },
+        {
+            pos: [4, 3, 2],
+            state: 0
+        },
+        {
+            pos: [4, 3, 3],
+            state: 0
+        },
+        {
+            pos: [5, 3, 0],
+            state: 0
+        },
+        {
+            pos: [5, 3, 4],
+            state: 0
+        },
+        {
+            pos: [6, 3, 0],
+            state: 0
+        },
+        {
+            pos: [6, 3, 4],
+            state: 0
+        },
+        {
+            pos: [7, 3, 0],
+            state: 0
+        },
+        {
+            pos: [7, 3, 4],
+            state: 0
+        },
+        {
+            pos: [8, 3, 1],
+            state: 0
+        },
+        {
+            pos: [8, 3, 2],
+            state: 0
+        },
+        {
+            pos: [8, 3, 3],
+            state: 0
+        },
+        {
+            pos: [9, 3, 0],
+            state: 0
+        },
+        {
+            pos: [9, 3, 4],
+            state: 0
+        },
+        {
+            pos: [10, 3, 0],
+            state: 0
+        },
+        {
+            pos: [10, 3, 4],
+            state: 0
+        },
+        {
+            pos: [11, 3, 0],
+            state: 0
+        },
+        {
+            pos: [11, 3, 4],
+            state: 0
+        },
+        {
+            pos: [12, 3, 1],
+            state: 0
+        },
+        {
+            pos: [12, 3, 2],
+            state: 0
+        },
+        {
+            pos: [12, 3, 3],
+            state: 0
+        },
+        {
+            pos: [13, 3, 0],
+            state: 0
+        },
+        {
+            pos: [13, 3, 1],
+            state: 2
+        },
+        {
+            pos: [13, 3, 2],
+            state: 2
+        },
+        {
+            pos: [13, 3, 3],
+            state: 2
+        },
+        {
+            pos: [13, 3, 4],
+            state: 0
+        },
+        {
+            pos: [14, 3, 0],
+            state: 0
+        },
+        {
+            pos: [14, 3, 1],
+            state: 2
+        },
+        {
+            pos: [14, 3, 2],
+            state: 2
+        },
+        {
+            pos: [14, 3, 3],
+            state: 2
+        },
+        {
+            pos: [14, 3, 4],
+            state: 0
+        },
+        {
+            pos: [15, 3, 0],
+            state: 0
+        },
+        {
+            pos: [15, 3, 1],
+            state: 2
+        },
+        {
+            pos: [15, 3, 2],
+            state: 2
+        },
+        {
+            pos: [15, 3, 3],
+            state: 2
+        },
+        {
+            pos: [15, 3, 4],
+            state: 0
+        },
+        {
+            pos: [16, 3, 1],
+            state: 0
+        },
+        {
+            pos: [16, 3, 2],
+            state: 0
+        },
+        {
+            pos: [16, 3, 3],
+            state: 0
+        },
+        {
+            pos: [17, 3, 0],
+            state: 0
+        },
+        {
+            pos: [17, 3, 4],
+            state: 0
+        },
+        {
+            pos: [18, 3, 0],
+            state: 0
+        },
+        {
+            pos: [18, 3, 4],
+            state: 0
+        },
+        {
+            pos: [19, 3, 0],
+            state: 0
+        },
+        {
+            pos: [19, 3, 4],
+            state: 0
+        },
+        {
+            pos: [20, 3, 1],
+            state: 0
+        },
+        {
+            pos: [20, 3, 2],
+            state: 0
+        },
+        {
+            pos: [20, 3, 3],
+            state: 0
+        },
+        {
+            pos: [0, 4, 1],
+            state: 0
+        },
+        {
+            pos: [0, 4, 2],
+            state: 0
+        },
+        {
+            pos: [0, 4, 3],
+            state: 0
+        },
+        {
+            pos: [1, 4, 0],
+            state: 0
+        },
+        {
+            pos: [1, 4, 4],
+            state: 0
+        },
+        {
+            pos: [2, 4, 0],
+            state: 0
+        },
+        {
+            pos: [2, 4, 4],
+            state: 0
+        },
+        {
+            pos: [3, 4, 0],
+            state: 0
+        },
+        {
+            pos: [3, 4, 4],
+            state: 0
+        },
+        {
+            pos: [4, 4, 1],
+            state: 0
+        },
+        {
+            pos: [4, 4, 2],
+            state: 0
+        },
+        {
+            pos: [4, 4, 3],
+            state: 0
+        },
+        {
+            pos: [5, 4, 0],
+            state: 0
+        },
+        {
+            pos: [5, 4, 4],
+            state: 0
+        },
+        {
+            pos: [6, 4, 0],
+            state: 0
+        },
+        {
+            pos: [6, 4, 4],
+            state: 0
+        },
+        {
+            pos: [7, 4, 0],
+            state: 0
+        },
+        {
+            pos: [7, 4, 4],
+            state: 0
+        },
+        {
+            pos: [8, 4, 1],
+            state: 0
+        },
+        {
+            pos: [8, 4, 2],
+            state: 0
+        },
+        {
+            pos: [8, 4, 3],
+            state: 0
+        },
+        {
+            pos: [9, 4, 0],
+            state: 0
+        },
+        {
+            pos: [9, 4, 4],
+            state: 0
+        },
+        {
+            pos: [10, 4, 0],
+            state: 0
+        },
+        {
+            pos: [10, 4, 4],
+            state: 0
+        },
+        {
+            pos: [11, 4, 0],
+            state: 0
+        },
+        {
+            pos: [11, 4, 4],
+            state: 0
+        },
+        {
+            pos: [12, 4, 1],
+            state: 0
+        },
+        {
+            pos: [12, 4, 2],
+            state: 0
+        },
+        {
+            pos: [12, 4, 3],
+            state: 0
+        },
+        {
+            pos: [13, 4, 0],
+            state: 0
+        },
+        {
+            pos: [13, 4, 1],
+            state: 2
+        },
+        {
+            pos: [13, 4, 2],
+            state: 2
+        },
+        {
+            pos: [13, 4, 3],
+            state: 2
+        },
+        {
+            pos: [13, 4, 4],
+            state: 0
+        },
+        {
+            pos: [14, 4, 0],
+            state: 0
+        },
+        {
+            pos: [14, 4, 1],
+            state: 2
+        },
+        {
+            pos: [14, 4, 2],
+            state: 2
+        },
+        {
+            pos: [14, 4, 3],
+            state: 2
+        },
+        {
+            pos: [14, 4, 4],
+            state: 0
+        },
+        {
+            pos: [15, 4, 0],
+            state: 0
+        },
+        {
+            pos: [15, 4, 1],
+            state: 2
+        },
+        {
+            pos: [15, 4, 2],
+            state: 2
+        },
+        {
+            pos: [15, 4, 3],
+            state: 2
+        },
+        {
+            pos: [15, 4, 4],
+            state: 0
+        },
+        {
+            pos: [16, 4, 1],
+            state: 0
+        },
+        {
+            pos: [16, 4, 2],
+            state: 0
+        },
+        {
+            pos: [16, 4, 3],
+            state: 0
+        },
+        {
+            pos: [17, 4, 0],
+            state: 0
+        },
+        {
+            pos: [17, 4, 4],
+            state: 0
+        },
+        {
+            pos: [18, 4, 0],
+            state: 0
+        },
+        {
+            pos: [18, 4, 4],
+            state: 0
+        },
+        {
+            pos: [19, 4, 0],
+            state: 0
+        },
+        {
+            pos: [19, 4, 4],
+            state: 0
+        },
+        {
+            pos: [20, 4, 1],
+            state: 0
+        },
+        {
+            pos: [20, 4, 2],
+            state: 0
+        },
+        {
+            pos: [20, 4, 3],
+            state: 0
+        },
+        {
+            pos: [0, 5, 1],
+            state: 0
+        },
+        {
+            pos: [0, 5, 2],
+            state: 0
+        },
+        {
+            pos: [0, 5, 3],
+            state: 0
+        },
+        {
+            pos: [1, 5, 0],
+            state: 0
+        },
+        {
+            pos: [1, 5, 4],
+            state: 0
+        },
+        {
+            pos: [2, 5, 0],
+            state: 0
+        },
+        {
+            pos: [2, 5, 4],
+            state: 0
+        },
+        {
+            pos: [3, 5, 0],
+            state: 0
+        },
+        {
+            pos: [3, 5, 4],
+            state: 0
+        },
+        {
+            pos: [4, 5, 1],
+            state: 0
+        },
+        {
+            pos: [4, 5, 2],
+            state: 0
+        },
+        {
+            pos: [4, 5, 3],
+            state: 0
+        },
+        {
+            pos: [5, 5, 0],
+            state: 0
+        },
+        {
+            pos: [5, 5, 4],
+            state: 0
+        },
+        {
+            pos: [6, 5, 0],
+            state: 0
+        },
+        {
+            pos: [6, 5, 4],
+            state: 0
+        },
+        {
+            pos: [7, 5, 0],
+            state: 0
+        },
+        {
+            pos: [7, 5, 4],
+            state: 0
+        },
+        {
+            pos: [8, 5, 1],
+            state: 0
+        },
+        {
+            pos: [8, 5, 2],
+            state: 0
+        },
+        {
+            pos: [8, 5, 3],
+            state: 0
+        },
+        {
+            pos: [9, 5, 0],
+            state: 0
+        },
+        {
+            pos: [9, 5, 4],
+            state: 0
+        },
+        {
+            pos: [10, 5, 0],
+            state: 0
+        },
+        {
+            pos: [10, 5, 4],
+            state: 0
+        },
+        {
+            pos: [11, 5, 0],
+            state: 0
+        },
+        {
+            pos: [11, 5, 4],
+            state: 0
+        },
+        {
+            pos: [12, 5, 1],
+            state: 0
+        },
+        {
+            pos: [12, 5, 2],
+            state: 0
+        },
+        {
+            pos: [12, 5, 3],
+            state: 0
+        },
+        {
+            pos: [13, 5, 0],
+            state: 0
+        },
+        {
+            pos: [13, 5, 1],
+            state: 2
+        },
+        {
+            pos: [13, 5, 2],
+            state: 2
+        },
+        {
+            pos: [13, 5, 3],
+            state: 2
+        },
+        {
+            pos: [13, 5, 4],
+            state: 0
+        },
+        {
+            pos: [14, 5, 0],
+            state: 0
+        },
+        {
+            pos: [14, 5, 1],
+            state: 2
+        },
+        {
+            pos: [14, 5, 2],
+            state: 2
+        },
+        {
+            pos: [14, 5, 3],
+            state: 2
+        },
+        {
+            pos: [14, 5, 4],
+            state: 0
+        },
+        {
+            pos: [15, 5, 0],
+            state: 0
+        },
+        {
+            pos: [15, 5, 1],
+            state: 2
+        },
+        {
+            pos: [15, 5, 2],
+            state: 2
+        },
+        {
+            pos: [15, 5, 3],
+            state: 2
+        },
+        {
+            pos: [15, 5, 4],
+            state: 0
+        },
+        {
+            pos: [16, 5, 1],
+            state: 0
+        },
+        {
+            pos: [16, 5, 2],
+            state: 0
+        },
+        {
+            pos: [16, 5, 3],
+            state: 0
+        },
+        {
+            pos: [17, 5, 0],
+            state: 0
+        },
+        {
+            pos: [17, 5, 4],
+            state: 0
+        },
+        {
+            pos: [18, 5, 0],
+            state: 0
+        },
+        {
+            pos: [18, 5, 4],
+            state: 0
+        },
+        {
+            pos: [19, 5, 0],
+            state: 0
+        },
+        {
+            pos: [19, 5, 4],
+            state: 0
+        },
+        {
+            pos: [20, 5, 1],
+            state: 0
+        },
+        {
+            pos: [20, 5, 2],
+            state: 0
+        },
+        {
+            pos: [20, 5, 3],
+            state: 0
+        },
+        {
+            pos: [0, 6, 1],
+            state: 0
+        },
+        {
+            pos: [0, 6, 2],
+            state: 0
+        },
+        {
+            pos: [0, 6, 3],
+            state: 0
+        },
+        {
+            pos: [1, 6, 0],
+            state: 0
+        },
+        {
+            pos: [1, 6, 4],
+            state: 0
+        },
+        {
+            pos: [2, 6, 0],
+            state: 0
+        },
+        {
+            pos: [2, 6, 4],
+            state: 0
+        },
+        {
+            pos: [3, 6, 0],
+            state: 0
+        },
+        {
+            pos: [3, 6, 4],
+            state: 0
+        },
+        {
+            pos: [4, 6, 1],
+            state: 0
+        },
+        {
+            pos: [4, 6, 2],
+            state: 0
+        },
+        {
+            pos: [4, 6, 3],
+            state: 0
+        },
+        {
+            pos: [5, 6, 0],
+            state: 0
+        },
+        {
+            pos: [5, 6, 4],
+            state: 0
+        },
+        {
+            pos: [6, 6, 0],
+            state: 0
+        },
+        {
+            pos: [6, 6, 4],
+            state: 0
+        },
+        {
+            pos: [7, 6, 0],
+            state: 0
+        },
+        {
+            pos: [7, 6, 4],
+            state: 0
+        },
+        {
+            pos: [8, 6, 1],
+            state: 0
+        },
+        {
+            pos: [8, 6, 2],
+            state: 0
+        },
+        {
+            pos: [8, 6, 3],
+            state: 0
+        },
+        {
+            pos: [9, 6, 0],
+            state: 0
+        },
+        {
+            pos: [9, 6, 4],
+            state: 0
+        },
+        {
+            pos: [10, 6, 0],
+            state: 0
+        },
+        {
+            pos: [10, 6, 4],
+            state: 0
+        },
+        {
+            pos: [11, 6, 0],
+            state: 0
+        },
+        {
+            pos: [11, 6, 4],
+            state: 0
+        },
+        {
+            pos: [12, 6, 1],
+            state: 0
+        },
+        {
+            pos: [12, 6, 2],
+            state: 0
+        },
+        {
+            pos: [12, 6, 3],
+            state: 0
+        },
+        {
+            pos: [13, 6, 0],
+            state: 0
+        },
+        {
+            pos: [13, 6, 1],
+            state: 2
+        },
+        {
+            pos: [13, 6, 2],
+            state: 2
+        },
+        {
+            pos: [13, 6, 3],
+            state: 2
+        },
+        {
+            pos: [13, 6, 4],
+            state: 0
+        },
+        {
+            pos: [14, 6, 0],
+            state: 0
+        },
+        {
+            pos: [14, 6, 1],
+            state: 2
+        },
+        {
+            pos: [14, 6, 2],
+            state: 2
+        },
+        {
+            pos: [14, 6, 3],
+            state: 2
+        },
+        {
+            pos: [14, 6, 4],
+            state: 0
+        },
+        {
+            pos: [15, 6, 0],
+            state: 0
+        },
+        {
+            pos: [15, 6, 1],
+            state: 2
+        },
+        {
+            pos: [15, 6, 2],
+            state: 2
+        },
+        {
+            pos: [15, 6, 3],
+            state: 2
+        },
+        {
+            pos: [15, 6, 4],
+            state: 0
+        },
+        {
+            pos: [16, 6, 1],
+            state: 0
+        },
+        {
+            pos: [16, 6, 2],
+            state: 0
+        },
+        {
+            pos: [16, 6, 3],
+            state: 0
+        },
+        {
+            pos: [17, 6, 0],
+            state: 0
+        },
+        {
+            pos: [17, 6, 4],
+            state: 0
+        },
+        {
+            pos: [18, 6, 0],
+            state: 0
+        },
+        {
+            pos: [18, 6, 4],
+            state: 0
+        },
+        {
+            pos: [19, 6, 0],
+            state: 0
+        },
+        {
+            pos: [19, 6, 4],
+            state: 0
+        },
+        {
+            pos: [20, 6, 1],
+            state: 0
+        },
+        {
+            pos: [20, 6, 2],
+            state: 0
+        },
+        {
+            pos: [20, 6, 3],
+            state: 0
+        },
+        {
+            pos: [0, 7, 1],
+            state: 0
+        },
+        {
+            pos: [0, 7, 2],
+            state: 0
+        },
+        {
+            pos: [0, 7, 3],
+            state: 0
+        },
+        {
+            pos: [1, 7, 0],
+            state: 0
+        },
+        {
+            pos: [1, 7, 4],
+            state: 0
+        },
+        {
+            pos: [2, 7, 0],
+            state: 0
+        },
+        {
+            pos: [2, 7, 4],
+            state: 0
+        },
+        {
+            pos: [3, 7, 0],
+            state: 0
+        },
+        {
+            pos: [3, 7, 4],
+            state: 0
+        },
+        {
+            pos: [4, 7, 1],
+            state: 0
+        },
+        {
+            pos: [4, 7, 2],
+            state: 0
+        },
+        {
+            pos: [4, 7, 3],
+            state: 0
+        },
+        {
+            pos: [5, 7, 0],
+            state: 0
+        },
+        {
+            pos: [5, 7, 4],
+            state: 0
+        },
+        {
+            pos: [6, 7, 0],
+            state: 0
+        },
+        {
+            pos: [6, 7, 4],
+            state: 0
+        },
+        {
+            pos: [7, 7, 0],
+            state: 0
+        },
+        {
+            pos: [7, 7, 4],
+            state: 0
+        },
+        {
+            pos: [8, 7, 1],
+            state: 0
+        },
+        {
+            pos: [8, 7, 2],
+            state: 0
+        },
+        {
+            pos: [8, 7, 3],
+            state: 0
+        },
+        {
+            pos: [9, 7, 0],
+            state: 0
+        },
+        {
+            pos: [9, 7, 4],
+            state: 0
+        },
+        {
+            pos: [10, 7, 0],
+            state: 0
+        },
+        {
+            pos: [10, 7, 4],
+            state: 0
+        },
+        {
+            pos: [11, 7, 0],
+            state: 0
+        },
+        {
+            pos: [11, 7, 4],
+            state: 0
+        },
+        {
+            pos: [12, 7, 1],
+            state: 0
+        },
+        {
+            pos: [12, 7, 2],
+            state: 0
+        },
+        {
+            pos: [12, 7, 3],
+            state: 0
+        },
+        {
+            pos: [13, 7, 0],
+            state: 0
+        },
+        {
+            pos: [13, 7, 1],
+            state: 2
+        },
+        {
+            pos: [13, 7, 2],
+            state: 2
+        },
+        {
+            pos: [13, 7, 3],
+            state: 2
+        },
+        {
+            pos: [13, 7, 4],
+            state: 0
+        },
+        {
+            pos: [14, 7, 0],
+            state: 0
+        },
+        {
+            pos: [14, 7, 1],
+            state: 2
+        },
+        {
+            pos: [14, 7, 2],
+            state: 2
+        },
+        {
+            pos: [14, 7, 3],
+            state: 2
+        },
+        {
+            pos: [14, 7, 4],
+            state: 0
+        },
+        {
+            pos: [15, 7, 0],
+            state: 0
+        },
+        {
+            pos: [15, 7, 1],
+            state: 2
+        },
+        {
+            pos: [15, 7, 2],
+            state: 2
+        },
+        {
+            pos: [15, 7, 3],
+            state: 2
+        },
+        {
+            pos: [15, 7, 4],
+            state: 0
+        },
+        {
+            pos: [16, 7, 1],
+            state: 0
+        },
+        {
+            pos: [16, 7, 2],
+            state: 0
+        },
+        {
+            pos: [16, 7, 3],
+            state: 0
+        },
+        {
+            pos: [17, 7, 0],
+            state: 0
+        },
+        {
+            pos: [17, 7, 4],
+            state: 0
+        },
+        {
+            pos: [18, 7, 0],
+            state: 0
+        },
+        {
+            pos: [18, 7, 4],
+            state: 0
+        },
+        {
+            pos: [19, 7, 0],
+            state: 0
+        },
+        {
+            pos: [19, 7, 4],
+            state: 0
+        },
+        {
+            pos: [20, 7, 1],
+            state: 0
+        },
+        {
+            pos: [20, 7, 2],
+            state: 0
+        },
+        {
+            pos: [20, 7, 3],
+            state: 0
+        },
+        {
+            pos: [0, 0, 0],
+            state: 3
+        },
+        {
+            pos: [0, 0, 1],
+            state: 3
+        },
+        {
+            pos: [0, 0, 2],
+            state: 3
+        },
+        {
+            pos: [0, 0, 3],
+            state: 3
+        },
+        {
+            pos: [0, 0, 4],
+            state: 3
+        },
+        {
+            pos: [1, 0, 0],
+            state: 3
+        },
+        {
+            pos: [1, 0, 4],
+            state: 3
+        },
+        {
+            pos: [2, 0, 0],
+            state: 3
+        },
+        {
+            pos: [2, 0, 4],
+            state: 3
+        },
+        {
+            pos: [3, 0, 0],
+            state: 3
+        },
+        {
+            pos: [3, 0, 4],
+            state: 3
+        },
+        {
+            pos: [4, 0, 0],
+            state: 3
+        },
+        {
+            pos: [4, 0, 1],
+            state: 3
+        },
+        {
+            pos: [4, 0, 2],
+            state: 3
+        },
+        {
+            pos: [4, 0, 3],
+            state: 3
+        },
+        {
+            pos: [4, 0, 4],
+            state: 3
+        },
+        {
+            pos: [5, 0, 0],
+            state: 3
+        },
+        {
+            pos: [5, 0, 1],
+            state: 4
+        },
+        {
+            pos: [5, 0, 2],
+            state: 4
+        },
+        {
+            pos: [5, 0, 3],
+            state: 4
+        },
+        {
+            pos: [5, 0, 4],
+            state: 3
+        },
+        {
+            pos: [6, 0, 0],
+            state: 3
+        },
+        {
+            pos: [6, 0, 1],
+            state: 4
+        },
+        {
+            pos: [6, 0, 2],
+            state: 4
+        },
+        {
+            pos: [6, 0, 3],
+            state: 4
+        },
+        {
+            pos: [6, 0, 4],
+            state: 3
+        },
+        {
+            pos: [7, 0, 0],
+            state: 3
+        },
+        {
+            pos: [7, 0, 1],
+            state: 4
+        },
+        {
+            pos: [7, 0, 2],
+            state: 4
+        },
+        {
+            pos: [7, 0, 3],
+            state: 4
+        },
+        {
+            pos: [7, 0, 4],
+            state: 3
+        },
+        {
+            pos: [8, 0, 0],
+            state: 3
+        },
+        {
+            pos: [8, 0, 1],
+            state: 3
+        },
+        {
+            pos: [8, 0, 2],
+            state: 3
+        },
+        {
+            pos: [8, 0, 3],
+            state: 3
+        },
+        {
+            pos: [8, 0, 4],
+            state: 3
+        },
+        {
+            pos: [9, 0, 0],
+            state: 3
+        },
+        {
+            pos: [9, 0, 4],
+            state: 3
+        },
+        {
+            pos: [10, 0, 0],
+            state: 3
+        },
+        {
+            pos: [10, 0, 4],
+            state: 3
+        },
+        {
+            pos: [11, 0, 0],
+            state: 3
+        },
+        {
+            pos: [11, 0, 4],
+            state: 3
+        },
+        {
+            pos: [12, 0, 0],
+            state: 3
+        },
+        {
+            pos: [12, 0, 1],
+            state: 3
+        },
+        {
+            pos: [12, 0, 2],
+            state: 3
+        },
+        {
+            pos: [12, 0, 3],
+            state: 3
+        },
+        {
+            pos: [12, 0, 4],
+            state: 3
+        },
+        {
+            pos: [13, 0, 0],
+            state: 3
+        },
+        {
+            pos: [13, 0, 4],
+            state: 3
+        },
+        {
+            pos: [14, 0, 0],
+            state: 3
+        },
+        {
+            pos: [14, 0, 4],
+            state: 3
+        },
+        {
+            pos: [15, 0, 0],
+            state: 3
+        },
+        {
+            pos: [15, 0, 4],
+            state: 3
+        },
+        {
+            pos: [16, 0, 0],
+            state: 3
+        },
+        {
+            pos: [16, 0, 1],
+            state: 3
+        },
+        {
+            pos: [16, 0, 2],
+            state: 3
+        },
+        {
+            pos: [16, 0, 3],
+            state: 3
+        },
+        {
+            pos: [16, 0, 4],
+            state: 3
+        },
+        {
+            pos: [17, 0, 0],
+            state: 3
+        },
+        {
+            pos: [17, 0, 4],
+            state: 3
+        },
+        {
+            pos: [18, 0, 0],
+            state: 3
+        },
+        {
+            pos: [18, 0, 4],
+            state: 3
+        },
+        {
+            pos: [19, 0, 0],
+            state: 3
+        },
+        {
+            pos: [19, 0, 4],
+            state: 3
+        },
+        {
+            pos: [20, 0, 0],
+            state: 3
+        },
+        {
+            pos: [20, 0, 1],
+            state: 3
+        },
+        {
+            pos: [20, 0, 2],
+            state: 3
+        },
+        {
+            pos: [20, 0, 3],
+            state: 3
+        },
+        {
+            pos: [20, 0, 4],
+            state: 3
+        },
+        {
+            pos: [0, 1, 0],
+            state: 3
+        },
+        {
+            pos: [0, 1, 4],
+            state: 3
+        },
+        {
+            pos: [1, 1, 1],
+            state: 5
+        },
+        {
+            pos: [1, 1, 2],
+            state: 5
+        },
+        {
+            pos: [1, 1, 3],
+            state: 5
+        },
+        {
+            pos: [2, 1, 1],
+            state: 5
+        },
+        {
+            pos: [2, 1, 2],
+            state: 5
+        },
+        {
+            pos: [2, 1, 3],
+            state: 5
+        },
+        {
+            pos: [3, 1, 1],
+            state: 5
+        },
+        {
+            pos: [3, 1, 2],
+            state: 5
+        },
+        {
+            pos: [3, 1, 3],
+            state: 5
+        },
+        {
+            pos: [4, 1, 0],
+            state: 3
+        },
+        {
+            pos: [4, 1, 4],
+            state: 3
+        },
+        {
+            pos: [5, 1, 1],
+            state: 6
+        },
+        {
+            pos: [5, 1, 2],
+            state: 6
+        },
+        {
+            pos: [5, 1, 3],
+            state: 6
+        },
+        {
+            pos: [6, 1, 1],
+            state: 6
+        },
+        {
+            pos: [6, 1, 2],
+            state: 6
+        },
+        {
+            pos: [6, 1, 3],
+            state: 6
+        },
+        {
+            pos: [7, 1, 1],
+            state: 6
+        },
+        {
+            pos: [7, 1, 2],
+            state: 6
+        },
+        {
+            pos: [7, 1, 3],
+            state: 6
+        },
+        {
+            pos: [8, 1, 0],
+            state: 3
+        },
+        {
+            pos: [8, 1, 4],
+            state: 3
+        },
+        {
+            pos: [9, 1, 1],
+            state: 7
+        },
+        {
+            pos: [9, 1, 2],
+            state: 7
+        },
+        {
+            pos: [9, 1, 3],
+            state: 7
+        },
+        {
+            pos: [10, 1, 1],
+            state: 7
+        },
+        {
+            pos: [10, 1, 2],
+            state: 8
+        },
+        {
+            pos: [10, 1, 3],
+            state: 7
+        },
+        {
+            pos: [11, 1, 1],
+            state: 7
+        },
+        {
+            pos: [11, 1, 2],
+            state: 7
+        },
+        {
+            pos: [11, 1, 3],
+            state: 7
+        },
+        {
+            pos: [12, 1, 0],
+            state: 3
+        },
+        {
+            pos: [12, 1, 4],
+            state: 3
+        },
+        {
+            pos: [16, 1, 0],
+            state: 3
+        },
+        {
+            pos: [16, 1, 4],
+            state: 3
+        },
+        {
+            pos: [17, 1, 1],
+            state: 9
+        },
+        {
+            pos: [17, 1, 2],
+            state: 9
+        },
+        {
+            pos: [17, 1, 3],
+            state: 9
+        },
+        {
+            pos: [18, 1, 1],
+            state: 9
+        },
+        {
+            pos: [18, 1, 2],
+            state: 3
+        },
+        {
+            pos: [18, 1, 3],
+            state: 9
+        },
+        {
+            pos: [19, 1, 1],
+            state: 9
+        },
+        {
+            pos: [19, 1, 2],
+            state: 9
+        },
+        {
+            pos: [19, 1, 3],
+            state: 9
+        },
+        {
+            pos: [20, 1, 0],
+            state: 3
+        },
+        {
+            pos: [20, 1, 4],
+            state: 3
+        },
+        {
+            pos: [0, 2, 0],
+            state: 3
+        },
+        {
+            pos: [0, 2, 4],
+            state: 3
+        },
+        {
+            pos: [1, 2, 1],
+            state: 5
+        },
+        {
+            pos: [1, 2, 2],
+            state: 5
+        },
+        {
+            pos: [1, 2, 3],
+            state: 5
+        },
+        {
+            pos: [2, 2, 1],
+            state: 5
+        },
+        {
+            pos: [2, 2, 2],
+            state: 5
+        },
+        {
+            pos: [2, 2, 3],
+            state: 5
+        },
+        {
+            pos: [3, 2, 1],
+            state: 5
+        },
+        {
+            pos: [3, 2, 2],
+            state: 5
+        },
+        {
+            pos: [3, 2, 3],
+            state: 5
+        },
+        {
+            pos: [4, 2, 0],
+            state: 3
+        },
+        {
+            pos: [4, 2, 4],
+            state: 3
+        },
+        {
+            pos: [5, 2, 1],
+            state: 6
+        },
+        {
+            pos: [5, 2, 2],
+            state: 6
+        },
+        {
+            pos: [5, 2, 3],
+            state: 6
+        },
+        {
+            pos: [6, 2, 1],
+            state: 6
+        },
+        {
+            pos: [6, 2, 2],
+            state: 6
+        },
+        {
+            pos: [6, 2, 3],
+            state: 6
+        },
+        {
+            pos: [7, 2, 1],
+            state: 6
+        },
+        {
+            pos: [7, 2, 2],
+            state: 6
+        },
+        {
+            pos: [7, 2, 3],
+            state: 6
+        },
+        {
+            pos: [8, 2, 0],
+            state: 3
+        },
+        {
+            pos: [8, 2, 4],
+            state: 3
+        },
+        {
+            pos: [9, 2, 1],
+            state: 7
+        },
+        {
+            pos: [9, 2, 2],
+            state: 7
+        },
+        {
+            pos: [9, 2, 3],
+            state: 7
+        },
+        {
+            pos: [10, 2, 1],
+            state: 7
+        },
+        {
+            pos: [10, 2, 2],
+            state: 7
+        },
+        {
+            pos: [10, 2, 3],
+            state: 7
+        },
+        {
+            pos: [11, 2, 1],
+            state: 7
+        },
+        {
+            pos: [11, 2, 2],
+            state: 7
+        },
+        {
+            pos: [11, 2, 3],
+            state: 7
+        },
+        {
+            pos: [12, 2, 0],
+            state: 3
+        },
+        {
+            pos: [12, 2, 4],
+            state: 3
+        },
+        {
+            pos: [16, 2, 0],
+            state: 3
+        },
+        {
+            pos: [16, 2, 4],
+            state: 3
+        },
+        {
+            pos: [17, 2, 1],
+            state: 10
+        },
+        {
+            pos: [17, 2, 2],
+            state: 10
+        },
+        {
+            pos: [17, 2, 3],
+            state: 10
+        },
+        {
+            pos: [18, 2, 1],
+            state: 10
+        },
+        {
+            pos: [18, 2, 2],
+            state: 3
+        },
+        {
+            pos: [18, 2, 3],
+            state: 10
+        },
+        {
+            pos: [19, 2, 1],
+            state: 10
+        },
+        {
+            pos: [19, 2, 2],
+            state: 10
+        },
+        {
+            pos: [19, 2, 3],
+            state: 10
+        },
+        {
+            pos: [20, 2, 0],
+            state: 3
+        },
+        {
+            pos: [20, 2, 4],
+            state: 3
+        },
+        {
+            pos: [0, 3, 0],
+            state: 3
+        },
+        {
+            pos: [0, 3, 4],
+            state: 3
+        },
+        {
+            pos: [1, 3, 1],
+            state: 5
+        },
+        {
+            pos: [1, 3, 2],
+            state: 5
+        },
+        {
+            pos: [1, 3, 3],
+            state: 5
+        },
+        {
+            pos: [2, 3, 1],
+            state: 5
+        },
+        {
+            pos: [2, 3, 2],
+            state: 5
+        },
+        {
+            pos: [2, 3, 3],
+            state: 5
+        },
+        {
+            pos: [3, 3, 1],
+            state: 5
+        },
+        {
+            pos: [3, 3, 2],
+            state: 5
+        },
+        {
+            pos: [3, 3, 3],
+            state: 5
+        },
+        {
+            pos: [4, 3, 0],
+            state: 3
+        },
+        {
+            pos: [4, 3, 4],
+            state: 3
+        },
+        {
+            pos: [5, 3, 1],
+            state: 6
+        },
+        {
+            pos: [5, 3, 2],
+            state: 6
+        },
+        {
+            pos: [5, 3, 3],
+            state: 6
+        },
+        {
+            pos: [6, 3, 1],
+            state: 6
+        },
+        {
+            pos: [6, 3, 2],
+            state: 6
+        },
+        {
+            pos: [6, 3, 3],
+            state: 6
+        },
+        {
+            pos: [7, 3, 1],
+            state: 6
+        },
+        {
+            pos: [7, 3, 2],
+            state: 6
+        },
+        {
+            pos: [7, 3, 3],
+            state: 6
+        },
+        {
+            pos: [8, 3, 0],
+            state: 3
+        },
+        {
+            pos: [8, 3, 4],
+            state: 3
+        },
+        {
+            pos: [9, 3, 1],
+            state: 7
+        },
+        {
+            pos: [9, 3, 2],
+            state: 7
+        },
+        {
+            pos: [9, 3, 3],
+            state: 7
+        },
+        {
+            pos: [10, 3, 1],
+            state: 7
+        },
+        {
+            pos: [10, 3, 2],
+            state: 7
+        },
+        {
+            pos: [10, 3, 3],
+            state: 7
+        },
+        {
+            pos: [11, 3, 1],
+            state: 7
+        },
+        {
+            pos: [11, 3, 2],
+            state: 7
+        },
+        {
+            pos: [11, 3, 3],
+            state: 7
+        },
+        {
+            pos: [12, 3, 0],
+            state: 3
+        },
+        {
+            pos: [12, 3, 4],
+            state: 3
+        },
+        {
+            pos: [16, 3, 0],
+            state: 3
+        },
+        {
+            pos: [16, 3, 4],
+            state: 3
+        },
+        {
+            pos: [17, 3, 1],
+            state: 3
+        },
+        {
+            pos: [17, 3, 2],
+            state: 3
+        },
+        {
+            pos: [17, 3, 3],
+            state: 3
+        },
+        {
+            pos: [18, 3, 1],
+            state: 3
+        },
+        {
+            pos: [18, 3, 2],
+            state: 3
+        },
+        {
+            pos: [18, 3, 3],
+            state: 3
+        },
+        {
+            pos: [19, 3, 1],
+            state: 3
+        },
+        {
+            pos: [19, 3, 2],
+            state: 3
+        },
+        {
+            pos: [19, 3, 3],
+            state: 3
+        },
+        {
+            pos: [20, 3, 0],
+            state: 3
+        },
+        {
+            pos: [20, 3, 4],
+            state: 3
+        },
+        {
+            pos: [0, 4, 0],
+            state: 3
+        },
+        {
+            pos: [0, 4, 4],
+            state: 3
+        },
+        {
+            pos: [1, 4, 1],
+            state: 5
+        },
+        {
+            pos: [1, 4, 2],
+            state: 5
+        },
+        {
+            pos: [1, 4, 3],
+            state: 5
+        },
+        {
+            pos: [2, 4, 1],
+            state: 5
+        },
+        {
+            pos: [2, 4, 2],
+            state: 5
+        },
+        {
+            pos: [2, 4, 3],
+            state: 5
+        },
+        {
+            pos: [3, 4, 1],
+            state: 5
+        },
+        {
+            pos: [3, 4, 2],
+            state: 5
+        },
+        {
+            pos: [3, 4, 3],
+            state: 5
+        },
+        {
+            pos: [4, 4, 0],
+            state: 3
+        },
+        {
+            pos: [4, 4, 4],
+            state: 3
+        },
+        {
+            pos: [5, 4, 1],
+            state: 6
+        },
+        {
+            pos: [5, 4, 2],
+            state: 6
+        },
+        {
+            pos: [5, 4, 3],
+            state: 6
+        },
+        {
+            pos: [6, 4, 1],
+            state: 6
+        },
+        {
+            pos: [6, 4, 2],
+            state: 6
+        },
+        {
+            pos: [6, 4, 3],
+            state: 6
+        },
+        {
+            pos: [7, 4, 1],
+            state: 6
+        },
+        {
+            pos: [7, 4, 2],
+            state: 6
+        },
+        {
+            pos: [7, 4, 3],
+            state: 6
+        },
+        {
+            pos: [8, 4, 0],
+            state: 3
+        },
+        {
+            pos: [8, 4, 4],
+            state: 3
+        },
+        {
+            pos: [9, 4, 1],
+            state: 7
+        },
+        {
+            pos: [9, 4, 2],
+            state: 7
+        },
+        {
+            pos: [9, 4, 3],
+            state: 7
+        },
+        {
+            pos: [10, 4, 1],
+            state: 7
+        },
+        {
+            pos: [10, 4, 2],
+            state: 7
+        },
+        {
+            pos: [10, 4, 3],
+            state: 7
+        },
+        {
+            pos: [11, 4, 1],
+            state: 7
+        },
+        {
+            pos: [11, 4, 2],
+            state: 7
+        },
+        {
+            pos: [11, 4, 3],
+            state: 7
+        },
+        {
+            pos: [12, 4, 0],
+            state: 3
+        },
+        {
+            pos: [12, 4, 4],
+            state: 3
+        },
+        {
+            pos: [16, 4, 0],
+            state: 3
+        },
+        {
+            pos: [16, 4, 4],
+            state: 3
+        },
+        {
+            pos: [17, 4, 1],
+            state: 3
+        },
+        {
+            pos: [17, 4, 2],
+            state: 3
+        },
+        {
+            pos: [17, 4, 3],
+            state: 3
+        },
+        {
+            pos: [18, 4, 1],
+            state: 3
+        },
+        {
+            pos: [18, 4, 2],
+            state: 3
+        },
+        {
+            pos: [18, 4, 3],
+            state: 3
+        },
+        {
+            pos: [19, 4, 1],
+            state: 3
+        },
+        {
+            pos: [19, 4, 2],
+            state: 3
+        },
+        {
+            pos: [19, 4, 3],
+            state: 3
+        },
+        {
+            pos: [20, 4, 0],
+            state: 3
+        },
+        {
+            pos: [20, 4, 4],
+            state: 3
+        },
+        {
+            pos: [0, 5, 0],
+            state: 3
+        },
+        {
+            pos: [0, 5, 4],
+            state: 3
+        },
+        {
+            pos: [1, 5, 1],
+            state: 5
+        },
+        {
+            pos: [1, 5, 2],
+            state: 5
+        },
+        {
+            pos: [1, 5, 3],
+            state: 5
+        },
+        {
+            pos: [2, 5, 1],
+            state: 5
+        },
+        {
+            pos: [2, 5, 2],
+            state: 5
+        },
+        {
+            pos: [2, 5, 3],
+            state: 5
+        },
+        {
+            pos: [3, 5, 1],
+            state: 5
+        },
+        {
+            pos: [3, 5, 2],
+            state: 5
+        },
+        {
+            pos: [3, 5, 3],
+            state: 5
+        },
+        {
+            pos: [4, 5, 0],
+            state: 3
+        },
+        {
+            pos: [4, 5, 4],
+            state: 3
+        },
+        {
+            pos: [5, 5, 1],
+            state: 6
+        },
+        {
+            pos: [5, 5, 2],
+            state: 6
+        },
+        {
+            pos: [5, 5, 3],
+            state: 6
+        },
+        {
+            pos: [6, 5, 1],
+            state: 6
+        },
+        {
+            pos: [6, 5, 2],
+            state: 6
+        },
+        {
+            pos: [6, 5, 3],
+            state: 6
+        },
+        {
+            pos: [7, 5, 1],
+            state: 6
+        },
+        {
+            pos: [7, 5, 2],
+            state: 6
+        },
+        {
+            pos: [7, 5, 3],
+            state: 6
+        },
+        {
+            pos: [8, 5, 0],
+            state: 3
+        },
+        {
+            pos: [8, 5, 4],
+            state: 3
+        },
+        {
+            pos: [9, 5, 1],
+            state: 7
+        },
+        {
+            pos: [9, 5, 2],
+            state: 7
+        },
+        {
+            pos: [9, 5, 3],
+            state: 7
+        },
+        {
+            pos: [10, 5, 1],
+            state: 7
+        },
+        {
+            pos: [10, 5, 2],
+            state: 7
+        },
+        {
+            pos: [10, 5, 3],
+            state: 7
+        },
+        {
+            pos: [11, 5, 1],
+            state: 7
+        },
+        {
+            pos: [11, 5, 2],
+            state: 7
+        },
+        {
+            pos: [11, 5, 3],
+            state: 7
+        },
+        {
+            pos: [12, 5, 0],
+            state: 3
+        },
+        {
+            pos: [12, 5, 4],
+            state: 3
+        },
+        {
+            pos: [16, 5, 0],
+            state: 3
+        },
+        {
+            pos: [16, 5, 4],
+            state: 3
+        },
+        {
+            pos: [17, 5, 1],
+            state: 3
+        },
+        {
+            pos: [17, 5, 2],
+            state: 3
+        },
+        {
+            pos: [17, 5, 3],
+            state: 3
+        },
+        {
+            pos: [18, 5, 1],
+            state: 3
+        },
+        {
+            pos: [18, 5, 2],
+            state: 3
+        },
+        {
+            pos: [18, 5, 3],
+            state: 3
+        },
+        {
+            pos: [19, 5, 1],
+            state: 3
+        },
+        {
+            pos: [19, 5, 2],
+            state: 3
+        },
+        {
+            pos: [19, 5, 3],
+            state: 3
+        },
+        {
+            pos: [20, 5, 0],
+            state: 3
+        },
+        {
+            pos: [20, 5, 4],
+            state: 3
+        },
+        {
+            pos: [0, 6, 0],
+            state: 3
+        },
+        {
+            pos: [0, 6, 4],
+            state: 3
+        },
+        {
+            pos: [1, 6, 1],
+            state: 5
+        },
+        {
+            pos: [1, 6, 2],
+            state: 5
+        },
+        {
+            pos: [1, 6, 3],
+            state: 5
+        },
+        {
+            pos: [2, 6, 1],
+            state: 5
+        },
+        {
+            pos: [2, 6, 2],
+            state: 5
+        },
+        {
+            pos: [2, 6, 3],
+            state: 5
+        },
+        {
+            pos: [3, 6, 1],
+            state: 5
+        },
+        {
+            pos: [3, 6, 2],
+            state: 5
+        },
+        {
+            pos: [3, 6, 3],
+            state: 5
+        },
+        {
+            pos: [4, 6, 0],
+            state: 3
+        },
+        {
+            pos: [4, 6, 4],
+            state: 3
+        },
+        {
+            pos: [5, 6, 1],
+            state: 6
+        },
+        {
+            pos: [5, 6, 2],
+            state: 6
+        },
+        {
+            pos: [5, 6, 3],
+            state: 6
+        },
+        {
+            pos: [6, 6, 1],
+            state: 6
+        },
+        {
+            pos: [6, 6, 2],
+            state: 6
+        },
+        {
+            pos: [6, 6, 3],
+            state: 6
+        },
+        {
+            pos: [7, 6, 1],
+            state: 6
+        },
+        {
+            pos: [7, 6, 2],
+            state: 6
+        },
+        {
+            pos: [7, 6, 3],
+            state: 6
+        },
+        {
+            pos: [8, 6, 0],
+            state: 3
+        },
+        {
+            pos: [8, 6, 4],
+            state: 3
+        },
+        {
+            pos: [9, 6, 1],
+            state: 7
+        },
+        {
+            pos: [9, 6, 2],
+            state: 7
+        },
+        {
+            pos: [9, 6, 3],
+            state: 7
+        },
+        {
+            pos: [10, 6, 1],
+            state: 7
+        },
+        {
+            pos: [10, 6, 2],
+            state: 8
+        },
+        {
+            pos: [10, 6, 3],
+            state: 7
+        },
+        {
+            pos: [11, 6, 1],
+            state: 7
+        },
+        {
+            pos: [11, 6, 2],
+            state: 7
+        },
+        {
+            pos: [11, 6, 3],
+            state: 7
+        },
+        {
+            pos: [12, 6, 0],
+            state: 3
+        },
+        {
+            pos: [12, 6, 4],
+            state: 3
+        },
+        {
+            pos: [16, 6, 0],
+            state: 3
+        },
+        {
+            pos: [16, 6, 4],
+            state: 3
+        },
+        {
+            pos: [17, 6, 1],
+            state: 3
+        },
+        {
+            pos: [17, 6, 2],
+            state: 3
+        },
+        {
+            pos: [17, 6, 3],
+            state: 3
+        },
+        {
+            pos: [18, 6, 1],
+            state: 3
+        },
+        {
+            pos: [18, 6, 2],
+            state: 3
+        },
+        {
+            pos: [18, 6, 3],
+            state: 3
+        },
+        {
+            pos: [19, 6, 1],
+            state: 3
+        },
+        {
+            pos: [19, 6, 2],
+            state: 3
+        },
+        {
+            pos: [19, 6, 3],
+            state: 3
+        },
+        {
+            pos: [20, 6, 0],
+            state: 3
+        },
+        {
+            pos: [20, 6, 4],
+            state: 3
+        },
+        {
+            pos: [0, 7, 0],
+            state: 3
+        },
+        {
+            pos: [0, 7, 4],
+            state: 3
+        },
+        {
+            pos: [1, 7, 1],
+            state: 5
+        },
+        {
+            pos: [1, 7, 2],
+            state: 5
+        },
+        {
+            pos: [1, 7, 3],
+            state: 5
+        },
+        {
+            pos: [2, 7, 1],
+            state: 5
+        },
+        {
+            pos: [2, 7, 2],
+            state: 5
+        },
+        {
+            pos: [2, 7, 3],
+            state: 5
+        },
+        {
+            pos: [3, 7, 1],
+            state: 5
+        },
+        {
+            pos: [3, 7, 2],
+            state: 5
+        },
+        {
+            pos: [3, 7, 3],
+            state: 5
+        },
+        {
+            pos: [4, 7, 0],
+            state: 3
+        },
+        {
+            pos: [4, 7, 4],
+            state: 3
+        },
+        {
+            pos: [5, 7, 1],
+            state: 6
+        },
+        {
+            pos: [5, 7, 2],
+            state: 6
+        },
+        {
+            pos: [5, 7, 3],
+            state: 6
+        },
+        {
+            pos: [6, 7, 1],
+            state: 6
+        },
+        {
+            pos: [6, 7, 2],
+            state: 6
+        },
+        {
+            pos: [6, 7, 3],
+            state: 6
+        },
+        {
+            pos: [7, 7, 1],
+            state: 6
+        },
+        {
+            pos: [7, 7, 2],
+            state: 6
+        },
+        {
+            pos: [7, 7, 3],
+            state: 6
+        },
+        {
+            pos: [8, 7, 0],
+            state: 3
+        },
+        {
+            pos: [8, 7, 4],
+            state: 3
+        },
+        {
+            pos: [9, 7, 1],
+            state: 7
+        },
+        {
+            pos: [9, 7, 2],
+            state: 7
+        },
+        {
+            pos: [9, 7, 3],
+            state: 7
+        },
+        {
+            pos: [10, 7, 1],
+            state: 7
+        },
+        {
+            pos: [10, 7, 2],
+            state: 7
+        },
+        {
+            pos: [10, 7, 3],
+            state: 7
+        },
+        {
+            pos: [11, 7, 1],
+            state: 7
+        },
+        {
+            pos: [11, 7, 2],
+            state: 7
+        },
+        {
+            pos: [11, 7, 3],
+            state: 7
+        },
+        {
+            pos: [12, 7, 0],
+            state: 3
+        },
+        {
+            pos: [12, 7, 4],
+            state: 3
+        },
+        {
+            pos: [16, 7, 0],
+            state: 3
+        },
+        {
+            pos: [16, 7, 4],
+            state: 3
+        },
+        {
+            pos: [17, 7, 1],
+            state: 3
+        },
+        {
+            pos: [17, 7, 2],
+            state: 3
+        },
+        {
+            pos: [17, 7, 3],
+            state: 3
+        },
+        {
+            pos: [18, 7, 1],
+            state: 3
+        },
+        {
+            pos: [18, 7, 2],
+            state: 3
+        },
+        {
+            pos: [18, 7, 3],
+            state: 3
+        },
+        {
+            pos: [19, 7, 1],
+            state: 3
+        },
+        {
+            pos: [19, 7, 2],
+            state: 3
+        },
+        {
+            pos: [19, 7, 3],
+            state: 3
+        },
+        {
+            pos: [20, 7, 0],
+            state: 3
+        },
+        {
+            pos: [20, 7, 4],
+            state: 3
+        }
+    ],
+    palette: [
+        {
+            Name: "minecraft:black_stained_glass"
+        },
+        {
+            Properties: {
+                snowy: "false"
+            },
+            Name: "minecraft:grass_block"
+        },
+        {
+            Name: "minecraft:bedrock"
+        },
+        {
+            Name: "minecraft:air"
+        },
+        {
+            Name: "minecraft:soul_sand"
+        },
+        {
+            Properties: {
+                level: "0"
+            },
+            Name: "minecraft:water"
+        },
+        {
+            Properties: {
+                drag: "false"
+            },
+            Name: "minecraft:bubble_column"
+        },
+        {
+            Properties: {
+                level: "0"
+            },
+            Name: "minecraft:lava"
+        },
+        {
+            Properties: {
+                level: "8"
+            },
+            Name: "minecraft:lava"
+        },
+        {
+            Properties: {
+                half: "lower"
+            },
+            Name: "minecraft:tall_grass"
+        },
+        {
+            Properties: {
+                half: "upper"
+            },
+            Name: "minecraft:tall_grass"
+        }
+    ],
+    DataVersion: 3465
+}

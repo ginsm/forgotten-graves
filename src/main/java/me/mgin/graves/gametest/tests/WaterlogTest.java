@@ -9,7 +9,7 @@ import net.minecraft.test.TestContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class WaterlogTests {
+public class WaterlogTest {
     public static void waterlogged(TestContext context, PlayerEntity player, BlockPos pos) {
         System.out.println(">> Running waterlogged <<");
         RegistryKey<World> key = World.OVERWORLD;

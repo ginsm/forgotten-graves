@@ -7,10 +7,15 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.test.TestContext;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -22,23 +27,26 @@ public class GraveTestHelper {
         server.getCommandManager().executeWithPrefix(server.getCommandSource(), command);
     }
 
+    public static ActionResult useStackOnBlock(PlayerEntity player, ItemStack stack, BlockPos pos) {
+        teleportPlayer(player, pos);
+        BlockHitResult blockHitResult = new BlockHitResult(Vec3d.ofCenter(pos), Direction.DOWN, pos, true);
+        ItemUsageContext itemUsageContext = new ItemUsageContext(player, Hand.MAIN_HAND, blockHitResult);
+        return stack.useOnBlock(itemUsageContext);
+    }
+
+    public static void checkGraveExists(TestContext context, PlayerEntity player, BlockPos pos, RegistryKey<World> key) {
         System.out.println(">> Running " + Thread.currentThread().getStackTrace()[2].getMethodName() + " <<");
-        World world = Objects.requireNonNull(player.getServer()).getWorld(worldKey);
+        World world = getWorld(player, key);
         if (world != null) {
-            // Place the grave
-            PlaceGrave.place(world, GraveTestHelper.posToVec3d(pos), player);
-
-            // Ensure grave placed
-            Block block = world.getBlockState(endPos).getBlock();
-            String errorMessage = "Expect block to be a grave block at " + endPos + " got " + block.getName()
-                + " in " + worldKey.getValue();
+            Block block = world.getBlockState(pos).getBlock();
+            String errorMessage = "Expect block to be a grave block at " + pos + " got " + block.getName()
+                + " in " + key.getValue();
             context.assertTrue(block instanceof GraveBlockBase, errorMessage);
-
-            // Remove grave
-            RetrieveGrave.retrieveWithInteract(player, world, endPos);
         }
     }
 
+    public static World getWorld(PlayerEntity player, RegistryKey<World> key) {
+        return Objects.requireNonNull(player.getServer()).getWorld(key);
     }
 
     public static void teleportPlayer(PlayerEntity player, BlockPos pos) {

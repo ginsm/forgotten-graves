@@ -34,6 +34,9 @@ public class UseBlockHandler {
             ItemStack itemStack = player.getStackInHand(hand);
             Item item = itemStack.getItem();
 
+            // Do not use off hand items on the grave
+            if (hand == Hand.OFF_HAND) return ActionResult.CONSUME;
+
             // Rename grave with name tags
             if (NameTag.handle(player, world, hand, pos, item, graveEntity)) {
                 return ActionResult.SUCCESS;

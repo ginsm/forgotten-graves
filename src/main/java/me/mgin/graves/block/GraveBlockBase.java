@@ -114,11 +114,13 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
 
         if (world.isClient) return ActionResult.PASS;
 
-        if (hand != Hand.OFF_HAND)
-            if (player.getStackInHand(hand).isEmpty() && Permission.playerCanUseGrave(player, graveEntity))
+        if (hand != Hand.OFF_HAND) {
+            if (player.getStackInHand(hand).isEmpty() && Permission.playerCanUseGrave(player, graveEntity)) {
                 RetrieveGrave.retrieveWithInteract(player, world, pos);
+            }
+        }
 
-        return ActionResult.PASS;
+        return ActionResult.SUCCESS;
     }
 
     /**

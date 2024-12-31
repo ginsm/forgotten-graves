@@ -112,7 +112,7 @@ public class RetrieveGrave {
     static public boolean retrieve(PlayerEntity player, GraveBlockEntity graveEntity, World world, BlockPos pos,
                                    boolean dropOnPlayer, boolean destroyGrave) {
         // Keeps track of items to be dropped
-        DefaultedList<ItemStack> droppedItems = DefaultedList.of();
+        DefaultedList<ItemStack> overflow = DefaultedList.of();
 
         // Resolve and handle the drop types
         GameProfile profile = player.getGameProfile();
@@ -125,16 +125,16 @@ public class RetrieveGrave {
         }
 
         if (dropType == GraveDropType.EQUIP) {
-            droppedItems = equipInventoryItems(player, graveEntity);
+            overflow = equipInventoryItems(player, graveEntity);
         } else if (dropType == GraveDropType.DROP) {
-            droppedItems = getInventoryItems(graveEntity);
+            overflow = getInventoryItems(graveEntity);
         }
 
         // Drop items on the ground; either on the player or where the grave is located.
         ItemScatterer.spawn(
             dropOnPlayer ? player.getWorld() : world,
             dropOnPlayer ? player.getBlockPos() : pos,
-            droppedItems
+            overflow
         );
 
         // Add player experience back
@@ -221,7 +221,9 @@ public class RetrieveGrave {
                 // Attempt to equip the grave inventory
                 if (graveInventory != null) {
                     if (api.getInventorySize(player) == graveInventory.size()) {
-                        overflow.addAll(api.setInventory(graveInventory, player));
+                        overflow.addAll(
+                            api.setInventory(graveInventory, player) // This returns items that couldn't be equipped.
+                        );
                     } else {
                         overflow.addAll(graveInventory);
                     }
@@ -232,8 +234,12 @@ public class RetrieveGrave {
 
                 // Restore the grave inventory to the player
                 if (graveInventory != null) {
+                    // Just add to main inventory if mod inventory sizes have changed since the grave creation.
+                    // Likely means that a mod that added slots was removed (think trinkets).
                     if (api.getInventorySize(player) == graveInventory.size()) {
-                        overflow.addAll(api.setInventory(graveInventory, player));
+                        overflow.addAll(
+                            api.setInventory(graveInventory, player) // This returns items that couldn't be equipped.
+                        );
                     } else {
                         overflow.addAll(graveInventory);
                     }
@@ -241,19 +247,20 @@ public class RetrieveGrave {
 
                 // Attempt to equip the player inventory
                 if (playerInventory != null) {
-                    overflow.addAll(api.setInventory(playerInventory, player));
+                    overflow.addAll(
+                        api.setInventory(playerInventory, player) // This returns items that couldn't be equipped.
+                    );
                 }
             }
         }
 
         // Check for any potentially unloaded inventories; store them if found
-        for (String modID : Graves.unloadedInventories) {
-            DefaultedList<ItemStack> inventory = graveEntity.getInventory(modID);
-            if (inventory != null)
-                overflow.addAll(inventory);
+        for (String unloadedModID : Graves.unloadedInventories) {
+            DefaultedList<ItemStack> inventory = graveEntity.getInventory(unloadedModID);
+            if (inventory != null) overflow.addAll(inventory);
         }
 
-        // Remove any empty or air slots from extraItems
+        // Remove any empty or air slots from overflow
         overflow.removeIf(ItemStack::isEmpty);
 
         // NOTE - This method mutates the overflow list, it will contain items unable to be merged afterwards

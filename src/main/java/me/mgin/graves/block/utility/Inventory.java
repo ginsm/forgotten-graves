@@ -1,6 +1,7 @@
 package me.mgin.graves.block.utility;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +24,8 @@ public class Inventory {
             }
         }
 
-        for (ItemStack sourceStack : source) {
+        for (int i = 0; i < source.size(); i++) {
+            ItemStack sourceStack = source.get(i);
             if (sourceStack.isEmpty()) continue;
 
             String sourceKey = getStackKey(sourceStack);
@@ -33,14 +35,20 @@ public class Inventory {
             while (slotIterator.hasNext() && !sourceStack.isEmpty()) {
                 int slot = slotIterator.next();
                 ItemStack targetStack = target.get(slot);
-
-                int transferAmount = Math.min(sourceStack.getCount(), targetStack.getMaxCount() - targetStack.getCount());
-                targetStack.increment(transferAmount);
-                sourceStack.decrement(transferAmount);
+                
+                attemptStackConsolidation(sourceStack, targetStack); // This mutates the two stacks.
 
                 if (targetStack.getCount() == targetStack.getMaxCount()) {
                     slotIterator.remove();
                 }
+            }
+
+            // Try to store it in place, if possible
+            if (target.get(i).isEmpty()) {
+                target.set(i, sourceStack);
+                // Set overflow index to air, otherwise sourceStack will exist in both and end up being dropped
+                source.set(i, Items.AIR.getDefaultStack());
+                continue;
             }
 
             // Try empty slots if no matching slots remain
@@ -51,24 +59,34 @@ public class Inventory {
                 newStack.setCount(0); // Start with an empty stack to be filled
                 target.set(slot, newStack);
 
-                int transferAmount = Math.min(sourceStack.getCount(), newStack.getMaxCount());
-                newStack.setCount(transferAmount);
-                sourceStack.decrement(transferAmount);
+                consolidateStacks(sourceStack, newStack);
 
                 emptySlotIterator.remove();
                 String newStackKey = getStackKey(newStack);
                 targetItemMap.computeIfAbsent(newStackKey, k -> new ArrayList<>()).add(slot);
             }
         }
+    }
 
-        // Clean up the source list
-        source.removeIf(ItemStack::isEmpty);
+    public static void attemptStackConsolidation(ItemStack sourceStack, ItemStack targetStack) {
+        String sourceStackKey = getStackKey(sourceStack);
+        String targetStackKey = getStackKey(targetStack);
+
+        if (sourceStackKey.equals(targetStackKey)) {
+            consolidateStacks(sourceStack, targetStack);
+        }
+    }
+
+    public static void consolidateStacks(ItemStack sourceStack, ItemStack targetStack) {
+        int transferAmount = Math.min(sourceStack.getCount(), targetStack.getMaxCount() - targetStack.getCount());
+        targetStack.increment(transferAmount);
+        sourceStack.decrement(transferAmount);
     }
 
     /**
      * Generates a unique key for an ItemStack based on its item type and NBT data.
      */
-    private static String getStackKey(ItemStack stack) {
+    public static String getStackKey(ItemStack stack) {
         return stack.getItem().toString() + (stack.hasNbt() ? stack.getNbt().toString() : "");
     }
 

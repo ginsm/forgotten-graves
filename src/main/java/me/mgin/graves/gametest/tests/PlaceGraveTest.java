@@ -20,7 +20,6 @@ import net.minecraft.world.World;
 import java.util.Objects;
 
 public class PlaceGraveTest {
-    // no sink tests
     public static void sinkInLava$false(TestContext context, PlayerEntity player) {
         BlockPos pos = context.getAbsolutePos(new BlockPos(10, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(10, 7, 2));
@@ -82,14 +81,12 @@ public class PlaceGraveTest {
         checkPlaceGrave(context, player, pos, pos, World.OVERWORLD);
     }
 
-    // blacklist
     public static void respectsBlacklist(TestContext context, PlayerEntity player) {
         BlockPos pos = context.getAbsolutePos(new BlockPos(14, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(14, 9, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
     }
 
-    // other dims
     public static void spawnsInNether(TestContext context, PlayerEntity player) {
         BlockPos pos = new BlockPos(45, 63, 102);
         checkPlaceGrave(context, player, pos, pos, World.NETHER);
@@ -100,7 +97,6 @@ public class PlaceGraveTest {
         checkPlaceGrave(context, player, pos, pos, World.END);
     }
 
-    // Runs min/max boundary enforcement for two dimensions with different boundaries
     public static void respectsWorldBoundaries(TestContext context, PlayerEntity player) {
         BlockPos minYOverworldPos = context.getAbsolutePos(new BlockPos(18, -10, 2)); // min is -64
         BlockPos maxYOverworldPos = context.getAbsolutePos(new BlockPos(18, 400, 2)); // max is 319
@@ -115,9 +111,7 @@ public class PlaceGraveTest {
         checkPlaceGrave(context, player, maxYEndPos, endFinalPos, World.END);
     }
 
-    // grave shouldn't spawn
-    // NOTE - I don't think these tests really work. The mock player's death doesn't trigger a grave
-    //        spawning anyway.
+    // Grave shouldn't spawn scenarios
     public static void graves$false(TestContext context, PlayerEntity player) {
         BlockPos pos = new BlockPos(18, 2, 2);
         checkGravesDisabled(context, player, pos, World.OVERWORLD);
@@ -138,7 +132,7 @@ public class PlaceGraveTest {
         checkGravesDisabled(context, player, pos, World.OVERWORLD);
     }
 
-    // NOTE - Class-specific Helper Functions
+    // Helper functions
     /**
      * Places a grave at the given {@code pos}, checks the {@code endPos} with {@link TestContext#checkBlock}, and
      * then removes the grave from the world with {@link RetrieveGrave#retrieveWithInteract}.
@@ -149,8 +143,7 @@ public class PlaceGraveTest {
      * @param endPos An absolute BlockPos; use {@link TestContext#getAbsolutePos} with a relative BlockPos
      * @param worldKey RegistryKey for the given world (OVERWORLD, NETHER, END).
      */
-    public static void checkPlaceGrave(TestContext context, PlayerEntity player, BlockPos pos, BlockPos endPos,
-                                       RegistryKey<World> worldKey) {
+   private static void checkPlaceGrave(TestContext context, PlayerEntity player, BlockPos pos, BlockPos endPos, RegistryKey<World> worldKey) {
         System.out.println(">> Running " + Thread.currentThread().getStackTrace()[2].getMethodName() + " <<");
         World world = Objects.requireNonNull(player.getServer()).getWorld(worldKey);
         if (world != null) {
@@ -177,7 +170,7 @@ public class PlaceGraveTest {
      * @param pos An absolute BlockPos; use {@link TestContext#getAbsolutePos} with a relative BlockPos
      * @param worldKey RegistryKey for the given world (OVERWORLD, NETHER, END).
      */
-    public static void checkGravesDisabled(TestContext context, PlayerEntity player, BlockPos pos, RegistryKey<World> worldKey) {
+    private static void checkGravesDisabled(TestContext context, PlayerEntity player, BlockPos pos, RegistryKey<World> worldKey) {
         System.out.println(">> Running " + Thread.currentThread().getStackTrace()[2].getMethodName() + " <<");
         World world = Objects.requireNonNull(player.getServer()).getWorld(worldKey);
         if (world != null) {
@@ -189,9 +182,7 @@ public class PlaceGraveTest {
             // Teleport and kill player
             BlockPos abs = context.getAbsolutePos(pos);
             GraveTestHelper.teleportPlayer(player, abs);
-            GraveTestHelper.dropMockPlayerInventory(player, world, abs); // mock players don't drop their inventories
-            // upon
-            // death
+            GraveTestHelper.dropMockPlayerInventory(player, world, abs); // Mock players don't drop their inventories upon death
             player.kill();
 
             // Ensure grave didn't spawn

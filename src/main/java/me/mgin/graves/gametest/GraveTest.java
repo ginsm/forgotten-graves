@@ -2,7 +2,8 @@ package me.mgin.graves.gametest;
 
 import me.mgin.graves.gametest.tests.ExplosionTest;
 import me.mgin.graves.gametest.tests.PlaceGraveTest;
-import me.mgin.graves.gametest.tests.WaterlogTests;
+import me.mgin.graves.gametest.tests.RetrieveGraveTest;
+import me.mgin.graves.gametest.tests.WaterlogTest;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.test.GameTest;
 import net.minecraft.test.TestContext;
@@ -14,14 +15,14 @@ public class GraveTest {
     public void gravePlacementTests(TestContext context) {
         PlayerEntity player = context.createMockSurvivalPlayer();
 
+        PlaceGraveTest.sinkInLava$false(context, player); // default is false
         GraveTestHelper.runCommand(context, "graves server config set sinkInWater false");
-        GraveTestHelper.runCommand(context, "graves server config set sinkThroughBlocks false");
-        GraveTestHelper.runCommand(context, "graves server config set sinkInAir false");
-        GraveTestHelper.runCommand(context, "graves server config set replaceBlocks false");
-        PlaceGraveTest.sinkInLava$false(context, player);
         PlaceGraveTest.sinkInWater$false(context, player);
-        PlaceGraveTest.sinkInAir$false(context, player);
+        GraveTestHelper.runCommand(context, "graves server config set sinkThroughBlocks false");
         PlaceGraveTest.sinkThroughBlocks$false(context, player); // water column
+        GraveTestHelper.runCommand(context, "graves server config set sinkInAir false");
+        PlaceGraveTest.sinkInAir$false(context, player);
+        GraveTestHelper.runCommand(context, "graves server config set replaceBlocks false");
         PlaceGraveTest.replaceBlocks$false(context, player); // tall grass in air chamber
 
         GraveTestHelper.runCommand(context, "graves server config reset");
@@ -50,25 +51,40 @@ public class GraveTest {
     }
 
     @GameTest(templateName = "forgottengraves:generic_tests")
+    public static void RetrieveGraveTests(TestContext context) {
+        PlayerEntity player = context.createMockSurvivalPlayer();
+        BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
+
+        // Remove the grave in the center of the generic test platform
+        GraveTestHelper.removeGrave(GraveTestHelper.getWorld(player, World.OVERWORLD), pos);
+
+        RetrieveGraveTest.basicRetrieval(context, player, pos);
+        RetrieveGraveTest.mergeRetrieval(context, player, pos);
+        RetrieveGraveTest.overflowRetrieval(context, player, pos);
+        RetrieveGraveTest.unloadedModRetrieval(context, player, pos);
+
+        GraveTestHelper.runCommand(context, "graves server config reset");
+        context.complete();
+    }
+
+    @GameTest(templateName = "forgottengraves:generic_tests")
     public static void waterlogTests(TestContext context) {
         PlayerEntity player = context.createMockSurvivalPlayer();
         BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
 
-        WaterlogTests.waterlogged(context, player, pos);
-        WaterlogTests.notWaterlogged(context, player, pos);
+        WaterlogTest.waterlogged(context, player, pos);
+        WaterlogTest.notWaterlogged(context, player, pos);
 
         GraveTestHelper.runCommand(context, "graves server config reset");
         GraveTestHelper.removeGrave(GraveTestHelper.getWorld(player, World.OVERWORLD), pos);
         context.complete();
     }
 
-    // NOTE - explosion tests
     @GameTest(templateName = "forgottengraves:generic_tests")
     public static void explosionTests(TestContext context) {
         PlayerEntity player = context.createMockSurvivalPlayer();
         BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
 
-        GraveTestHelper.runCommand(context, "graves server config reset");
         ExplosionTest.resistsCreeper(context, player, pos);
         ExplosionTest.resistsTNT(context, player, pos);
         ExplosionTest.resistsEndCrystal(context, player, pos);

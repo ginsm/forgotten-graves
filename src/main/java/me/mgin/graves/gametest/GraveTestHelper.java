@@ -55,6 +55,10 @@ public class GraveTestHelper {
         }
     }
 
+    public static void clearPlayerInventory(PlayerEntity player) {
+        player.getInventory().clear();
+    }
+
     public static void dropMockPlayerInventory(PlayerEntity player, World world, BlockPos pos) {
         for (ItemStack stack : player.getInventory().main) {
             if (!stack.isEmpty()) {

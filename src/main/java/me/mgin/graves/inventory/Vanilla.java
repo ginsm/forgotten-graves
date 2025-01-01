@@ -39,7 +39,6 @@ public class Vanilla implements InventoriesApi {
     @Override
     public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity player) {
         DefaultedList<ItemStack> overflow = DefaultedList.of();
-        PlayerInventory playerInventory = player.getInventory();
 
         // Equip armor pieces
         List<ItemStack> armor = inventory.subList(36, 40);
@@ -97,6 +96,9 @@ public class Vanilla implements InventoriesApi {
         // behavior. And if it's GraveMergeOrder.GRAVE the target inventory will be empty anyway due to L233 in
         // RetrieveGrave.
         Inventory.mergeInventories(mainInventory, player.getInventory().main);
+
+        // Add remaining items to overflow
+        overflow.addAll(mainInventory);
 
         return overflow;
     }

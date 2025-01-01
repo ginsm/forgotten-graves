@@ -35,19 +35,15 @@ public class Inventory {
             while (slotIterator.hasNext() && !sourceStack.isEmpty()) {
                 int slot = slotIterator.next();
                 ItemStack targetStack = target.get(slot);
-                
                 attemptStackConsolidation(sourceStack, targetStack); // This mutates the two stacks.
-
                 if (targetStack.getCount() == targetStack.getMaxCount()) {
                     slotIterator.remove();
                 }
             }
 
-            // Try to store it in place, if possible
             if (target.get(i).isEmpty()) {
-                target.set(i, sourceStack);
-                // Set overflow index to air, otherwise sourceStack will exist in both and end up being dropped
-                source.set(i, Items.AIR.getDefaultStack());
+                // Store stack in place, adding to targetItemMap
+                setInventorySlot(target, targetItemMap, sourceStack, i);
                 continue;
             }
 
@@ -55,17 +51,28 @@ public class Inventory {
             Iterator<Integer> emptySlotIterator = emptySlots.iterator();
             while (emptySlotIterator.hasNext() && !sourceStack.isEmpty()) {
                 int slot = emptySlotIterator.next();
-                ItemStack newStack = sourceStack.copy();
-                newStack.setCount(0); // Start with an empty stack to be filled
-                target.set(slot, newStack);
-
-                consolidateStacks(sourceStack, newStack);
-
+                setInventorySlot(target, targetItemMap, sourceStack, slot);
                 emptySlotIterator.remove();
-                String newStackKey = getStackKey(newStack);
-                targetItemMap.computeIfAbsent(newStackKey, k -> new ArrayList<>()).add(slot);
             }
         }
+    }
+
+    public static void setInventorySlot(List<ItemStack> target, HashMap<String, List<Integer>> targetItemMap,
+                                        ItemStack stack, int slot) {
+        // Copy the stack
+        ItemStack newStack = stack.copy();
+
+        // Store stack in given slot
+        target.set(slot, newStack);
+
+        // Add slot to targetItemMap
+        if (newStack.getMaxCount() > newStack.getCount()) {
+            String newStackKey = getStackKey(newStack);
+            targetItemMap.computeIfAbsent(newStackKey, k -> new ArrayList<>()).add(slot);
+        }
+
+        // Set the old stack count to 0, turning it into air
+        stack.setCount(0);
     }
 
     public static void attemptStackConsolidation(ItemStack sourceStack, ItemStack targetStack) {

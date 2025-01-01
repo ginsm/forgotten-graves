@@ -123,6 +123,12 @@ public class Commands {
                     .executes(SetConfigCommand::execute)
                 )
             )
+            .then(literal("mergeOrder")
+                .then(argument("mergeOrder", StringArgumentType.string())
+                    .suggests(ConfigOptions.suggest(ConfigOptions.enums.get("mergeOrder")))
+                    .executes(SetConfigCommand::execute)
+                )
+            )
             // Client Options
             .then(literal("clientOptions").requires(Commands::isOperator)
                 .then(literal("add")

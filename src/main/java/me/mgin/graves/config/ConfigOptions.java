@@ -2,10 +2,7 @@ package me.mgin.graves.config;
 
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import me.mgin.graves.block.decay.DecayingGrave;
-import me.mgin.graves.config.enums.ExperienceType;
-import me.mgin.graves.config.enums.GraveDropType;
-import me.mgin.graves.config.enums.GraveExpStoreType;
-import me.mgin.graves.config.enums.GraveRetrievalType;
+import me.mgin.graves.config.enums.*;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.lang.reflect.Field;
@@ -71,6 +68,7 @@ public class ConfigOptions {
             case "expStorageType" -> GraveExpStoreType.valueOf(value);
             case "capType", "percentageType" -> ExperienceType.valueOf(value);
             case "decayRobbing" -> DecayingGrave.BlockDecay.valueOf(value);
+            case "mergeOrder" -> GraveMergeOrder.valueOf(value);
             default -> throw new IllegalStateException("Unexpected value for '" + option + "': " + value);
         };
     }

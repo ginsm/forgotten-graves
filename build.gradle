@@ -54,6 +54,15 @@ loom {
 
             runDir "build/datagen"
         }
+
+        // This adds a run config for GameTest api
+        modtest {
+            server()
+            name "Mod Test"
+            vmArg "-Dfabric-api.gametest"
+            vmArg "-Dfabric-api.gametest.report-file=${project.buildDir}/test_results.xml"
+            runDir "build/modtest"
+        }
     }
 }
 

@@ -6,21 +6,16 @@ pluginManagement {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
         }
-        maven {
-            url = "https://maven.kikugie.dev/releases"
-        }
     }
 }
 
 plugins {
-    id "dev.kikugie.stonecutter" version "0.4.4"
+    id "dev.kikugie.stonecutter" version "0.5"
 }
 
 stonecutter {
-    shared {
-        // these specify directories used in `versions`, as well as versions used in comments
+    create(rootProject) {
         versions "1.20.4", "1.20.3", "1.20.2", "1.20.1", "1.20"
+        vcsVersion = "1.20.1"
     }
-
-    create rootProject
 }

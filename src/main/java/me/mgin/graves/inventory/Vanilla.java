@@ -95,7 +95,7 @@ public class Vanilla implements InventoriesApi {
         // inventory being the target. This works because if it's GraveMergeOrder.CURRENT.. well, you want that
         // behavior. And if it's GraveMergeOrder.GRAVE the target inventory will be empty anyway due to L233 in
         // RetrieveGrave.
-        Inventory.mergeInventories(mainInventory, player.getInventory().main);
+        Inventory.mergeInventories(mainInventory, player.getInventory());
 
         // Add remaining items to overflow
         overflow.addAll(mainInventory);

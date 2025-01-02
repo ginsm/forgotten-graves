@@ -1,7 +1,9 @@
 package me.mgin.graves.block.utility;
 
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.collection.DefaultedList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Inventory {
-    public static void mergeInventories(List<ItemStack> source, List<ItemStack> target) {
+    public static void mergeInventories(List<ItemStack> source, PlayerInventory playerInventory) {
+        DefaultedList<ItemStack> target = playerInventory.main;
         HashMap<String, List<Integer>> targetItemMap = new HashMap<>();
 
         // Map item stacks and track empty slots separately
@@ -43,7 +46,7 @@ public class Inventory {
 
             if (target.get(i).isEmpty()) {
                 // Store stack in place, adding to targetItemMap
-                setInventorySlot(target, targetItemMap, sourceStack, i);
+                setInventorySlot(target, targetItemMap, sourceStack, i, true);
                 continue;
             }
 
@@ -51,14 +54,22 @@ public class Inventory {
             Iterator<Integer> emptySlotIterator = emptySlots.iterator();
             while (emptySlotIterator.hasNext() && !sourceStack.isEmpty()) {
                 int slot = emptySlotIterator.next();
-                setInventorySlot(target, targetItemMap, sourceStack, slot);
+                setInventorySlot(target, targetItemMap, sourceStack, slot, true);
                 emptySlotIterator.remove();
+            }
+
+            // Try off-hand if unable to set in place or find an empty slot
+            ItemStack offhandStack = playerInventory.offHand.get(0);
+            if (offhandStack.isEmpty()) {
+                setInventorySlot(playerInventory.offHand, targetItemMap, sourceStack, 0, false);
+            } else if (sourceKey.equals(getStackKey(offhandStack))) {
+                attemptStackConsolidation(sourceStack, offhandStack);
             }
         }
     }
 
     public static void setInventorySlot(List<ItemStack> target, HashMap<String, List<Integer>> targetItemMap,
-                                        ItemStack stack, int slot) {
+                                        ItemStack stack, int slot, boolean addToTargetItemMap) {
         // Copy the stack
         ItemStack newStack = stack.copy();
 

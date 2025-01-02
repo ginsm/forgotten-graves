@@ -265,7 +265,7 @@ public class RetrieveGrave {
 
         // NOTE - This method mutates the overflow list, it will contain items unable to be merged afterwards
         // Attempt to merge the two inventories (with stack consolidation)
-        Inventory.mergeInventories(overflow, player.getInventory().main);
+        Inventory.mergeInventories(overflow, player.getInventory());
 
         return overflow;
     }

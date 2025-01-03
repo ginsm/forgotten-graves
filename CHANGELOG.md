@@ -1,20 +1,18 @@
-# 3.2.17
+# 3.2.18
 
 Supports Minecraft versions: `1.20-1.20.4`
 
 ## Added
-- Added support for the [Forgotten Graves Redefined](https://www.curseforge.com/minecraft/texture-packs/forgotten-graves-redefined) resource pack. Here are some of the things that now happen:
-  - Player names and custom text shows up on the models properly.
-  - The outline shape changes to match the custom models.
-  - The player skull shifts slightly away from the tombstone.
-
-## Fixed
-- The config option `maxStageTimeSeconds` now respects waxed graves ([#110](https://github.com/ginsm/forgotten-graves/issues/110)).
-- Trinket items that fail to find an appropriate slot whilst equipping are now placed in your main inventory.
-- After a grave is placed, any items remaining in the player inventory should now drop on the ground.
-  - The goal with this change is to drop any items the code may have missed on the ground, rather than just destroying them.
+- Added a configuration option to determine the merge order when retrieving graves. You're able to pick from two options: `GRAVE` and `CURRENT`.
+    - `GRAVE` will result in the inventory returning to what it was before you died, and then merging in any items you had while retrieving the grave.
+    - `CURRENT` will result in the items in your grave being merged into the inventory you currently have while retrieving the grave.
 
 ## Updated
-- Updated `en_us.json` and `ru_ru.json` translations thanks to mpustovoi ([#109](https://github.com/ginsm/forgotten-graves/pull/109))!
-- Updated `es_mx.json` translation; let me know if there's any mistakes, I'm not a native speaker, thanks!
-- Grave item models should now look better in first person, third person, and in item frames.
+- The merge code now tries to fill empty equipment slots with previously equipped gear from both inventories (respecting merge order).
+- When retrieving graves, items will now be consolidated into existing stacks within the base inventory (respecting NBT tags).
+- Custom models will now use the same collision box as the default models to prevent issues between the client and server disagreeing about collision.
+- The method of identifying loaded resource packs and their load order has been improved.
+- Updated translations `en_us.json` and `es_mx.json`.
+
+## Fixed
+- Fixed an issue causing unintentional block placement when retrieving graves ([#112](https://github.com/ginsm/forgotten-graves/issues/112)).

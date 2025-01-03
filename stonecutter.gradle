@@ -3,12 +3,15 @@ stonecutter.active "1.20.1" /* [SC] DO NOT EDIT */
 
 stonecutter.registerChiseled tasks.register("chiseledBuild", stonecutter.chiseled) {
     setGroup "build"
-
     ofTask "build"
 }
 
 stonecutter.registerChiseled tasks.register("chiseledDataGen", stonecutter.chiseled) {
     setGroup "build"
-
     ofTask "runDatagen"
+}
+
+stonecutter.registerChiseled tasks.register("chiseledGametest", stonecutter.chiseled) {
+    setGroup "fabric"
+    ofTask "runGametest"
 }

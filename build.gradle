@@ -56,12 +56,12 @@ loom {
         }
 
         // This adds a run config for GameTest api
-        modtest {
+        gametest {
             server()
-            name "Mod Test"
+            name "Game Test"
             vmArg "-Dfabric-api.gametest"
             vmArg "-Dfabric-api.gametest.report-file=${project.buildDir}/test_results.xml"
-            runDir "build/modtest"
+            runDir "build/gametest"
         }
     }
 }

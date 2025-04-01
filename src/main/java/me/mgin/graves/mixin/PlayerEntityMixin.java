@@ -1,5 +1,6 @@
 package me.mgin.graves.mixin;
 
+import com.mojang.authlib.GameProfile;
 import me.mgin.graves.block.utility.PlaceGrave;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.effects.GraveEffects;
@@ -7,12 +8,14 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity {
@@ -21,23 +24,29 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     @Final
     private PlayerInventory inventory;
 
+    @Shadow protected abstract void vanishCursedItems();
+
     protected PlayerEntityMixin(EntityType<? extends LivingEntity> type, World world) {
         super(type, world);
     }
 
-    @Redirect(method = "dropInventory", at = @At(value = "INVOKE", target = "net.minecraft.entity.player.PlayerInventory.dropAll()V"))
-    private void dropAll(PlayerInventory inventory) {
+    @Inject(method = "dropInventory", at = @At("HEAD"), cancellable = true)
+    private void dropAll(CallbackInfo ci) {
+        // Cancel the default behavior
+        ci.cancel();
+
         // Do not drop the inventory or place a grave if the player is still alive.
         // This is needed for possession mods like RAT's Mischief, Requiem (Origins), etc.
         PlayerEntity player = this.inventory.player;
+        GameProfile profile = player.getGameProfile();
         if (player.isAlive()) return;
 
         // Graves will not spawn if they're not enabled or the location is within a protected area (such as spawn).
-        boolean forgottenGravesEnabled = GravesConfig.resolve("graves", player.getGameProfile());
+        boolean forgottenGravesEnabled = GravesConfig.resolve("graves", profile);
         boolean playerCanPlaceBlocks = player.canModifyAt(player.getWorld(), player.getBlockPos());
 
         // Graves will not spawn when killed by a player if disableInPvP is true.
-        boolean disabledInPvP = GravesConfig.resolve("disableInPvP", player.getGameProfile());
+        boolean disabledInPvP = GravesConfig.resolve("disableInPvP", profile);
         boolean killedByPlayer = player.getLastAttacker() instanceof PlayerEntity;
 
         // Players with DISABLE_GRAVES_EFFECT active will not have a grave spawn.
@@ -48,7 +57,13 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             PlaceGrave.place(this.getWorld(), this.getPos(), player);
         }
 
-        // Drop items in case of unhandled inventories or graves being disabled.
-        this.inventory.dropAll();
+        // Support for the KEEP_INVENTORY game rule.
+        // Note: This runs after grave placement -- so if the graves are enabled, only items that are in incompatible
+        // modded inventories will stay on the player, and the rest will be stored within the grave.
+        boolean keepInventory = this.getWorld().getGameRules().getBoolean(GameRules.KEEP_INVENTORY);
+        if (!keepInventory) {
+            this.vanishCursedItems();
+            this.inventory.dropAll();
+        }
     }
 }

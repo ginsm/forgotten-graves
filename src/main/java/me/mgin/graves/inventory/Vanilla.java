@@ -20,6 +20,11 @@ public class Vanilla implements InventoriesApi {
         return this.inventoryID;
     }
 
+    /**
+     * Necessary for compatibility with Better Combat, see issue #115
+     */
+    public ItemStack equippedOffhand = new ItemStack(Items.AIR);
+
     @Override
     public DefaultedList<ItemStack> getInventory(PlayerEntity player) {
         DefaultedList<ItemStack> items = DefaultedList.of();
@@ -65,13 +70,21 @@ public class Vanilla implements InventoriesApi {
 
         // Equip offhand item
         ItemStack storedOffhandItem = inventory.get(40);
-        ItemStack equippedOffhandItem = player.getEquippedStack(EquipmentSlot.OFFHAND);
+        ItemStack currentEquippedOffhand = player.getEquippedStack(EquipmentSlot.OFFHAND);
 
-        if (equippedOffhandItem.isEmpty()) {
-            player.equipStack(EquipmentSlot.OFFHAND, storedOffhandItem);
+        if (!currentEquippedOffhand.isEmpty()) {
+            this.equippedOffhand = currentEquippedOffhand;
+        }
+
+        if (this.equippedOffhand.isEmpty()) {
+            if (!storedOffhandItem.isEmpty()) {
+                player.equipStack(EquipmentSlot.OFFHAND, storedOffhandItem);
+                // Necessary for compatibility with Better Combat; see issue #115
+                equippedOffhand = storedOffhandItem;
+            }
         } else {
             // Consolidates if they match; mutates the above stacks
-            Inventory.attemptStackConsolidation(storedOffhandItem, equippedOffhandItem);
+            Inventory.attemptStackConsolidation(storedOffhandItem, this.equippedOffhand);
 
             // Ensure some of the items are left before adding to overflow
             if (storedOffhandItem.getCount() > 0) {
@@ -101,6 +114,10 @@ public class Vanilla implements InventoriesApi {
         overflow.addAll(mainInventory);
 
         return overflow;
+    }
+
+    public void resetEquippedOffhand() {
+        this.equippedOffhand = new ItemStack(Items.AIR);
     }
 
     public void clearInventory(PlayerEntity player) {

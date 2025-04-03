@@ -9,6 +9,7 @@ import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.config.enums.GraveDropType;
 import me.mgin.graves.config.enums.GraveMergeOrder;
+import me.mgin.graves.inventory.Vanilla;
 import me.mgin.graves.state.PlayerState;
 import me.mgin.graves.state.ServerState;
 import net.minecraft.block.entity.BlockEntity;
@@ -251,6 +252,12 @@ public class RetrieveGrave {
                         api.setInventory(playerInventory, player) // This returns items that couldn't be equipped.
                     );
                 }
+            }
+
+            // Necessary for compatibility with Better Combat; see issue #115
+            // Reset the cached offhand (Vanilla only)
+            if (api instanceof Vanilla vanillaApi) {
+                vanillaApi.resetEquippedOffhand();
             }
         }
 

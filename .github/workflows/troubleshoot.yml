@@ -1,0 +1,92 @@
+name: Troubleshoot Build Issues
+
+on: [ workflow_dispatch ]
+
+env:
+  JAVA_VERSION: 21
+  MOD_VERSION: 3.2.19
+
+jobs:
+  diagnose_build:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Show Gradle & Java versions
+        run: |
+          java -version
+          echo "JAVA_HOME: $JAVA_HOME"
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: corretto
+          cache: gradle
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: "wrapper"
+
+      - name: Examine Gradle setup
+        run: |
+          echo "Gradle version:"
+          gradle --version
+          echo "Available tasks:"
+          gradle tasks --all
+          echo "Examining chiseledBuild task:"
+          gradle help --task chiseledBuild || echo "Task not available"
+
+      - name: Clear caches and show dependencies
+        run: |
+          gradle clean --no-daemon
+          gradle dependencies --no-daemon
+
+      - name: Build JARs with verbose logging
+        run: |
+          gradle chiseledBuild --stacktrace --info --no-daemon
+
+      - name: Examine built files
+        run: |
+          echo "Finding all JAR files:"
+          find . -name "*.jar" | sort
+          echo "JAR file sizes:"
+          find . -name "*.jar" -exec du -h {} \;
+          echo "Directory structure in versions:"
+          find ./versions -type d | sort
+          echo "File listing in expected output directories:"
+          find ./versions -path "*/build/libs/*" -type f | sort
+
+      - name: Examine JAR contents
+        run: |
+          echo "Examining contents of first 3 JARs found:"
+          for jar in $(find ./versions -name "*.jar" | head -n 3); do
+            echo "Contents of $jar:"
+            jar tf $jar | head -n 20
+            echo "Total entries: $(jar tf $jar | wc -l)"
+            echo "---"
+          done
+
+      - name: Try direct build in each version directory
+        run: |
+          for dir in ./versions/*/; do
+            if [ -d "$dir" ]; then
+              echo "Building in $dir"
+              cd "$dir"
+              gradle jar --info --no-daemon
+              echo "JAR files produced:"
+              find . -name "*.jar" -exec du -h {} \;
+              cd -
+            fi
+          done
+
+      - name: Upload diagnostic artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: diagnostic-results
+          path: |
+            ./versions/**/build/libs/*.jar
+            ./build/reports/**
+            ./build/logs/**

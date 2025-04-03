@@ -1,18 +1,12 @@
-# 3.2.18
+# 3.2.19
 
 Supports Minecraft versions: `1.20-1.20.4`
 
 ## Added
-- Added a configuration option to determine the merge order when retrieving graves. You're able to pick from two options: `GRAVE` and `CURRENT`.
-    - `GRAVE` will result in the inventory returning to what it was before you died, and then merging in any items you had while retrieving the grave.
-    - `CURRENT` will result in the items in your grave being merged into the inventory you currently have while retrieving the grave.
-
-## Updated
-- The merge code now tries to fill empty equipment slots with previously equipped gear from both inventories (respecting merge order).
-- When retrieving graves, items will now be consolidated into existing stacks within the base inventory (respecting NBT tags).
-- Custom models will now use the same collision box as the default models to prevent issues between the client and server disagreeing about collision.
-- The method of identifying loaded resource packs and their load order has been improved.
-- Updated translations `en_us.json` and `es_mx.json`.
+- Added a new configuration option, `respectKeepInventory`, which is set to `false` by default.
+  - When `true`: The mod will honor Minecraft's `keepInventory` gamerule - no graves will spawn if the rule is enabled. All items will remain on the player.
+  - When `false`: Graves will always spawn regardless of the `keepInventory` gamerule, storing items from supported inventories (Vanilla, Trinkets, BackSlot, Inventorio). Items inside unsupported inventories will remain on the player.
+  - *Note: If the game's `keepInventory` rule is disabled, and you have unsupported mod inventories, items from those inventories will drop on the ground instead.*
 
 ## Fixed
-- Fixed an issue causing unintentional block placement when retrieving graves ([#112](https://github.com/ginsm/forgotten-graves/issues/112)).
+- Fixed compatibility issue with Better Combat where off-hand items could sometimes be lost when retrieving graves containing two-handed weapons.

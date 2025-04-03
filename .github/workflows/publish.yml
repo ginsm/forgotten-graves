@@ -60,6 +60,7 @@ jobs:
           changelog-file: CHANGELOG.md
           version: ${{ env.MOD_VERSION }}+${{ matrix.game_version }}
           version-type: release
+          loaders: fabric
 
           modrinth-id: ${{ env.MODRINTH_ID }}
           modrinth-token: ${{ env.MODRINTH_TOKEN }}

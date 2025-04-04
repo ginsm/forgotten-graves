@@ -22,21 +22,15 @@ repositories {
 
     // Cloth Config
     maven {
-        url "https://maven.shedaniel.me/"
+        url = "https://maven.shedaniel.me/"
     }
 
     // Inventorio
-    repositories {
-        exclusiveContent {
-            forRepository {
-                maven {
-                    name = "Modrinth"
-                    url = "https://api.modrinth.com/maven"
-                }
-            }
-            filter {
-                includeGroup "maven.modrinth"
-            }
+    maven {
+        name = "Modrinth"
+        url = uri("https://api.modrinth.com/maven")
+        content {
+            includeGroup "maven.modrinth"
         }
     }
 }
@@ -47,7 +41,6 @@ loom {
         // This adds a new gradle task that runs the datagen API: "gradlew runDatagen"
         datagen {
             inherit server
-            name "Data Generation"
             vmArg "-Dfabric-api.datagen"
             vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
             vmArg "-Dfabric-api.datagen.modid=forgottengraves"
@@ -55,24 +48,21 @@ loom {
             runDir "build/datagen"
         }
 
-        // This adds a run config for GameTest api
+        // This adds a run config for GameTest API: "gradlew runGametest"
         gametest {
             server()
-            name "Game Test"
             vmArg "-Dfabric-api.gametest"
-            vmArg "-Dfabric-api.gametest.report-file=${project.buildDir}/test_results.xml"
+            vmArg "-Dfabric-api.gametest.report-file=${project.layout.buildDirectory.get()}/test_results.xml"
             runDir "build/gametest"
         }
     }
 }
 
 sourceSets {
-    main {
-        resources {
-            srcDirs += [
-                    'src/main/generated'
-            ]
-        }
+    main.resources {
+        srcDirs += [
+                'src/main/generated'
+        ]
     }
 }
 
@@ -134,11 +124,15 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
+// Build rules
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
+        rename { "${it}_${archivesBaseName}" }
     }
+
+    exclude "data/forgottengraves/gametest/**"
 }
+
 
 // ============ Publishing ============
 // Check for local.properties file

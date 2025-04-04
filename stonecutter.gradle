@@ -12,7 +12,7 @@ stonecutter.registerChiseled tasks.register("chiseledDataGen", stonecutter.chise
 }
 
 stonecutter.registerChiseled tasks.register("chiseledGametest", stonecutter.chiseled) {
-    setGroup "fabric"
+    setGroup "test"
     ofTask "runGametest"
 }
 

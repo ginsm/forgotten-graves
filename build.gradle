@@ -161,10 +161,11 @@ if (!missingProps.empty) {
 }
 
 publishMods {
-    file = tasks.remapJar.archiveFile
-    type = STABLE
+    displayName = "Forgotten Graves ${project.property('mod_version')}+${stonecutter.current.version}"
     changelog = rootProject.file('CHANGELOG.md').text
+    file = tasks.remapJar.archiveFile
     modLoaders.add("fabric")
+    type = STABLE
 
     curseforge {
         projectId = "550480"

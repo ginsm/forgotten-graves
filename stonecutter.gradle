@@ -3,16 +3,19 @@ stonecutter.active "1.20.1" /* [SC] DO NOT EDIT */
 
 stonecutter.registerChiseled tasks.register("chiseledBuild", stonecutter.chiseled) {
     setGroup "build"
+    description = "Builds production jars for all versions"
     ofTask "build"
 }
 
 stonecutter.registerChiseled tasks.register("chiseledDataGen", stonecutter.chiseled) {
     setGroup "build"
+    description = "Generates block & item tags, block models, and recipes for all versions"
     ofTask "runDatagen"
 }
 
 stonecutter.registerChiseled tasks.register("chiseledGametest", stonecutter.chiseled) {
     setGroup "test"
+    description = "Runs automated functionality tests for all versions on a headless server"
     ofTask "runGametest"
 }
 

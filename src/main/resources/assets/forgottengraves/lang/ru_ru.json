@@ -3,7 +3,7 @@
   "block.forgottengraves.grave_old": "Старая могила",
   "block.forgottengraves.grave_weathered": "Выветренная могила",
   "block.forgottengraves.grave_forgotten": "Забытая могила",
-  "itemGroup.forgottengraves.graves": "Могильные блоки",
+  "itemGroup.forgottengraves.graves": "Могильные Блоки",
 
   "text.autoconfig.forgottengraves.title": "Настройки «Забытых Могил»",
 
@@ -17,10 +17,14 @@
   "text.autoconfig.forgottengraves.option.main.graveCoordinates.@Tooltip": "Следует ли отправлять координаты могилы в чат?",
   "text.autoconfig.forgottengraves.option.main.retrievalType": "Тип извлечения",
   "text.autoconfig.forgottengraves.option.main.retrievalType.@Tooltip": "Как извлекаются элементы?",
+  "text.autoconfig.forgottengraves.option.main.mergeOrder": "Порядок объединения инвентаря",
+  "text.autoconfig.forgottengraves.option.main.mergeOrder.@Tooltip": "Какой инвентарь следует использовать в качестве основного при извлечении могил?",
   "text.autoconfig.forgottengraves.option.main.dropType": "Тип выпадения",
   "text.autoconfig.forgottengraves.option.main.dropType.@Tooltip": "Что происходит с предметами, когда они извлекаются?",
   "text.autoconfig.forgottengraves.option.main.sneakSwapsDropType": "Приседание инвертирует тип выпадения",
   "text.autoconfig.forgottengraves.option.main.sneakSwapsDropType.@Tooltip": "Следует ли приседанию переключаться между типами выпадения?",
+  "text.autoconfig.forgottengraves.option.main.respectKeepInventory": "Соблюдать сохранение инвентаря",
+  "text.autoconfig.forgottengraves.option.main.respectKeepInventory.@Tooltip": "Должны ли могилы появляться, когда включено игровое правило «Сохранения инвентаря при смерти»?",
 
   "text.autoconfig.forgottengraves.category.experience": "Настройки опыта",
   "text.autoconfig.forgottengraves.option.experience": "Настройки опыта",
@@ -76,7 +80,7 @@
   "text.autoconfig.forgottengraves.option.server.graveRobbing.@PrefixText": "Эти настройки не могут быть обработаны клиентом.",
   "text.autoconfig.forgottengraves.option.server.graveRobbing": "Ограбление могил",
   "text.autoconfig.forgottengraves.option.server.graveRobbing.@Tooltip": "Должны ли игроки иметь возможность грабить могилы других игроков?",
-  "text.autoconfig.forgottengraves.option.server.storedGravesAmount": "Количество сохраненных могил",
+  "text.autoconfig.forgottengraves.option.server.storedGravesAmount": "Количество сохранённых могил",
   "text.autoconfig.forgottengraves.option.server.storedGravesAmount.@Tooltip": "Сколько могил должно быть сохранено?",
   "text.autoconfig.forgottengraves.option.server.destructiveDeleteCommand": "Деструктивное удаление",
   "text.autoconfig.forgottengraves.option.server.destructiveDeleteCommand.@Tooltip": "Должна ли команда delete уничтожать невостребованные могилы?",
@@ -92,7 +96,7 @@
   "grave.died-on": "%s умер на %s",
 
   "forgottengraves.normal": "Забытые Могилы",
-  "forgottengraves.small": "[ЗМ] ",
+  "forgottengraves.small": "[М] ",
   "error.prefix": "Ошибка: ",
 
   "command.generic:error.not-yet-implemented": "Эта команда еще не была реализована.",

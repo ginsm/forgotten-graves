@@ -19,6 +19,7 @@
 **/.classpath
 **/.fabric
 logs/
+local.properties
 
 # Ginsm ignores
 description.curseforge

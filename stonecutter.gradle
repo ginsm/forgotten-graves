@@ -15,3 +15,9 @@ stonecutter.registerChiseled tasks.register("chiseledGametest", stonecutter.chis
     setGroup "fabric"
     ofTask "runGametest"
 }
+
+stonecutter.registerChiseled tasks.register("chiseledPublishMods", stonecutter.chiseled) {
+    group = "publishing"
+    description = "Publishes all versions to CurseForge and Modrinth"
+    ofTask("publishMods")
+}

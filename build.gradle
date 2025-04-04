@@ -1,6 +1,6 @@
 plugins {
-    id 'fabric-loom' version '1.5-SNAPSHOT'
-    id 'maven-publish'
+    id 'fabric-loom' version '1.10-SNAPSHOT'
+    id 'me.modmuss50.mod-publish-plugin' version '0.8.4'
 }
 
 archivesBaseName = project.archives_base_name
@@ -140,25 +140,57 @@ jar {
     }
 }
 
-// configure the maven publication
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            // add all the jars that should be included when publishing to maven
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
-        }
+// ============ Publishing ============
+// Check for local.properties file
+def localPropsFile = rootProject.file('local.properties')
+if (!localPropsFile.exists()) {
+    throw new GradleException("local.properties file not found. Please create this file with your API tokens.")
+}
+
+// Load properties
+def localProps = new Properties().tap {
+    localPropsFile.withInputStream { load(it) }
+}
+
+// Verify required properties exist
+def requiredProps = ['curseforge.token', 'modrinth.token']
+def missingProps = requiredProps.findAll { !localProps[it] }
+
+if (!missingProps.empty) {
+    throw new GradleException("Missing required properties in local.properties: ${missingProps.join(', ')}")
+}
+
+publishMods {
+    file = tasks.remapJar.archiveFile
+    type = STABLE
+    changelog = rootProject.file('CHANGELOG.md').text
+    modLoaders.add("fabric")
+
+    curseforge {
+        projectId = "550480"
+        accessToken = localProps.getProperty("curseforge.token")
+        minecraftVersions.add(stonecutter.current.version)
+
+        requires("fabric-api")
+        requires("cloth-config")
+
+        optional("modmenu")
+        optional("trinkets")
+        optional("backslot")
+        optional("inventorio")
     }
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
+    modrinth {
+        projectId = "FrZIkosK"
+        accessToken = localProps.getProperty("modrinth.token")
+        minecraftVersions.add(stonecutter.current.version)
+
+        requires("fabric-api")
+        requires("cloth-config")
+
+        optional("modmenu")
+        optional("trinkets")
+        optional("backslot")
+        optional("inventorio")
     }
 }

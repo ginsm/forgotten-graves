@@ -1,9 +1,6 @@
 package me.mgin.graves.gametest;
 
-import me.mgin.graves.gametest.tests.ExplosionTest;
-import me.mgin.graves.gametest.tests.PlaceGraveTest;
-import me.mgin.graves.gametest.tests.RetrieveGraveTest;
-import me.mgin.graves.gametest.tests.WaterlogTest;
+import me.mgin.graves.gametest.tests.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.test.GameTest;
 import net.minecraft.test.TestContext;
@@ -63,6 +60,21 @@ public class GraveTest {
         RetrieveGraveTest.overflowRetrieval(context, player, pos);
         RetrieveGraveTest.unloadedModRetrieval(context, player, pos);
 
+    @GameTest(templateName = "forgottengraves:generic_tests")
+    public static void experienceTests(TestContext context) {
+        PlayerEntity player = context.createMockSurvivalPlayer();
+        BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
+
+        // Remove the grave in the center of the generic test platform
+        GraveTestHelper.removeGrave(GraveTestHelper.getWorld(player, World.OVERWORLD), pos);
+
+        ExperienceTest.storeAll(context, player, pos);
+        ExperienceTest.storeVanilla(context, player, pos);
+        ExperienceTest.storeNone(context, player, pos);
+        ExperienceTest.percentage(context, player, pos);
+        ExperienceTest.cap(context, player, pos);
+
+        // Reset the config
         GraveTestHelper.runCommand(context, "graves server config reset");
         context.complete();
     }

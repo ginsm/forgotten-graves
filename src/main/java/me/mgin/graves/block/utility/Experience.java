@@ -6,114 +6,165 @@ import me.mgin.graves.config.enums.GraveExpStoreType;
 import me.mgin.graves.config.enums.ExperienceType;
 import net.minecraft.entity.player.PlayerEntity;
 
+import java.util.Arrays;
+
 public class Experience {
-    public static int calculatePlayerExperience(PlayerEntity player) {
+    public static int[] calculatePlayerExperience(PlayerEntity player) {
+        GraveExpStoreType storageType = GravesConfig.resolve("expStorageType", player.getGameProfile());
+
+        int[] experience = new int[]{0,0};
+        switch(storageType) {
+            case ALL -> experience = getCurrentExperience(player);
+            case VANILLA -> experience = getVanillaExperience(player);
+            case NONE -> {
+                return new int[]{0,0};
+            }
+        }
+
+        return applyConfigurationOptions(player, experience[0], experience[1]);
+    }
+
+    public static int[] getCurrentExperience(PlayerEntity player) {
+        return new int[]{
+            player.experienceLevel,
+            getPlayerExperiencePoints(player)
+        };
+    }
+
+    public static int[] getVanillaExperience(PlayerEntity player) {
+        int vanillaExperience = 7 * player.experienceLevel;
+        return calculateLevelAndPoints(vanillaExperience, player);
+    }
+
+    public static int[] applyConfigurationOptions(PlayerEntity player, int startingLevel, int startingPoints) {
+        // This is used for configured client options
         GameProfile profile = player.getGameProfile();
-        float progress = player.experienceProgress;
-        int level = player.experienceLevel;
 
-        // Config settings
-        GraveExpStoreType storageType = GravesConfig.resolve("expStorageType", profile);
-        ExperienceType percentageType = GravesConfig.resolve("percentageType", profile);
-        ExperienceType capType = GravesConfig.resolve("capType", profile);
-        int cap = GravesConfig.resolve("cap", profile);
+        // Get percentage settings
         int percentage = GravesConfig.resolve("percentage", profile);
+        ExperienceType percentageType = GravesConfig.resolve("percentageType", profile);
+        float percentageModifier = percentage / 100f;
 
+        // Get cap settings
+        int cap = GravesConfig.resolve("cap", profile);
+        ExperienceType capType = GravesConfig.resolve("capType", profile);
 
+        // Initialize result
+        int[] result = new int[]{startingLevel, startingPoints};
 
-        // Determine experience points based on configured type
-        float percentageModifier = ((float) percentage / 100);
-        int experience;
+        // Apply percentage modifier
+        if (100 > percentage) {
+            if (percentageType == ExperienceType.LEVELS) {
+                float adjustedLevel = startingLevel * percentageModifier;
+                int level = (int) Math.floor(adjustedLevel);
+                float progress = adjustedLevel - level;
 
-        if (percentageType == ExperienceType.LEVELS) {
-            float levelAndProgress = (level + progress) * percentageModifier;
-            level = (int) levelAndProgress;
-            progress = levelAndProgress % 1;
+                // Calculate points based on progress
+                int originalLevel = player.experienceLevel;
+                player.experienceLevel = level;
+                int points = (int) Math.floor(player.getNextLevelExperience() * progress);
+                player.experienceLevel = originalLevel;
+
+                // Add proportional points from the original level
+                if (startingPoints > 0) {
+                    float pointPercentage = startingPoints / (float) getNextLevelExperience(level, player);
+                    points += (int) Math.floor(pointPercentage * percentageModifier * getNextLevelExperience(level, player));
+                }
+
+                result = new int[]{level, points};
+            } else {
+                // POINTS type - convert to total XP, apply percentage, convert back
+                long totalExperience = calculateTotalExperience(startingLevel, startingPoints, player);
+                long adjustedExperience = (long) Math.floor(totalExperience * percentageModifier);
+                result = calculateLevelAndPoints(adjustedExperience, player);
+            }
         }
 
-        switch (storageType) {
-            case VANILLA -> {
-                experience = calculateVanillaExperience(level);
-            }
-            case ALL -> {
-                experience = calculateTotalExperience(level, progress);
-            }
-            default -> {
-                experience = 0;
+
+        // Apply cap if applicable
+        if (cap > -1) {
+            if (capType == ExperienceType.LEVELS) {
+                if (result[0] > cap) {
+                    return new int[]{cap, 0};
+                }
+            } else {
+                long totalExperience = calculateTotalExperience(result[0], result[1], player);
+                if (totalExperience > cap) {
+                    return calculateLevelAndPoints(cap, player);
+                }
             }
         }
 
-        // Adjust experience based on set percentage
-        if (percentageType == ExperienceType.POINTS) experience = Math.round(experience * percentageModifier);
-
-        // Return amount, enforcing level cap.
-        int capValue = capType == ExperienceType.LEVELS ? calculateLevelExperience(cap) : cap;
-        return cap > -1 ? Math.min(capValue, experience) : experience;
+        return result;
     }
 
-    // This leverages the default death experience equation found here:
-    // https://minecraft.fandom.com/wiki/Experience#Sources
-    public static int calculateVanillaExperience(int level) {
-        return 7 * level;
-    }
 
-    public static int calculateTotalExperience(int level, float progress) {
-        int levelExperience = calculateLevelExperience(level);
-        int progressExperience = calculateProgressExperience(level, progress);
-        return levelExperience + progressExperience;
-    }
-
-    // This leverages the "total experience" equations found here:
-    // https://minecraft.fandom.com/wiki/Experience#Leveling_up
-
+    // NOTE - Helper functions
     /**
-     * Calculates how many points
-     * @param level int
-     * @return int
+     * Gets the current experience points for the current level's progress.
      */
-    private static int calculateLevelExperience(int level) {
-        int levelSquared = level * level;
-        int levelExperience = 0;
-
-        if (level <= 16)
-            levelExperience = levelSquared + 6 * level;
-        if (level >= 17 && level <= 31)
-            levelExperience = (int) (2.5 * levelSquared - 40.5 * level + 360);
-        if (level > 31)
-            levelExperience = (int) (4.5 * levelSquared - 162.5 * level + 2220);
-
-        return levelExperience;
+    private static int getPlayerExperiencePoints(PlayerEntity player) {
+        return (int) Math.floor(player.getNextLevelExperience() * player.experienceProgress);
     }
 
     /**
-     * <p>
-     *     Calculates how many points the given progress. This leverages the
-     *     "experience required" equation found <a href="https://minecraft.fandom.com/wiki/Experience#Leveling_up">here</a>.
-     * </p>
-     *
-     * @param level int
-     * @param progress float
-     * @return int
+     * Gets the XP required for the next level while respecting the player's current level.
      */
-    private static int calculateProgressExperience(int level, float progress) {
-        float progressExperience = 0;
+    private static int getNextLevelExperience(int level, PlayerEntity player) {
+        int originalLevel = player.experienceLevel;
+        player.experienceLevel = level;
+        int experienceRequired = player.getNextLevelExperience();
+        player.experienceLevel = originalLevel;
+        return experienceRequired;
+    }
 
-        if (level <= 15)
-            progressExperience = (2 * level + 7) * progress;
-        if (level >= 16 && level <= 30)
-            progressExperience = (5 * level - 38) * progress;
-        if (level > 30)
-            progressExperience = (9 * level - 158) * progress;
+    /**
+     * Converts the level and points using points alone (respecting custom scaling mods).
+     */
+    private static int[] calculateLevelAndPoints(long totalExperience, PlayerEntity player) {
+        int level = 0;
+        long points = totalExperience;
 
-        int result = Math.round(progressExperience);
+        // Store original level to restore later
+        int originalLevel = player.experienceLevel;
 
-        /*
-         * The below conditional is in place to prevent an issue where Minecraft doesn't
-         * quite reach the level it should.. i.e. 17 might become 16.999 and so forth. I
-         * rather give 1 xp than have someone almost the level they were.
-         */
-        if (result == 0) result += 1;
+        // Find the highest complete level
+        while (true) {
+            player.experienceLevel = level;
+            int experienceForNextLevel = player.getNextLevelExperience();
 
-        return level > 0 ? result : 0;
+            if (points >= experienceForNextLevel) {
+                points -= experienceForNextLevel;
+                level++;
+            } else {
+                break; // Break the loop once the points are unable to increase the level
+            }
+        }
+
+        // Restore original level
+        player.experienceLevel = originalLevel;
+
+        // Return int array containing level and points
+        return new int[]{level, (int) points};
+    }
+
+    /**
+     * Calculates the total experience points from a level and points value (respecting custom scaling mods).
+     */
+    private static long calculateTotalExperience(int level, int points, PlayerEntity player) {
+        long totalExperience = 0;
+
+        // Calculate XP for each full level
+        int originalLevel = player.experienceLevel;
+        for (int i = 0; i < level; i++) {
+            player.experienceLevel = i;
+            totalExperience += player.getNextLevelExperience();
+        }
+        player.experienceLevel = originalLevel; // Restore original level
+
+        // Add remaining points
+        totalExperience += points;
+
+        return totalExperience;
     }
 }

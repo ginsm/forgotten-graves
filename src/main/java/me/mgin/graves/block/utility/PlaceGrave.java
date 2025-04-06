@@ -145,7 +145,7 @@ public class PlaceGrave {
         graveEntity.setGraveOwner(player.getGameProfile());
 
         // Set experience & reset player's XP
-        int experience = Experience.calculatePlayerExperience(player);
+        int[] experience = Experience.calculatePlayerExperience(player);
         graveEntity.setXp(experience);
         resetPlayerExperience(player);
 

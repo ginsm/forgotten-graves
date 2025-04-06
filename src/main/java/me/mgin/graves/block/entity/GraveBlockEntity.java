@@ -23,7 +23,7 @@ import java.util.Map;
 public class GraveBlockEntity extends BlockEntity {
     private GameProfile graveOwner;
     private BlockState state;
-    private int xp;
+    private int[] xp;
     private int noDecay;
     private String customName;
     private NbtCompound graveSkull;
@@ -36,7 +36,7 @@ public class GraveBlockEntity extends BlockEntity {
         this.graveOwner = null;
         this.customName = "";
         this.graveSkull = null;
-        this.xp = 0;
+        this.xp = new int[]{0,0};
         this.noDecay = 0;
         this.mstime = 0;
         setState(state);
@@ -118,7 +118,7 @@ public class GraveBlockEntity extends BlockEntity {
      * @return boolean
      */
     public boolean hasCustomName() {
-        return customName.length() > 0;
+        return !customName.isEmpty();
     }
 
     /**
@@ -142,9 +142,9 @@ public class GraveBlockEntity extends BlockEntity {
     /**
      * Set the stored XP amount.
      *
-     * @param xp int
+     * @param xp int[]
      */
-    public void setXp(int xp) {
+    public void setXp(int[] xp) {
         this.xp = xp;
         this.markDirty();
     }
@@ -152,9 +152,9 @@ public class GraveBlockEntity extends BlockEntity {
     /**
      * Get the stored XP amount.
      *
-     * @return int
+     * @return int[]
      */
-    public int getXp() {
+    public int[] getXp() {
         return xp;
     }
 
@@ -269,7 +269,7 @@ public class GraveBlockEntity extends BlockEntity {
             }
         }
 
-        nbt.putInt("XP", xp);
+        nbt.putIntArray("XP", xp);
         nbt.putInt("noDecay", noDecay);
         nbt.putLong("mstime", mstime);
 
@@ -311,7 +311,7 @@ public class GraveBlockEntity extends BlockEntity {
             }
         }
 
-        this.xp = nbt.getInt("XP");
+        this.xp = nbt.getIntArray("XP");
         this.noDecay = nbt.getInt("noDecay");
         this.mstime = nbt.getLong("mstime");
 

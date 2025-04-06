@@ -17,7 +17,7 @@ public class ExperienceTest {
         System.out.println(">> Running STORE_ALL XP L17-31 <<");
         player.addExperienceLevels(18);
         player.addExperience(10);
-        runExperienceTest(context, player, pos, 18, 9);
+        runExperienceTest(context, player, pos, 18, 10);
 
         System.out.println(">> Running STORE_ALL XP L32+ <<");
         player.addExperienceLevels(34);
@@ -43,7 +43,7 @@ public class ExperienceTest {
         System.out.println(">> Running VANILLA XP (Point Cap) <<");
         player.addExperienceLevels(45);
         player.addExperience(8);
-        runExperienceTest(context, player, pos, 7, 8);
+        runExperienceTest(context, player, pos, 7, 9);
     }
 
     public static void storeNone(TestContext context, PlayerEntity player, BlockPos pos) {
@@ -63,13 +63,13 @@ public class ExperienceTest {
         System.out.println(">> Running Percentage XP (Points) <<");
         player.addExperienceLevels(45);
         player.addExperience(8);
-        runExperienceTest(context, player, pos, 39, 93);
+        runExperienceTest(context, player, pos, 39, 92);
 
         GraveTestHelper.runCommand(context, "graves server config set percentageType LEVELS");
         System.out.println(">> Running Percentage XP (Levels) <<");
         player.addExperienceLevels(45);
         player.addExperience(8);
-        runExperienceTest(context, player, pos, 31, 63);
+        runExperienceTest(context, player, pos, 31, 65);
     }
 
     public static void cap(TestContext context, PlayerEntity player, BlockPos pos) {
@@ -97,11 +97,12 @@ public class ExperienceTest {
     private static void runExperienceTest(TestContext context, PlayerEntity player, BlockPos pos,
                                          int expectedLevel, int expectedPoints) {
         // Calculate experience using the Experience class
-        int experience = Experience.calculatePlayerExperience(player);
+        int[] experience = Experience.calculatePlayerExperience(player);
 
         // Swap the player's experience over to what would've been in the grave
         resetPlayerExperience(player);
-        player.addExperience(experience);
+        player.addExperienceLevels(experience[0]);
+        player.addExperience(experience[1]);
 
         // Get the player's current amount of experience points
         int playerExperiencePoints = getPlayerExperiencePoints(player);

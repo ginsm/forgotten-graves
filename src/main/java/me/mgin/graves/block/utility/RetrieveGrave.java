@@ -15,7 +15,6 @@ import me.mgin.graves.state.ServerState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ItemScatterer;
@@ -139,7 +138,9 @@ public class RetrieveGrave {
         );
 
         // Add player experience back
-        player.addExperience(graveEntity.getXp());
+        int[] experience = graveEntity.getXp();
+        player.addExperienceLevels(experience[0]);
+        player.addExperience(experience[1]);
 
         // Remove block if it exists
         if (world.getBlockEntity(pos) instanceof GraveBlockEntity && destroyGrave) {

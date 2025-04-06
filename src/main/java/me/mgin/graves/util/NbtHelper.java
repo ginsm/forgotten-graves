@@ -135,6 +135,9 @@ public class NbtHelper {
         if (nbt.contains("GraveSkull", NbtElement.STRING_TYPE))
             nbt = removeOldCustomSkullTexture(nbt);
 
+        if (nbt.getType("XP") == NbtElement.INT_TYPE)
+            nbt = upgradeXP(nbt);
+
         return nbt;
     }
 
@@ -199,5 +202,87 @@ public class NbtHelper {
     private static NbtCompound removeOldCustomSkullTexture(NbtCompound nbt) {
         nbt.remove("GraveSkull");
         return nbt;
+    }
+
+    private static NbtCompound upgradeXP(NbtCompound nbt) {
+        // Get experience points from grave's nbt and remove XP
+        long storedExperiencePoints = nbt.getInt("XP");
+        nbt.remove("XP");
+
+        // Handle graves with no stored XP
+        if (storedExperiencePoints == 0) {
+            nbt.putIntArray("XP", new int[]{0,0});
+            return nbt;
+        }
+
+        // Create initial variables
+        int[] experienceArray = new int[2];
+        int level;
+
+        // Necessary to check which equation to use (similar to vanilla equations)
+        int level16Exp = 352;
+        int level31Exp = 1507;
+
+        // Calculate level based on the inverse equations of calculateLevelExperience
+        if (storedExperiencePoints <= level16Exp) {
+            level = (int) Math.floor((-6 + Math.sqrt(36 + 4 * storedExperiencePoints)) / 2);
+        } else if (storedExperiencePoints <= level31Exp) {
+            level = (int) Math.floor((40.5 + Math.sqrt(1640.25 - 10 * (360 - storedExperiencePoints))) / 5);
+        } else {
+            level = (int) Math.floor((162.5D + Math.sqrt(26406.25D - 18L * (2220L - storedExperiencePoints))) / 9L);
+        }
+
+        // This should almost never run, as the above L31+ equation should handle Integer.MAX_VALUE just fine (from my
+        // testing), but I'll add this as a fallback just in case.
+        if (updateXP$calculateLevelExperience(level + 1) <= storedExperiencePoints) {
+            level = upgradeXP$findHighStoredXPLevel(storedExperiencePoints);
+        }
+
+        // Calculate remaining points
+        int points = (int) (storedExperiencePoints - updateXP$calculateLevelExperience(level));
+
+        // Store the level and points as an int array in the nbt and return it
+        nbt.putIntArray("XP", new int[]{level, points});
+        return nbt;
+    }
+
+    /**
+     * Calculates how many points are in a given level. The equations are from the
+     * <a href="https://minecraft.fandom.com/wiki/Experience#Leveling_up">Minecraft Wiki</a>.
+     * @param level int
+     * @return int
+     */
+    public static long updateXP$calculateLevelExperience(int level) {
+        long levelSquared = (long) level * level;
+        long levelExperience = 0;
+
+        if (level <= 16)
+            levelExperience = levelSquared + 6L * level;
+        if (level >= 17 && level <= 31)
+            levelExperience = (long) (2.5d * levelSquared - 40.5D * level + 360L);
+        if (level > 31)
+            levelExperience = (long) (4.5d * levelSquared - 162.5D * level + 2220L);
+
+        return levelExperience;
+    }
+
+    public static Integer upgradeXP$findHighStoredXPLevel(long storedExperiencePoints) {
+        int low = 0;
+        int high = 21864; // The old graves could only store 21863 levels and some points.
+        int level = 0;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            long xpAtMid = updateXP$calculateLevelExperience(mid);
+
+            if (xpAtMid <= storedExperiencePoints) {
+                level = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        return level;
     }
 }

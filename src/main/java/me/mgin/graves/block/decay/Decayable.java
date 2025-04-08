@@ -26,7 +26,7 @@ public interface Decayable<T extends Enum<T>> {
 
         if (config.decay.decayEnabled) {
             float decayChance = (float) getStageDecayChance(state, config) / 100;
-            if (decayChance >= random.nextFloat()) {
+            if (decayChance == 1.0f || decayChance >= random.nextFloat()) {
                 this.tryDecay(state, world, pos, random);
             }
         }

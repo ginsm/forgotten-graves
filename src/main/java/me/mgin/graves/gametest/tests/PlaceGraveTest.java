@@ -21,24 +21,28 @@ import java.util.Objects;
 
 public class PlaceGraveTest {
     public static void sinkInLava$false(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running sinkInLava$false");
         BlockPos pos = context.getAbsolutePos(new BlockPos(10, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(10, 7, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
     }
 
     public static void sinkInWater$false(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running sinkInWater$false");
         BlockPos pos = context.getAbsolutePos(new BlockPos(2, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(2, 7, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
     }
 
     public static void sinkThroughBlocks$false(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running sinkThroughBlocks$false");
         BlockPos pos = context.getAbsolutePos(new BlockPos(6, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(6, 7, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
     }
 
     public static void sinkInAir$false(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running sinkInAir$false");
         BlockPos pos = context.getAbsolutePos(new BlockPos(18, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(18, 7, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
@@ -46,53 +50,62 @@ public class PlaceGraveTest {
 
     // sink tests
     public static void sinkInLava$true(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running sinkInLava$true");
         BlockPos pos = context.getAbsolutePos(new BlockPos(10, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(10, 2, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
     }
 
     public static void sinkInWater$true(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running sinkInWater$true");
         BlockPos pos = context.getAbsolutePos(new BlockPos(2, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(2, 2, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
     }
 
     public static void sinkThroughBlocks$true(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running sinkThroughBlocks$true");
         BlockPos pos = context.getAbsolutePos(new BlockPos(6, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(6, 2, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
     }
 
     public static void sinksInAir$true(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running sinkInAir$true");
         BlockPos pos = context.getAbsolutePos(new BlockPos(18, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(18, 2, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
     }
 
     public static void replaceBlocks$false(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running replaceBlocks$false");
         BlockPos pos = context.getAbsolutePos(new BlockPos(19, 2, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(18, 2, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
     }
 
     public static void replaceBlocks$true(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running replaceBlocks$true");
         BlockPos pos = context.getAbsolutePos(new BlockPos(18, 2, 2));
         context.getWorld().setBlockState(pos, Blocks.TALL_GRASS.getDefaultState());
         checkPlaceGrave(context, player, pos, pos, World.OVERWORLD);
     }
 
     public static void respectsBlacklist(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running respectsBlackList");
         BlockPos pos = context.getAbsolutePos(new BlockPos(14, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(14, 9, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
     }
 
     public static void spawnsInNether(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running spawnsInNether");
         BlockPos pos = new BlockPos(45, 63, 102);
         checkPlaceGrave(context, player, pos, pos, World.NETHER);
     }
 
     public static void spawnsInEnd(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running sinkInEnd");
         BlockPos pos = new BlockPos(57, 56, 88);
         checkPlaceGrave(context, player, pos, pos, World.END);
     }
@@ -101,29 +114,36 @@ public class PlaceGraveTest {
         BlockPos minYOverworldPos = context.getAbsolutePos(new BlockPos(18, -10, 2)); // min is -64
         BlockPos maxYOverworldPos = context.getAbsolutePos(new BlockPos(18, 400, 2)); // max is 319
         BlockPos overworldEndPos = context.getAbsolutePos(new BlockPos(18, 2, 2)); // sinks down for max, rises up for min
+        System.out.println("📗 Running respectsWorldBoundaries$min");
         checkPlaceGrave(context, player, minYOverworldPos, overworldEndPos, World.OVERWORLD);
+        System.out.println("📗 Running respectsWorldBoundaries$max");
         checkPlaceGrave(context, player, maxYOverworldPos, overworldEndPos, World.OVERWORLD);
 
         BlockPos minYEndPos = new BlockPos(100, -200, 100); // min is 0
         BlockPos maxYEndPos = new BlockPos(100, 320, 100); // max is 255
         BlockPos endFinalPos = new BlockPos(100, 1, 100); // sinks down for max, rises up for min
+        System.out.println("📗 Running respectsWorldBoundaries$min-end");
         checkPlaceGrave(context, player, minYEndPos, endFinalPos, World.END);
+        System.out.println("📗 Running respectsWorldBoundaries$max-end");
         checkPlaceGrave(context, player, maxYEndPos, endFinalPos, World.END);
     }
 
     // Grave shouldn't spawn scenarios
     public static void graves$false(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running graves$false");
         BlockPos pos = new BlockPos(18, 2, 2);
         checkGravesDisabled(context, player, pos, World.OVERWORLD);
     }
 
     public static void respectsDisableEffect(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running respectsDisableEffect");
         BlockPos pos = new BlockPos(18, 2, 2);
         player.addStatusEffect(new StatusEffectInstance(GraveEffects.DISABLE_GRAVES_EFFECT, 300));
         checkGravesDisabled(context, player, pos, World.OVERWORLD);
     }
 
     public static void disableInPvP$true(TestContext context, PlayerEntity player) {
+        System.out.println("📗 Running disableInPvP$true");
         BlockPos pos = new BlockPos(18, 2, 2);
         PlayerEntity player2 = context.createMockCreativePlayer();
         player.setPosition(0, -58, 0);
@@ -144,7 +164,6 @@ public class PlaceGraveTest {
      * @param worldKey RegistryKey for the given world (OVERWORLD, NETHER, END).
      */
    private static void checkPlaceGrave(TestContext context, PlayerEntity player, BlockPos pos, BlockPos endPos, RegistryKey<World> worldKey) {
-        System.out.println(">> Running " + Thread.currentThread().getStackTrace()[2].getMethodName() + " <<");
         World world = Objects.requireNonNull(player.getServer()).getWorld(worldKey);
         if (world != null) {
             // Place the grave
@@ -171,7 +190,6 @@ public class PlaceGraveTest {
      * @param worldKey RegistryKey for the given world (OVERWORLD, NETHER, END).
      */
     private static void checkGravesDisabled(TestContext context, PlayerEntity player, BlockPos pos, RegistryKey<World> worldKey) {
-        System.out.println(">> Running " + Thread.currentThread().getStackTrace()[2].getMethodName() + " <<");
         World world = Objects.requireNonNull(player.getServer()).getWorld(worldKey);
         if (world != null) {
             // Give player items to check for when player dies

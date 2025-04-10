@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 public class WaterlogTest {
     public static void waterlogged(TestContext context, PlayerEntity player, BlockPos pos) {
-        System.out.println(">> Running waterlogged <<");
+        System.out.println("📗 Running waterlogged");
         RegistryKey<World> key = World.OVERWORLD;
         World world = GraveTestHelper.getWorld(player, key);
         if (world != null) {
@@ -25,7 +25,7 @@ public class WaterlogTest {
     }
 
     public static void notWaterlogged(TestContext context, PlayerEntity player, BlockPos pos) {
-        System.out.println(">> Running notWaterlogged <<");
+        System.out.println("📗 Running notWaterlogged");
         RegistryKey<World> key = World.OVERWORLD;
         World world = GraveTestHelper.getWorld(player, key);
         if (world != null) {

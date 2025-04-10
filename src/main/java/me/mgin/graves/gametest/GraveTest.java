@@ -9,8 +9,10 @@ import net.minecraft.world.World;
 
 public class GraveTest {
     @GameTest(templateName = "forgottengraves:placement_tests")
-    public void gravePlacementTests(TestContext context) {
+    public void graveGenerationTests(TestContext context) {
         PlayerEntity player = context.createMockSurvivalPlayer();
+
+        GraveTestHelper.printTestStarting("Generation");
 
         PlaceGraveTest.sinkInLava$false(context, player); // default is false
         GraveTestHelper.runCommand(context, "graves server config set sinkInWater false");
@@ -43,14 +45,19 @@ public class GraveTest {
         GraveTestHelper.runCommand(context, "graves server config set disableInPvP true");
         PlaceGraveTest.disableInPvP$true(context, player);
 
+        // Complete test
         GraveTestHelper.runCommand(context, "graves server config reset");
         context.complete();
+
+        GraveTestHelper.printTestEnding("Generation");
     }
 
     @GameTest(templateName = "forgottengraves:generic_tests")
     public static void RetrieveGraveTests(TestContext context) {
         PlayerEntity player = context.createMockSurvivalPlayer();
         BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
+
+        GraveTestHelper.printTestStarting("Retrieve");
 
         // Remove the grave in the center of the generic test platform
         GraveTestHelper.removeGrave(GraveTestHelper.getWorld(player, World.OVERWORLD), pos);
@@ -59,6 +66,13 @@ public class GraveTest {
         RetrieveGraveTest.mergeRetrieval(context, player, pos);
         RetrieveGraveTest.overflowRetrieval(context, player, pos);
         RetrieveGraveTest.unloadedModRetrieval(context, player, pos);
+
+        // Complete test
+        GraveTestHelper.runCommand(context, "graves server config reset");
+        context.complete();
+
+        GraveTestHelper.printTestEnding("Retrieve");
+    }
 
     @GameTest(templateName = "forgottengraves:generic_tests")
     public static void decayTests(TestContext context) {
@@ -94,6 +108,8 @@ public class GraveTest {
         PlayerEntity player = context.createMockSurvivalPlayer();
         BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
 
+        GraveTestHelper.printTestStarting("Experience");
+
         // Remove the grave in the center of the generic test platform
         GraveTestHelper.removeGrave(GraveTestHelper.getWorld(player, World.OVERWORLD), pos);
 
@@ -103,9 +119,11 @@ public class GraveTest {
         ExperienceTest.percentage(context, player, pos);
         ExperienceTest.cap(context, player, pos);
 
-        // Reset the config
+        // Complete test
         GraveTestHelper.runCommand(context, "graves server config reset");
         context.complete();
+
+        GraveTestHelper.printTestEnding("Experience");
     }
 
     @GameTest(templateName = "forgottengraves:generic_tests")
@@ -113,12 +131,16 @@ public class GraveTest {
         PlayerEntity player = context.createMockSurvivalPlayer();
         BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
 
+        GraveTestHelper.printTestStarting("Waterlog");
+
         WaterlogTest.waterlogged(context, player, pos);
         WaterlogTest.notWaterlogged(context, player, pos);
 
-        GraveTestHelper.runCommand(context, "graves server config reset");
+        // Complete test
         GraveTestHelper.removeGrave(GraveTestHelper.getWorld(player, World.OVERWORLD), pos);
         context.complete();
+
+        GraveTestHelper.printTestEnding("Waterlog");
     }
 
     @GameTest(templateName = "forgottengraves:generic_tests")
@@ -126,14 +148,19 @@ public class GraveTest {
         PlayerEntity player = context.createMockSurvivalPlayer();
         BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
 
+        GraveTestHelper.printTestStarting("Explosion");
+
         ExplosionTest.resistsCreeper(context, player, pos);
         ExplosionTest.resistsTNT(context, player, pos);
         ExplosionTest.resistsEndCrystal(context, player, pos);
         ExplosionTest.resistsGhastFireball(context, player, pos);
         ExplosionTest.resistsDragonFireball(context, player, pos);
 
+        // Complete test
         GraveTestHelper.removeGrave(GraveTestHelper.getWorld(player, World.OVERWORLD), pos);
         GraveTestHelper.runCommand(context, "graves server config reset");
         context.complete();
+
+        GraveTestHelper.printTestEnding("Explosion");
     }
 }

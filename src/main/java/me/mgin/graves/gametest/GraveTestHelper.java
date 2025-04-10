@@ -1,25 +1,24 @@
 package me.mgin.graves.gametest;
 
 import me.mgin.graves.block.GraveBlockBase;
+import me.mgin.graves.block.GraveBlocks;
+import me.mgin.graves.block.decay.DecayStateManager;
+import me.mgin.graves.block.decay.DecayingGrave;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.test.TestContext;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class GraveTestHelper {
     public static void runCommand(TestContext context, String command) {
@@ -27,15 +26,7 @@ public class GraveTestHelper {
         server.getCommandManager().executeWithPrefix(server.getCommandSource(), command);
     }
 
-    public static ActionResult useStackOnBlock(PlayerEntity player, ItemStack stack, BlockPos pos) {
-        teleportPlayer(player, pos);
-        BlockHitResult blockHitResult = new BlockHitResult(Vec3d.ofCenter(pos), Direction.DOWN, pos, true);
-        ItemUsageContext itemUsageContext = new ItemUsageContext(player, Hand.MAIN_HAND, blockHitResult);
-        return stack.useOnBlock(itemUsageContext);
-    }
-
     public static void checkGraveExists(TestContext context, PlayerEntity player, BlockPos pos, RegistryKey<World> key) {
-        System.out.println(">> Running " + Thread.currentThread().getStackTrace()[2].getMethodName() + " <<");
         World world = getWorld(player, key);
         if (world != null) {
             Block block = world.getBlockState(pos).getBlock();
@@ -59,6 +50,14 @@ public class GraveTestHelper {
         player.getInventory().clear();
     }
 
+    public static Integer getAmountOfItemsInInventory(PlayerEntity player) {
+        int amountOfItems = 0;
+        for (ItemStack itemStack : player.getInventory().main) {
+            if (!itemStack.isEmpty()) amountOfItems += 1;
+        }
+        return amountOfItems;
+    }
+
     public static void dropMockPlayerInventory(PlayerEntity player, World world, BlockPos pos) {
         for (ItemStack stack : player.getInventory().main) {
             if (!stack.isEmpty()) {
@@ -70,6 +69,12 @@ public class GraveTestHelper {
         player.getInventory().clear();
     }
 
+    public static void spawnEmptyGrave(PlayerEntity player, BlockPos pos) {
+        teleportPlayer(player, pos);
+        clearPlayerInventory(player);
+        player.kill();
+    }
+
     public static void removeGrave(World world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof GraveBlockBase graveBlock) {
@@ -78,7 +83,38 @@ public class GraveTestHelper {
         }
     }
 
+    public static void resetGraveDecay(World world, BlockPos pos) {
+        BlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof GraveBlockBase graveBlock) {
+            DecayStateManager.setDecayState(
+                world, pos, Optional.ofNullable(GraveBlocks.GRAVE.getDefaultState()), false
+            );
+        }
+    }
+
+    public static boolean compareDecayLevel(World world, BlockPos pos, DecayingGrave.BlockDecay expectedDecayLevel) {
+        BlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+
+        if (block instanceof GraveBlockBase graveBlock) {
+            DecayingGrave.BlockDecay decay = graveBlock.getDecayStage();
+            return decay == expectedDecayLevel;
+        }
+
+        return false;
+    }
+
     public static Vec3d posToVec3d(BlockPos pos) {
         return new Vec3d(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public static void printTestStarting(String name) {
+        System.out.println("======== Running " + name + " Tests ========");
+    }
+
+    public static void printTestEnding(String name) {
+        System.out.println("======= Finished " + name + " Tests =======" +
+            System.lineSeparator() + " " +
+            System.lineSeparator() + " ");
     }
 }

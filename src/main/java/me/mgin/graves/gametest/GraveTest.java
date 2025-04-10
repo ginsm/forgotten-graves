@@ -61,6 +61,35 @@ public class GraveTest {
         RetrieveGraveTest.unloadedModRetrieval(context, player, pos);
 
     @GameTest(templateName = "forgottengraves:generic_tests")
+    public static void decayTests(TestContext context) {
+        PlayerEntity player = context.createMockSurvivalPlayer();
+        BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
+
+        GraveTestHelper.printTestStarting("Decay");
+
+        // Reset config
+        GraveTestHelper.runCommand(context, "graves server config reset");
+
+        DecayTest.decayEnabled$true(context, player, pos);
+        DecayTest.decayEnabled$false(context, player, pos);
+        DecayTest.honeycombPreventsDecay(context, player, pos);
+        DecayTest.shovelRemovesHoneycomb(context, player, pos);
+        DecayTest.decayItemsAddDecay(context, player, pos); // vines, mushrooms, etc
+        DecayTest.shovelReducesDecayStage(context, player, pos);
+        DecayTest.itemsDecay(context, player, pos);
+        DecayTest.decayBreaksItems$true(context, player, pos);
+        DecayTest.minStageTimeSeconds(context, player, pos);
+        DecayTest.maxStageTimeSeconds(context, player, pos);
+
+        // Complete test
+        GraveTestHelper.runCommand(context, "graves server config reset");
+        GraveTestHelper.removeGrave(GraveTestHelper.getWorld(player, World.OVERWORLD), pos);
+        context.complete();
+
+        GraveTestHelper.printTestEnding("Decay");
+    }
+
+    @GameTest(templateName = "forgottengraves:generic_tests")
     public static void experienceTests(TestContext context) {
         PlayerEntity player = context.createMockSurvivalPlayer();
         BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));

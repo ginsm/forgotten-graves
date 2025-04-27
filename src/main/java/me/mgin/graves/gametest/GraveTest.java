@@ -15,17 +15,11 @@ public class GraveTest {
         GraveTestHelper.printTestStarting("Generation");
 
         PlaceGraveTest.sinkInLava$false(context, player); // default is false
-        GraveTestHelper.runCommand(context, "graves server config set sinkInWater false");
         PlaceGraveTest.sinkInWater$false(context, player);
-        GraveTestHelper.runCommand(context, "graves server config set sinkThroughBlocks false");
-        PlaceGraveTest.sinkThroughBlocks$false(context, player); // water column
-        GraveTestHelper.runCommand(context, "graves server config set sinkInAir false");
+        PlaceGraveTest.sinkThroughBlocks$false(context, player); // tested with a water column
         PlaceGraveTest.sinkInAir$false(context, player);
-        GraveTestHelper.runCommand(context, "graves server config set replaceBlocks false");
-        PlaceGraveTest.replaceBlocks$false(context, player); // tall grass in air chamber
+        PlaceGraveTest.replaceBlocks$false(context, player); // tested with tall grass in air chamber
 
-        GraveTestHelper.runCommand(context, "graves server config reset");
-        GraveTestHelper.runCommand(context, "graves server config set sinkInLava true");
         PlaceGraveTest.sinkInLava$true(context, player);
         PlaceGraveTest.sinkInWater$true(context, player);
         PlaceGraveTest.sinkThroughBlocks$true(context, player); // water column
@@ -38,11 +32,8 @@ public class GraveTest {
         PlaceGraveTest.respectsBlacklist(context, player);
         PlaceGraveTest.respectsWorldBoundaries(context, player);
 
-        GraveTestHelper.runCommand(context, "graves server config set graves false");
         PlaceGraveTest.graves$false(context, player);
-        GraveTestHelper.runCommand(context, "graves server config set graves true");
         PlaceGraveTest.respectsDisableEffect(context, player);
-        GraveTestHelper.runCommand(context, "graves server config set disableInPvP true");
         PlaceGraveTest.disableInPvP$true(context, player);
 
         // Complete test

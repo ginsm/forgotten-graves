@@ -39,7 +39,6 @@ public class GraveBlockEntity extends BlockEntity {
         this.xp = new int[]{0,0};
         this.noDecay = 0;
         this.mstime = 0;
-        setState(state);
     }
 
     /**
@@ -122,21 +121,12 @@ public class GraveBlockEntity extends BlockEntity {
     }
 
     /**
-     * Set GraveBlockEntity's current state.
-     *
-     * @param state BlockState
-     */
-    public void setState(BlockState state) {
-        this.state = state;
-    }
-
-    /**
      * Get GraveBlockEntity's current state.
      *
      * @return BlockState
      */
     public BlockState getState() {
-        return state;
+        return this.getCachedState();
     }
 
     /**

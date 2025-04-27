@@ -120,11 +120,14 @@ public interface Decayable<T extends Enum<T>> {
             world.setBlockState(pos, state);
 
             // Decay inventories (if enabled) and store them.
-            for (InventoriesApi api : Graves.inventories) {
-                String id = api.getID();
-                DefaultedList<ItemStack> inventory = graveEntity.getInventory(id);
-                if (inventory == null)  continue;
-                graveEntity.setInventory(id, itemsDecay ? decayItems(inventory) : inventory);
+            if (itemsDecay) {
+                for (InventoriesApi api : Graves.inventories) {
+                    String id = api.getID();
+                    DefaultedList<ItemStack> inventory = graveEntity.getInventory(id);
+                    if (inventory != null) {
+                        graveEntity.setInventory(id, decayItems(inventory));
+                    }
+                }
             }
 
             world.addBlockEntity(graveEntity);

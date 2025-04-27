@@ -4,6 +4,7 @@ import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.decay.DecayStateManager;
 import me.mgin.graves.block.decay.DecayingGrave;
+import me.mgin.graves.block.utility.PlaceGrave;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -33,6 +34,15 @@ public class GraveTestHelper {
             String errorMessage = "Expect block to be a grave block at " + pos + " got " + block.getName()
                 + " in " + key.getValue();
             context.assertTrue(block instanceof GraveBlockBase, errorMessage);
+        }
+    }
+
+    public static void checkGraveDoesntExist(TestContext context, PlayerEntity player, BlockPos pos, RegistryKey<World> key) {
+        World world = getWorld(player, key);
+        if (world != null) {
+            Block block = world.getBlockState(pos).getBlock();
+            String errorMessage = "Expected block at " + pos + " in " + key.getValue() + " to not be a grave block.";
+            context.assertFalse(block instanceof GraveBlockBase, errorMessage);
         }
     }
 
@@ -69,10 +79,9 @@ public class GraveTestHelper {
         player.getInventory().clear();
     }
 
-    public static void spawnEmptyGrave(PlayerEntity player, BlockPos pos) {
-        teleportPlayer(player, pos);
+    public static void spawnEmptyGrave(PlayerEntity player, BlockPos pos, World world) {
         clearPlayerInventory(player);
-        player.kill();
+        PlaceGrave.place(world, posToVec3d(pos), player);
     }
 
     public static void removeGrave(World world, BlockPos pos) {
@@ -90,6 +99,12 @@ public class GraveTestHelper {
                 world, pos, Optional.ofNullable(GraveBlocks.GRAVE.getDefaultState()), false
             );
         }
+    }
+
+    public static void setGraveDecay(World world, BlockPos pos, GraveBlockBase base) {
+        DecayStateManager.setDecayState(
+            world, pos, Optional.ofNullable(base.getDefaultState()), false
+        );
     }
 
     public static boolean compareDecayLevel(World world, BlockPos pos, DecayingGrave.BlockDecay expectedDecayLevel) {

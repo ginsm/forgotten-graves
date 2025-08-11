@@ -3,6 +3,7 @@ package me.mgin.graves.inventory;
 import de.rubixdev.inventorio.api.InventorioAPI;
 import de.rubixdev.inventorio.player.PlayerInventoryAddon;
 import me.mgin.graves.api.InventoriesApi;
+import me.mgin.graves.tags.GraveEnchantTags;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
@@ -20,6 +21,8 @@ public class Inventorio implements InventoriesApi {
     public DefaultedList<ItemStack> getInventory(PlayerEntity player) {
         PlayerInventoryAddon inventorioInv = InventorioAPI.getInventoryAddon(player);
         DefaultedList<ItemStack> items = DefaultedList.of();
+
+        if (inventorioInv == null) return items;
 
         for (int i = 0; i < inventorioInv.size(); i++) {
             items.add(inventorioInv.getStack(i));
@@ -39,6 +42,8 @@ public class Inventorio implements InventoriesApi {
         PlayerInventoryAddon inventorioInv = InventorioAPI.getInventoryAddon(player);
         DefaultedList<ItemStack> unequipped = DefaultedList.of();
 
+        if (inventorioInv == null) return unequipped;
+
         for (int i = 0; i < inventory.size(); i++) {
             if (inventorioInv.getStack(i).isEmpty()) {
                 inventorioInv.setStack(i, inventory.get(i));
@@ -52,8 +57,24 @@ public class Inventorio implements InventoriesApi {
     }
 
     @Override
-    public void clearInventory(PlayerEntity player) {
+    public void clearInventory(PlayerEntity player, boolean respectSoulbound) {
         PlayerInventoryAddon inventorioInv = InventorioAPI.getInventoryAddon(player);
-        inventorioInv.clear();
+        if (inventorioInv != null) {
+            if (respectSoulbound) {
+                clearItemsRespectingEnchants(inventorioInv);
+            } else {
+                inventorioInv.clear();
+            }
+        }
+    }
+
+    private static void clearItemsRespectingEnchants(PlayerInventoryAddon inventory) {
+        for (int i = 0; i < inventory.size(); i++) {
+            ItemStack stack = inventory.getStack(i);
+
+            if (!GraveEnchantTags.hasSoulboundEnchantment(stack) || GraveEnchantTags.hasVanishingCurse(stack)) {
+                inventory.setStack(i, ItemStack.EMPTY);
+            }
+        }
     }
 }

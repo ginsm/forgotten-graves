@@ -232,7 +232,7 @@ public class RetrieveGrave {
                 }
             } else {
                 // Clear the inventory of the player
-                api.clearInventory(player);
+                api.clearInventory(player, false);
 
                 // Restore the grave inventory to the player
                 if (graveInventory != null) {

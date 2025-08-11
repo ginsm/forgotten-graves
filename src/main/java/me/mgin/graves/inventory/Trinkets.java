@@ -7,12 +7,12 @@ import dev.emi.trinkets.api.TrinketEnums.DropRule;
 import dev.emi.trinkets.api.TrinketInventory;
 import dev.emi.trinkets.api.TrinketsApi;
 import me.mgin.graves.api.InventoriesApi;
+import me.mgin.graves.tags.GraveEnchantTags;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.event.GameEvent;
 
@@ -61,7 +61,7 @@ public class Trinkets implements InventoriesApi {
         component.ifPresent(trinketComponent -> trinketComponent.forEach((ref, stack) -> {
             DropRule rule = ref.inventory().getSlotType().getDropRule();
 
-            if (EnchantmentHelper.hasVanishingCurse(stack) || rule.equals(DropRule.KEEP)) {
+            if (rule.equals(DropRule.KEEP)) {
                 itemStacks.add(ItemStack.EMPTY);
             } else {
                 itemStacks.add(stack);
@@ -86,9 +86,6 @@ public class Trinkets implements InventoriesApi {
             ItemStack stack = inventory.get(i);
             if (stack.isEmpty()) continue;
 
-            // Do nothing & let the item be deleted
-            if (EnchantmentHelper.hasVanishingCurse(stack)) continue;
-
             // Add item to be returned as unequipped
             if (EnchantmentHelper.hasBindingCurse(stack)) {
                 unequipped.add(stack);
@@ -110,12 +107,15 @@ public class Trinkets implements InventoriesApi {
      *
      * @param player PlayerEntity
      */
-    public void clearInventory(PlayerEntity player) {
+    public void clearInventory(PlayerEntity player, boolean respectSoulbound) {
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
 
         component.ifPresent(trinketComponent -> trinketComponent.forEach((ref, stack) -> {
             DropRule rule = ref.inventory().getSlotType().getDropRule();
-            if (rule.equals(DropRule.KEEP)) return;
+            boolean hasSoulbound = respectSoulbound
+                    && GraveEnchantTags.hasSoulboundEnchantment(stack)
+                    && !GraveEnchantTags.hasVanishingCurse(stack);
+            if (rule.equals(DropRule.KEEP) || hasSoulbound) return;
 
             TrinketInventory inventory = ref.inventory();
             inventory.setStack(ref.index(), ItemStack.EMPTY);

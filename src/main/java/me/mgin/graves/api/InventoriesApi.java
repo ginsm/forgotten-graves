@@ -16,5 +16,11 @@ public interface InventoriesApi {
 
 	DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity entity);
 
-	void clearInventory(PlayerEntity player);
+	// Mostly just used when soulbound items should be removed, like during retrieval.
+	void clearInventory(PlayerEntity player, boolean respectSoulbound);
+
+	// Used when placing the grave so soulbound items stay on the player
+	default void clearInventory(PlayerEntity player) {
+		clearInventory(player, true);
+	}
 }

@@ -3,7 +3,9 @@ package me.mgin.graves.inventory;
 import java.util.List;
 
 import me.mgin.graves.api.InventoriesApi;
+import me.mgin.graves.tags.GraveEnchantTags;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
@@ -36,9 +38,21 @@ public class BackSlot implements InventoriesApi {
         return unequipped;
     }
 
-    public void clearInventory(PlayerEntity player) {
-        player.getInventory().setStack(41, ItemStack.EMPTY);
-        player.getInventory().setStack(42, ItemStack.EMPTY);
+    public void clearInventory(PlayerEntity player, boolean respectSoulbound) {
+        if (respectSoulbound) {
+            clearItemRespectingEnchants(player.getInventory(), 41);
+            clearItemRespectingEnchants(player.getInventory(), 42);
+        } else {
+            player.getInventory().setStack(41, ItemStack.EMPTY);
+            player.getInventory().setStack(42, ItemStack.EMPTY);
+        }
     }
 
+    private static void clearItemRespectingEnchants(PlayerInventory inventory, int slot) {
+        ItemStack stack = inventory.getStack(slot);
+
+        if (!GraveEnchantTags.hasSoulboundEnchantment(stack) || GraveEnchantTags.hasSoulboundEnchantment(stack)) {
+            inventory.setStack(slot, ItemStack.EMPTY);
+        }
+    }
 }

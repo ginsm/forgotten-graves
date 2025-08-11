@@ -30,11 +30,8 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         super(type, world);
     }
 
-    @Inject(method = "dropInventory", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "dropInventory", at = @At("HEAD"))
     private void dropAll(CallbackInfo ci) {
-        // Cancel the default behavior
-        ci.cancel();
-
         PlayerEntity player = this.inventory.player;
         GameProfile profile = player.getGameProfile();
 
@@ -67,12 +64,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
         if (shouldPlaceGrave) {
             PlaceGrave.place(this.getWorld(), this.getPos(), player);
-        }
-
-        // Support for the KEEP_INVENTORY game rule.
-        if (!keepInventory) {
-            this.vanishCursedItems();
-            this.inventory.dropAll();
         }
     }
 }

@@ -8,6 +8,7 @@ import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.state.ServerState;
 import me.mgin.graves.tags.GraveBlockTags;
+import me.mgin.graves.tags.GraveEnchantTags;
 import me.mgin.graves.util.Responder;
 import me.mgin.graves.versioned.VersionedCode;
 import net.minecraft.block.Block;
@@ -133,9 +134,8 @@ public class PlaceGrave {
         // Set the grave inventories and clear player's inventories
         for (InventoriesApi api : Graves.inventories) {
             DefaultedList<ItemStack> inventory = api.getInventory(player);
-
-            if (inventory == null)
-                continue;
+            if (inventory == null) continue;
+            removeVanishedAndSoulboundItems(inventory);
 
             graveEntity.setInventory(api.getID(), inventory);
             api.clearInventory(player);
@@ -243,5 +243,15 @@ public class PlaceGrave {
         boolean canReplace = VersionedCode.Tags.blockTagContains(state, GraveBlockTags.REPLACEABLE);
         boolean doNotReplace = VersionedCode.Tags.blockTagContains(state, GraveBlockTags.DO_NOT_REPLACE);
         return state.isAir() || state.isLiquid() || replaceBlocks && !doNotReplace && canReplace;
+    }
+
+    private static void removeVanishedAndSoulboundItems(DefaultedList<ItemStack> inventory) {
+        for (int i = 0; i < inventory.size(); i++) {
+            ItemStack stack = inventory.get(i);
+            // Any items that has vanishing or is soulbound shouldn't be in the grave
+            if (GraveEnchantTags.hasVanishingCurse(stack) || GraveEnchantTags.hasSoulboundEnchantment(stack)) {
+                inventory.set(i, ItemStack.EMPTY);
+            }
+        }
     }
 }

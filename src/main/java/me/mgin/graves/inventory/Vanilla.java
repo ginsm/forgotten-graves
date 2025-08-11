@@ -4,10 +4,10 @@ import java.util.List;
 
 import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.utility.Inventory;
+import me.mgin.graves.tags.GraveEnchantTags;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.Items;
@@ -49,13 +49,8 @@ public class Vanilla implements InventoriesApi {
         List<ItemStack> armor = inventory.subList(36, 40);
 
         for (ItemStack armorItem : armor) {
-            // Do nothing with items with curse of vanishing
-            if (EnchantmentHelper.hasVanishingCurse(armorItem)) {
-                continue;
-            }
-
             // Do not equip armor with curse of binding
-            if (EnchantmentHelper.hasBindingCurse(armorItem)) {
+            if (GraveEnchantTags.hasBindingCurse(armorItem)) {
                 overflow.add(armorItem);
                 continue;
             }
@@ -120,9 +115,25 @@ public class Vanilla implements InventoriesApi {
         this.equippedOffhand = new ItemStack(Items.AIR);
     }
 
-    public void clearInventory(PlayerEntity player) {
-        player.getInventory().main.clear();
-        player.getInventory().armor.clear();
-        player.getInventory().offHand.clear();
+    public void clearInventory(PlayerEntity player, boolean respectSoulbound) {
+        if (respectSoulbound) {
+            clearItemsRespectingEnchants(player.getInventory().main);
+            clearItemsRespectingEnchants(player.getInventory().armor);
+            clearItemsRespectingEnchants(player.getInventory().offHand);
+        } else {
+            player.getInventory().main.clear();
+            player.getInventory().armor.clear();
+            player.getInventory().offHand.clear();
+        }
+    }
+
+    private static void clearItemsRespectingEnchants(DefaultedList<ItemStack> inventory) {
+        for (int i = 0; i < inventory.size(); i++) {
+            ItemStack stack = inventory.get(i);
+
+            if (!GraveEnchantTags.hasSoulboundEnchantment(stack) || GraveEnchantTags.hasVanishingCurse(stack)) {
+                inventory.set(i, ItemStack.EMPTY);
+            }
+        }
     }
 }

@@ -25,7 +25,12 @@ public class GraveEnchantTags {
     }
 
     public static boolean hasSoulboundEnchantment(ItemStack stack) {
-        return hasTaggedEnchantment(stack, SOULBOUND_ENCHANTS);
+        // Botania's Resolute Ivy is treated like Soulbound
+        return hasTaggedEnchantment(stack, SOULBOUND_ENCHANTS) || hasResoluteIvy(stack);
+    }
+
+    public static boolean hasResoluteIvy(ItemStack stack) {
+        return stack.getOrCreateNbt().contains("Botania_keepIvy");
     }
 
     private static boolean hasTaggedEnchantment(ItemStack stack, TagKey<Enchantment> tag) {

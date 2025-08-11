@@ -122,6 +122,13 @@ public class Trinkets implements InventoriesApi {
         }));
     }
 
+    public static void removeResoluteIvy(PlayerEntity player) {
+        Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
+        component.ifPresent(trinketComponent -> trinketComponent.forEach((ref, stack) -> {
+            stack.removeSubNbt("Botania_keepIvy");
+        }));
+    }
+
     /**
      * Equips an item based on a given index; this is meant to be used with
      * setInventory. The index is based on each TrinketSlot -- not group.

@@ -1,12 +1,14 @@
-# 3.2.21
+# 3.2.22
 
 Supports Minecraft versions: `1.20-1.20.4`
 
-## Updated
-- The experience storage system has been overhauled. Here's a few things to note:
-  - Graves that already exist in the world will automatically swap to the new data format, preserving the experience in them.
-  - Graves can now store much more experience. It could store roughly 21863 levels worth of experience before; it can now store hundreds of millions of levels.
-  - Graves should now be compatible with mods like Linear Levels, Linear XP, and Custom XP Scaling that add custom level scaling to the game ([#113](https://github.com/ginsm/forgotten-graves/issues/113)).
-  - The accuracy has been improved and should now reliably give an exact amount of experience points. The previous code would sometimes result in an extra point or two of experience (due to a bug).
+## Added
+- Added support for mods that add Soulbound enchants (Ender Zoology, Soulbound, etc) ([#119](https://github.com/ginsm/forgotten-graves/issues/119)).
+  - Note: Curse of Vanishing overrides Soulbound; items with both will still vanish.
+- Added support for Botania's Resolute Ivy ([#117](https://github.com/ginsm/forgotten-graves/issues/117)).
+- Added enchantment tags for better compatibility:
+  - `binding_curses`
+  - `vanishing_curses`
+  - `soulbound_enchants`
 
-If you run into any bugs, please report them using [GitHub issues](https://github.com/ginsm/forgotten-graves/issues/), thank you!
+If you find any bugs, please report them on [GitHub issues](https://github.com/ginsm/forgotten-graves/issues/), thank you!

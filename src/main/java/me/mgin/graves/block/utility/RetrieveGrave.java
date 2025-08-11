@@ -248,11 +248,9 @@ public class RetrieveGrave {
                 }
 
                 // Attempt to equip the player inventory
-                if (playerInventory != null) {
-                    overflow.addAll(
-                        api.setInventory(playerInventory, player) // This returns items that couldn't be equipped.
-                    );
-                }
+                overflow.addAll(
+                    api.setInventory(playerInventory, player) // This returns items that couldn't be equipped.
+                );
             }
 
             // Necessary for compatibility with Better Combat; see issue #115

@@ -14,6 +14,7 @@ public class GraveDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(GraveRecipeGenerator::new);
         pack.addProvider(GraveItemTagGenerator::new);
         pack.addProvider(GraveModelGenerator::new);
+        pack.addProvider(GraveEnchantmentGenerator::new);
     }
 
 }

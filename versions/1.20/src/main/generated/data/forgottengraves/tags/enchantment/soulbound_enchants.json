@@ -1,0 +1,29 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "enderzoology:soulbound",
+      "required": false
+    },
+    {
+      "id": "soulbound:soulbound",
+      "required": false
+    },
+    {
+      "id": "apotheosis:soulbound",
+      "required": false
+    },
+    {
+      "id": "tetra:soulbound",
+      "required": false
+    },
+    {
+      "id": "mna:soulbound",
+      "required": false
+    },
+    {
+      "id": "ensorcellation:soulbound",
+      "required": false
+    }
+  ]
+}

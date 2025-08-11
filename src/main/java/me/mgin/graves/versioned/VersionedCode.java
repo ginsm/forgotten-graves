@@ -3,6 +3,7 @@ package me.mgin.graves.versioned;
 import me.mgin.graves.Graves;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryKeys;
@@ -57,6 +58,12 @@ public class VersionedCode {
         public static boolean itemTagContains(ItemStack stack, TagKey<Item> tag) {
             return stack.isIn(tag);
         }
+
+        public static TagKey<Enchantment> createCustomEnchantTag(String name) {
+            return TagKey.of(RegistryKeys.ENCHANTMENT, new Identifier(Graves.MOD_ID, name));
+        }
+
+
     }
 
 

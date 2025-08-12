@@ -12,9 +12,14 @@ import java.util.List;
 
 public class Inventorio implements InventoriesApi {
     public String inventoryID = "inventorio";
+    boolean respectSoulbound = false;
 
     public String getID() {
         return this.inventoryID;
+    }
+
+    public boolean getRespectSoulbound() {
+        return respectSoulbound;
     }
 
     @Override

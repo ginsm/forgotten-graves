@@ -135,10 +135,19 @@ public class PlaceGrave {
         for (InventoriesApi api : Graves.inventories) {
             DefaultedList<ItemStack> inventory = api.getInventory(player);
             if (inventory == null) continue;
-            removeVanishedAndSoulboundItems(inventory);
+
+            // Remove vanishing and soulbound items from the grave inventory
+            for (int i = 0; i < inventory.size(); i++) {
+                ItemStack stack = inventory.get(i);
+
+                if (GraveEnchantTags.hasVanishingCurse(stack) || api.getRespectSoulbound() && GraveEnchantTags.hasSoulboundEnchantment(stack)) {
+                    inventory.set(i, ItemStack.EMPTY);
+                }
+            }
 
             graveEntity.setInventory(api.getID(), inventory);
-            api.clearInventory(player);
+
+            api.clearInventory(player, api.getRespectSoulbound());
         }
 
         // Set grave owner
@@ -243,15 +252,5 @@ public class PlaceGrave {
         boolean canReplace = VersionedCode.Tags.blockTagContains(state, GraveBlockTags.REPLACEABLE);
         boolean doNotReplace = VersionedCode.Tags.blockTagContains(state, GraveBlockTags.DO_NOT_REPLACE);
         return state.isAir() || state.isLiquid() || replaceBlocks && !doNotReplace && canReplace;
-    }
-
-    private static void removeVanishedAndSoulboundItems(DefaultedList<ItemStack> inventory) {
-        for (int i = 0; i < inventory.size(); i++) {
-            ItemStack stack = inventory.get(i);
-            // Any items that has vanishing or is soulbound shouldn't be in the grave
-            if (GraveEnchantTags.hasVanishingCurse(stack) || GraveEnchantTags.hasSoulboundEnchantment(stack)) {
-                inventory.set(i, ItemStack.EMPTY);
-            }
-        }
     }
 }

@@ -24,9 +24,14 @@ public class Trinkets implements InventoriesApi {
      * The mod ID string used for storing and retrieving the mod's inventory.
      */
     public String inventoryID = "trinkets";
+    boolean respectSoulbound = true;
 
     public String getID() {
         return this.inventoryID;
+    }
+
+    public boolean getRespectSoulbound() {
+        return respectSoulbound;
     }
 
     /**

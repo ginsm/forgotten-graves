@@ -11,9 +11,14 @@ import net.minecraft.util.collection.DefaultedList;
 
 public class BackSlot implements InventoriesApi {
     public String inventoryID = "backslot";
+    boolean respectSoulbound = true;
 
     public String getID() {
         return this.inventoryID;
+    }
+
+    public boolean getRespectSoulbound() {
+        return respectSoulbound;
     }
 
     public DefaultedList<ItemStack> getInventory(PlayerEntity player) {

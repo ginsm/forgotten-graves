@@ -15,9 +15,14 @@ import net.minecraft.util.collection.DefaultedList;
 
 public class Vanilla implements InventoriesApi {
     public String inventoryID = "Items";
+    boolean respectSoulbound = true;
 
     public String getID() {
         return this.inventoryID;
+    }
+
+    public boolean getRespectSoulbound() {
+        return respectSoulbound;
     }
 
     /**

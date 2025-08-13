@@ -37,6 +37,11 @@ public class ConfigHelpers {
         AutoConfig.getConfigHolder(GravesConfig.class).setConfig(config);
     }
 
+    public GravesConfig resetConfig() {
+        AutoConfig.getConfigHolder(GravesConfig.class).resetToDefault();
+        return getConfig();
+    }
+
     public static GravesConfig getConfig() {
         return AutoConfig.getConfigHolder(GravesConfig.class).getConfig();
     }

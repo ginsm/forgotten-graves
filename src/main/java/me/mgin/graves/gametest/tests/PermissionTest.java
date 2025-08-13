@@ -3,9 +3,11 @@ package me.mgin.graves.gametest.tests;
 import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.decay.DecayStateManager;
+import me.mgin.graves.block.decay.DecayingGrave;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.block.utility.PlaceGrave;
 import me.mgin.graves.block.utility.RetrieveGrave;
+import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.gametest.GraveTestHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.test.TestContext;
@@ -37,14 +39,15 @@ public class PermissionTest {
 
     public static void graveRobbing(TestContext context, PlayerEntity player, BlockPos pos) {
         World world = GraveTestHelper.getWorld(player, World.OVERWORLD);
+        GravesConfig config = GravesConfig.getConfig();
 
         System.out.println("📗 Running graveRobbing");
 
         // Enable grave robbing and attempt to claim the grave as OP; check if grave is gone
-        GraveTestHelper.runCommand(context, "graves server config set graveRobbing true");
+        config.server.graveRobbing = true;
         RetrieveGrave.retrieveWithInteract(player, world, pos);
         GraveTestHelper.checkGraveDoesntExist(context, player, pos, World.OVERWORLD);
-        GraveTestHelper.runCommand(context, "graves server config set graveRobbing false");
+        config.server.graveRobbing = false;
     }
 
     public static void ownedGrave(TestContext context, PlayerEntity player, BlockPos pos) {
@@ -60,13 +63,14 @@ public class PermissionTest {
     public static void decayRobbing(TestContext context, PlayerEntity player, BlockPos pos) {
         World world = GraveTestHelper.getWorld(player, World.OVERWORLD);
         PlayerEntity player2 = context.createMockCreativePlayer();
+        GravesConfig config = GravesConfig.getConfig();
 
         System.out.println("📗 Running decayRobbing");
 
         // Configure the mod for decay robbing testing
-        GraveTestHelper.runCommand(context, "graves server config set decayEnabled false");
-        GraveTestHelper.runCommand(context, "graves server config set graveRobbing true");
-        GraveTestHelper.runCommand(context, "graves server config set decayRobbing WEATHERED");
+        config.decay.decayEnabled = false;
+        config.server.graveRobbing = true;
+        config.decay.decayRobbing = DecayingGrave.BlockDecay.WEATHERED;
 
         // Place three graves in a row
         PlaceGrave.place(world, GraveTestHelper.posToVec3d(pos), player2);

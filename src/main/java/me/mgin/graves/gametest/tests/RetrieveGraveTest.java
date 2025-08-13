@@ -2,6 +2,8 @@ package me.mgin.graves.gametest.tests;
 
 import me.mgin.graves.block.utility.PlaceGrave;
 import me.mgin.graves.block.utility.RetrieveGrave;
+import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.config.enums.GraveMergeOrder;
 import me.mgin.graves.gametest.GraveTestHelper;
 import me.mgin.graves.gametest.GraveTestNBTHelper;
 import net.minecraft.entity.ItemEntity;
@@ -50,22 +52,22 @@ public class RetrieveGraveTest {
         String graveInv = "[{Count:9b,Slot:4b,id:\"minecraft:torch\"},{Count:7b,Slot:9b,id:\"minecraft:stick\"},{Count:1b,Slot:10b,id:\"minecraft:enchanted_book\",tag:{StoredEnchantments:[{lvl:4s,id:\"minecraft:sharpness\"}]}},{Count:1b,Slot:12b,id:\"minecraft:stick\",tag:{HideFlag:1,Enchantments:[{lvl:1000,id:\"knockback\"}]}},{Count:1b,Slot:100b,id:\"minecraft:golden_boots\",tag:{Damage:0}},{Count:1b,Slot:101b,id:\"minecraft:leather_leggings\",tag:{Damage:0}},{Count:1b,Slot:103b,id:\"minecraft:chainmail_helmet\",tag:{Damage:2}},{Count:7b,Slot:-106b,id:\"minecraft:netherite_block\"}]";
         String graveInvMergeResult = "[{Count:1b,Slot:0b,id:\"minecraft:enchanted_book\",tag:{StoredEnchantments:[{id:\"minecraft:sharpness\",lvl:4s}]}},{Count:1b,Slot:1b,id:\"minecraft:netherite_boots\",tag:{Damage:4}},{Count:1b,Slot:2b,id:\"minecraft:iron_helmet\",tag:{Damage:0}},{Count:48b,Slot:4b,id:\"minecraft:torch\"},{Count:1b,Slot:5b,id:\"minecraft:shield\",tag:{Damage:4}},{Count:16b,Slot:9b,id:\"minecraft:stick\"},{Count:1b,Slot:10b,id:\"minecraft:enchanted_book\",tag:{StoredEnchantments:[{id:\"minecraft:sharpness\",lvl:4s}]}},{Count:34b,Slot:12b,id:\"minecraft:stick\",tag:{Enchantments:[{id:\"knockback\",lvl:1000}],HideFlag:1}},{Count:1b,Slot:100b,id:\"minecraft:golden_boots\",tag:{Damage:0}},{Count:1b,Slot:101b,id:\"minecraft:leather_leggings\",tag:{Damage:0}},{Count:1b,Slot:102b,id:\"minecraft:diamond_chestplate\",tag:{Damage:8}},{Count:1b,Slot:103b,id:\"minecraft:chainmail_helmet\",tag:{Damage:2}},{Count:14b,Slot:-106b,id:\"minecraft:netherite_block\"}]";
         String currentInvMergeResult = "[{Count:1b,Slot:0b,id:\"minecraft:enchanted_book\",tag:{StoredEnchantments:[{id:\"minecraft:sharpness\",lvl:4s}]}},{Count:1b,Slot:1b,id:\"minecraft:golden_boots\",tag:{Damage:0}},{Count:1b,Slot:2b,id:\"minecraft:chainmail_helmet\",tag:{Damage:2}},{Count:48b,Slot:4b,id:\"minecraft:torch\"},{Count:1b,Slot:5b,id:\"minecraft:shield\",tag:{Damage:4}},{Count:1b,Slot:10b,id:\"minecraft:enchanted_book\",tag:{StoredEnchantments:[{id:\"minecraft:sharpness\",lvl:4s}]}},{Count:34b,Slot:21b,id:\"minecraft:stick\",tag:{Enchantments:[{id:\"knockback\",lvl:1000}],HideFlag:1}},{Count:16b,Slot:23b,id:\"minecraft:stick\"},{Count:1b,Slot:100b,id:\"minecraft:netherite_boots\",tag:{Damage:4}},{Count:1b,Slot:101b,id:\"minecraft:leather_leggings\",tag:{Damage:0}},{Count:1b,Slot:102b,id:\"minecraft:diamond_chestplate\",tag:{Damage:8}},{Count:1b,Slot:103b,id:\"minecraft:iron_helmet\",tag:{Damage:0}},{Count:14b,Slot:-106b,id:\"minecraft:netherite_block\"}]";
+        GravesConfig config = GravesConfig.getConfig();
 
         System.out.println("📗 Running mergeRetrieval");
-
-        GraveTestHelper.runCommand(context, "graves server config set mergeOrder GRAVE");
+        config.main.mergeOrder = GraveMergeOrder.GRAVE;
         context.assertTrue(
             checkMerge(player, pos, currentInv, graveInv, graveInvMergeResult),
             "The merge algorithm should have merged the current inventory into the grave inventory, but it failed."
         );
 
-        GraveTestHelper.runCommand(context, "graves server config set mergeOrder CURRENT");
+        config.main.mergeOrder = GraveMergeOrder.CURRENT;
         context.assertTrue(
             checkMerge(player, pos, currentInv, graveInv, currentInvMergeResult),
             "The merge algorithm should have merged the grave inventory into the current inventory, but it failed."
         );
 
-        GraveTestHelper.runCommand(context, "graves server config reset");
+        GravesConfig.getConfig().resetConfig();
     }
 
     /**
@@ -79,12 +81,12 @@ public class RetrieveGraveTest {
         String fullInventory = "[{Slot:0b,id:\"minecraft:stone\",Count:64b},{Slot:1b,id:\"minecraft:stone\",Count:64b},{Slot:2b,id:\"minecraft:stone\",Count:64b},{Slot:3b,id:\"minecraft:stone\",Count:64b},{Slot:4b,id:\"minecraft:stone\",Count:64b},{Slot:5b,id:\"minecraft:stone\",Count:64b},{Slot:6b,id:\"minecraft:stone\",Count:64b},{Slot:7b,id:\"minecraft:stone\",Count:64b},{Slot:8b,id:\"minecraft:stone\",Count:64b},{Slot:9b,id:\"minecraft:stone\",Count:64b},{Slot:10b,id:\"minecraft:stone\",Count:64b},{Slot:11b,id:\"minecraft:stone\",Count:64b},{Slot:12b,id:\"minecraft:stone\",Count:64b},{Slot:13b,id:\"minecraft:stone\",Count:64b},{Slot:14b,id:\"minecraft:stone\",Count:64b},{Slot:15b,id:\"minecraft:stone\",Count:64b},{Slot:16b,id:\"minecraft:stone\",Count:64b},{Slot:17b,id:\"minecraft:stone\",Count:64b},{Slot:18b,id:\"minecraft:stone\",Count:64b},{Slot:19b,id:\"minecraft:stone\",Count:64b},{Slot:20b,id:\"minecraft:stone\",Count:64b},{Slot:21b,id:\"minecraft:stone\",Count:64b},{Slot:22b,id:\"minecraft:stone\",Count:64b},{Slot:23b,id:\"minecraft:stone\",Count:64b},{Slot:24b,id:\"minecraft:stone\",Count:64b},{Slot:25b,id:\"minecraft:stone\",Count:64b},{Slot:26b,id:\"minecraft:stone\",Count:64b},{Slot:27b,id:\"minecraft:stone\",Count:64b},{Slot:28b,id:\"minecraft:stone\",Count:64b},{Slot:29b,id:\"minecraft:stone\",Count:64b},{Slot:30b,id:\"minecraft:stone\",Count:64b},{Slot:31b,id:\"minecraft:stone\",Count:64b},{Slot:32b,id:\"minecraft:stone\",Count:64b},{Slot:33b,id:\"minecraft:stone\",Count:64b},{Slot:34b,id:\"minecraft:stone\",Count:64b},{Slot:35b,id:\"minecraft:stone\",Count:64b},{Slot:-106b,id:\"minecraft:grass_block\",Count:48b}]";
         String partialInventory = "[{Slot:0b,id:\"minecraft:sandstone\",Count:64b},{Slot:1b,id:\"minecraft:sandstone\",Count:64b},{Slot:2b,id:\"minecraft:sandstone\",Count:64b},{Slot:3b,id:\"minecraft:sandstone\",Count:64b},{Slot:4b,id:\"minecraft:sandstone\",Count:64b},{Slot:5b,id:\"minecraft:sandstone\",Count:64b},{Slot:6b,id:\"minecraft:sandstone\",Count:64b},{Slot:9b,id:\"minecraft:sandstone\",Count:64b},{Slot:10b,id:\"minecraft:sandstone\",Count:64b},{Slot:11b,id:\"minecraft:sandstone\",Count:64b},{Slot:12b,id:\"minecraft:sandstone\",Count:64b},{Slot:13b,id:\"minecraft:sandstone\",Count:64b},{Slot:14b,id:\"minecraft:sandstone\",Count:64b},{Slot:15b,id:\"minecraft:sandstone\",Count:64b},{Slot:16b,id:\"minecraft:sandstone\",Count:64b},{Slot:17b,id:\"minecraft:sandstone\",Count:64b},{Slot:18b,id:\"minecraft:sandstone\",Count:64b},{Slot:19b,id:\"minecraft:sandstone\",Count:64b},{Slot:20b,id:\"minecraft:sandstone\",Count:64b},{Slot:21b,id:\"minecraft:sandstone\",Count:64b},{Slot:22b,id:\"minecraft:sandstone\",Count:64b},{Slot:23b,id:\"minecraft:sandstone\",Count:64b},{Slot:24b,id:\"minecraft:sandstone\",Count:64b},{Slot:25b,id:\"minecraft:sandstone\",Count:64b},{Slot:26b,id:\"minecraft:sandstone\",Count:64b},{Slot:27b,id:\"minecraft:sandstone\",Count:64b},{Slot:28b,id:\"minecraft:sandstone\",Count:64b},{Slot:29b,id:\"minecraft:sandstone\",Count:64b},{Slot:30b,id:\"minecraft:sandstone\",Count:64b},{Slot:31b,id:\"minecraft:sandstone\",Count:64b},{Slot:32b,id:\"minecraft:sandstone\",Count:64b},{Slot:33b,id:\"minecraft:sandstone\",Count:64b},{Slot:34b,id:\"minecraft:sandstone\",Count:64b},{Slot:35b,id:\"minecraft:sandstone\",Count:64b}]";
         String currentInventory = "[{Slot:0b,id:\"minecraft:grass_block\",Count:64b},{Slot:1b,id:\"minecraft:grass_block\",Count:64b},{Slot:2b,id:\"minecraft:grass_block\",Count:64b},{Slot:3b,id:\"minecraft:grass_block\",Count:64b}]";
+        GravesConfig config = GravesConfig.getConfig();
 
         System.out.println("📗 Running overflowRetrieval");
-
         // Overflows because grave inventory is full (merge order GRAVE)
         // Also tests merging into existing offhand stack whilst overflowing (as a last resort)
-        GraveTestHelper.runCommand(context, "graves server config set mergeOrder GRAVE");
+        config.main.mergeOrder = GraveMergeOrder.GRAVE;
         checkOverflow(context, player, pos, currentInventory, fullInventory, Items.GRASS_BLOCK, 240);
 
         // Overflows because inventory fills up (merge order GRAVE)
@@ -92,10 +94,10 @@ public class RetrieveGraveTest {
         checkOverflow(context, player, pos, currentInventory, partialInventory, Items.GRASS_BLOCK, 64);
 
         // Overflows because inventory fills up (merge order CURRENT)
-        GraveTestHelper.runCommand(context, "graves server config set mergeOrder CURRENT");
+        config.main.mergeOrder = GraveMergeOrder.CURRENT;
         checkOverflow(context, player, pos, currentInventory, partialInventory, Items.SANDSTONE, 64);
 
-        GraveTestHelper.runCommand(context, "graves server config reset");
+        GravesConfig.getConfig().resetConfig();
     }
 
     /**
@@ -109,11 +111,11 @@ public class RetrieveGraveTest {
         String inventorioResult = "[{Count:1b,Slot:0b,id:\"minecraft:diamond_sword\",tag:{Damage:0}},{Count:1b,Slot:1b,id:\"minecraft:flint_and_steel\",tag:{Damage:0}},{Count:1b,Slot:2b,id:\"minecraft:shield\",tag:{Damage:0}},{Count:1b,Slot:3b,id:\"minecraft:bow\",tag:{Damage:0}},{Count:1b,Slot:4b,id:\"minecraft:crossbow\",tag:{Damage:0}},{Count:1b,Slot:5b,id:\"minecraft:diamond_pickaxe\",tag:{Damage:0}},{Count:1b,Slot:6b,id:\"minecraft:diamond_sword\",tag:{Damage:0}},{Count:1b,Slot:7b,id:\"minecraft:diamond_axe\",tag:{Damage:0}},{Count:1b,Slot:8b,id:\"minecraft:diamond_shovel\",tag:{Damage:0}},{Count:1b,Slot:9b,id:\"minecraft:diamond_hoe\",tag:{Damage:0}}]";
         String trinketsSNBT = "{timers:{},trinkets:{Items:[{Slot:0b,id:\"minecraft:golden_helmet\",Count:1b,tag:{Damage:0}},{Slot:1b,id:\"minecraft:golden_boots\",Count:1b,tag:{Damage:0}},{Slot:2b,id:\"minecraft:golden_chestplate\",Count:1b,tag:{Damage:0}},{Slot:3b,id:\"minecraft:elytra\",Count:1b,tag:{Damage:0}},{Slot:4b,id:\"minecraft:golden_leggings\",Count:1b,tag:{Damage:0}}]},CustomName:'{\"text\":\"Trinkets-BothFull\"}',XP:0,mstime:1681418977105L,x:-52,ItemCount:{trinkets:5,Items:41},y:-30,Items:{Items:[]},z:-19,id:\"forgottengraves:grave\",noDecay:0,GraveOwner:{Id:[I;768727527,1471035076,-1953447371,-1312966385],Name:\"Trinkets-BothFull\"}}";
         String trinketsResult = "[{Count:1b,Slot:0b,id:\"minecraft:golden_helmet\",tag:{Damage:0}},{Count:1b,Slot:1b,id:\"minecraft:golden_boots\",tag:{Damage:0}},{Count:1b,Slot:2b,id:\"minecraft:golden_chestplate\",tag:{Damage:0}},{Count:1b,Slot:3b,id:\"minecraft:elytra\",tag:{Damage:0}},{Count:1b,Slot:4b,id:\"minecraft:golden_leggings\",tag:{Damage:0}}]";
+        GravesConfig config = GravesConfig.getConfig();
 
         System.out.println("📗 Running unloadedModRetrieval");
-
         // Enable Grave Robbing as the graves being set are not owned by the mock player
-        GraveTestHelper.runCommand(context, "graves server config set graveRobbing true");
+        config.server.graveRobbing = true;
 
         context.assertTrue(
             checkUnloadedInventories(context, player, pos, backslotSNBT, backslotResult),

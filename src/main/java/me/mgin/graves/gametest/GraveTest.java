@@ -1,5 +1,6 @@
 package me.mgin.graves.gametest;
 
+import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.gametest.tests.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.test.GameTest;
@@ -37,7 +38,7 @@ public class GraveTest {
         PlaceGraveTest.disableInPvP$true(context, player);
 
         // Complete test
-        GraveTestHelper.runCommand(context, "graves server config reset");
+        GravesConfig.getConfig().resetConfig();
         context.complete();
 
         GraveTestHelper.printTestEnding("Generation");
@@ -59,7 +60,7 @@ public class GraveTest {
         RetrieveGraveTest.unloadedModRetrieval(context, player, pos);
 
         // Complete test
-        GraveTestHelper.runCommand(context, "graves server config reset");
+        GravesConfig.getConfig().resetConfig();
         context.complete();
 
         GraveTestHelper.printTestEnding("Retrieve");
@@ -84,7 +85,7 @@ public class GraveTest {
         DecayTest.maxStageTimeSeconds(context, player, pos);
 
         // Complete test
-        GraveTestHelper.runCommand(context, "graves server config reset");
+        GravesConfig.getConfig().resetConfig();
         GraveTestHelper.removeGrave(GraveTestHelper.getWorld(player, World.OVERWORLD), pos);
         context.complete();
 
@@ -108,7 +109,7 @@ public class GraveTest {
         ExperienceTest.cap(context, player, pos);
 
         // Complete test
-        GraveTestHelper.runCommand(context, "graves server config reset");
+        GravesConfig.getConfig().resetConfig();
         context.complete();
 
         GraveTestHelper.printTestEnding("Experience");
@@ -146,7 +147,7 @@ public class GraveTest {
 
         // Complete test
         GraveTestHelper.removeGrave(GraveTestHelper.getWorld(player, World.OVERWORLD), pos);
-        GraveTestHelper.runCommand(context, "graves server config reset");
+        GravesConfig.getConfig().resetConfig();
         context.complete();
 
         GraveTestHelper.printTestEnding("Explosion");
@@ -169,7 +170,7 @@ public class GraveTest {
         PermissionTest.decayRobbing(context, player, pos);
 
         // Complete test
-        GraveTestHelper.runCommand(context, "graves server config reset");
+        GravesConfig.getConfig().resetConfig();
         context.complete();
 
         GraveTestHelper.printTestEnding("Permission");

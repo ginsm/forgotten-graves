@@ -5,6 +5,7 @@ import me.mgin.graves.block.decay.DecayingGrave.BlockDecay;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.block.utility.PlaceGrave;
 import me.mgin.graves.block.utility.RetrieveGrave;
+import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.event.server.useblock.item.DecayItem;
 import me.mgin.graves.event.server.useblock.item.Honeycomb;
 import me.mgin.graves.event.server.useblock.item.Shovel;
@@ -30,11 +31,12 @@ public class DecayTest {
         Block block = state.getBlock();
 
         System.out.println("📗 Running decayEnabled$true");
+        GravesConfig config = GravesConfig.getConfig();
 
         if (block instanceof GraveBlockBase graveBlock) {
             GraveTestHelper.resetGraveDecay(world, pos); // reset the decay
-            GraveTestHelper.runCommand(context, "graves server config set minStageTimeSeconds 0");
-            GraveTestHelper.runCommand(context, "graves server config set freshGraveDecayChance 100");
+            config.decay.minStageTimeSeconds = 0;
+            config.decay.freshGraveDecayChance = 100;
             graveBlock.tickDecay(state, (ServerWorld) world, pos, world.getRandom());
 
             context.assertTrue(!GraveTestHelper.compareDecayLevel(world, pos, BlockDecay.FRESH),
@@ -47,11 +49,11 @@ public class DecayTest {
         World world = GraveTestHelper.getWorld(player, World.OVERWORLD);
         BlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
+        GravesConfig config = GravesConfig.getConfig();
 
         System.out.println("📗 Running decayEnabled$false");
-
         if (block instanceof GraveBlockBase graveBlock) {
-            GraveTestHelper.runCommand(context, "graves server config set decayEnabled false");
+            config.decay.decayEnabled = false;
             GraveTestHelper.resetGraveDecay(world, pos); // reset the decay
             graveBlock.tickDecay(state, (ServerWorld) world, pos, world.getRandom());
 
@@ -59,7 +61,7 @@ public class DecayTest {
                 "The grave decayed despite decayEnabled being false."
             );
 
-            GraveTestHelper.runCommand(context, "graves server config reset");
+            GravesConfig.getConfig().resetConfig();
         }
     }
     
@@ -74,6 +76,7 @@ public class DecayTest {
             GraveBlockEntity graveEntity = (GraveBlockEntity) world.getBlockEntity(pos);
 
             Honeycomb.handle(player, world, Hand.MAIN_HAND, pos, Items.HONEYCOMB, graveEntity);
+            assert graveEntity != null;
             context.assertTrue(graveEntity.getNoDecay() == 1,
                 "Honeycomb should was the grave causing noDecay to be set to 1."
             );
@@ -102,13 +105,14 @@ public class DecayTest {
     public static void decayItemsAddDecay(TestContext context, PlayerEntity player, BlockPos pos) {
         World world = GraveTestHelper.getWorld(player, World.OVERWORLD);
         BlockEntity entity = world.getBlockEntity(pos);
+        GravesConfig config = GravesConfig.getConfig();
 
         System.out.println("📗 Running decayItemsAddDecay");
 
         if (entity instanceof GraveBlockEntity graveEntity) {
             // Disable decay and reset it to prevent natural decay from skewing results
             // This will be useful for next test as well, since shovels can remove decay while its disabled too
-            GraveTestHelper.runCommand(context, "graves server config set decayEnabled false");
+            config.decay.decayEnabled = false;
             GraveTestHelper.resetGraveDecay(world, pos);
 
             DecayItem.handle(player, world, Hand.MAIN_HAND, pos, Items.WEEPING_VINES, graveEntity);
@@ -140,19 +144,19 @@ public class DecayTest {
         World world = GraveTestHelper.getWorld(player, World.OVERWORLD);
         BlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
+        GravesConfig config = GravesConfig.getConfig().resetConfig();
 
         System.out.println("📗 Running itemsDecay");
 
-        // Remove the grave in the center of the test area, clear player inventory, and reset config
+        // Remove the grave in the center of the test area and clear player inventory
         GraveTestHelper.removeGrave(world, pos);
         GraveTestHelper.clearPlayerInventory(player);
-        GraveTestHelper.runCommand(context, "graves server config reset");
 
         // Configure mod to allow for adding decay easily
-        GraveTestHelper.runCommand(context, "graves server config set minStageTimeSeconds 0");
-        GraveTestHelper.runCommand(context, "graves server config set freshGraveDecayChance 100");
-        GraveTestHelper.runCommand(context, "graves server config set oldGraveDecayChance 100");
-        GraveTestHelper.runCommand(context, "graves server config set weatheredGraveDecayChance 100");
+        config.decay.minStageTimeSeconds = 0;
+        config.decay.freshGraveDecayChance = 100;
+        config.decay.oldGraveDecayChance = 100;
+        config.decay.weatheredGraveDecayChance = 100;
 
         // Set the player inventory and place a grave based on said inventory
         GraveTestNBTHelper.setPlayerInventoryFromSNBT(player, testInventory);
@@ -230,13 +234,13 @@ public class DecayTest {
         BlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
         BlockEntity entity = world.getBlockEntity(pos);
+        GravesConfig config = GravesConfig.getConfig().resetConfig();
 
         System.out.println("📗 Running minStageTimeSeconds");
 
         // Reset config and configure it for this test
-        GraveTestHelper.runCommand(context, "graves server config reset");
-        GraveTestHelper.runCommand(context, "graves server config set minStageTimeSeconds 60");
-        GraveTestHelper.runCommand(context, "graves server config set freshGraveDecayChance 100");
+        config.decay.minStageTimeSeconds = 60;
+        config.decay.freshGraveDecayChance = 100;
 
         if (block instanceof GraveBlockBase graveBlock) {
             // Run `randomTick`, as it contains the check for minStageTimeSeconds
@@ -249,6 +253,7 @@ public class DecayTest {
             );
 
             // Set the timer to minStageTimeSeconds and tick it again, then assert it has decayed
+            assert entity != null;
             ((GraveBlockEntity) entity).incrementTimer("decay", 60);
             block.randomTick(state, (ServerWorld) world, pos, world.getRandom());
             context.assertFalse(
@@ -269,6 +274,7 @@ public class DecayTest {
 
         if (block instanceof GraveBlockBase graveBlock) {
             // Increment the timer to above default maxStageTimeSeconds (300)
+            assert entity != null;
             ((GraveBlockEntity) entity).incrementTimer("decay", 240);
 
             // Run a scheduled tick, just to ensure the maxStageTimeSeconds code runs

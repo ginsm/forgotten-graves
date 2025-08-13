@@ -3,6 +3,7 @@ package me.mgin.graves.gametest.tests;
 import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.utility.PlaceGrave;
 import me.mgin.graves.block.utility.RetrieveGrave;
+import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.effects.GraveEffects;
 import me.mgin.graves.gametest.GraveTestHelper;
 import net.minecraft.block.Block;
@@ -28,24 +29,30 @@ public class PlaceGraveTest {
     }
 
     public static void sinkInWater$false(TestContext context, PlayerEntity player) {
+        GravesConfig config = GravesConfig.getConfig();
+
         System.out.println("📗 Running sinkInWater$false");
-        GraveTestHelper.runCommand(context, "graves server config set sinkInWater false");
+        config.sink.sinkInWater = false;
         BlockPos pos = context.getAbsolutePos(new BlockPos(2, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(2, 7, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
     }
 
     public static void sinkThroughBlocks$false(TestContext context, PlayerEntity player) {
+        GravesConfig config = GravesConfig.getConfig();
+
         System.out.println("📗 Running sinkThroughBlocks$false");
-        GraveTestHelper.runCommand(context, "graves server config set sinkThroughBlocks false");
+        config.sink.sinkThroughBlocks = false;
         BlockPos pos = context.getAbsolutePos(new BlockPos(6, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(6, 7, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
     }
 
     public static void sinkInAir$false(TestContext context, PlayerEntity player) {
+        GravesConfig config = GravesConfig.getConfig();
+
         System.out.println("📗 Running sinkInAir$false");
-        GraveTestHelper.runCommand(context, "graves server config set sinkInAir false");
+        config.sink.sinkInAir = false;
         BlockPos pos = context.getAbsolutePos(new BlockPos(18, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(18, 7, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
@@ -53,9 +60,10 @@ public class PlaceGraveTest {
 
     // sink tests
     public static void sinkInLava$true(TestContext context, PlayerEntity player) {
+        GravesConfig config = GravesConfig.getConfig().resetConfig();
+
         System.out.println("📗 Running sinkInLava$true");
-        GraveTestHelper.runCommand(context, "graves server config reset");
-        GraveTestHelper.runCommand(context, "graves server config set sinkInLava true");
+        config.sink.sinkInLava = true;
         BlockPos pos = context.getAbsolutePos(new BlockPos(10, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(10, 2, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
@@ -83,8 +91,10 @@ public class PlaceGraveTest {
     }
 
     public static void replaceBlocks$false(TestContext context, PlayerEntity player) {
+        GravesConfig config = GravesConfig.getConfig();
+
         System.out.println("📗 Running replaceBlocks$false");
-        GraveTestHelper.runCommand(context, "graves server config set replaceBlocks false");
+        config.sink.replaceBlocks = false;
         BlockPos pos = context.getAbsolutePos(new BlockPos(19, 2, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(18, 2, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
@@ -136,23 +146,28 @@ public class PlaceGraveTest {
 
     // Grave shouldn't spawn scenarios
     public static void graves$false(TestContext context, PlayerEntity player) {
+        GravesConfig config = GravesConfig.getConfig();
+
         System.out.println("📗 Running graves$false");
-        GraveTestHelper.runCommand(context, "graves server config set graves false");
+        config.main.graves = false;
         BlockPos pos = new BlockPos(18, 2, 2);
         checkGravesDisabled(context, player, pos, World.OVERWORLD);
     }
 
     public static void respectsDisableEffect(TestContext context, PlayerEntity player) {
+        GravesConfig config = GravesConfig.getConfig().resetConfig();
+
         System.out.println("📗 Running respectsDisableEffect");
-        GraveTestHelper.runCommand(context, "graves server config set graves true");
         BlockPos pos = new BlockPos(18, 2, 2);
         player.addStatusEffect(new StatusEffectInstance(GraveEffects.DISABLE_GRAVES_EFFECT, 300));
         checkGravesDisabled(context, player, pos, World.OVERWORLD);
     }
 
     public static void disableInPvP$true(TestContext context, PlayerEntity player) {
+        GravesConfig config = GravesConfig.getConfig();
+
         System.out.println("📗 Running disableInPvP$true");
-        GraveTestHelper.runCommand(context, "graves server config set disableInPvP true");
+        config.main.disableInPvP = true;
         BlockPos pos = new BlockPos(18, 2, 2);
         PlayerEntity player2 = context.createMockCreativePlayer();
         player.setPosition(0, -58, 0);

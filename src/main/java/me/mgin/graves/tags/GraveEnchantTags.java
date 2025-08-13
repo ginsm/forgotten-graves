@@ -30,7 +30,7 @@ public class GraveEnchantTags {
     }
 
     public static boolean hasResoluteIvy(ItemStack stack) {
-        return stack.getOrCreateNbt().contains("Botania_keepIvy");
+        return stack.hasNbt() && stack.getOrCreateNbt().contains("Botania_keepIvy");
     }
 
     private static boolean hasTaggedEnchantment(ItemStack stack, TagKey<Enchantment> tag) {

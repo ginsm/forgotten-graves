@@ -91,22 +91,6 @@ public class ConfigHelpers {
         throw new RuntimeException("Something went wrong trying to access " + option);
     }
 
-    /**
-     * Dynamically set a field based on option name.
-     *
-     * @param option String
-     * @param value  Object
-     */
-    public void setDynamicField(String option, Object value) {
-        try {
-            Field subclass = determineSubClass(option);
-            Field field = Objects.requireNonNull(subclass).getType().getDeclaredField(option);
-            field.set(subclass.get(this), value);
-        } catch (NullPointerException | NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     static private Field determineSubClass(String option) throws NoSuchFieldException {
         for (String subclass : ConfigOptions.subclass) {
             if (ConfigOptions.options.get(subclass).contains(option))

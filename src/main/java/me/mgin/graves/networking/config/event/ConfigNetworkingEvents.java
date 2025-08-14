@@ -25,7 +25,7 @@ public class ConfigNetworkingEvents {
      * This set is used to send every active player the server configuration
      * whenever it's saved or reloaded.
      */
-    private static Set<ServerPlayerEntity> listeners = new HashSet<>();
+    private static final Set<ServerPlayerEntity> listeners = new HashSet<>();
 
     /**
      * Registers client-side event handlers related to networking.

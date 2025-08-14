@@ -5,7 +5,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.mgin.graves.versioned.VersionedCode;
-import me.mgin.graves.command.utility.Interact;
+import me.mgin.graves.command.utility.Interactable;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.state.PlayerState;
 import me.mgin.graves.state.ServerState;
@@ -169,7 +169,7 @@ public class ListCommand {
             "/graves list %d";
 
         res.sendInfo(
-            Interact.generatePagination(res, page, amountOfPages, paginationCommand),
+            Interactable.generatePagination(res, page, amountOfPages, paginationCommand),
             null
         );
 
@@ -237,7 +237,7 @@ public class ListCommand {
 
             message = message.copy()
                 .append(Text.literal(" "))
-                .append(Interact.generateButton(res,
+                .append(Interactable.generateButton(res,
                     res.success(Text.translatable("command.list.entry.restore-button")),
                     res.hint(Text.translatable("command.list.entry.restore-button.tooltip", i + 1, rec)),
                     String.format("/graves restore %s %d %s true", target, i + 1, rec)
@@ -245,7 +245,7 @@ public class ListCommand {
 
             message = message.copy()
                 .append(Text.literal(" "))
-                .append(Interact.generateButton(res,
+                .append(Interactable.generateButton(res,
                     res.error(Text.translatable("command.list.entry.delete-button")),
                     res.hint(Text.translatable("command.list.entry.delete-button.tooltip", i + 1)),
                     String.format("/graves delete %s %d true %s", target, i + 1, rec)

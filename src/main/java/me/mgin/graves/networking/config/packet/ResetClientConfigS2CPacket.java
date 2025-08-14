@@ -9,7 +9,6 @@ import net.minecraft.network.PacketByteBuf;
 public class ResetClientConfigS2CPacket {
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf _buf,
                                PacketSender sender) {
-        GravesConfig.setConfig(new GravesConfig());
-        GravesConfig.getConfig().save();
+        GravesConfig.getConfig().resetConfig().save();
     }
 }

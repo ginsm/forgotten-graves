@@ -2,7 +2,6 @@ package me.mgin.graves.command.config;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
-import me.mgin.graves.command.utility.CommandContextData;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.networking.config.ConfigNetworking;
 import me.mgin.graves.util.Responder;
@@ -40,9 +39,7 @@ public class ResetConfigCommand {
      */
     public static void executeOnServer(Responder res) {
         // Reset the config
-        GravesConfig.setConfig(new GravesConfig());
-        GravesConfig.getConfig().save();
-
+        GravesConfig.getConfig().resetConfig().save();
         res.sendSuccess(Text.translatable("command.server.config.reset:success"), null);
     }
 

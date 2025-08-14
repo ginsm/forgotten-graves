@@ -1,4 +1,4 @@
-package me.mgin.graves.command.utility;
+package me.mgin.graves.command.config;
 
 import com.google.gson.Gson;
 import com.mojang.brigadier.context.CommandContext;

@@ -11,6 +11,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -43,10 +44,10 @@ public class PlayersCommand {
             UUID id = entry.getKey();
             PlayerState playerState = entry.getValue();
 
-            if (playerState.graves.size() == 0) continue;
+            if (playerState.graves.isEmpty()) continue;
 
             // Check if the profile exists and if it does, add to message
-            Optional<GameProfile> potentialProfile = server.getUserCache().getByUuid(id);
+            Optional<GameProfile> potentialProfile = Objects.requireNonNull(server.getUserCache()).getByUuid(id);
             potentialProfile.ifPresent(profile -> {
                 message.set(message.get().copy().append(
                     Text.translatable("command.players.information",

@@ -3,7 +3,7 @@ package me.mgin.graves.command.utility;
 import me.mgin.graves.util.Responder;
 import net.minecraft.text.Text;
 
-public class Interact {
+public class Interactable {
     /**
      * Generates a list of pages that the player can interact with. The command should
      * be the one used for switching pages and should always contain a %d flag to work

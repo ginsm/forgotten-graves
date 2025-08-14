@@ -72,42 +72,4 @@ public class ConfigOptions {
             default -> throw new IllegalStateException("Unexpected value for '" + option + "': " + value);
         };
     }
-
-    public static SuggestionProvider<ServerCommandSource> suggest(List<String> suggestionList) {
-        return (context, builder) -> {
-            String option = context.getNodes().get(context.getNodes().size() - 1).getNode().getName();
-            String[] input = context.getInput().split(" ");
-            String original = null;
-            String argument = null;
-
-            // Necessary for secondary options (i.e. option:secondary)
-            if (option.equals("add") || option.equals("remove")) {
-                original = "clientOptions:" + option;
-            }
-
-            if (option.contains(":")) {
-                original = option; // store original option
-                option = option.split(":")[1];
-            }
-
-            // Do not suggest anything for improper options
-            if (!all.contains(original != null ? original.split(":")[0] : option)) {
-                return CompletableFuture.completedFuture(builder.build());
-            }
-
-            // Ensure that the last portion of the input is in fact an argument
-            if (!input[input.length - 1].equals(option)) {
-                argument = context.getArgument(original == null ? option : original, String.class);
-            }
-
-            for (String suggestion : suggestionList) {
-                // If there is a partial match, or no argument, recommend option
-                if (argument == null || suggestion.toLowerCase().contains(argument.toLowerCase())) {
-                    builder.suggest(suggestion);
-                }
-            }
-
-            return CompletableFuture.completedFuture(builder.build());
-        };
-    }
 }

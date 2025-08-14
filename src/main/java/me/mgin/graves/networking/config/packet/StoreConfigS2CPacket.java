@@ -10,7 +10,6 @@ import net.minecraft.network.PacketByteBuf;
 public class StoreConfigS2CPacket {
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf _buf,
                                PacketSender sender) {
-        GravesConfig config = GravesConfig.deserialize(_buf.readString());
-        GravesClient.SERVER_CONFIG = config;
+        GravesClient.SERVER_CONFIG = GravesConfig.deserialize(_buf.readString());
     }
 }

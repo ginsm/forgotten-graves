@@ -2,11 +2,9 @@ package me.mgin.graves.command.config;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
-import me.mgin.graves.command.utility.CommandContextData;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.networking.config.ConfigNetworking;
 import me.mgin.graves.util.Responder;
-import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.command.ServerCommandSource;
@@ -41,7 +39,7 @@ public class ReloadConfigCommand {
      * @param res    Responder
      */
     private static void executeOnServer(CommandContext<ServerCommandSource> context, Responder res) {
-        AutoConfig.getConfigHolder(GravesConfig.class).load();
+        GravesConfig.getConfig().reload();
         res.sendSuccess(Text.translatable("command.server.config.reload:success"), null);
     }
 

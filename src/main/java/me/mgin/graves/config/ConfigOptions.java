@@ -1,7 +1,7 @@
 package me.mgin.graves.config;
 
-import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,8 +13,8 @@ public class ConfigOptions {
             String categoryName,
             Class<?> categoryType,
             Class<?> valueType,
-            MethodHandle getCategory,
-            MethodHandle getValue
+            VarHandle getCategory,
+            VarHandle getValue
     ) {}
 
     public static Map<String, OptionMetaData> META_DATA = new HashMap<>();
@@ -33,11 +33,12 @@ public class ConfigOptions {
                 Class<?> categoryType = category.getType();
                 ArrayList<String> categoryOptions = new ArrayList<>();
 
+                VarHandle getCategory = LOOKUP.unreflectVarHandle(category);
+
                 for (Field option : categoryType.getDeclaredFields()) {
                     String optionName = option.getName();
                     Class<?> optionType = option.getType();
-                    MethodHandle getCategory = LOOKUP.unreflectGetter(category);
-                    MethodHandle getValue = LOOKUP.unreflectGetter(option);
+                    VarHandle getValue = LOOKUP.unreflectVarHandle(option);
 
                     OptionMetaData metaData = new OptionMetaData(
                             categoryName, categoryType, optionType, getCategory, getValue
@@ -59,16 +60,13 @@ public class ConfigOptions {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T getOptionValue(GravesConfig config, String option) {
         OptionMetaData metaData = META_DATA.get(option);
         if (metaData == null) throw new IllegalArgumentException("Unknown option: " + option);
-        try {
-            Object category = metaData.getCategory.invoke(config);
-            Object value = metaData.getValue.invoke(category);
 
-            return (T) value;
-        } catch (Throwable t) {
-            throw new RuntimeException("Failed to get value for option: " + option);
-        }
+        Object category = metaData.getCategory.get(config);
+        Object value = metaData.getValue.get(category);
+        return (T) value;
     }
 }

@@ -35,7 +35,7 @@ public class Graves implements ModInitializer {
     public void onInitialize() {
         // Register Config
         AutoConfig.register(GravesConfig.class, GsonConfigSerializer::new);
-        ConfigOptions.generateConfigOptions();
+        ConfigOptions.init();
 
         // Graves Registry
         GraveBlocks.registerServerBlocks(MOD_ID, BRAND_BLOCK);

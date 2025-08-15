@@ -1,75 +1,74 @@
 package me.mgin.graves.config;
 
-import com.mojang.brigadier.suggestion.SuggestionProvider;
-import me.mgin.graves.block.decay.DecayingGrave;
-import me.mgin.graves.config.enums.*;
-import net.minecraft.server.command.ServerCommandSource;
-
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfigOptions {
-    // Houses all the config option information
-    static public List<String> subclass = new ArrayList<>();
-    static public List<String> all = new ArrayList<>();
-    static public Map<String, List<String>> options = new HashMap<>();
-    static public Map<String, List<String>> enums = new HashMap<>();
+    public record OptionMetaData(
+            String categoryName,
+            Class<?> categoryType,
+            Class<?> valueType,
+            MethodHandle getCategory,
+            MethodHandle getValue
+    ) {}
 
-    /**
-     * Generates lists containing the subclass names, field names for each subclass, and enum field names.
-     */
-    public static void generateConfigOptions() {
-        // Get declared subclass names
-        for (Field field : GravesConfig.class.getDeclaredFields()) {
-            subclass.add(field.getName());
+    public static Map<String, OptionMetaData> META_DATA = new HashMap<>();
+    public static Map<String, ArrayList<String>> CATEGORY_OPTIONS = new HashMap<>();
 
-            // Get field's class
-            Class<?> clazz = field.getType();
+    public static boolean initialized = false;
 
-            // Store fields
-            List<String> fieldNames = new ArrayList<>();
+    public static void init() {
+        if (initialized) return;
 
-            for (Field subfield : clazz.getDeclaredFields()) {
-                // Check if field is an enum
-                if (subfield.getType().isEnum()) {
-                    // Creates a list of constants (and converts them to strings)
-                    List<String> constants = Arrays.stream(subfield.getType().getEnumConstants())
-                            .map(Object::toString)
-                            .toList();
+        try {
+            final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
 
-                    // Store enum name and constants
-                    enums.put(subfield.getName(), constants);
+            for (Field category : GravesConfig.class.getDeclaredFields()) {
+                String categoryName = category.getName();
+                Class<?> categoryType = category.getType();
+                ArrayList<String> categoryOptions = new ArrayList<>();
+
+                for (Field option : categoryType.getDeclaredFields()) {
+                    String optionName = option.getName();
+                    Class<?> optionType = option.getType();
+                    MethodHandle getCategory = LOOKUP.unreflectGetter(category);
+                    MethodHandle getValue = LOOKUP.unreflectGetter(option);
+
+                    OptionMetaData metaData = new OptionMetaData(
+                            categoryName, categoryType, optionType, getCategory, getValue
+                    );
+                    META_DATA.put(optionName, metaData);
+
+                    categoryOptions.add(optionName);
                 }
 
-                // Add field name to list
-                fieldNames.add(subfield.getName());
+                CATEGORY_OPTIONS.put(categoryName, categoryOptions);
             }
 
-            // Add the field names to options and all lists
-            options.put(field.getName(), fieldNames);
-            all.addAll(fieldNames);
+            CATEGORY_OPTIONS = Collections.unmodifiableMap(CATEGORY_OPTIONS);
+            META_DATA = Collections.unmodifiableMap(META_DATA);
+
+            initialized = true;
+        } catch(ReflectiveOperationException e) {
+            throw new RuntimeException("Error initializing the Config option's meta data", e);
         }
     }
 
-    /**
-     * Converts string-based values into enum values (if contained in option enum).
-     *
-     * @param value  String
-     * @param option String
-     * @return {@code Enum<?>}
-     */
-    static public Enum<?> convertStringToEnum(String option, String value) {
-        if (!ConfigOptions.enums.get(option).contains(value)) return null;
+    public static <T> T getOptionValue(GravesConfig config, String option) {
+        OptionMetaData metaData = META_DATA.get(option);
+        if (metaData == null) throw new IllegalArgumentException("Unknown option: " + option);
+        try {
+            Object category = metaData.getCategory.invoke(config);
+            Object value = metaData.getValue.invoke(category);
 
-        return switch (option) {
-            case "retrievalType" -> GraveRetrievalType.valueOf(value);
-            case "dropType" -> GraveDropType.valueOf(value);
-            case "expStorageType" -> GraveExpStoreType.valueOf(value);
-            case "capType", "percentageType" -> ExperienceType.valueOf(value);
-            case "decayRobbing" -> DecayingGrave.BlockDecay.valueOf(value);
-            case "mergeOrder" -> GraveMergeOrder.valueOf(value);
-            default -> throw new IllegalStateException("Unexpected value for '" + option + "': " + value);
-        };
+            return (T) value;
+        } catch (Throwable t) {
+            throw new RuntimeException("Failed to get value for option: " + option);
+        }
     }
 }

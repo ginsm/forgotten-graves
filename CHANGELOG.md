@@ -1,14 +1,10 @@
-# 3.2.22
+# 3.2.23
 
 Supports Minecraft versions: `1.20-1.20.4`
 
-## Added
-- Added support for mods that add Soulbound enchants (Ender Zoology, Soulbound, etc) ([#119](https://github.com/ginsm/forgotten-graves/issues/119)).
-  - Note: Curse of Vanishing overrides Soulbound; items with both will still vanish.
-- Added support for Botania's Resolute Ivy ([#117](https://github.com/ginsm/forgotten-graves/issues/117)).
-- Added enchantment tags for better compatibility:
-  - `binding_curses`
-  - `vanishing_curses`
-  - `soulbound_enchants`
+## Changed
+- Disabled Soulbound enchant support for Inventorio. [Reasoning here](https://github.com/ginsm/forgotten-graves/commit/9d8db3e6119b8c8188d42c5859a56125e9d5b8fd).
+- Removed commands for configuring the mod. [Reasoning here](https://github.com/ginsm/forgotten-graves/commit/b8e75305e9a325a7be4f5b70b67b282f7ca7852a).
+- Minor optimizations.
 
 If you find any bugs, please report them on [GitHub issues](https://github.com/ginsm/forgotten-graves/issues/), thank you!

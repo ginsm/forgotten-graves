@@ -3,6 +3,7 @@ package me.mgin.graves.command.utility;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import me.mgin.graves.util.ArrayUtil;
 import net.minecraft.command.argument.GameProfileArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 
@@ -53,5 +54,10 @@ public class ArgumentUtility {
             return context.getArgument(name, Boolean.class);
         }
         return false;
+    }
+
+    public static boolean issuedToServer(CommandContext<ServerCommandSource> context) {
+        String[] input = context.getInput().split(" ");
+        return input[ArrayUtil.indexOf(input, "graves") + 1].equals("server");
     }
 }

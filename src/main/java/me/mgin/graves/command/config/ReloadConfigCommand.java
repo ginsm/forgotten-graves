@@ -2,6 +2,7 @@ package me.mgin.graves.command.config;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
+import me.mgin.graves.command.utility.ArgumentUtility;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.networking.config.ConfigNetworking;
 import me.mgin.graves.util.Responder;
@@ -19,11 +20,10 @@ public class ReloadConfigCommand {
      * @return Command.SINGLE_SUCCESS
      */
     public static int execute(CommandContext<ServerCommandSource> context) {
-        CommandContextData data = new CommandContextData(context);
         ServerCommandSource source = context.getSource();
         Responder res = new Responder(source.getPlayer(), source.getServer());
 
-        if (data.IS_SERVER) {
+        if (ArgumentUtility.issuedToServer(context)) {
             executeOnServer(context, res);
         } else {
             executeOnClient(context, res);

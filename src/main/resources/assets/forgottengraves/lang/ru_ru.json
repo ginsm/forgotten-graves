@@ -23,8 +23,6 @@
   "text.autoconfig.forgottengraves.option.main.dropType.@Tooltip": "Что происходит с предметами, когда они извлекаются?",
   "text.autoconfig.forgottengraves.option.main.sneakSwapsDropType": "Приседание инвертирует тип выпадения",
   "text.autoconfig.forgottengraves.option.main.sneakSwapsDropType.@Tooltip": "Следует ли приседанию переключаться между типами выпадения?",
-  "text.autoconfig.forgottengraves.option.main.respectKeepInventory": "Соблюдать сохранение инвентаря",
-  "text.autoconfig.forgottengraves.option.main.respectKeepInventory.@Tooltip": "Должны ли могилы появляться, когда включено игровое правило «Сохранения инвентаря при смерти»?",
 
   "text.autoconfig.forgottengraves.category.experience": "Настройки опыта",
   "text.autoconfig.forgottengraves.option.experience": "Настройки опыта",

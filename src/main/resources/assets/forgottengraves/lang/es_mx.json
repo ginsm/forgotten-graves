@@ -23,8 +23,6 @@
   "text.autoconfig.forgottengraves.option.main.dropType.@Tooltip": "¿Qué pasa con los objetos cuando se recuperan?",
   "text.autoconfig.forgottengraves.option.main.sneakSwapsDropType": "Cambios Furtivos Tipo de Caída",
   "text.autoconfig.forgottengraves.option.main.sneakSwapsDropType.@Tooltip": "¿Debería cambiar el furtivo entre los tipos de caída?",
-  "text.autoconfig.forgottengraves.option.main.respectKeepInventory": "Respeto Keep Inventory",
-  "text.autoconfig.forgottengraves.option.main.respectKeepInventory.@Tooltip": "¿Deberían generarse tumbas cuando está activado el gamerule Keep Inventory?",
 
   "text.autoconfig.forgottengraves.category.experience": "Configuración de Experiencia",
   "text.autoconfig.forgottengraves.option.experience": "Configuración de Experiencia",

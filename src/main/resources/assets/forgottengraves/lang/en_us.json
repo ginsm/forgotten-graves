@@ -25,8 +25,6 @@
   "text.autoconfig.forgottengraves.option.main.dropType.@Tooltip": "What happens to the items when they're retrieved?",
   "text.autoconfig.forgottengraves.option.main.sneakSwapsDropType": "Sneak Swaps Drop Type",
   "text.autoconfig.forgottengraves.option.main.sneakSwapsDropType.@Tooltip": "Should sneaking switch between drop types?",
-  "text.autoconfig.forgottengraves.option.main.respectKeepInventory": "Respect Keep Inventory",
-  "text.autoconfig.forgottengraves.option.main.respectKeepInventory.@Tooltip": "Should graves spawn when the Keep Inventory gamerule is enabled?",
 
   "text.autoconfig.forgottengraves.category.experience": "Experience Settings",
   "text.autoconfig.forgottengraves.option.experience": "Experience Settings",

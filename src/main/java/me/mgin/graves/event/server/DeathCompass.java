@@ -28,18 +28,12 @@ import java.util.Optional;
 
 public class DeathCompass {
     public static void give(ServerPlayerEntity oldPlayer, ServerPlayerEntity player, boolean alive) {
-        boolean keepInventory = player.getWorld().getGameRules().getBoolean(GameRules.KEEP_INVENTORY);
-
         GameProfile profile = player.getGameProfile();
         boolean giveDeathCompass = GravesConfig.resolve("giveDeathCompass", profile);
-        boolean respectKeepInventory = GravesConfig.resolve("respectKeepInventory", profile);
         boolean alwaysGiveCompass = GravesConfig.resolve("alwaysGiveCompass", profile);
         boolean gravesEnabled = GravesConfig.resolve("graves", profile);
 
-        boolean giveCompass = giveDeathCompass &&
-                // Don't give a compass if both keepInventory and respectKeepInventory are true
-                !(keepInventory && respectKeepInventory) &&
-                (gravesEnabled || alwaysGiveCompass);
+        boolean giveCompass = giveDeathCompass && (gravesEnabled || alwaysGiveCompass);
 
         if (!giveCompass) return;
 

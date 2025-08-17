@@ -72,9 +72,6 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         public boolean sneakSwapsDropType = true;
-
-        @ConfigEntry.Gui.Tooltip
-        public boolean respectKeepInventory = false;
     }
 
     public static class ExperienceSettings {

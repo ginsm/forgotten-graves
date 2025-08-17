@@ -50,17 +50,11 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         // Players with DISABLE_GRAVES_EFFECT active will not have a grave spawn.
         boolean preventedByEffect = player.hasStatusEffect(GraveEffects.DISABLE_GRAVES_EFFECT);
 
-        // Graves will not spawn if respectKeepInventory is set to true.
-        boolean keepInventory = this.getWorld().getGameRules().getBoolean(GameRules.KEEP_INVENTORY);
-        boolean respectKeepInventory = GravesConfig.resolve("respectKeepInventory", profile);
-        boolean preventedByKeepInventory = keepInventory && respectKeepInventory;
-
         // Read above comments for each conditional
         boolean shouldPlaceGrave = forgottenGravesEnabled &&
             playerCanPlaceBlocks &&
             !preventedInPvP &&
-            !preventedByEffect &&
-            !preventedByKeepInventory;
+            !preventedByEffect;
 
         if (shouldPlaceGrave) {
             PlaceGrave.place(this.getWorld(), this.getPos(), player);

@@ -47,7 +47,7 @@ public class Vanilla implements InventoriesApi {
     }
 
     @Override
-    public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity player) {
+    public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity player, boolean removeBinding) {
         DefaultedList<ItemStack> overflow = DefaultedList.of();
 
         // Equip armor pieces
@@ -55,7 +55,7 @@ public class Vanilla implements InventoriesApi {
 
         for (ItemStack armorItem : armor) {
             // Do not equip armor with curse of binding
-            if (GraveEnchantTags.hasBindingCurse(armorItem)) {
+            if (removeBinding && GraveEnchantTags.hasBindingCurse(armorItem)) {
                 overflow.add(armorItem);
                 continue;
             }

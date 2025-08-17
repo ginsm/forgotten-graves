@@ -14,7 +14,7 @@ public interface InventoriesApi {
 
 	int getInventorySize(PlayerEntity entity);
 
-	DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity entity);
+	DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity entity, boolean removeBinding);
 
 	void clearInventory(PlayerEntity player, boolean respectSoulbound);
 }

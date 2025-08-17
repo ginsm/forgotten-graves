@@ -3,10 +3,7 @@ package me.mgin.graves.event;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketEnums;
 import dev.emi.trinkets.api.event.TrinketDropCallback;
-import me.mgin.graves.event.server.AttackBlockHandler;
-import me.mgin.graves.event.server.PlayerBlockBreakHandler;
-import me.mgin.graves.event.server.TrinketDropHandler;
-import me.mgin.graves.event.server.UseBlockHandler;
+import me.mgin.graves.event.server.*;
 import me.mgin.graves.inventory.Trinkets;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
@@ -32,6 +29,9 @@ public class Events {
 
         // Handle player using grave
         UseBlockCallback.EVENT.register(UseBlockHandler::handleEvent);
+
+        // Give a compass upon death
+        ServerPlayerEvents.AFTER_RESPAWN.register(DeathCompass::give);
 
         // Handle player breaking grave
         PlayerBlockBreakEvents.BEFORE.register(

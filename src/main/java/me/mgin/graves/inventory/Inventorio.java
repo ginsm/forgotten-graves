@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Inventorio implements InventoriesApi {
     public String inventoryID = "inventorio";
@@ -38,12 +39,11 @@ public class Inventorio implements InventoriesApi {
 
     @Override
     public int getInventorySize(PlayerEntity player) {
-        return InventorioAPI.getInventoryAddon(player).size();
+        return Objects.requireNonNull(InventorioAPI.getInventoryAddon(player)).size();
     }
 
     @Override
-    public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory,
-                                                 PlayerEntity player) {
+    public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity player, boolean removeBinding) {
         PlayerInventoryAddon inventorioInv = InventorioAPI.getInventoryAddon(player);
         DefaultedList<ItemStack> unequipped = DefaultedList.of();
 

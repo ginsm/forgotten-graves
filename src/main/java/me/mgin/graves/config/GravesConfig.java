@@ -113,6 +113,12 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         public boolean replaceBlocks = true;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean giveDeathCompass = false;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean alwaysGiveCompass = false;
     }
 
     public static class DecaySettings {

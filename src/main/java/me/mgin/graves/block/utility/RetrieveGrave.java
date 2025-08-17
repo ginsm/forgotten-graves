@@ -9,6 +9,7 @@ import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.config.enums.GraveDropType;
 import me.mgin.graves.config.enums.GraveMergeOrder;
+import me.mgin.graves.event.server.DeathCompass;
 import me.mgin.graves.inventory.Vanilla;
 import me.mgin.graves.state.PlayerState;
 import me.mgin.graves.state.ServerState;
@@ -127,7 +128,7 @@ public class RetrieveGrave {
         if (dropType == GraveDropType.EQUIP) {
             overflow = equipInventoryItems(player, graveEntity);
         } else if (dropType == GraveDropType.DROP) {
-            overflow = getInventoryItems(graveEntity);
+            overflow = getInventoryItems(player, graveEntity);
         }
 
         // Drop items on the ground; either on the player or where the grave is located.
@@ -180,12 +181,14 @@ public class RetrieveGrave {
      * @param graveEntity GraveBlockEntity
      * @return {@code DefaultedList<ItemStack>}
      */
-    static public DefaultedList<ItemStack> getInventoryItems(GraveBlockEntity graveEntity) {
+    static public DefaultedList<ItemStack> getInventoryItems(PlayerEntity player, GraveBlockEntity graveEntity) {
         // Keeps track of items to be dropped
         DefaultedList<ItemStack> items = DefaultedList.of();
 
         // Add loaded inventories to items list
         for (InventoriesApi api : Graves.inventories) {
+            // Remove matching compass before processing any inventories
+            DeathCompass.removeCompassFromInventory(player, api, graveEntity);
             DefaultedList<ItemStack> modInventory = graveEntity.getInventory(api.getID());
 
             if (modInventory != null)
@@ -216,6 +219,8 @@ public class RetrieveGrave {
         DefaultedList<ItemStack> overflow = DefaultedList.of();
 
         for (InventoriesApi api : Graves.inventories) {
+            // Remove matching compass before processing any inventories
+            DeathCompass.removeCompassFromInventory(player, api, graveEntity);
             DefaultedList<ItemStack> graveInventory = graveEntity.getInventory(api.getID());
             DefaultedList<ItemStack> playerInventory = api.getInventory(player);
 
@@ -224,7 +229,7 @@ public class RetrieveGrave {
                 if (graveInventory != null) {
                     if (api.getInventorySize(player) == graveInventory.size()) {
                         overflow.addAll(
-                            api.setInventory(graveInventory, player) // This returns items that couldn't be equipped.
+                            api.setInventory(graveInventory, player, true) // This returns items that couldn't be equipped.
                         );
                     } else {
                         overflow.addAll(graveInventory);
@@ -240,7 +245,7 @@ public class RetrieveGrave {
                     // Likely means that a mod that added slots was removed (think trinkets).
                     if (api.getInventorySize(player) == graveInventory.size()) {
                         overflow.addAll(
-                            api.setInventory(graveInventory, player) // This returns items that couldn't be equipped.
+                            api.setInventory(graveInventory, player, true) // This returns items that couldn't be equipped.
                         );
                     } else {
                         overflow.addAll(graveInventory);
@@ -249,7 +254,7 @@ public class RetrieveGrave {
 
                 // Attempt to equip the player inventory
                 overflow.addAll(
-                    api.setInventory(playerInventory, player) // This returns items that couldn't be equipped.
+                    api.setInventory(playerInventory, player, true) // This returns items that couldn't be equipped.
                 );
             }
 

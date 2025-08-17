@@ -20,6 +20,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.CompassItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -115,7 +116,9 @@ public class GraveBlockBase extends HorizontalFacingBlock implements BlockEntity
         if (world.isClient) return ActionResult.PASS;
 
         if (hand != Hand.OFF_HAND) {
-            if (player.getStackInHand(hand).isEmpty() && Permission.playerCanUseGrave(player, graveEntity)) {
+            ItemStack stack = player.getStackInHand(hand);
+            boolean allowedInteraction = stack.isEmpty() || stack.getItem() instanceof CompassItem;
+            if (allowedInteraction && Permission.playerCanUseGrave(player, graveEntity)) {
                 RetrieveGrave.retrieveWithInteract(player, world, pos);
             }
         }

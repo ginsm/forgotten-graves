@@ -52,7 +52,9 @@ public class DeathCompass {
         ItemStack compass = createDeathCompass(player, playerState);
 
         if (!compass.isEmpty()) {
-            player.giveItemStack(compass);
+            if (!player.giveItemStack(compass)) {
+                player.dropItem(compass, true);
+            }
         }
     }
 

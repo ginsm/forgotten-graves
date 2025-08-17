@@ -32,7 +32,7 @@ public class PlaceGraveTest {
         GravesConfig config = GravesConfig.getConfig();
 
         System.out.println("📗 Running sinkInWater$false");
-        config.sink.sinkInWater = false;
+        config.spawning.sinkInWater = false;
         BlockPos pos = context.getAbsolutePos(new BlockPos(2, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(2, 7, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
@@ -42,7 +42,7 @@ public class PlaceGraveTest {
         GravesConfig config = GravesConfig.getConfig();
 
         System.out.println("📗 Running sinkThroughBlocks$false");
-        config.sink.sinkThroughBlocks = false;
+        config.spawning.sinkThroughBlocks = false;
         BlockPos pos = context.getAbsolutePos(new BlockPos(6, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(6, 7, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
@@ -52,7 +52,7 @@ public class PlaceGraveTest {
         GravesConfig config = GravesConfig.getConfig();
 
         System.out.println("📗 Running sinkInAir$false");
-        config.sink.sinkInAir = false;
+        config.spawning.sinkInAir = false;
         BlockPos pos = context.getAbsolutePos(new BlockPos(18, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(18, 7, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
@@ -63,7 +63,7 @@ public class PlaceGraveTest {
         GravesConfig config = GravesConfig.getConfig().resetConfig();
 
         System.out.println("📗 Running sinkInLava$true");
-        config.sink.sinkInLava = true;
+        config.spawning.sinkInLava = true;
         BlockPos pos = context.getAbsolutePos(new BlockPos(10, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(10, 2, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
@@ -94,7 +94,7 @@ public class PlaceGraveTest {
         GravesConfig config = GravesConfig.getConfig();
 
         System.out.println("📗 Running replaceBlocks$false");
-        config.sink.replaceBlocks = false;
+        config.spawning.replaceBlocks = false;
         BlockPos pos = context.getAbsolutePos(new BlockPos(19, 2, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(18, 2, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);

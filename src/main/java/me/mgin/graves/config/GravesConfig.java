@@ -22,7 +22,7 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
     @ConfigEntry.Category("spawning")
     @ConfigEntry.Gui.TransitiveObject
-    public SinkSettings sink = new SinkSettings();
+    public SpawningSettings spawning = new SpawningSettings();
 
     @ConfigEntry.Category("decay")
     @ConfigEntry.Gui.TransitiveObject
@@ -98,7 +98,7 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
         public ExperienceType capType = ExperienceType.LEVELS;
     }
 
-    public static class SinkSettings {
+    public static class SpawningSettings {
         @ConfigEntry.Gui.Tooltip
         public boolean sinkInAir = true;
 

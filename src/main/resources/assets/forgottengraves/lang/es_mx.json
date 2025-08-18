@@ -51,8 +51,6 @@
   "text.autoconfig.forgottengraves.option.spawning.replaceBlocks.@Tooltip": "¿Las tumbas deben sustituir a los bloques que se encuentran en la etiqueta sustituible?",
   "text.autoconfig.forgottengraves.option.spawning.giveDeathCompass": "Dar Brújula de Muerte",
   "text.autoconfig.forgottengraves.option.spawning.giveDeathCompass.@Tooltip": "¿Se debe dar a los jugadores una brújula que apunte a sus tumbas?",
-  "text.autoconfig.forgottengraves.option.spawning.alwaysGiveCompass": "Dar Siempre Brújula",
-  "text.autoconfig.forgottengraves.option.spawning.alwaysGiveCompass.@Tooltip": "¿Se debe dar a los jugadores una brújula cuando las tumbas están deshabilitadas?",
 
   "text.autoconfig.forgottengraves.category.decay": "Configuración de Descomposición",
   "text.autoconfig.forgottengraves.option.decay": "Configuración de Descomposición",

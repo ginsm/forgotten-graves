@@ -30,14 +30,10 @@ public class DeathCompass {
     public static void give(ServerPlayerEntity oldPlayer, ServerPlayerEntity player, boolean alive) {
         GameProfile profile = player.getGameProfile();
         boolean giveDeathCompass = GravesConfig.resolve("giveDeathCompass", profile);
-        boolean alwaysGiveCompass = GravesConfig.resolve("alwaysGiveCompass", profile);
         boolean gravesEnabled = GravesConfig.resolve("graves", profile);
-
-        boolean giveCompass = giveDeathCompass && (gravesEnabled || alwaysGiveCompass);
-
-        if (!giveCompass) return;
-
         PlayerState playerState = null;
+
+        if (!giveDeathCompass) return;
 
         if (gravesEnabled) {
             playerState = ServerState.getPlayerState(player.getServer(), profile.getId());

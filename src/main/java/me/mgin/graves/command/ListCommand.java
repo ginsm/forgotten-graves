@@ -27,15 +27,15 @@ import static me.mgin.graves.util.DateFormatter.formatDate;
 import static me.mgin.graves.util.NbtHelper.readCoordinates;
 
 public class ListCommand {
-    static public int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+    static public int execute(CommandContext<ServerCommandSource> context) {
         ServerCommandSource source = context.getSource();
         MinecraftServer server = source.getServer();
         Responder res = new Responder(source.getPlayer(), server);
 
         // Get arguments
-        int page = getIntegerArgument(context, "page", 3); // -1 if no page selected
-        GameProfile player = getProfileArgument(context, "player", 4);
-        GameProfile recipient = getProfileArgument(context, "recipient", 5);
+        int page = getIntegerArgument(context, "page"); // -1 if no page selected
+        GameProfile player = getProfileArgument(context, "player");
+        GameProfile recipient = getProfileArgument(context, "recipient");
 
         // Require the player argument when issued via console
         if (player == null && source.getPlayer() == null) {
@@ -92,7 +92,7 @@ public class ListCommand {
             NbtCompound grave = playerState.graves.getCompound(i);
 
             // Do not show non-OP players their recovered graves.
-            if (issuer != null && !issuer.hasPermissionLevel(4)) {
+            if (issuer != null && !issuer.hasPermissionLevel(2)) {
                 if (grave.getBoolean("retrieved")) continue;
             }
 
@@ -100,6 +100,9 @@ public class ListCommand {
         }
 
         // Ensure that the page has graves on it before displaying
+        System.out.println("startOfPage = " + startOfPage);
+        System.out.println("graves.size() = " + graves.size());
+        System.out.println("config.server.storedGravesAmount = " + config.server.storedGravesAmount);
         if (startOfPage >= config.server.storedGravesAmount || startOfPage >= graves.size()) {
             res.sendInfo(page == 1 ?
                     Text.translatable("command.list.error.no-graves", res.highlight(target.getName())) :

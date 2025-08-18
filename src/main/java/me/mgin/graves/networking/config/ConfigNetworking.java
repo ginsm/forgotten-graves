@@ -8,9 +8,11 @@ import net.minecraft.util.Identifier;
 
 public class ConfigNetworking {
     // Client Identifiers
+    public static final Identifier APPLY_CONFIG_C2S = new Identifier(Graves.MOD_ID, "apply_config_c2s");
     public static final Identifier STORE_CONFIG_C2S = new Identifier(Graves.MOD_ID, "store_config_c2s");
 
     // Server Identifiers
+    public static final Identifier REQUEST_CONFIG_S2C = new Identifier(Graves.MOD_ID, "request_config_c2s");
     public static final Identifier RELOAD_CONFIG_S2C = new Identifier(Graves.MOD_ID, "reload_config_s2c");
     public static final Identifier RESET_CONFIG_S2C = new Identifier(Graves.MOD_ID, "reset_config_s2c");
     public static final Identifier STORE_CONFIG_S2C = new Identifier(Graves.MOD_ID, "store_config_s2c");
@@ -19,6 +21,7 @@ public class ConfigNetworking {
      * Registers Client-to-Server packet receivers
      */
     public static void registerC2SPackets() {
+        ServerPlayNetworking.registerGlobalReceiver(APPLY_CONFIG_C2S, ApplyConfigC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(STORE_CONFIG_C2S, StoreConfigC2SPacket::receive);
     }
 
@@ -26,6 +29,7 @@ public class ConfigNetworking {
      * Registers Server-to-Client packet receivers
      */
     public static void registerS2CPackets() {
+        ClientPlayNetworking.registerGlobalReceiver(REQUEST_CONFIG_S2C, RequestConfigS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(RELOAD_CONFIG_S2C, ReloadClientConfigS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(RESET_CONFIG_S2C, ResetClientConfigS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(STORE_CONFIG_S2C, StoreConfigS2CPacket::receive);

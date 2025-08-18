@@ -16,13 +16,22 @@ public class Commands {
      * Registers all server-side commands associated with Forgotten Graves.
      */
     public static void registerServerCommands() {
-        // Server commands
-        LiteralArgumentBuilder<ServerCommandSource> serverCommands = literal("server").requires(Commands::isOperator);
 
-        // Common Client & Server Config Commands
-        LiteralArgumentBuilder<ServerCommandSource> commonConfigCommands = literal("config")
-            .then(literal("reload").executes(ReloadConfigCommand::execute))
-            .then(literal("reset").executes(ResetConfigCommand::execute));
+        // Config commands
+        LiteralArgumentBuilder<ServerCommandSource> config = literal("config")
+                .then(
+                    literal("reload").executes(ReloadConfigCommand::execute)
+                        .then(literal("client").executes(ReloadConfigCommand::execute).requires(Commands::isOperator))
+                        .then(literal("server").executes(ReloadConfigCommand::execute).requires(Commands::isOperator))
+                )
+                .then(
+                    literal("reset").executes(ResetConfigCommand::execute)
+                        .then(literal("client").executes(ResetConfigCommand::execute).requires(Commands::isOperator))
+                        .then(literal("server").executes(ResetConfigCommand::execute).requires(Commands::isOperator))
+            )
+                .then(
+                    literal("applyToServer").executes(ApplyConfigC2SCommand::execute).requires(Commands::isOperator)
+                );
 
         LiteralArgumentBuilder<ServerCommandSource> players = literal("players").requires(Commands::isOperator)
             .executes(PlayersCommand::execute);
@@ -44,15 +53,13 @@ public class Commands {
 
         LiteralArgumentBuilder<ServerCommandSource> list = literal("list")
             .executes(ListCommand::execute)
-            .then(argument("page", IntegerArgumentType.integer(1))
+            .then(argument("page", IntegerArgumentType.integer(1)).executes(ListCommand::execute))
+            .then(argument("player", GameProfileArgumentType.gameProfile()).requires(Commands::isOperator)
                 .executes(ListCommand::execute)
                 // optional
-                .then(argument("player", GameProfileArgumentType.gameProfile()).requires(Commands::isOperator)
-                    .executes(ListCommand::execute)
+                .then(argument("page", IntegerArgumentType.integer(1)).executes(ListCommand::execute)
                     // optional
-                    .then(argument("recipient", GameProfileArgumentType.gameProfile())
-                        .executes(ListCommand::execute)
-                    )
+                    .then(argument("recipient", GameProfileArgumentType.gameProfile()).executes(ListCommand::execute))
                 )
             );
 
@@ -80,10 +87,7 @@ public class Commands {
                     .then(players)
                     .then(restore)
                     .then(delete)
-                    // Client config commands
-                    .then(commonConfigCommands)
-                    // Server config commands
-                    .then(serverCommands.then(commonConfigCommands))
+                    .then(config)
             )
         );
     }

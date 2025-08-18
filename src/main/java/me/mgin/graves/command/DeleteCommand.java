@@ -21,16 +21,16 @@ import net.minecraft.util.math.BlockPos;
 import static me.mgin.graves.command.utility.ArgumentUtility.*;
 
 public class DeleteCommand {
-    static public int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+    static public int execute(CommandContext<ServerCommandSource> context) {
         ServerCommandSource source = context.getSource();
         MinecraftServer server = source.getServer();
         Responder res = new Responder(source.getPlayer(), server);
 
         // Get command arguments
-        GameProfile player = getProfileArgument(context, "player", 3);
-        int graveId = getIntegerArgument(context, "graveid", 4);
-        boolean showList = getBooleanArgument(context, "showlist", 5);
-        GameProfile recipient = getProfileArgument(context, "recipient", 6);
+        GameProfile player = getProfileArgument(context, "player");
+        int graveId = getIntegerArgument(context, "graveid");
+        boolean showList = getBooleanArgument(context, "showlist");
+        GameProfile recipient = getProfileArgument(context, "recipient");
 
         // Handle an invalid player
         if (player == null) {

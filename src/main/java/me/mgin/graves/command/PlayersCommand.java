@@ -9,6 +9,7 @@ import me.mgin.graves.util.Responder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+import net.minecraft.util.UserCache;
 
 import java.util.Map;
 import java.util.Objects;
@@ -40,6 +41,8 @@ public class PlayersCommand {
             .append(res.info(Text.translatable("command.players.beginning"))));
 
         // Iterate over players
+        UserCache userCache = Objects.requireNonNull(server.getUserCache());
+
         for (Map.Entry<UUID, PlayerState> entry : serverState.players.entrySet()) {
             UUID id = entry.getKey();
             PlayerState playerState = entry.getValue();
@@ -47,7 +50,7 @@ public class PlayersCommand {
             if (playerState.graves.isEmpty()) continue;
 
             // Check if the profile exists and if it does, add to message
-            Optional<GameProfile> potentialProfile = Objects.requireNonNull(server.getUserCache()).getByUuid(id);
+            Optional<GameProfile> potentialProfile = userCache.getByUuid(id);
             potentialProfile.ifPresent(profile -> {
                 message.set(message.get().copy().append(
                     Text.translatable("command.players.information",

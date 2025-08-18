@@ -24,17 +24,17 @@ import static me.mgin.graves.command.utility.ArgumentUtility.getProfileArgument;
 import static me.mgin.graves.util.DateFormatter.formatDate;
 
 public class RestoreCommand {
-    static public int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+    static public int execute(CommandContext<ServerCommandSource> context) {
         ServerCommandSource source = context.getSource();
         MinecraftServer server = source.getServer();
         Responder res = new Responder(source.getPlayer(), server);
 
         // Get command arguments
         // graves restore <graveid> <player> <recipient>
-        GameProfile player = getProfileArgument(context, "player", 3);
+        GameProfile player = getProfileArgument(context, "player");
         int graveId = context.getArgument("graveid", Integer.class); // Remove one for zero-indexing
-        GameProfile recipient = getProfileArgument(context, "recipient", 5);
-        boolean showList = getBooleanArgument(context, "showlist", 6);
+        GameProfile recipient = getProfileArgument(context, "recipient");
+        boolean showList = getBooleanArgument(context, "showlist");
 
         // Handle an invalid player
         if (player == null) {

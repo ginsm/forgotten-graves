@@ -19,9 +19,8 @@ public class Items {
      * Registers all server-side items.
      *
      * @param MOD_ID      String
-     * @param BRAND_BLOCK String
      */
-    public static void registerItems(String MOD_ID, String BRAND_BLOCK) {
+    public static void registerItems(String MOD_ID) {
         ArrayList<Item> ITEMS = new ArrayList<>();
 
         // Create and register block items

@@ -24,7 +24,7 @@ public class ReloadConfigCommand {
         Responder res = new Responder(source.getPlayer(), source.getServer());
 
         if (ArgumentUtility.issuedToServer(context)) {
-            executeOnServer(context, res);
+            executeOnServer(res);
         } else {
             executeOnClient(context, res);
         }
@@ -35,10 +35,9 @@ public class ReloadConfigCommand {
     /**
      * Reloads the server config based on the passed data.
      *
-     * @param context CommandContext.ServerCommandSource
      * @param res    Responder
      */
-    private static void executeOnServer(CommandContext<ServerCommandSource> context, Responder res) {
+    private static void executeOnServer(Responder res) {
         GravesConfig.getConfig().reload();
         res.sendSuccess(Text.translatable("command.server.config.reload:success"), null);
     }

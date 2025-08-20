@@ -1,6 +1,5 @@
 package me.mgin.graves.datagen;
 
-import io.netty.util.concurrent.CompleteFuture;
 import me.mgin.graves.tags.GraveEnchantTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;

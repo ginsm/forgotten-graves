@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.GraveBlocks;
-import me.mgin.graves.util.NbtHelper;
+import me.mgin.graves.util.GraveNbtHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,7 +22,6 @@ import java.util.Map;
 
 public class GraveBlockEntity extends BlockEntity {
     private GameProfile graveOwner;
-    private BlockState state;
     private int[] xp;
     private int noDecay;
     private String customName;
@@ -247,7 +246,7 @@ public class GraveBlockEntity extends BlockEntity {
             DefaultedList<ItemStack> inventory = this.getInventory(id);
 
             if (inventory != null) {
-                nbt = NbtHelper.writeInventory(id, inventory, nbt);
+                nbt = GraveNbtHelper.writeInventory(id, inventory, nbt);
             }
         }
 
@@ -255,7 +254,7 @@ public class GraveBlockEntity extends BlockEntity {
             DefaultedList<ItemStack> inventory = this.getInventory(modID);
 
             if (inventory != null) {
-                nbt = NbtHelper.writeInventory(modID, inventory, nbt);
+                nbt = GraveNbtHelper.writeInventory(modID, inventory, nbt);
             }
         }
 
@@ -271,7 +270,7 @@ public class GraveBlockEntity extends BlockEntity {
         nbt.put("timers", timersNbt);
 
         if (graveOwner != null)
-            nbt.put("GraveOwner", NbtHelper.writeGameProfile(new NbtCompound(), graveOwner));
+            nbt.put("GraveOwner", GraveNbtHelper.writeGameProfile(new NbtCompound(), graveOwner));
 
         if (customName != null && this.hasCustomName())
             nbt.putString("CustomName", customName);
@@ -283,21 +282,21 @@ public class GraveBlockEntity extends BlockEntity {
     @Override
     public void readNbt(NbtCompound nbt) {
         // Needed for backwards compatibility
-        nbt = NbtHelper.upgradeOldGraves(nbt);
+        nbt = GraveNbtHelper.upgradeOldGraves(nbt);
         super.readNbt(nbt);
 
         // Store loaded inventories
         for (InventoriesApi api : Graves.inventories) {
             String id = api.getID();
             if (nbt.contains(id)) {
-                this.setInventory(id, NbtHelper.readInventory(id, nbt));
+                this.setInventory(id, GraveNbtHelper.readInventory(id, nbt));
             }
         }
 
         // Store unloaded inventories
         for (String modID : Graves.unloadedInventories) {
             if (nbt.contains(modID)) {
-                this.setInventory(modID, NbtHelper.readInventory(modID, nbt));
+                this.setInventory(modID, GraveNbtHelper.readInventory(modID, nbt));
             }
         }
 
@@ -313,7 +312,7 @@ public class GraveBlockEntity extends BlockEntity {
         }
 
         if (nbt.contains("GraveOwner"))
-            this.graveOwner = NbtHelper.toGameProfile(nbt.getCompound("GraveOwner"));
+            this.graveOwner = GraveNbtHelper.toGameProfile(nbt.getCompound("GraveOwner"));
 
         if (nbt.contains("CustomName"))
             this.customName = nbt.getString("CustomName");

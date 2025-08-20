@@ -1,8 +1,5 @@
 package me.mgin.graves.datagen;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import me.mgin.graves.Graves;
 import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.GraveBlocks;
@@ -12,8 +9,6 @@ import net.minecraft.data.client.*;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
-
-import java.util.Optional;
 
 public class GraveModelGenerator extends FabricModelProvider {
     public GraveModelGenerator(FabricDataOutput generator) {

@@ -39,7 +39,7 @@ public class Graves implements ModInitializer {
 
         // Graves Registry
         GraveBlocks.registerServerBlocks(MOD_ID, BRAND_BLOCK);
-        Items.registerItems(MOD_ID, BRAND_BLOCK);
+        Items.registerItems(MOD_ID);
         Commands.registerServerCommands();
         Events.registerServerEvents();
         GraveEffects.register(MOD_ID);

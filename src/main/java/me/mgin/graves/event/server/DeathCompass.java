@@ -20,7 +20,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.GlobalPos;
-import net.minecraft.world.GameRules;
 
 import java.util.ArrayList;
 import java.util.List;

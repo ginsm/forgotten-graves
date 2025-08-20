@@ -84,9 +84,7 @@ public class ServerState extends PersistentState {
         ServerState serverState = getServerState(server);
 
         // Get or create player state by UUID
-        PlayerState playerState = serverState.players.computeIfAbsent(uuid, id -> new PlayerState());
-
-        return playerState;
+        return serverState.players.computeIfAbsent(uuid, id -> new PlayerState());
     }
 
     public static void storePlayerGrave(PlayerEntity player, GraveBlockEntity graveEntity) {
@@ -122,7 +120,7 @@ public class ServerState extends PersistentState {
         cleanupPlayerGraves(playerState);
 
         // Mark dirty to commit server state
-        getServerState(server).markDirty();
+        Objects.requireNonNull(getServerState(server)).markDirty();
     }
 
     private static void cleanupPlayerGraves(PlayerState playerState) {

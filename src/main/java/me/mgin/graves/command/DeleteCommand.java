@@ -3,13 +3,12 @@ package me.mgin.graves.command;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.state.PlayerState;
 import me.mgin.graves.state.ServerState;
-import me.mgin.graves.util.NbtHelper;
+import me.mgin.graves.util.GraveNbtHelper;
 import me.mgin.graves.util.Responder;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
@@ -60,7 +59,7 @@ public class DeleteCommand {
 
                 // Removes the grave from the world (if set to true)
                 if (destructive) {
-                    BlockPos gravePos = NbtHelper.readCoordinates(grave);
+                    BlockPos gravePos = GraveNbtHelper.readCoordinates(grave);
                     String storedDimension = grave.getString("dimension");
 
                     // Search for the world the grave is located

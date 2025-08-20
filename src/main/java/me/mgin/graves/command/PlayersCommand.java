@@ -51,14 +51,12 @@ public class PlayersCommand {
 
             // Check if the profile exists and if it does, add to message
             Optional<GameProfile> potentialProfile = userCache.getByUuid(id);
-            potentialProfile.ifPresent(profile -> {
-                message.set(message.get().copy().append(
-                    Text.translatable("command.players.information",
-                        res.highlight(profile.getName()),
-                        playerState.graves.size()
-                    )
-                ));
-            });
+            potentialProfile.ifPresent(profile -> message.set(message.get().copy().append(
+                Text.translatable("command.players.information",
+                    res.highlight(profile.getName()),
+                    playerState.graves.size()
+                )
+            )));
         }
 
         // Send the players list to the issuer

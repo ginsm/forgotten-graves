@@ -241,13 +241,13 @@ public class RetrieveGrave {
 
                 // Restore the grave inventory to the player
                 if (graveInventory != null) {
-                    // Just add to main inventory if mod inventory sizes have changed since the grave creation.
-                    // Likely means that a mod that added slots was removed (think trinkets).
                     if (api.getInventorySize(player) == graveInventory.size()) {
                         overflow.addAll(
                             api.setInventory(graveInventory, player, true) // This returns items that couldn't be equipped.
                         );
                     } else {
+                        // Just add to main inventory if mod inventory sizes have changed since the grave creation.
+                        // Likely means that a mod that added slots was removed (think trinkets).
                         overflow.addAll(graveInventory);
                     }
                 }
@@ -261,7 +261,7 @@ public class RetrieveGrave {
             // Necessary for compatibility with Better Combat; see issue #115
             // Reset the cached offhand (Vanilla only)
             if (api instanceof Vanilla vanillaApi) {
-                vanillaApi.resetEquippedOffhand();
+                vanillaApi.resetEquippedOffhandVariable();
             }
         }
 
@@ -274,7 +274,7 @@ public class RetrieveGrave {
         // Remove any empty or air slots from overflow
         overflow.removeIf(ItemStack::isEmpty);
 
-        // NOTE - This method mutates the overflow list, it will contain items unable to be merged afterwards
+        // NOTE - This method mutates the overflow list, it will contain items unable to be merged afterward
         // Attempt to merge the two inventories (with stack consolidation)
         Inventory.mergeInventories(overflow, player.getInventory());
 

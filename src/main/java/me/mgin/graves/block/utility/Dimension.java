@@ -5,10 +5,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 
 class Dimension {
-    public DimensionType dimension = null;
-    public World world = null;
-    public int maxY = 0;
-    public int minY = 0;
+    public DimensionType dimension;
+    public World world;
+    public int maxY;
+    public int minY;
 
     public Dimension(World world) {
         this.world = world;

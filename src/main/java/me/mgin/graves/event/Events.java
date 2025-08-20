@@ -42,9 +42,7 @@ public class Events {
         // Ensure Resolute Ivy is removed from items in Trinket slots when using Connector + Forge Botania.
         if (FabricLoader.getInstance().isModLoaded("connectormod")) {
             ServerPlayerEvents.AFTER_RESPAWN.register(
-                    (ServerPlayerEntity old, ServerPlayerEntity player, boolean alive) -> {
-                        Trinkets.removeResoluteIvy(player);
-                    }
+                    (ServerPlayerEntity old, ServerPlayerEntity player, boolean alive) -> Trinkets.removeResoluteIvy(player)
             );
         }
 

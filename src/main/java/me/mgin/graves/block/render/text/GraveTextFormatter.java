@@ -16,10 +16,6 @@ public class GraveTextFormatter {
     private boolean strikethrough;
     private boolean obfuscated;
 
-    public void GraveTextFormatter() {
-        resetFormatting();
-    }
-
     public void resetFormatting() {
         this.color = Formatting.RESET;
         this.bold = false;

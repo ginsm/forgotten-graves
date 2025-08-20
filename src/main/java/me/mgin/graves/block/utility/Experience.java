@@ -6,8 +6,6 @@ import me.mgin.graves.config.enums.GraveExpStoreType;
 import me.mgin.graves.config.enums.ExperienceType;
 import net.minecraft.entity.player.PlayerEntity;
 
-import java.util.Arrays;
-
 public class Experience {
     public static int[] calculatePlayerExperience(PlayerEntity player) {
         GraveExpStoreType storageType = GravesConfig.resolve("expStorageType", player.getGameProfile());

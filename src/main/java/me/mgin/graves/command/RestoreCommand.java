@@ -3,13 +3,12 @@ package me.mgin.graves.command;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.mgin.graves.Graves;
 import me.mgin.graves.versioned.VersionedCode;
 import me.mgin.graves.block.utility.RetrieveGrave;
 import me.mgin.graves.state.PlayerState;
 import me.mgin.graves.state.ServerState;
-import me.mgin.graves.util.NbtHelper;
+import me.mgin.graves.util.GraveNbtHelper;
 import me.mgin.graves.util.Responder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -169,8 +168,8 @@ public class RestoreCommand {
     public static Text generateHoverContent(Responder res, NbtCompound grave, int graveId, String source) {
         String created = formatDate(grave.getLong("mstime"));
         String dimension = grave.getString("dimension");
-        BlockPos pos = NbtHelper.readCoordinates(grave);
-        GameProfile profile = NbtHelper.toGameProfile(grave.getCompound("GraveOwner"));
+        BlockPos pos = GraveNbtHelper.readCoordinates(grave);
+        GameProfile profile = GraveNbtHelper.toGameProfile(grave.getCompound("GraveOwner"));
 
         return res.info(Text.translatable(
             "command.restore.restored.tooltip",

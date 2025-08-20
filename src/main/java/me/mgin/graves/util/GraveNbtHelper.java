@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.Date;
 
-public class NbtHelper {
+public class GraveNbtHelper {
     /**
      * Read an inventory from NBT.
      *
@@ -216,7 +216,6 @@ public class NbtHelper {
         }
 
         // Create initial variables
-        int[] experienceArray = new int[2];
         int level;
 
         // Necessary to check which equation to use (similar to vanilla equations)

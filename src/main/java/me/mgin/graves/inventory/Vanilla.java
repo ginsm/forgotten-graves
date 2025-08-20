@@ -116,7 +116,7 @@ public class Vanilla implements InventoriesApi {
         return overflow;
     }
 
-    public void resetEquippedOffhand() {
+    public void resetEquippedOffhandVariable() {
         this.equippedOffhand = new ItemStack(Items.AIR);
     }
 

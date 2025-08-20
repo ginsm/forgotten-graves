@@ -1,14 +1,12 @@
 package me.mgin.graves.event.server.useblock.item;
 
 import me.mgin.graves.block.entity.GraveBlockEntity;
-import me.mgin.graves.block.utility.Permission;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.NameTagItem;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

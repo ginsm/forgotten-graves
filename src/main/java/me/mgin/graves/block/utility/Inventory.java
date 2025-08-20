@@ -2,13 +2,9 @@ package me.mgin.graves.block.utility;
 
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.collection.DefaultedList;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Inventory {
     public static void mergeInventories(List<ItemStack> source, PlayerInventory playerInventory) {
@@ -77,7 +73,7 @@ public class Inventory {
         target.set(slot, newStack);
 
         // Add slot to targetItemMap
-        if (newStack.getMaxCount() > newStack.getCount()) {
+        if (addToTargetItemMap && newStack.getMaxCount() > newStack.getCount()) {
             String newStackKey = getStackKey(newStack);
             targetItemMap.computeIfAbsent(newStackKey, k -> new ArrayList<>()).add(slot);
         }
@@ -105,8 +101,7 @@ public class Inventory {
      * Generates a unique key for an ItemStack based on its item type and NBT data.
      */
     public static String getStackKey(ItemStack stack) {
-        return stack.getItem().toString() + (stack.hasNbt() ? stack.getNbt().toString() : "");
+        return stack.getItem().toString() + (stack.hasNbt() ? Objects.requireNonNull(stack.getNbt()).toString() : "");
     }
-
 
 }

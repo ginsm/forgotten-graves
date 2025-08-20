@@ -129,9 +129,9 @@ public class Trinkets implements InventoriesApi {
 
     public static void removeResoluteIvy(PlayerEntity player) {
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
-        component.ifPresent(trinketComponent -> trinketComponent.forEach((ref, stack) -> {
-            stack.removeSubNbt("Botania_keepIvy");
-        }));
+        component.ifPresent(trinketComponent -> trinketComponent.forEach(
+                (ref, stack) -> stack.removeSubNbt("Botania_keepIvy")
+        ));
     }
 
     /**

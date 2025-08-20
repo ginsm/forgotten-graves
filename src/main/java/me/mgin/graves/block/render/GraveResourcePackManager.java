@@ -44,14 +44,14 @@ public class GraveResourcePackManager implements SimpleResourceReloadListener<Vo
     public CompletableFuture<Void> load(ResourceManager manager, Profiler profiler, Executor executor) {
         activePack = defaultPack;
 
-        return CompletableFuture.runAsync(() -> {
+        return CompletableFuture.runAsync(() ->
             MinecraftClient.getInstance().getResourceManager().streamResourcePacks().forEach((pack) -> {
                 String filePath = pack.getName();
                 if (resourcePacks.containsKey(filePath)) {
                     activePack = resourcePacks.get(filePath);
                 }
-            });
-        }, executor);
+            }), executor
+        );
     }
 
     @Override

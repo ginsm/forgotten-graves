@@ -74,17 +74,13 @@ public class ConfigNetworkingEvents {
             // Save Config
             AutoConfig.getConfigHolder(GravesConfig.class).registerLoadListener((manager, config) -> {
                 // Need to send config to all players
-                listeners.forEach((player) -> {
-                    sendConfigS2C(config, player);
-                });
+                listeners.forEach((player) -> sendConfigS2C(config, player));
                 return ActionResult.SUCCESS;
             });
 
             // Load Config
             AutoConfig.getConfigHolder(GravesConfig.class).registerSaveListener((manager, config) -> {
-                listeners.forEach((player) -> {
-                    sendConfigS2C(config, player);
-                });
+                listeners.forEach((player) -> sendConfigS2C(config, player));
                 // Need to send config to all players
                 return ActionResult.SUCCESS;
             });

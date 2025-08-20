@@ -27,9 +27,11 @@ public class DecayStateManager {
                                         boolean itemsDecay) {
         if (potentialNewState.isPresent()) {
             GraveBlockEntity entity = (GraveBlockEntity) world.getBlockEntity(pos);
-            entity.resetTimer("decay");
-            Decayable.setDecayState(world, pos, potentialNewState.get(), itemsDecay);
-            return true;
+            if (entity != null) {
+                entity.resetTimer("decay");
+                Decayable.setDecayState(world, pos, potentialNewState.get(), itemsDecay);
+                return true;
+            }
         }
         return false;
     }

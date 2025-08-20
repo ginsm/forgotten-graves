@@ -1,10 +1,7 @@
 package me.mgin.graves.gametest.tests;
 
-import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.GraveBlocks;
-import me.mgin.graves.block.decay.DecayStateManager;
 import me.mgin.graves.block.decay.DecayingGrave;
-import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.block.utility.PlaceGrave;
 import me.mgin.graves.block.utility.RetrieveGrave;
 import me.mgin.graves.config.GravesConfig;
@@ -12,11 +9,7 @@ import me.mgin.graves.gametest.GraveTestHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.test.TestContext;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * There's no operator permission tests in this suite as the GameTest API doesn't allow for modifying the mock player's

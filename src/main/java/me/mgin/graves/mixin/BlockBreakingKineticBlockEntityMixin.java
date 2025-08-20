@@ -1,6 +1,7 @@
 package me.mgin.graves.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.GraveBlocks;
 import net.minecraft.block.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,6 +13,6 @@ import org.spongepowered.asm.mixin.Pseudo;
 public class BlockBreakingKineticBlockEntityMixin {
     @ModifyReturnValue(method = "isBreakable(Lnet/minecraft/block/BlockState;F)Z", at = @At("RETURN"))
     private static boolean stopDrillBreakingGraves(boolean result, BlockState state, float hardness) {
-        return result && !GraveBlocks.GRAVE_SET.contains(state.getBlock());
+        return result && !(state.getBlock() instanceof GraveBlockBase);
     }
 }

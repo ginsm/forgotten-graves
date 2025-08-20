@@ -3,7 +3,6 @@ package me.mgin.graves.command;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.mgin.graves.versioned.VersionedCode;
 import me.mgin.graves.command.utility.Interactable;
 import me.mgin.graves.config.GravesConfig;
@@ -24,7 +23,7 @@ import java.util.Objects;
 import static me.mgin.graves.command.utility.ArgumentUtility.getIntegerArgument;
 import static me.mgin.graves.command.utility.ArgumentUtility.getProfileArgument;
 import static me.mgin.graves.util.DateFormatter.formatDate;
-import static me.mgin.graves.util.NbtHelper.readCoordinates;
+import static me.mgin.graves.util.GraveNbtHelper.readCoordinates;
 
 public class ListCommand {
     static public int execute(CommandContext<ServerCommandSource> context) {

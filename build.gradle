@@ -35,7 +35,6 @@ repositories {
     }
 }
 
-// Datagen
 loom {
     runs {
         // This adds a new gradle task that runs the datagen API: "gradlew runDatagen"
@@ -52,7 +51,12 @@ loom {
         gametest {
             server()
             vmArg "-Dfabric-api.gametest"
-            vmArg "-Dfabric-api.gametest.report-file=${project.layout.buildDirectory.get()}/test_results.xml"
+
+            // timestamped filename, e.g. test_results-2025-08-19_2042.xml
+            def timestamp = new Date().format("yyyy-MM-dd_HHmmss")
+            def reportFile = "${project.layout.buildDirectory.get()}/test-results/${timestamp}.xml"
+
+            vmArg "-Dfabric-api.gametest.report-file=${reportFile}"
             runDir "build/gametest"
         }
     }

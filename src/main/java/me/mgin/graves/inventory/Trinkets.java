@@ -84,7 +84,7 @@ public class Trinkets implements InventoriesApi {
      * @return Items that could not be equipped
      */
     @Override
-    public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity player, boolean removeBinding) {
+    public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity player) {
         DefaultedList<ItemStack> unequipped = DefaultedList.of();
 
         for (int i = 0; i < inventory.size(); i++) {
@@ -92,7 +92,7 @@ public class Trinkets implements InventoriesApi {
             if (stack.isEmpty()) continue;
 
             // Add item to be returned as unequipped
-            if (removeBinding && EnchantmentHelper.hasBindingCurse(stack)) {
+            if (EnchantmentHelper.hasBindingCurse(stack)) {
                 unequipped.add(stack);
                 continue;
             }

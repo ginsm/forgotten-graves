@@ -34,7 +34,7 @@ public class BackSlot implements InventoriesApi {
         return 2;
     }
 
-    public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity player, boolean removeBinding) {
+    public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity player) {
         DefaultedList<ItemStack> unequipped = DefaultedList.of();
 
         unequipped.add(inventory.get(0));

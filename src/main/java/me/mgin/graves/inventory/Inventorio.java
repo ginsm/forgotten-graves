@@ -43,7 +43,7 @@ public class Inventorio implements InventoriesApi {
     }
 
     @Override
-    public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity player, boolean removeBinding) {
+    public DefaultedList<ItemStack> setInventory(List<ItemStack> inventory, PlayerEntity player) {
         PlayerInventoryAddon inventorioInv = InventorioAPI.getInventoryAddon(player);
         DefaultedList<ItemStack> unequipped = DefaultedList.of();
 

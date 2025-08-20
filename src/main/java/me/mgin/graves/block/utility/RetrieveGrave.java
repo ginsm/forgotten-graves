@@ -229,7 +229,7 @@ public class RetrieveGrave {
                 if (graveInventory != null) {
                     if (api.getInventorySize(player) == graveInventory.size()) {
                         overflow.addAll(
-                            api.setInventory(graveInventory, player, true) // This returns items that couldn't be equipped.
+                            api.setInventory(graveInventory, player) // This returns items that couldn't be equipped.
                         );
                     } else {
                         overflow.addAll(graveInventory);
@@ -243,7 +243,7 @@ public class RetrieveGrave {
                 if (graveInventory != null) {
                     if (api.getInventorySize(player) == graveInventory.size()) {
                         overflow.addAll(
-                            api.setInventory(graveInventory, player, true) // This returns items that couldn't be equipped.
+                            api.setInventory(graveInventory, player) // This returns items that couldn't be equipped.
                         );
                     } else {
                         // Just add to main inventory if mod inventory sizes have changed since the grave creation.
@@ -254,7 +254,7 @@ public class RetrieveGrave {
 
                 // Attempt to equip the player inventory
                 overflow.addAll(
-                    api.setInventory(playerInventory, player, true) // This returns items that couldn't be equipped.
+                    api.setInventory(playerInventory, player) // This returns items that couldn't be equipped.
                 );
             }
 

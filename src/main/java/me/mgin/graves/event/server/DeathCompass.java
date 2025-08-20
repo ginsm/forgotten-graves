@@ -90,6 +90,8 @@ public class DeathCompass {
     }
 
     public static void removeCompassFromInventory(PlayerEntity player, InventoriesApi api, GraveBlockEntity entity) {
+        if (!api.getID().equals("Items")) return;
+
         DefaultedList<ItemStack> inventory = api.getInventory(player);
         long mstime = entity.getMstime();
 
@@ -101,15 +103,13 @@ public class DeathCompass {
                     if (nbt != null && nbt.contains("GraveMarker")) {
                         long graveMarker = nbt.getLong("GraveMarker");
                         if (graveMarker == mstime) {
-                            inventory.set(i, ItemStack.EMPTY);
+                            player.getInventory().setStack(i, ItemStack.EMPTY);
+                            break;
                         }
                     }
                 }
             }
         }
-
-        api.clearInventory(player, false);
-        api.setInventory(inventory, player, false);
     }
 
     // TODO - Move to NbtHelper (and rename NbtHelper to GraveNbtHelper)

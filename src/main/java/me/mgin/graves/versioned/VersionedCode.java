@@ -32,6 +32,14 @@ public class VersionedCode {
         //?}
     }
 
+    public static String textToJson(Text text) {
+        /*? if >1.20.2 {*/
+        /*return Text.Serialization.toJsonString(text);
+        *//*?} else {*/
+        return Text.Serializer.toJson(text);
+        /*?}*/
+    }
+
     public static String getIssuerName(ServerPlayerEntity issuer) {
         //? if >1.20.2 {
         /*return issuer.getNameForScoreboard();

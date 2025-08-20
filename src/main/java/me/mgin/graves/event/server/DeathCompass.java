@@ -6,14 +6,13 @@ import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.state.PlayerState;
 import me.mgin.graves.state.ServerState;
+import me.mgin.graves.util.GraveNbtHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.CompassItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -83,7 +82,7 @@ public class DeathCompass {
         lore.add(Text.translatable("grave.coordinates", pos.getX(), pos.getY(), pos.getZ()).formatted(Formatting.DARK_GRAY));
         lore.add(Text.literal("(" + dimension + ")").formatted(Formatting.DARK_GRAY));
 
-        setLore(compass, lore);
+        GraveNbtHelper.setLore(compass, lore);
         compass.setCustomName(Text.literal("Death Compass").formatted(Formatting.GOLD));
 
         return compass;
@@ -110,14 +109,5 @@ public class DeathCompass {
                 }
             }
         }
-    }
-
-    // TODO - Move to NbtHelper (and rename NbtHelper to GraveNbtHelper)
-    public static void setLore(ItemStack stack, List<Text> lines) {
-        NbtList loreList = new NbtList();
-        for (Text line : lines) {
-            loreList.add(NbtString.of(Text.Serializer.toJson(line)));
-        }
-        stack.getOrCreateSubNbt("display").put("Lore", loreList);
     }
 }

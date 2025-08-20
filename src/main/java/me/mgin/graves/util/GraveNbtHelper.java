@@ -2,15 +2,19 @@ package me.mgin.graves.util;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import me.mgin.graves.versioned.VersionedCode;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Date;
+import java.util.List;
 
 public class GraveNbtHelper {
     /**
@@ -59,6 +63,17 @@ public class GraveNbtHelper {
         nbt.put(key, Inventories.writeNbt(new NbtCompound(), stacks, true));
 
         return nbt;
+    }
+
+    /**
+     * Creates a lore based on multiple lines of Text
+     */
+    public static void setLore(ItemStack stack, List<Text> lines) {
+        NbtList loreList = new NbtList();
+        for (Text line : lines) {
+            loreList.add(NbtString.of(VersionedCode.textToJson(line)));
+        }
+        stack.getOrCreateSubNbt("display").put("Lore", loreList);
     }
 
     /**

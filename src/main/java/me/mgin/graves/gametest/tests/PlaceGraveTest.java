@@ -33,6 +33,7 @@ public class PlaceGraveTest {
 
         System.out.println("📗 Running sinkInWater$false");
         config.spawning.sinkInWater = false;
+        config.main.graveCoordinates = false;
         BlockPos pos = context.getAbsolutePos(new BlockPos(2, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(2, 7, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
@@ -64,6 +65,7 @@ public class PlaceGraveTest {
 
         System.out.println("📗 Running sinkInLava$true");
         config.spawning.sinkInLava = true;
+        config.main.graveCoordinates = false;
         BlockPos pos = context.getAbsolutePos(new BlockPos(10, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(10, 2, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
@@ -156,6 +158,7 @@ public class PlaceGraveTest {
 
     public static void respectsDisableEffect(TestContext context, PlayerEntity player) {
         GravesConfig config = GravesConfig.getConfig().resetConfig();
+        config.main.graveCoordinates = false;
 
         System.out.println("📗 Running respectsDisableEffect");
         BlockPos pos = new BlockPos(18, 2, 2);

@@ -157,6 +157,7 @@ public class DecayTest {
         config.decay.freshGraveDecayChance = 100;
         config.decay.oldGraveDecayChance = 100;
         config.decay.weatheredGraveDecayChance = 100;
+        config.main.graveCoordinates = false;
 
         // Set the player inventory and place a grave based on said inventory
         GraveTestNBTHelper.setPlayerInventoryFromSNBT(player, testInventory);

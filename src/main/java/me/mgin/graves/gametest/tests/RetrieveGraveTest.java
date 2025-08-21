@@ -24,6 +24,8 @@ public class RetrieveGraveTest {
         String partialInventory = "[{Count:64b,Slot:0b,id:\"minecraft:red_sand\"},{Count:64b,Slot:2b,id:\"minecraft:sand\"},{Count:64b,Slot:3b,id:\"minecraft:crimson_planks\"},{Count:64b,Slot:4b,id:\"minecraft:bedrock\"},{Count:64b,Slot:6b,id:\"minecraft:warped_planks\"},{Count:64b,Slot:8b,id:\"minecraft:mangrove_planks\"},{Count:64b,Slot:9b,id:\"minecraft:stone\"},{Count:32b,Slot:11b,id:\"minecraft:polished_granite\"},{Count:64b,Slot:12b,id:\"minecraft:diorite\"},{Count:64b,Slot:13b,id:\"minecraft:cobblestone\"},{Count:64b,Slot:14b,id:\"minecraft:andesite\"},{Count:32b,Slot:15b,id:\"minecraft:polished_andesite\"},{Count:64b,Slot:17b,id:\"minecraft:cobbled_deepslate\"},{Count:32b,Slot:18b,id:\"minecraft:polished_deepslate\"},{Count:64b,Slot:19b,id:\"minecraft:dirt\"},{Count:64b,Slot:20b,id:\"minecraft:tuff\"},{Count:64b,Slot:25b,id:\"minecraft:podzol\"},{Count:64b,Slot:26b,id:\"minecraft:rooted_dirt\"},{Count:64b,Slot:27b,id:\"minecraft:mud\"},{Count:64b,Slot:28b,id:\"minecraft:crimson_nylium\"},{Count:64b,Slot:29b,id:\"minecraft:warped_nylium\"},{Count:64b,Slot:31b,id:\"minecraft:oak_planks\"},{Count:32b,Slot:32b,id:\"minecraft:grass_block\"},{Count:64b,Slot:33b,id:\"minecraft:birch_planks\"},{Count:32b,Slot:35b,id:\"minecraft:acacia_planks\"},{Count:1b,Slot:100b,id:\"minecraft:diamond_boots\",tag:{Damage:0}},{Count:1b,Slot:102b,id:\"minecraft:diamond_chestplate\",tag:{Damage:0}}]";
         String emptyInventory = "[]";
 
+        GravesConfig.getConfig().main.graveCoordinates = false;
+
         System.out.println("📗 Running basicRetrieval");
 
         context.assertTrue(
@@ -82,6 +84,7 @@ public class RetrieveGraveTest {
         String partialInventory = "[{Slot:0b,id:\"minecraft:sandstone\",Count:64b},{Slot:1b,id:\"minecraft:sandstone\",Count:64b},{Slot:2b,id:\"minecraft:sandstone\",Count:64b},{Slot:3b,id:\"minecraft:sandstone\",Count:64b},{Slot:4b,id:\"minecraft:sandstone\",Count:64b},{Slot:5b,id:\"minecraft:sandstone\",Count:64b},{Slot:6b,id:\"minecraft:sandstone\",Count:64b},{Slot:9b,id:\"minecraft:sandstone\",Count:64b},{Slot:10b,id:\"minecraft:sandstone\",Count:64b},{Slot:11b,id:\"minecraft:sandstone\",Count:64b},{Slot:12b,id:\"minecraft:sandstone\",Count:64b},{Slot:13b,id:\"minecraft:sandstone\",Count:64b},{Slot:14b,id:\"minecraft:sandstone\",Count:64b},{Slot:15b,id:\"minecraft:sandstone\",Count:64b},{Slot:16b,id:\"minecraft:sandstone\",Count:64b},{Slot:17b,id:\"minecraft:sandstone\",Count:64b},{Slot:18b,id:\"minecraft:sandstone\",Count:64b},{Slot:19b,id:\"minecraft:sandstone\",Count:64b},{Slot:20b,id:\"minecraft:sandstone\",Count:64b},{Slot:21b,id:\"minecraft:sandstone\",Count:64b},{Slot:22b,id:\"minecraft:sandstone\",Count:64b},{Slot:23b,id:\"minecraft:sandstone\",Count:64b},{Slot:24b,id:\"minecraft:sandstone\",Count:64b},{Slot:25b,id:\"minecraft:sandstone\",Count:64b},{Slot:26b,id:\"minecraft:sandstone\",Count:64b},{Slot:27b,id:\"minecraft:sandstone\",Count:64b},{Slot:28b,id:\"minecraft:sandstone\",Count:64b},{Slot:29b,id:\"minecraft:sandstone\",Count:64b},{Slot:30b,id:\"minecraft:sandstone\",Count:64b},{Slot:31b,id:\"minecraft:sandstone\",Count:64b},{Slot:32b,id:\"minecraft:sandstone\",Count:64b},{Slot:33b,id:\"minecraft:sandstone\",Count:64b},{Slot:34b,id:\"minecraft:sandstone\",Count:64b},{Slot:35b,id:\"minecraft:sandstone\",Count:64b}]";
         String currentInventory = "[{Slot:0b,id:\"minecraft:grass_block\",Count:64b},{Slot:1b,id:\"minecraft:grass_block\",Count:64b},{Slot:2b,id:\"minecraft:grass_block\",Count:64b},{Slot:3b,id:\"minecraft:grass_block\",Count:64b}]";
         GravesConfig config = GravesConfig.getConfig();
+        config.main.graveCoordinates = false;
 
         System.out.println("📗 Running overflowRetrieval");
         // Overflows because grave inventory is full (merge order GRAVE)
@@ -116,6 +119,7 @@ public class RetrieveGraveTest {
         System.out.println("📗 Running unloadedModRetrieval");
         // Enable Grave Robbing as the graves being set are not owned by the mock player
         config.server.graveRobbing = true;
+        config.main.graveCoordinates = false;
 
         context.assertTrue(
             checkUnloadedInventories(context, player, pos, backslotSNBT, backslotResult),

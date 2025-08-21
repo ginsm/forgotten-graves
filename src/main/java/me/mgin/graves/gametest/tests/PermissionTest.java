@@ -17,6 +17,9 @@ import net.minecraft.world.World;
  */
 public class PermissionTest {
     public static void noAccess(TestContext context, PlayerEntity player, BlockPos pos) {
+        GravesConfig config = GravesConfig.getConfig();
+        config.main.graveCoordinates = false;
+
         World world = GraveTestHelper.getWorld(player, World.OVERWORLD);
         PlayerEntity player2 = context.createMockCreativePlayer();
 

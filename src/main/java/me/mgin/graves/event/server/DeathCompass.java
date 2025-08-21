@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class DeathCompass {
-    public static void give(ServerPlayerEntity oldPlayer, ServerPlayerEntity player, boolean alive) {
+    public static void give(PlayerEntity oldPlayer, PlayerEntity player, boolean alive) {
         GameProfile profile = player.getGameProfile();
         boolean giveDeathCompass = GravesConfig.resolve("giveDeathCompass", profile);
         boolean gravesEnabled = GravesConfig.resolve("graves", profile);
@@ -46,7 +45,7 @@ public class DeathCompass {
         }
     }
 
-    private static ItemStack createDeathCompass(ServerPlayerEntity player, PlayerState state) {
+    private static ItemStack createDeathCompass(PlayerEntity player, PlayerState state) {
         ItemStack compass = new ItemStack(Items.COMPASS);
         NbtCompound tag = compass.getOrCreateNbt();
         List<Text> lore = new ArrayList<>();

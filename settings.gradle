@@ -2,19 +2,20 @@ pluginManagement {
     repositories {
         mavenCentral()
         gradlePluginPortal()
-        maven {
-            name = 'Fabric'
-            url = 'https://maven.fabricmc.net/'
-        }
+        maven { name = 'Fabric'; url = 'https://maven.fabricmc.net/' }
+        maven { name = 'KikuGie Snapshots'; url = 'https://maven.kikugie.dev/snapshots' }
     }
 }
 
 plugins {
-    id "dev.kikugie.stonecutter" version "0.5.2"
+    id("dev.kikugie.stonecutter") version "0.7.8"
 }
 
 stonecutter {
-    create(rootProject) {
+    kotlinController = false
+    centralScript = "build.gradle"
+
+    create(getRootProject()) {
         versions "1.20.4", "1.20.3", "1.20.2", "1.20.1", "1.20"
         vcsVersion = "1.20.1"
     }

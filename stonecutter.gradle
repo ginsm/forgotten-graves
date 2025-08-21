@@ -1,30 +1,30 @@
 plugins.apply "dev.kikugie.stonecutter"
 stonecutter.active "1.20.1" /* [SC] DO NOT EDIT */
 
-stonecutter.registerChiseled tasks.register("chiseledBuild", stonecutter.chiseled) {
-    setGroup "build"
+tasks.register("runBuildAll") {
+    group = "multi-version"
     description = "Builds production jars for all versions"
-    ofTask "build"
+    dependsOn(stonecutter.tasks.named("build"))
 }
 
-stonecutter.registerChiseled tasks.register("chiseledDataGen", stonecutter.chiseled) {
-    setGroup "build"
-    description = "Generates block & item tags, block models, and recipes for all versions"
-    ofTask "runDatagen"
+tasks.register("runDatagenAll") {
+    group = "multi-version"
+    description = "Generates tags/models/recipes for all versions"
+    dependsOn(stonecutter.tasks.named("runDatagen") { true })
 }
 
-stonecutter.registerChiseled tasks.register("chiseledGametest", stonecutter.chiseled) {
-    setGroup "test"
-    description = "Runs automated functionality tests for all versions on a headless server"
-    ofTask "runGametest"
+tasks.register("runGametestAll") {
+    group = "multi-version"
+    description = "Runs GameTests headless for all versions"
+    dependsOn(stonecutter.tasks.named("runGametest") { true })
 }
 
-stonecutter.registerChiseled tasks.register("chiseledPublishMods", stonecutter.chiseled) {
+tasks.register("runPublishAll") {
     group = "publishing"
     description = "Publishes all versions to CurseForge and Modrinth"
-    ofTask("publishMods")
+    dependsOn(stonecutter.tasks.named("publishMods") { true })
 }
 
-tasks.named("chiseledPublishMods").configure {
-    dependsOn("chiseledGametest")
+tasks.named("runPublishAll").configure {
+    dependsOn("runGametestAll")
 }

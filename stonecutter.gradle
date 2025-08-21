@@ -24,3 +24,7 @@ stonecutter.registerChiseled tasks.register("chiseledPublishMods", stonecutter.c
     description = "Publishes all versions to CurseForge and Modrinth"
     ofTask("publishMods")
 }
+
+tasks.named("chiseledPublishMods").configure {
+    dependsOn("chiseledGametest")
+}

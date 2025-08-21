@@ -153,7 +153,6 @@ public class GraveTest {
         GraveTestHelper.printTestEnding("Explosion");
     }
 
-    // NOTE - permission test
     @GameTest(templateName = "forgottengraves:generic_tests")
     public static void permissionTests(TestContext context) {
         PlayerEntity player = context.createMockSurvivalPlayer();
@@ -174,5 +173,26 @@ public class GraveTest {
         context.complete();
 
         GraveTestHelper.printTestEnding("Permission");
+    }
+
+    @GameTest(templateName = "forgottengraves:generic_tests")
+    public static void deathCompassTests(TestContext context) {
+        PlayerEntity player = context.createMockSurvivalPlayer();
+        BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
+
+        GraveTestHelper.printTestStarting("Death Compass");
+
+        // Remove the grave in the center of the generic test platform
+        GraveTestHelper.removeGrave(GraveTestHelper.getWorld(player, World.OVERWORLD), pos);
+
+        DeathCompassTest.giveDeathCompass$false(context, player, pos);
+        DeathCompassTest.giveDeathCompass$true(context, player, pos);
+        DeathCompassTest.removeCompassFromInventory(context, player, pos);
+        DeathCompassTest.pointsToDeathPosWhenGravesDisabled(context, player);
+
+        GravesConfig.getConfig().resetConfig();
+        context.complete();
+
+        GraveTestHelper.printTestEnding("Death Compass");
     }
 }

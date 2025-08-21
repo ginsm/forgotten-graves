@@ -153,6 +153,14 @@
   "effect.forgottengraves.disablegraves": "Graves Disabled",
   "effect.forgottengraves.disablegraves.description": "Disables the grave spawning upon death.",
 
+  "tag.block.forgottengraves.do_not_replace": "Non-Replaceable Blocks",
+  "tag.block.forgottengraves.replaceable": "Replaceable Blocks",
+  "tag.block.forgottengraves.sink_through": "Graves Sink Through",
+  "tag.enchantment.forgottengraves.binding_curses": "Binding Curses",
+  "tag.enchantment.forgottengraves.soulbound_enchants": "Soulbound Enchantments",
+  "tag.enchantment.forgottengraves.vanishing_curses": "Vanishing Curses",
+  "tag.item.forgottengraves.decay_item": "Decay Items",
+
   "utility.pagination.current-page.tooltip": "You are on this page.",
   "utility.pagination.page-id.tooltip": "Go to page %d.",
   "utility.pagination.prefix": "Page: "

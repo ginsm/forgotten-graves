@@ -5,6 +5,7 @@ import me.mgin.graves.block.decay.DecayingGrave;
 import me.mgin.graves.block.utility.PlaceGrave;
 import me.mgin.graves.block.utility.RetrieveGrave;
 import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.gametest.GraveTest;
 import me.mgin.graves.gametest.GraveTestHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.test.TestContext;
@@ -18,7 +19,7 @@ import net.minecraft.world.World;
 public class PermissionTest {
     public static void noAccess(TestContext context, PlayerEntity player, BlockPos pos) {
         GravesConfig config = GravesConfig.getConfig();
-        config.main.graveCoordinates = false;
+        config.main.graveCoordinates = GraveTest.verbose;
 
         World world = GraveTestHelper.getWorld(player, World.OVERWORLD);
         PlayerEntity player2 = context.createMockCreativePlayer();

@@ -5,6 +5,7 @@ import me.mgin.graves.block.utility.PlaceGrave;
 import me.mgin.graves.block.utility.RetrieveGrave;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.effects.GraveEffects;
+import me.mgin.graves.gametest.GraveTest;
 import me.mgin.graves.gametest.GraveTestHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -22,6 +23,9 @@ import java.util.Objects;
 
 public class PlaceGraveTest {
     public static void sinkInLava$false(TestContext context, PlayerEntity player) {
+        GravesConfig config = GravesConfig.getConfig();
+        config.main.graveCoordinates = GraveTest.verbose;
+
         System.out.println("📗 Running sinkInLava$false");
         BlockPos pos = context.getAbsolutePos(new BlockPos(10, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(10, 7, 2));
@@ -33,7 +37,6 @@ public class PlaceGraveTest {
 
         System.out.println("📗 Running sinkInWater$false");
         config.spawning.sinkInWater = false;
-        config.main.graveCoordinates = false;
         BlockPos pos = context.getAbsolutePos(new BlockPos(2, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(2, 7, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
@@ -65,7 +68,7 @@ public class PlaceGraveTest {
 
         System.out.println("📗 Running sinkInLava$true");
         config.spawning.sinkInLava = true;
-        config.main.graveCoordinates = false;
+        config.main.graveCoordinates = GraveTest.verbose;
         BlockPos pos = context.getAbsolutePos(new BlockPos(10, 7, 2));
         BlockPos endPos = context.getAbsolutePos(new BlockPos(10, 2, 2));
         checkPlaceGrave(context, player, pos, endPos, World.OVERWORLD);
@@ -158,7 +161,7 @@ public class PlaceGraveTest {
 
     public static void respectsDisableEffect(TestContext context, PlayerEntity player) {
         GravesConfig config = GravesConfig.getConfig().resetConfig();
-        config.main.graveCoordinates = false;
+        config.main.graveCoordinates = GraveTest.verbose;
 
         System.out.println("📗 Running respectsDisableEffect");
         BlockPos pos = new BlockPos(18, 2, 2);

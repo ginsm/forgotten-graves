@@ -4,6 +4,7 @@ import me.mgin.graves.block.utility.PlaceGrave;
 import me.mgin.graves.block.utility.RetrieveGrave;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.event.server.DeathCompass;
+import me.mgin.graves.gametest.GraveTest;
 import me.mgin.graves.gametest.GraveTestHelper;
 import me.mgin.graves.inventory.Vanilla;
 import me.mgin.graves.state.PlayerState;
@@ -29,7 +30,7 @@ public class DeathCompassTest {
         GravesConfig config = GravesConfig.getConfig();
         World world = GraveTestHelper.getWorld(player, World.OVERWORLD);
         config.spawning.giveDeathCompass = false;
-        config.main.graveCoordinates = false;
+        config.main.graveCoordinates = GraveTest.verbose;
 
         System.out.println("📗 Running giveDeathCompass$false");
 

@@ -13,9 +13,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.test.TestContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 import java.util.Objects;
@@ -24,7 +26,8 @@ import java.util.Optional;
 public class GraveTestHelper {
     public static void runCommand(TestContext context, String command) {
         MinecraftServer server = context.getWorld().getServer();
-        server.getCommandManager().executeWithPrefix(server.getCommandSource(), command);
+        ServerCommandSource source = GraveTest.verbose ? server.getCommandSource() : server.getCommandSource().withSilent();
+        server.getCommandManager().executeWithPrefix(source, command);
     }
 
     public static void checkGraveExists(TestContext context, PlayerEntity player, BlockPos pos, RegistryKey<World> key) {
@@ -130,5 +133,15 @@ public class GraveTestHelper {
 
     public static void printTestEnding(String name) {
         System.out.println("======= Finished " + name + " Tests =======" + System.lineSeparator() + " ");
+    }
+
+    public static void setGamerule(PlayerEntity player, GameRules.Key<GameRules.BooleanRule> rule, boolean value) {
+        MinecraftServer server = player.getServer();
+        if (server != null) {
+           GameRules.BooleanRule gamerule = server.getGameRules().get(rule);
+           if (gamerule.get() != value) {
+               gamerule.set(value, server);
+           }
+        }
     }
 }

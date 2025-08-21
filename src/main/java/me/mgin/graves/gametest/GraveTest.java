@@ -9,6 +9,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class GraveTest {
+    public static boolean verbose = false;
+
     @GameTest(templateName = "forgottengraves:placement_tests")
     public void graveGenerationTests(TestContext context) {
         PlayerEntity player = context.createMockSurvivalPlayer();

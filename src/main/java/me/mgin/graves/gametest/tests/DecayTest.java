@@ -9,6 +9,7 @@ import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.event.server.useblock.item.DecayItem;
 import me.mgin.graves.event.server.useblock.item.Honeycomb;
 import me.mgin.graves.event.server.useblock.item.Shovel;
+import me.mgin.graves.gametest.GraveTest;
 import me.mgin.graves.gametest.GraveTestHelper;
 import me.mgin.graves.gametest.GraveTestNBTHelper;
 import net.minecraft.block.Block;
@@ -157,7 +158,7 @@ public class DecayTest {
         config.decay.freshGraveDecayChance = 100;
         config.decay.oldGraveDecayChance = 100;
         config.decay.weatheredGraveDecayChance = 100;
-        config.main.graveCoordinates = false;
+        config.main.graveCoordinates = GraveTest.verbose;
 
         // Set the player inventory and place a grave based on said inventory
         GraveTestNBTHelper.setPlayerInventoryFromSNBT(player, testInventory);

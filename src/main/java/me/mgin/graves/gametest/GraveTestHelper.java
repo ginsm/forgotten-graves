@@ -124,12 +124,11 @@ public class GraveTestHelper {
     }
 
     public static void printTestStarting(String name) {
+        System.out.print("\n");
         System.out.println("======== Running " + name + " Tests ========");
     }
 
     public static void printTestEnding(String name) {
-        System.out.println("======= Finished " + name + " Tests =======" +
-            System.lineSeparator() + " " +
-            System.lineSeparator() + " ");
+        System.out.println("======= Finished " + name + " Tests =======" + System.lineSeparator() + " ");
     }
 }

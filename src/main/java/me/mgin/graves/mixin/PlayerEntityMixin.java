@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -47,11 +48,17 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         // Players with DISABLE_GRAVES_EFFECT active will not have a grave spawn.
         boolean preventedByEffect = player.hasStatusEffect(GraveEffects.DISABLE_GRAVES_EFFECT);
 
+        // Graves will not spawn if respectKeepInventory & keepInventory are set to true.
+        boolean keepInventory = this.getWorld().getGameRules().getBoolean(GameRules.KEEP_INVENTORY);
+        boolean respectKeepInventory = GravesConfig.resolve("respectKeepInventory", profile);
+        boolean preventedByKeepInventory = keepInventory && respectKeepInventory;
+
         // Read above comments for each conditional
         boolean shouldPlaceGrave = forgottenGravesEnabled &&
             playerCanPlaceBlocks &&
             !preventedInPvP &&
-            !preventedByEffect;
+            !preventedByEffect &&
+            !preventedByKeepInventory;
 
         if (shouldPlaceGrave) {
             PlaceGrave.place(this.getWorld(), this.getPos(), player);

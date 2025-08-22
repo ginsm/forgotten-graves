@@ -10,6 +10,8 @@
   "text.autoconfig.forgottengraves.option.main": "Основные настройки",
   "text.autoconfig.forgottengraves.option.main.graves": "Включить создание могил",
   "text.autoconfig.forgottengraves.option.main.graves.@Tooltip": "Включить мод «Забытые Могилы»?",
+  "text.autoconfig.forgottengraves.option.main.respectKeepInventory": "Соблюдать сохранение инвентаря",
+  "text.autoconfig.forgottengraves.option.main.respectKeepInventory.@Tooltip": "Должны ли могилы перестать появляться, когда включено «Сохранение инвентаря при смерти»?",
   "text.autoconfig.forgottengraves.option.main.disableInPvP": "Отключить в PvP",
   "text.autoconfig.forgottengraves.option.main.disableInPvP.@Tooltip": "Следует ли отключить появление могил при убийстве игрока другим игроком?",
   "text.autoconfig.forgottengraves.option.main.graveCoordinates": "Координаты в чате",
@@ -140,7 +142,7 @@
   "tag.enchantment.forgottengraves.binding_curses": "Проклятия несъёмности",
   "tag.enchantment.forgottengraves.soulbound_enchants": "Зачарования «Привязки души»",
   "tag.enchantment.forgottengraves.vanishing_curses": "Проклятия утраты",
-  "tag.item.forgottengraves.decay_item": "Разлагающиеся предметы",
+  "tag.item.forgottengraves.decay_item": "Разлагающие предметы",
   "utility.pagination.current-page.tooltip": "Вы находитесь на этой странице.",
   "utility.pagination.page-id.tooltip": "Перейти на страницу %d.",
   "utility.pagination.prefix": "Страница: "

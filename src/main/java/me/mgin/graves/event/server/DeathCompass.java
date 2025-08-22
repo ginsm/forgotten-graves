@@ -18,6 +18,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.GlobalPos;
+import net.minecraft.world.GameRules;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +27,15 @@ import java.util.Optional;
 public class DeathCompass {
     public static void give(PlayerEntity oldPlayer, PlayerEntity player, boolean alive) {
         GameProfile profile = player.getGameProfile();
-        boolean giveDeathCompass = GravesConfig.resolve("giveDeathCompass", profile);
         boolean gravesEnabled = GravesConfig.resolve("graves", profile);
+        boolean giveDeathCompass = GravesConfig.resolve("giveDeathCompass", profile);
         PlayerState playerState = null;
 
-        if (!giveDeathCompass) return;
+        boolean respectKeepInventory = GravesConfig.resolve("respectKeepInventory", profile);
+        boolean keepInventory = player.getWorld().getGameRules().getBoolean(GameRules.KEEP_INVENTORY);
+        boolean preventedByKeepInventory = keepInventory && respectKeepInventory;
+
+        if (!giveDeathCompass || preventedByKeepInventory) return;
 
         if (gravesEnabled) {
             playerState = ServerState.getPlayerState(player.getServer(), profile.getId());

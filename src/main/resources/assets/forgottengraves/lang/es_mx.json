@@ -13,6 +13,8 @@
   "text.autoconfig.forgottengraves.option.main": "Configuración Principal",
   "text.autoconfig.forgottengraves.option.main.graves": "Habilitar Tumbas",
   "text.autoconfig.forgottengraves.option.main.graves.@Tooltip": "¿Activar el mod Tumbas Olvidadas?",
+  "text.autoconfig.forgottengraves.option.main.respectKeepInventory": "Respeto Keep Inventory",
+  "text.autoconfig.forgottengraves.option.main.respectKeepInventory.@Tooltip": "¿Deben dejar de generarse tumbas cuando está activado Keep Inventory?",
   "text.autoconfig.forgottengraves.option.main.disableInPvP": "Desactivar en PvP",
   "text.autoconfig.forgottengraves.option.main.disableInPvP.@Tooltip": "¿No deberían aparecer tumbas al ser asesinado por otro jugador?",
   "text.autoconfig.forgottengraves.option.main.graveCoordinates": "Coordenadas del Chat",

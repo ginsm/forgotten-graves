@@ -13,6 +13,8 @@
   "text.autoconfig.forgottengraves.option.main": "Main Settings",
   "text.autoconfig.forgottengraves.option.main.graves": "Enable Graves",
   "text.autoconfig.forgottengraves.option.main.graves.@Tooltip": "Enable the Forgotten Graves mod?",
+  "text.autoconfig.forgottengraves.option.main.respectKeepInventory": "Respect Keep Inventory",
+  "text.autoconfig.forgottengraves.option.main.respectKeepInventory.@Tooltip": "Should graves stop spawning when Keep Inventory is enabled?",
   "text.autoconfig.forgottengraves.option.main.disableInPvP": "Disable in PvP",
   "text.autoconfig.forgottengraves.option.main.disableInPvP.@Tooltip": "Should graves not spawn when killed by another player?",
   "text.autoconfig.forgottengraves.option.main.graveCoordinates": "Chat Coordinates",

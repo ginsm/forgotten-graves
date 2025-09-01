@@ -25,7 +25,7 @@ public class Items {
 
         // Create and register block items
         for (GraveBlockBase grave : GraveBlocks.GRAVE_SET) {
-            BlockItem item = new BlockItem(grave, new FabricItemSettings());
+            BlockItem item = new BlockItem(grave, new FabricItemSettings().maxCount(1));
             Registry.register(Registries.ITEM, new Identifier(MOD_ID, grave.getBlockID()), item);
             ITEMS.add(item);
         }

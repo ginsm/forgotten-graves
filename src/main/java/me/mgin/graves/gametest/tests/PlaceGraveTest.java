@@ -156,7 +156,7 @@ public class PlaceGraveTest {
         System.out.println("📗 Running graves$false");
         config.main.graves = false;
         BlockPos pos = new BlockPos(18, 2, 2);
-        checkGravesDisabled(context, player, pos, World.OVERWORLD);
+        checkGravesDisabled(context, player, pos);
     }
 
     public static void respectsDisableEffect(TestContext context, PlayerEntity player) {
@@ -166,7 +166,7 @@ public class PlaceGraveTest {
         System.out.println("📗 Running respectsDisableEffect");
         BlockPos pos = new BlockPos(18, 2, 2);
         player.addStatusEffect(new StatusEffectInstance(GraveEffects.DISABLE_GRAVES_EFFECT, 300));
-        checkGravesDisabled(context, player, pos, World.OVERWORLD);
+        checkGravesDisabled(context, player, pos);
     }
 
     public static void disableInPvP$true(TestContext context, PlayerEntity player) {
@@ -179,7 +179,16 @@ public class PlaceGraveTest {
         player.setPosition(0, -58, 0);
         player2.setPosition(0, -58, 0);
         player2.attack(player);
-        checkGravesDisabled(context, player, pos, World.OVERWORLD);
+        checkGravesDisabled(context, player, pos);
+    }
+
+    public static void restrictedDimensions$overworld(TestContext context, PlayerEntity player) {
+        GravesConfig config = GravesConfig.getConfig().resetConfig();
+        config.spawning.restrictedDimensions.add("minecraft:overworld");
+
+        System.out.println("📗 Running restrictedDimensions (minecraft:overworld)");
+        BlockPos pos = new BlockPos(18, 2, 2);
+        checkGravesDisabled(context, player, pos);
     }
 
     // Helper functions
@@ -217,11 +226,11 @@ public class PlaceGraveTest {
      * @param context TestContext instance
      * @param player A mock player; use {@link TestContext#createMockSurvivalPlayer}
      * @param pos An absolute BlockPos; use {@link TestContext#getAbsolutePos} with a relative BlockPos
-     * @param worldKey RegistryKey for the given world (OVERWORLD, NETHER, END).
      */
-    private static void checkGravesDisabled(TestContext context, PlayerEntity player, BlockPos pos, RegistryKey<World> worldKey) {
-        World world = Objects.requireNonNull(player.getServer()).getWorld(worldKey);
+    private static void checkGravesDisabled(TestContext context, PlayerEntity player, BlockPos pos) {
+        World world = player.getWorld();
         if (world != null) {
+
             // Give player items to check for when player dies
             ItemStack stack = Items.DIAMOND_BLOCK.getDefaultStack();
             stack.setCount(5);
@@ -235,8 +244,7 @@ public class PlaceGraveTest {
 
             // Ensure grave didn't spawn
             Block block = world.getBlockState(abs).getBlock();
-            String errorMessage = "Expect block not to be a grave block at " + abs + " got " + block.getName()
-                + " in " + worldKey.getValue();
+            String errorMessage = "Expect block not to be a grave block at " + abs + " got " + block.getName() + ".";
             context.assertTrue(!(block instanceof GraveBlockBase), errorMessage);
 
             // Check for the item stack

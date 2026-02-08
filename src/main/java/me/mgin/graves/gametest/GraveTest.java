@@ -38,6 +38,7 @@ public class GraveTest {
         PlaceGraveTest.graves$false(context, player);
         PlaceGraveTest.respectsDisableEffect(context, player);
         PlaceGraveTest.disableInPvP$true(context, player);
+        PlaceGraveTest.restrictedDimensions$overworld(context, player);
 
         // Complete test
         GravesConfig.getConfig().resetConfig();

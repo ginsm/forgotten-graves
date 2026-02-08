@@ -1,12 +1,6 @@
 plugins.apply "dev.kikugie.stonecutter"
 stonecutter.active "1.20.1" /* [SC] DO NOT EDIT */
 
-tasks.register("runBuildAll") {
-    group = "multi-version"
-    description = "Builds production jars for all versions"
-    dependsOn(stonecutter.tasks.named("build"))
-}
-
 tasks.register("runDatagenAll") {
     group = "multi-version"
     description = "Generates tags/models/recipes for all versions"

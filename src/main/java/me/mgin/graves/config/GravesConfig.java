@@ -116,6 +116,9 @@ public class GravesConfig extends ConfigHelpers implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         public boolean giveDeathCompass = false;
+
+        @ConfigEntry.Gui.Tooltip
+        public List<String> restrictedDimensions = new ArrayList<>();
     }
 
     public static class DecaySettings {

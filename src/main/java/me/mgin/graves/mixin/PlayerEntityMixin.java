@@ -17,6 +17,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
+
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity {
 
@@ -53,12 +55,18 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         boolean respectKeepInventory = GravesConfig.resolve("respectKeepInventory", profile);
         boolean preventedByKeepInventory = keepInventory && respectKeepInventory;
 
+        // Graves will not spawn in restricted dimensions
+        ArrayList<String> restrictedDimensions = GravesConfig.resolve("restrictedDimensions", profile);
+        String playerDimension = player.getWorld().getRegistryKey().getValue().toString();
+        boolean inPreventedDimension = restrictedDimensions != null && restrictedDimensions.contains(playerDimension);
+
         // Read above comments for each conditional
         boolean shouldPlaceGrave = forgottenGravesEnabled &&
             playerCanPlaceBlocks &&
             !preventedInPvP &&
             !preventedByEffect &&
-            !preventedByKeepInventory;
+            !preventedByKeepInventory &&
+            !inPreventedDimension;
 
         if (shouldPlaceGrave) {
             PlaceGrave.place(this.getWorld(), this.getPos(), player);

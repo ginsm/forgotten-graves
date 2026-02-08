@@ -55,6 +55,8 @@
   "text.autoconfig.forgottengraves.option.spawning.replaceBlocks.@Tooltip": "Should graves replace blocks found in the replaceable tag?",
   "text.autoconfig.forgottengraves.option.spawning.giveDeathCompass": "Give Death Compass",
   "text.autoconfig.forgottengraves.option.spawning.giveDeathCompass.@Tooltip": "Should players be given a compass pointing to their graves?",
+  "text.autoconfig.forgottengraves.option.spawning.restrictedDimensions": "Restricted Dimensions",
+  "text.autoconfig.forgottengraves.option.spawning.restrictedDimensions.@Tooltip": "Which dimensions should graves not spawn in?",
 
   "text.autoconfig.forgottengraves.category.decay": "Decay Settings",
   "text.autoconfig.forgottengraves.option.decay": "Decay Settings",

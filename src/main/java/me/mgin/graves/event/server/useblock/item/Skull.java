@@ -1,5 +1,8 @@
 package me.mgin.graves.event.server.useblock.item;
 
+//? if >=1.20.5 {
+import me.mgin.graves.compat.ItemStackCompat;
+//?}
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.block.utility.Particles;
 import net.minecraft.block.Block;
@@ -42,7 +45,11 @@ public class Skull {
 
         if (hasOwner || !isValidSkull || !isMainHand) return false;
 
+        //? if >=1.20.5 {
+        NbtCompound initialItemNbt = ItemStackCompat.getNbt(stack);
+        //?} else {
         NbtCompound initialItemNbt = stack.getNbt();
+        //?}
         BlockState state = entity.getState();
         NbtCompound skull;
 

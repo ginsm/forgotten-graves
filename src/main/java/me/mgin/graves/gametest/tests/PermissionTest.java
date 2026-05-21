@@ -1,5 +1,6 @@
 package me.mgin.graves.gametest.tests;
 
+import me.mgin.graves.compat.GameTestCompat;
 import me.mgin.graves.block.GraveBlocks;
 import me.mgin.graves.block.decay.DecayingGrave;
 import me.mgin.graves.block.utility.PlaceGrave;
@@ -22,7 +23,7 @@ public class PermissionTest {
         config.main.graveCoordinates = GraveTest.verbose;
 
         World world = GraveTestHelper.getWorld(player, World.OVERWORLD);
-        PlayerEntity player2 = context.createMockCreativePlayer();
+        PlayerEntity player2 = GameTestCompat.createMockCreativePlayer(context);
 
         System.out.println("📗 Running noAccess");
 
@@ -59,7 +60,7 @@ public class PermissionTest {
 
     public static void decayRobbing(TestContext context, PlayerEntity player, BlockPos pos) {
         World world = GraveTestHelper.getWorld(player, World.OVERWORLD);
-        PlayerEntity player2 = context.createMockCreativePlayer();
+        PlayerEntity player2 = GameTestCompat.createMockCreativePlayer(context);
         GravesConfig config = GravesConfig.getConfig();
 
         System.out.println("📗 Running decayRobbing");

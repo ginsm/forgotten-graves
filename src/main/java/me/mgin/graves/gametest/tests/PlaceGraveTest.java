@@ -1,5 +1,6 @@
 package me.mgin.graves.gametest.tests;
 
+import me.mgin.graves.compat.GameTestCompat;
 import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.utility.PlaceGrave;
 import me.mgin.graves.block.utility.RetrieveGrave;
@@ -15,6 +16,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
+//? if >=1.20.5 {
+import net.minecraft.registry.Registries;
+//?}
 import net.minecraft.test.TestContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -165,7 +169,13 @@ public class PlaceGraveTest {
 
         System.out.println("📗 Running respectsDisableEffect");
         BlockPos pos = new BlockPos(18, 2, 2);
+        //? if <1.20.5 {
         player.addStatusEffect(new StatusEffectInstance(GraveEffects.DISABLE_GRAVES_EFFECT, 300));
+        //?} else {
+        player.addStatusEffect(new StatusEffectInstance(
+            Registries.STATUS_EFFECT.getEntry(RegistryKey.of(net.minecraft.registry.RegistryKeys.STATUS_EFFECT, net.minecraft.util.Identifier.of("forgottengraves", "disablegraves"))).orElseThrow(),
+            300));
+        //?}
         checkGravesDisabled(context, player, pos);
     }
 
@@ -175,7 +185,7 @@ public class PlaceGraveTest {
         System.out.println("📗 Running disableInPvP$true");
         config.main.disableInPvP = true;
         BlockPos pos = new BlockPos(18, 2, 2);
-        PlayerEntity player2 = context.createMockCreativePlayer();
+        PlayerEntity player2 = GameTestCompat.createMockCreativePlayer(context);
         player.setPosition(0, -58, 0);
         player2.setPosition(0, -58, 0);
         player2.attack(player);

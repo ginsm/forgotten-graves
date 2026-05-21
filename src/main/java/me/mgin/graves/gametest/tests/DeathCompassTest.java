@@ -1,5 +1,7 @@
 package me.mgin.graves.gametest.tests;
 
+import me.mgin.graves.compat.GlobalPosCompat;
+import me.mgin.graves.compat.ItemStackCompat;
 import me.mgin.graves.block.utility.PlaceGrave;
 import me.mgin.graves.block.utility.RetrieveGrave;
 import me.mgin.graves.config.GravesConfig;
@@ -96,7 +98,7 @@ public class DeathCompassTest {
 
     public static void pointsToDeathPosWhenGravesDisabled(TestContext context, PlayerEntity player) {
         GravesConfig config = GravesConfig.getConfig();
-        World world = GraveTestHelper.getWorld(player, World.OVERWORLD);
+        GraveTestHelper.getWorld(player, World.OVERWORLD);
         config.main.graves = false;
 
         System.out.println("📗 Running removeCompassFromInventory");
@@ -104,15 +106,19 @@ public class DeathCompassTest {
         DeathCompass.give(player, player, true);
         ItemStack stack = player.getInventory().main.get(0);
 
-        if (stack.getItem() instanceof CompassItem && stack.hasNbt()) {
-            NbtCompound nbt = stack.getNbt();
+        if (stack.getItem() instanceof CompassItem && ItemStackCompat.hasNbt(stack)) {
+            NbtCompound nbt = ItemStackCompat.getNbt(stack);
             if (nbt != null && nbt.contains("GraveMarker")) {
+                //? if <1.20.5 {
                 BlockPos pos = NbtHelper.toBlockPos((NbtCompound) nbt.get("LodestonePos"));
+                //?} else {
+                BlockPos pos = NbtHelper.toBlockPos(nbt, "LodestonePos").orElse(BlockPos.ORIGIN);
+                //?}
 
                 Optional<GlobalPos> lastDeath = player.getLastDeathPos();
                 if (lastDeath.isPresent()) {
                     GlobalPos globalPos = lastDeath.get();
-                    BlockPos lastDeathPos = globalPos.getPos();
+                    BlockPos lastDeathPos = GlobalPosCompat.getPos(globalPos);
 
                     context.assertTrue(
                             pos.equals(lastDeathPos),
@@ -136,8 +142,8 @@ public class DeathCompassTest {
         DefaultedList<ItemStack> items = new Vanilla().getInventory(player);
 
         for (ItemStack item : items) {
-            if (item.hasNbt()) {
-                NbtCompound nbt = item.getNbt();
+            if (ItemStackCompat.hasNbt(item)) {
+                NbtCompound nbt = ItemStackCompat.getNbt(item);
                 if (nbt != null && nbt.contains("GraveMarker")) {
                     if (nbt.getLong("GraveMarker") == msTime) {
                         return true;

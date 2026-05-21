@@ -1,5 +1,9 @@
 package me.mgin.graves.event.server;
 
+//? if >=1.20.5 {
+import me.mgin.graves.compat.GlobalPosCompat;
+import me.mgin.graves.compat.ItemStackCompat;
+//?}
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.entity.GraveBlockEntity;
@@ -52,7 +56,11 @@ public class DeathCompass {
 
     private static ItemStack createDeathCompass(PlayerEntity player, PlayerState state) {
         ItemStack compass = new ItemStack(Items.COMPASS);
+        //? if >=1.20.5 {
+        NbtCompound tag = ItemStackCompat.getOrCreateNbt(compass);
+        //?} else {
         NbtCompound tag = compass.getOrCreateNbt();
+        //?}
         List<Text> lore = new ArrayList<>();
 
         BlockPos pos = null;
@@ -70,8 +78,13 @@ public class DeathCompass {
             Optional<GlobalPos> lastDeath = player.getLastDeathPos();
             if (lastDeath.isPresent()) {
                 GlobalPos globalPos = lastDeath.get();
+                //? if >=1.20.5 {
+                pos = GlobalPosCompat.getPos(globalPos);
+                dimension = GlobalPosCompat.getDimensionString(globalPos);
+                //?} else {
                 pos = globalPos.getPos();
                 dimension = globalPos.getDimension().getValue().toString();
+                //?}
                 tag.putLong("GraveMarker", 0L); // See ItemCompassMixin, allows for Lodestone behavior without Lodestone
             }
         }
@@ -87,7 +100,11 @@ public class DeathCompass {
         lore.add(Text.literal("(" + dimension + ")").formatted(Formatting.DARK_GRAY));
 
         GraveNbtHelper.setLore(compass, lore);
+        //? if >=1.20.5 {
+        ItemStackCompat.setCustomName(compass, Text.literal("Death Compass").formatted(Formatting.GOLD));
+        //?} else {
         compass.setCustomName(Text.literal("Death Compass").formatted(Formatting.GOLD));
+        //?}
 
         return compass;
     }
@@ -101,8 +118,17 @@ public class DeathCompass {
         for (int i = 0; i < inventory.size(); i++) {
             ItemStack item = inventory.get(i);
             if (item.getItem() instanceof CompassItem) {
-                if (item.hasNbt()) {
+                //? if >=1.20.5 {
+                boolean hasNbt = ItemStackCompat.hasNbt(item);
+                //?} else {
+                boolean hasNbt = item.hasNbt();
+                //?}
+                if (hasNbt) {
+                    //? if >=1.20.5 {
+                    NbtCompound nbt = ItemStackCompat.getNbt(item);
+                    //?} else {
                     NbtCompound nbt = item.getNbt();
+                    //?}
                     if (nbt != null && nbt.contains("GraveMarker")) {
                         long graveMarker = nbt.getLong("GraveMarker");
                         if (graveMarker == mstime) {

@@ -2,18 +2,24 @@ package me.mgin.graves.networking.config.event;
 
 import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
-import me.mgin.graves.networking.config.ConfigNetworking;
 import me.mgin.graves.config.GravesConfig;
+//? if <1.20.5 {
+import me.mgin.graves.networking.config.ConfigNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.network.PacketByteBuf;
+//?}
+//? if >=1.20.5 {
+import me.mgin.graves.networking.config.payload.StoreConfigC2SPayload;
+import me.mgin.graves.networking.config.payload.StoreConfigS2CPayload;
+//?}
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 
@@ -101,9 +107,13 @@ public class ConfigNetworkingEvents {
             return;
         }
 
+        //? if <1.20.5 {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString(config.serialize());
         ClientPlayNetworking.send(ConfigNetworking.STORE_CONFIG_C2S, buf);
+        //?} else {
+        ClientPlayNetworking.send(new StoreConfigC2SPayload(config.serialize()));
+        //?}
     }
 
     /**
@@ -114,9 +124,13 @@ public class ConfigNetworkingEvents {
      * @param player ServerPlayerEntity
      */
     private static void sendConfigS2C(GravesConfig config, ServerPlayerEntity player) {
+        //? if <1.20.5 {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString(config.serialize());
         ServerPlayNetworking.send(player, ConfigNetworking.STORE_CONFIG_S2C, buf);
+        //?} else {
+        ServerPlayNetworking.send(player, new StoreConfigS2CPayload(config.serialize()));
+        //?}
     }
 
 }

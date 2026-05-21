@@ -11,7 +11,11 @@ public class GraveDataGenerator implements DataGeneratorEntrypoint {
         FabricDataGenerator.Pack pack = generator.createPack();
 
         pack.addProvider(GraveBlockTagGenerator::new);
+        //? if >=1.20.5 {
+        pack.addProvider((output, registries) -> new GraveRecipeGenerator(output, registries));
+        //?} else {
         pack.addProvider(GraveRecipeGenerator::new);
+        //?}
         pack.addProvider(GraveItemTagGenerator::new);
         pack.addProvider(GraveModelGenerator::new);
         pack.addProvider(GraveEnchantmentGenerator::new);

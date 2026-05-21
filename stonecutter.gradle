@@ -1,5 +1,5 @@
 plugins.apply "dev.kikugie.stonecutter"
-stonecutter.active "1.20.1" /* [SC] DO NOT EDIT */
+stonecutter.active null  // All versions use generated source; run "Switch active project to 1.20.1" to develop/run
 
 tasks.register("runDatagenAll") {
     group = "multi-version"

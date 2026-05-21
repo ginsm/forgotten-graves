@@ -13,6 +13,7 @@ public class GravesClient implements ClientModInitializer {
     public static GravesConfig SERVER_CONFIG = null;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onInitializeClient() {
         BlockEntityRendererRegistry.register(GraveBlocks.GRAVE_BLOCK_ENTITY, GraveBlockEntityRenderer::new);
         ConfigNetworkingEvents.registerClientEvents();

@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "me.mgin.graves.mixin",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "me.mgin.graves.mixin.GravesMixinPlugin",
   "mixins": [
     "BlockBreakingKineticBlockEntityMixin",
     "CompassItemMixin",

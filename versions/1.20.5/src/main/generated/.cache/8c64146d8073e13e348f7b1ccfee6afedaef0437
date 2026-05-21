@@ -1,0 +1,4 @@
+// 1.20.5	2026-02-05T00:10:31.0317934	Forgotten Graves/Tags for minecraft:block
+6c8398aee31bbaf0b46a53bb1fceb1bb70e730a6 data\forgottengraves\tags\blocks\replaceable.json
+cac371d32dd4554b1de7e27ec3f08e50b203283c data\forgottengraves\tags\blocks\sink_through.json
+cfab2ab481bf476a645d326b87627918009b9e50 data\forgottengraves\tags\blocks\do_not_replace.json

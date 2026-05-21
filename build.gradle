@@ -124,8 +124,10 @@ java {
     // if it is present.
     // If you remove this line, sources will not be generated.
     withSourcesJar()
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    // 1.20.5+ requires Java 21; earlier versions use Java 17
+    def javaVer = (stonecutter.current.version == '1.20.5') ? JavaVersion.VERSION_21 : JavaVersion.VERSION_17
+    sourceCompatibility = javaVer
+    targetCompatibility = javaVer
 }
 
 // Build rules
@@ -139,26 +141,15 @@ jar {
 
 
 // ============ Publishing ============
-// Check for local.properties file
 def localPropsFile = rootProject.file('local.properties')
-if (!localPropsFile.exists()) {
-    throw new GradleException("local.properties file not found. Please create this file with your API tokens.")
-}
-
-// Load properties
-def localProps = new Properties().tap {
-    localPropsFile.withInputStream { load(it) }
-}
-
-// Verify required properties exist
-def requiredProps = ['curseforge.token', 'modrinth.token']
-def missingProps = requiredProps.findAll { !localProps[it] }
-
-if (!missingProps.empty) {
-    throw new GradleException("Missing required properties in local.properties: ${missingProps.join(', ')}")
-}
-
-publishMods {
+if (localPropsFile.exists()) {
+    def localProps = new Properties().tap {
+        localPropsFile.withInputStream { load(it) }
+    }
+    def requiredProps = ['curseforge.token', 'modrinth.token']
+    def missingProps = requiredProps.findAll { !localProps[it] }
+    if (missingProps.empty) {
+        publishMods {
     displayName = "Forgotten Graves ${project.property('mod_version')}+${stonecutter.current.version}"
     changelog = rootProject.file('CHANGELOG.md').text
     file = tasks.remapJar.archiveFile
@@ -191,5 +182,7 @@ publishMods {
         optional("trinkets")
         optional("backslot")
         optional("inventorio")
+    }
+}
     }
 }

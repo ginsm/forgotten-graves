@@ -1,5 +1,10 @@
 package me.mgin.graves.util;
 
+//? if >=1.20.5 {
+import me.mgin.graves.compat.ItemStackCompat;
+import me.mgin.graves.compat.ProfileCompat;
+import me.mgin.graves.compat.SerializationHelper;
+//?}
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.mgin.graves.versioned.VersionedCode;
@@ -12,6 +17,7 @@ import net.minecraft.nbt.NbtString;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.registry.RegistryWrapper.WrapperLookup;
 
 import java.util.Date;
 import java.util.List;
@@ -27,14 +33,15 @@ public class GraveNbtHelper {
     static public DefaultedList<ItemStack> readInventory(String key, NbtCompound nbt) {
         if (nbt.contains(key)) {
             int itemCount = nbt.getCompound("ItemCount").getInt(key);
-
             DefaultedList<ItemStack> stacks = DefaultedList.ofSize(itemCount, ItemStack.EMPTY);
-
-            Inventories.readNbt(nbt.getCompound(key), stacks);
-
+            WrapperLookup lookup = SerializationHelper.getWrapperLookup();
+            if (lookup != null) {
+                Inventories.readNbt(nbt.getCompound(key), stacks, lookup);
+            } else {
+                Inventories.readNbt(nbt.getCompound(key), stacks);
+            }
             return stacks;
         }
-
         return DefaultedList.ofSize(0);
     }
 
@@ -50,18 +57,16 @@ public class GraveNbtHelper {
         if (stacks == null)
             return nbt;
 
-        // Write item count
-        NbtCompound itemCount = new NbtCompound();
-
-        if (nbt.contains("ItemCount"))
-            itemCount = nbt.getCompound("ItemCount");
-
+        NbtCompound itemCount = nbt.contains("ItemCount") ? nbt.getCompound("ItemCount") : new NbtCompound();
         itemCount.putInt(key, stacks.size());
         nbt.put("ItemCount", itemCount);
 
-        // Store the inventory
-        nbt.put(key, Inventories.writeNbt(new NbtCompound(), stacks, true));
-
+        WrapperLookup lookup = SerializationHelper.getWrapperLookup();
+        if (lookup != null) {
+            nbt.put(key, Inventories.writeNbt(new NbtCompound(), stacks, lookup));
+        } else {
+            nbt.put(key, Inventories.writeNbt(new NbtCompound(), stacks));
+        }
         return nbt;
     }
 
@@ -73,7 +78,11 @@ public class GraveNbtHelper {
         for (Text line : lines) {
             loreList.add(NbtString.of(VersionedCode.textToJson(line)));
         }
+        //? if >=1.20.5 {
+        ItemStackCompat.getOrCreateSubNbt(stack, "display").put("Lore", loreList);
+        //?} else {
         stack.getOrCreateSubNbt("display").put("Lore", loreList);
+        //?}
     }
 
     /**
@@ -83,18 +92,19 @@ public class GraveNbtHelper {
      * @return GameProfile
      */
     public static GameProfile toGameProfile(NbtCompound nbt) {
+        //? if >=1.20.5 {
+        return ProfileCompat.toGameProfile(nbt);
+        //?} else {
         return net.minecraft.nbt.NbtHelper.toGameProfile(nbt);
+        //?}
     }
 
-    /**
-     * Wrapper for <i>NbtHelper.writeGameProfile</i>.
-     *
-     * @param nbt NbtCompound
-     * @param profile GameProfile
-     * @return NbtCompound
-     */
     public static NbtCompound writeGameProfile(NbtCompound nbt, GameProfile profile) {
+        //? if >=1.20.5 {
+        return ProfileCompat.writeGameProfile(nbt, profile);
+        //?} else {
         return net.minecraft.nbt.NbtHelper.writeGameProfile(nbt, profile);
+        //?}
     }
 
     /**
@@ -188,29 +198,42 @@ public class GraveNbtHelper {
      * @return NbtCompound
      */
     private static NbtCompound upgradeInventories(NbtCompound nbt) {
-        // Retrieve the items like normal
         DefaultedList<ItemStack> oldItems = DefaultedList.ofSize(nbt.getInt("ItemCount"), ItemStack.EMPTY);
+        //? if >=1.20.5 {
+        var lookup = SerializationHelper.getWrapperLookup();
+        if (lookup != null) {
+            Inventories.readNbt(nbt.getCompound("Items"), oldItems, lookup);
+        } else {
+            Inventories.readNbt(nbt.getCompound("Items"), oldItems);
+        }
+        //?} else {
         Inventories.readNbt(nbt.getCompound("Items"), oldItems);
+        //?}
 
-        // Separate the item lists
         DefaultedList<ItemStack> items = DefaultedList.ofSize(0);
-        items.addAll(oldItems.subList(0, 41));
-
+        items.addAll(oldItems.subList(0, Math.min(41, oldItems.size())));
         DefaultedList<ItemStack> trinkets = DefaultedList.ofSize(0);
         if (oldItems.size() > 41) {
             trinkets.addAll(oldItems.subList(41, oldItems.size()));
         }
 
-        // Create/store new ItemCount format
         NbtCompound itemCount = new NbtCompound();
         itemCount.putInt("Items", items.size());
         itemCount.putInt("trinkets", trinkets.size());
         nbt.put("ItemCount", itemCount);
 
-        // Store the two inventories
+        //? if >=1.20.5 {
+        if (lookup != null) {
+            nbt.put("Items", Inventories.writeNbt(new NbtCompound(), items, lookup));
+            nbt.put("trinkets", Inventories.writeNbt(new NbtCompound(), trinkets, lookup));
+        } else {
+            nbt.put("Items", Inventories.writeNbt(new NbtCompound(), items));
+            nbt.put("trinkets", Inventories.writeNbt(new NbtCompound(), trinkets));
+        }
+        //?} else {
         nbt.put("Items", Inventories.writeNbt(new NbtCompound(), items, true));
         nbt.put("trinkets", Inventories.writeNbt(new NbtCompound(), trinkets, true));
-
+        //?}
         return nbt;
     }
 

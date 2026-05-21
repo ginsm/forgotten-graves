@@ -1,5 +1,6 @@
 package me.mgin.graves.mixin;
 
+import me.mgin.graves.compat.ItemStackCompat;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.CompassItem;
 import net.minecraft.item.ItemStack;
@@ -23,7 +24,7 @@ public abstract class CompassItemMixin {
             cancellable = true
     )
     private void graves$skipLodestoneCheck(ItemStack stack, World world, Entity entity, int slot, boolean selected, CallbackInfo ci) {
-        NbtCompound nbt = stack.getNbt();
+        NbtCompound nbt = ItemStackCompat.getNbt(stack);
         if (nbt != null && nbt.contains("GraveMarker")) {
             // Cancel so that vanilla doesn't remove the LodestonePos tag
             ci.cancel();

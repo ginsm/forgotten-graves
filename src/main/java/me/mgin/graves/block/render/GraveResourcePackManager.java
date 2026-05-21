@@ -46,7 +46,7 @@ public class GraveResourcePackManager implements SimpleResourceReloadListener<Vo
 
         return CompletableFuture.runAsync(() ->
             MinecraftClient.getInstance().getResourceManager().streamResourcePacks().forEach((pack) -> {
-                String filePath = pack.getName();
+                String filePath = getPackName(pack);
                 if (resourcePacks.containsKey(filePath)) {
                     activePack = resourcePacks.get(filePath);
                 }
@@ -66,5 +66,17 @@ public class GraveResourcePackManager implements SimpleResourceReloadListener<Vo
 
     public static GraveResourcePack getActivePack() {
         return activePack;
+    }
+
+    private static String getPackName(Object pack) {
+        try {
+            return (String) pack.getClass().getMethod("getName").invoke(pack);
+        } catch (Exception e) {
+            try {
+                return (String) pack.getClass().getMethod("getPackId").invoke(pack);
+            } catch (Exception ex) {
+                return pack.toString();
+            }
+        }
     }
 }

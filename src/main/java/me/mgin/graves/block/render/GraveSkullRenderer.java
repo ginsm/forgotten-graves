@@ -1,6 +1,9 @@
 package me.mgin.graves.block.render;
 
 import com.mojang.authlib.GameProfile;
+//? if >=1.20.5 {
+import me.mgin.graves.compat.ProfileCompat;
+//?}
 import me.mgin.graves.block.GraveBlockBase;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.block.render.packs.GraveResourcePack;
@@ -17,7 +20,9 @@ import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.render.entity.model.SkullEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
+//? if <1.20.5 {
 import net.minecraft.nbt.NbtHelper;
+//?}
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
 
@@ -157,15 +162,23 @@ public class GraveSkullRenderer {
      * Generate a RenderLayer for the given SkullType.
      */
     public static RenderLayer getSkullLayer(SkullBlock.SkullType skullType, @Nullable GameProfile profile) {
+        //? if >=1.20.5 {
+        return SkullBlockEntityRenderer.getRenderLayer(skullType, (net.minecraft.component.type.ProfileComponent) ProfileCompat.toProfileComponent(profile));
+        //?} else {
         return SkullBlockEntityRenderer.getRenderLayer(skullType, profile);
+        //?}
     }
 
     /**
-     * Leverages Minecraft's NbtHelper to create a profile with the appropriate
+     * Leverages Minecraft's NbtHelper or ProfileCompat to create a profile with the appropriate
      * texture, signature, and owner.
      */
     public static GameProfile getCustomSkullProfile(NbtCompound graveSkull) {
+        //? if >=1.20.5 {
+        return ProfileCompat.toGameProfile(graveSkull);
+        //?} else {
         return NbtHelper.toGameProfile(graveSkull);
+        //?}
     }
 
     /**

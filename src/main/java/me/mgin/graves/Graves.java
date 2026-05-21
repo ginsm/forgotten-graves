@@ -18,6 +18,7 @@ import me.mgin.graves.networking.config.event.ConfigNetworkingEvents;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.lang.reflect.InvocationTargetException;
@@ -43,6 +44,19 @@ public class Graves implements ModInitializer {
         Commands.registerServerCommands();
         Events.registerServerEvents();
         GraveEffects.register(MOD_ID);
+        //? if >=1.20.5 {
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            try {
+                Object registryManager = server.getRegistryManager();
+                Object lookup = registryManager.getClass().getMethod("getWrapperLookup").invoke(registryManager);
+                me.mgin.graves.compat.SerializationHelper.setWrapperLookup(
+                    (net.minecraft.registry.RegistryWrapper.WrapperLookup) lookup
+                );
+            } catch (Exception ignored) {
+            }
+        });
+        //?}
+        ConfigNetworking.registerPayloadTypes();
         ConfigNetworking.registerC2SPackets();
         ConfigNetworkingEvents.registerServerEvents();
 

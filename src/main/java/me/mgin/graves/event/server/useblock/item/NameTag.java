@@ -1,5 +1,8 @@
 package me.mgin.graves.event.server.useblock.item;
 
+//? if >=1.20.5 {
+import me.mgin.graves.compat.ItemStackCompat;
+//?}
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -18,7 +21,11 @@ public class NameTag {
         boolean isNameTagItem = item instanceof NameTagItem;
         boolean isMainHand = hand.equals(Hand.MAIN_HAND);
         boolean unownedGrave = entity.getGraveOwner() == null;
+        //? if >=1.20.5 {
+        boolean hasCustomName = ItemStackCompat.hasCustomName(stack);
+        //?} else {
         boolean hasCustomName = stack.hasCustomName();
+        //?}
 
         if (!isNameTagItem || !isMainHand || !unownedGrave || !hasCustomName) return false;
 

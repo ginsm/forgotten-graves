@@ -64,7 +64,7 @@ public class DeleteCommand {
 
                     // Search for the world the grave is located
                     for (ServerWorld world : server.getWorlds()) {
-                        String dimension = String.valueOf(world.getDimensionKey().getValue());
+                        String dimension = me.mgin.graves.versioned.VersionedCode.Worlds.getDimensionKey(world);
 
                         if (!dimension.equals(storedDimension)) continue;
 

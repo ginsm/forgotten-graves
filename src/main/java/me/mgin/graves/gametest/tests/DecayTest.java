@@ -244,9 +244,9 @@ public class DecayTest {
         config.decay.minStageTimeSeconds = 60;
         config.decay.freshGraveDecayChance = 100;
 
-        if (block instanceof GraveBlockBase graveBlock) {
-            // Run `randomTick`, as it contains the check for minStageTimeSeconds
-            block.randomTick(state, (ServerWorld) world, pos, world.getRandom());
+        if (block instanceof GraveBlockBase) {
+            // Run randomTick via BlockState (public) - contains the check for minStageTimeSeconds
+            state.randomTick((ServerWorld) world, pos, world.getRandom());
 
             // Ensure the grave hasn't decayed yet
             context.assertTrue(
@@ -257,7 +257,7 @@ public class DecayTest {
             // Set the timer to minStageTimeSeconds and tick it again, then assert it has decayed
             assert entity != null;
             ((GraveBlockEntity) entity).incrementTimer("decay", 60);
-            block.randomTick(state, (ServerWorld) world, pos, world.getRandom());
+            world.getBlockState(pos).randomTick((ServerWorld) world, pos, world.getRandom());
             context.assertFalse(
                 GraveTestHelper.compareDecayLevel(world, pos, BlockDecay.FRESH),
                 "The grave should be able to decay now, as min stage time has passed, and shouldn't be FRESH."
@@ -274,13 +274,13 @@ public class DecayTest {
 
         System.out.println("📗 Running maxStageTimeSeconds");
 
-        if (block instanceof GraveBlockBase graveBlock) {
+        if (block instanceof GraveBlockBase) {
             // Increment the timer to above default maxStageTimeSeconds (300)
             assert entity != null;
             ((GraveBlockEntity) entity).incrementTimer("decay", 240);
 
-            // Run a scheduled tick, just to ensure the maxStageTimeSeconds code runs
-            block.scheduledTick(state, (ServerWorld) world, pos, world.getRandom());
+            // Run a scheduled tick via BlockState (public) - ensures maxStageTimeSeconds code runs
+            state.scheduledTick((ServerWorld) world, pos, world.getRandom());
 
             // Ensure grave has decayed.
             context.assertTrue(

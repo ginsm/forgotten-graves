@@ -1,5 +1,8 @@
 package me.mgin.graves.event.server.useblock.item;
 
+//? if >=1.20.5 {
+import me.mgin.graves.compat.ItemStackCompat;
+//?}
 import me.mgin.graves.block.decay.DecayStateManager;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.block.utility.Particles;
@@ -55,7 +58,11 @@ public class Shovel {
             float breakChance = ((100f / (unbreaking + 1f)) / 100f);
 
             if (!player.isCreative() && breakChance >= random.nextFloat()) {
+                //? if >=1.20.5 {
+                ItemStackCompat.damage(player.getStackInHand(hand), 1, player, hand);
+                //?} else {
                 player.getStackInHand(hand).damage(1, player, (p) -> p.sendToolBreakStatus(hand));
+                //?}
             }
 
             // Spawn particles and sound in world

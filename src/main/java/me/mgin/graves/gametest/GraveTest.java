@@ -1,5 +1,6 @@
 package me.mgin.graves.gametest;
 
+import me.mgin.graves.compat.GameTestCompat;
 import me.mgin.graves.config.GravesConfig;
 import me.mgin.graves.gametest.tests.*;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,7 +14,7 @@ public class GraveTest {
 
     @GameTest(templateName = "forgottengraves:placement_tests")
     public void graveGenerationTests(TestContext context) {
-        PlayerEntity player = context.createMockSurvivalPlayer();
+        PlayerEntity player = GameTestCompat.createMockSurvivalPlayer(context);
 
         GraveTestHelper.printTestStarting("Generation");
 
@@ -48,8 +49,8 @@ public class GraveTest {
     }
 
     @GameTest(templateName = "forgottengraves:generic_tests")
-    public static void RetrieveGraveTests(TestContext context) {
-        PlayerEntity player = context.createMockSurvivalPlayer();
+    public void RetrieveGraveTests(TestContext context) {
+        PlayerEntity player = GameTestCompat.createMockSurvivalPlayer(context);
         BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
 
         GraveTestHelper.printTestStarting("Retrieve");
@@ -70,8 +71,8 @@ public class GraveTest {
     }
 
     @GameTest(templateName = "forgottengraves:generic_tests")
-    public static void decayTests(TestContext context) {
-        PlayerEntity player = context.createMockSurvivalPlayer();
+    public void decayTests(TestContext context) {
+        PlayerEntity player = GameTestCompat.createMockSurvivalPlayer(context);
         BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
 
         GraveTestHelper.printTestStarting("Decay");
@@ -96,8 +97,8 @@ public class GraveTest {
     }
 
     @GameTest(templateName = "forgottengraves:generic_tests")
-    public static void experienceTests(TestContext context) {
-        PlayerEntity player = context.createMockSurvivalPlayer();
+    public void experienceTests(TestContext context) {
+        PlayerEntity player = GameTestCompat.createMockSurvivalPlayer(context);
         BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
 
         GraveTestHelper.printTestStarting("Experience");
@@ -119,8 +120,8 @@ public class GraveTest {
     }
 
     @GameTest(templateName = "forgottengraves:generic_tests")
-    public static void waterlogTests(TestContext context) {
-        PlayerEntity player = context.createMockSurvivalPlayer();
+    public void waterlogTests(TestContext context) {
+        PlayerEntity player = GameTestCompat.createMockSurvivalPlayer(context);
         BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
 
         GraveTestHelper.printTestStarting("Waterlog");
@@ -136,8 +137,8 @@ public class GraveTest {
     }
 
     @GameTest(templateName = "forgottengraves:generic_tests")
-    public static void explosionTests(TestContext context) {
-        PlayerEntity player = context.createMockSurvivalPlayer();
+    public void explosionTests(TestContext context) {
+        PlayerEntity player = GameTestCompat.createMockSurvivalPlayer(context);
         BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
 
         GraveTestHelper.printTestStarting("Explosion");
@@ -157,8 +158,8 @@ public class GraveTest {
     }
 
     @GameTest(templateName = "forgottengraves:generic_tests")
-    public static void permissionTests(TestContext context) {
-        PlayerEntity player = context.createMockSurvivalPlayer();
+    public void permissionTests(TestContext context) {
+        PlayerEntity player = GameTestCompat.createMockSurvivalPlayer(context);
         BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
 
         GraveTestHelper.printTestStarting("Permission");
@@ -179,8 +180,8 @@ public class GraveTest {
     }
 
     @GameTest(templateName = "forgottengraves:generic_tests")
-    public static void deathCompassTests(TestContext context) {
-        PlayerEntity player = context.createMockSurvivalPlayer();
+    public void deathCompassTests(TestContext context) {
+        PlayerEntity player = GameTestCompat.createMockSurvivalPlayer(context);
         BlockPos pos = context.getAbsolutePos(new BlockPos(3, 2, 3));
 
         GraveTestHelper.printTestStarting("Death Compass");

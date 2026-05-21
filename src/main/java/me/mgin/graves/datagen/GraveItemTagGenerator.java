@@ -34,6 +34,7 @@ public class GraveItemTagGenerator extends FabricTagProvider.ItemTagProvider {
     }
 
     @SafeVarargs
+    @SuppressWarnings("unused")
     private void addItemTag(TagKey<Item> tag, FabricTagBuilder... builders) {
         for (FabricTagBuilder b : builders) {
             b.addOptionalTag(tag);

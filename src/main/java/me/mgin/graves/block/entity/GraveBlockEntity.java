@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import me.mgin.graves.Graves;
 import me.mgin.graves.api.InventoriesApi;
 import me.mgin.graves.block.GraveBlocks;
+import me.mgin.graves.compat.BlockEntityCompat;
 import me.mgin.graves.util.GraveNbtHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -237,10 +238,21 @@ public class GraveBlockEntity extends BlockEntity {
         return !this.graveSkull.isEmpty();
     }
 
+    //? if >=1.20.5 {
+    @Override
+    protected void writeNbt(NbtCompound nbt, net.minecraft.registry.RegistryWrapper.WrapperLookup lookup) {
+        super.writeNbt(nbt, lookup);
+        writeNbtCustom(nbt);
+    }
+    //?} else {
     @Override
     protected void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
+        writeNbtCustom(nbt);
+    }
+    //?}
 
+    private void writeNbtCustom(NbtCompound nbt) {
         for (InventoriesApi api : Graves.inventories) {
             String id = api.getID();
             DefaultedList<ItemStack> inventory = this.getInventory(id);
@@ -279,12 +291,23 @@ public class GraveBlockEntity extends BlockEntity {
             nbt.put("GraveSkull", graveSkull);
     }
 
+    //? if >=1.20.5 {
+    @Override
+    public void readNbt(NbtCompound nbt, net.minecraft.registry.RegistryWrapper.WrapperLookup lookup) {
+        nbt = GraveNbtHelper.upgradeOldGraves(nbt);
+        super.readNbt(nbt, lookup);
+        readNbtCustom(nbt);
+    }
+    //?} else {
     @Override
     public void readNbt(NbtCompound nbt) {
-        // Needed for backwards compatibility
         nbt = GraveNbtHelper.upgradeOldGraves(nbt);
         super.readNbt(nbt);
+        readNbtCustom(nbt);
+    }
+    //?}
 
+    private void readNbtCustom(NbtCompound nbt) {
         // Store loaded inventories
         for (InventoriesApi api : Graves.inventories) {
             String id = api.getID();
@@ -318,9 +341,9 @@ public class GraveBlockEntity extends BlockEntity {
             this.customName = nbt.getString("CustomName");
 
         if (nbt.contains("GraveSkull"))
-            this.graveSkull = (NbtCompound) nbt.get("GraveSkull");
+            this.graveSkull = nbt.getCompound("GraveSkull").copy();
 
-        super.markDirty();
+        markDirty();
     }
 
     /**
@@ -329,19 +352,27 @@ public class GraveBlockEntity extends BlockEntity {
      * @return NbtCompound
      */
     public NbtCompound toNbt() {
-        NbtCompound tag = new NbtCompound();
-        this.writeNbt(tag);
-        return tag;
+        return BlockEntityCompat.toNbt(this);
     }
 
     @Nullable
     @Override
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        //? if >=1.20.5 {
+        return BlockEntityUpdateS2CPacket.create(this);
+        //?} else {
         return BlockEntityUpdateS2CPacket.create(this, (BlockEntity b) -> this.toNbt());
+        //?}
     }
 
     @Override
+    //? if >=1.20.5 {
+    public NbtCompound toInitialChunkDataNbt(net.minecraft.registry.RegistryWrapper.WrapperLookup lookup) {
+        return BlockEntityCompat.toNbt(this);
+    }
+    //?} else {
     public NbtCompound toInitialChunkDataNbt() {
         return this.toNbt();
     }
+    //?}
 }

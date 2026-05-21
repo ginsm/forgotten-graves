@@ -1,5 +1,8 @@
 package me.mgin.graves.block.utility;
 
+//? if >=1.20.5 {
+import me.mgin.graves.compat.ItemStackCompat;
+//?}
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
@@ -101,7 +104,12 @@ public class Inventory {
      * Generates a unique key for an ItemStack based on its item type and NBT data.
      */
     public static String getStackKey(ItemStack stack) {
+        //? if >=1.20.5 {
+        return stack.getItem().toString() + (ItemStackCompat.hasNbt(stack)
+            ? Objects.requireNonNull(ItemStackCompat.getNbt(stack)).toString() : "");
+        //?} else {
         return stack.getItem().toString() + (stack.hasNbt() ? Objects.requireNonNull(stack.getNbt()).toString() : "");
+        //?}
     }
 
 }

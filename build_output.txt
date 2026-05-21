@@ -1,0 +1,48 @@
+Running Stonecutter 0.7.8
+NOTICE: Limited Groovy DSL support for Stonecutter
+
+While functional, the plugin's features are limited 
+by the Groovy syntax and it has reduced IDE support.
+For the best experience, including enhanced syntax, autocompletion, 
+documentation lookup and debugging, it's recommended to use Kotlin DSL.
+
+For more information see: 
+  - https://stonecutter.codeberg.page/wiki/faq#groovy-support
+
+> Configure project :1.20
+Fabric Loom: 1.10.5
+
+> Configure project :1.20.1
+Fabric Loom: 1.10.5
+
+> Configure project :1.20.2
+Fabric Loom: 1.10.5
+
+> Configure project :1.20.3
+Fabric Loom: 1.10.5
+
+> Configure project :1.20.4
+Fabric Loom: 1.10.5
+
+> Configure project :1.20.5
+Fabric Loom: 1.10.5
+
+> Task :1.20.5:stonecutterPrepare
+> Task :1.20.5:stonecutterGenerate
+
+> Task :1.20.5:compileJava
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: D:\forgotten-graves\versions\1.20.5\build\generated\stonecutter\main\java\me\mgin\graves\tags\GraveEnchantTags.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+[Incubating] Problems report is available at: file:///D:/forgotten-graves/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 7s
+3 actionable tasks: 3 executed

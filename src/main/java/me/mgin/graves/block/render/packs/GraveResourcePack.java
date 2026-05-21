@@ -15,15 +15,15 @@ public interface GraveResourcePack {
 
     public default VoxelShape getGraveShape(String blockID) {
         return switch (blockID) {
-            case "grave_old" -> this.GRAVE_SHAPE_OLD;
-            case "grave_weathered" -> this.GRAVE_SHAPE_WEATHERED;
-            case "grave_forgotten" -> this.GRAVE_SHAPE_FORGOTTEN;
-            case "grave_expired" -> this.GRAVE_SHAPE_EXPIRED;
-            default -> this.GRAVE_SHAPE;
+            case "grave_old" -> GraveResourcePack.GRAVE_SHAPE_OLD;
+            case "grave_weathered" -> GraveResourcePack.GRAVE_SHAPE_WEATHERED;
+            case "grave_forgotten" -> GraveResourcePack.GRAVE_SHAPE_FORGOTTEN;
+            case "grave_expired" -> GraveResourcePack.GRAVE_SHAPE_EXPIRED;
+            default -> GraveResourcePack.GRAVE_SHAPE;
         };
     }
 
     public default float getSkullOffset() {
-        return this.SKULL_OFFSET;
+        return GraveResourcePack.SKULL_OFFSET;
     }
 }

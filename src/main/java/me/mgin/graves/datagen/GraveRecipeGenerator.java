@@ -9,6 +9,10 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.tag.ItemTags;
 
+//? if >=1.20.5 {
+import java.util.concurrent.CompletableFuture;
+import net.minecraft.registry.RegistryWrapper;
+//?}
 //? if >1.20.1 {
 /*import net.minecraft.data.server.recipe.RecipeExporter;
 *///?} else {
@@ -17,9 +21,15 @@ import java.util.function.Consumer;
 //?}
 
 public class GraveRecipeGenerator extends FabricRecipeProvider {
+    //? if >=1.20.5 {
+    public GraveRecipeGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+        super(output, registriesFuture);
+    }
+    //?} else {
     public GraveRecipeGenerator(FabricDataOutput output) {
         super(output);
     }
+    //?}
 
     @Override
     //? if >1.20.1 {

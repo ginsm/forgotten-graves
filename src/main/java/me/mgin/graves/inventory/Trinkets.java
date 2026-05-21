@@ -130,7 +130,13 @@ public class Trinkets implements InventoriesApi {
     public static void removeResoluteIvy(PlayerEntity player) {
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
         component.ifPresent(trinketComponent -> trinketComponent.forEach(
-                (ref, stack) -> stack.removeSubNbt("Botania_keepIvy")
+                (ref, stack) -> {
+                    //? if >=1.20.5 {
+                    me.mgin.graves.compat.ItemStackCompat.removeSubNbt(stack, "Botania_keepIvy");
+                    //?} else {
+                    stack.removeSubNbt("Botania_keepIvy");
+                    //?}
+                }
         ));
     }
 
@@ -156,8 +162,17 @@ public class Trinkets implements InventoriesApi {
                             if (TrinketSlot.canInsert(stack, ref, player)) {
                                 ItemStack newStack = stack.copy();
                                 inventory.setStack(i, newStack);
-                                SoundEvent soundEvent = stack.getItem() instanceof Equipment eq ? eq.getEquipSound() :
-                                    null;
+                                SoundEvent soundEvent = null;
+                                if (stack.getItem() instanceof Equipment eq) {
+                                    Object equipSound = eq.getEquipSound();
+                                    if (equipSound != null) {
+                                        try {
+                                            soundEvent = (SoundEvent) equipSound.getClass().getMethod("value").invoke(equipSound);
+                                        } catch (Exception e) {
+                                            soundEvent = (SoundEvent) equipSound;
+                                        }
+                                    }
+                                }
 
                                 if (!stack.isEmpty() && soundEvent != null) {
                                     player.emitGameEvent(GameEvent.EQUIP);

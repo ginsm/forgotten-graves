@@ -97,7 +97,7 @@ public class GraveTestHelper {
 
     public static void resetGraveDecay(World world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
-        if (state.getBlock() instanceof GraveBlockBase graveBlock) {
+        if (state.getBlock() instanceof GraveBlockBase) {
             DecayStateManager.setDecayState(
                 world, pos, Optional.ofNullable(GraveBlocks.GRAVE.getDefaultState()), false
             );

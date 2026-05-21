@@ -3,6 +3,7 @@ package me.mgin.graves.state;
 import me.mgin.graves.Graves;
 import me.mgin.graves.block.entity.GraveBlockEntity;
 import me.mgin.graves.config.GravesConfig;
+import me.mgin.graves.versioned.VersionedCode;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -38,45 +39,56 @@ public class ServerState extends PersistentState {
         return serverState;
     }
 
+    //? if >=1.20.5 {
+    @Override
+    public NbtCompound writeNbt(NbtCompound nbt, net.minecraft.registry.RegistryWrapper.WrapperLookup lookup) {
+        return writeNbtCustom(nbt);
+    }
+    //?} else {
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
-        // Store each player's data in a single nbt tag
-        NbtCompound playersNbt = new NbtCompound();
+        return writeNbtCustom(nbt);
+    }
+    //?}
 
-        players.forEach((UUID, playerData) -> {
+    private NbtCompound writeNbtCustom(NbtCompound nbt) {
+        NbtCompound playersNbt = new NbtCompound();
+        players.forEach((uuid, playerData) -> {
             NbtCompound playerNbt = new NbtCompound();
             playerNbt.put("graves", playerData.graves);
-            playersNbt.put(String.valueOf(UUID), playerNbt);
+            playersNbt.put(String.valueOf(uuid), playerNbt);
         });
-
-        // Put all players nbt into the server state's nbt
         nbt.put("players", playersNbt);
-
         return nbt;
     }
 
-    //? if >=1.20.2 {
-    /*private static final Type<ServerState> type = new Type<>(
+    //? if >=1.20.5 {
+    private static final net.minecraft.world.PersistentState.Type<ServerState> TYPE = new net.minecraft.world.PersistentState.Type<>(
+        ServerState::new,
+        (nbt, lookup) -> ServerState.createFromNbt(nbt),
+        null
+    );
+    //?}
+    //? if >=1.20.2 && <1.20.5 {
+    private static final Type<ServerState> type = new Type<>(
         ServerState::new,
         ServerState::createFromNbt,
         null
     );
-    *///?}
+    //?}
 
     public static ServerState getServerState(MinecraftServer server) {
         if (server == null) return null;
 
         PersistentStateManager persistentStateManager = Objects.requireNonNull(server.getWorld(World.OVERWORLD)).getPersistentStateManager();
 
-        return persistentStateManager.getOrCreate(
-            //? if >=1.20.2 {
-            /*type,
-            *///?} else {
-            ServerState::createFromNbt,
-            ServerState::new,
-            //?}
-            Graves.MOD_ID
-        );
+        //? if >=1.20.5 {
+        return persistentStateManager.getOrCreate(TYPE, Graves.MOD_ID);
+        //?} else if >=1.20.2 {
+        return persistentStateManager.getOrCreate(type, Graves.MOD_ID);
+        //?} else {
+        return persistentStateManager.getOrCreate(ServerState::createFromNbt, ServerState::new, Graves.MOD_ID);
+        //?}
     }
 
     public static PlayerState getPlayerState(MinecraftServer server, UUID uuid) {
@@ -111,7 +123,7 @@ public class ServerState extends PersistentState {
         graveNbt.putInt("z", gravePos.getZ());
 
         // Store the grave's dimension in nbt
-        graveNbt.putString("dimension", String.valueOf(graveEntity.getWorld().getDimensionKey().getValue()));
+        graveNbt.putString("dimension", VersionedCode.Worlds.getDimensionKey(graveEntity.getWorld()));
 
         // Store the grave nbt in the global state
         playerState.graves.add(graveNbt);

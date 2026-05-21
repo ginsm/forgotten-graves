@@ -175,7 +175,7 @@ public class PlaceGrave {
 
         if (graveCoordinates) {
             Responder res = new Responder(player, player.getServer());
-            String dimension = String.valueOf(world.getDimensionKey().getValue());
+            String dimension = VersionedCode.Worlds.getDimensionKey(world);
 
             res.sendInfo(
                 Text.translatable("event.death:send-player-coordinates",
@@ -187,7 +187,7 @@ public class PlaceGrave {
             );
 
             System.out.printf("[%s] Grave spawned at %dx %dy %dz for player %s in %s.\n", Graves.MOD_ID, pos.getX(),
-                    pos.getY(), pos.getZ(), player.getName().getString(), world.getDimensionKey().getValue());
+                    pos.getY(), pos.getZ(), player.getName().getString(), VersionedCode.Worlds.getDimensionKey(world));
         }
 
     }
